@@ -6,8 +6,9 @@ This fork-only experiment carries the archived GLM-5 B300 workload forward to
 `nvidia/GLM-5.2-NVFP4`. It is separate from the current AgentX configurations and
 does not reactivate deprecated benchmark definitions or publish dashboard results.
 
-- **W4A4 TRT-LLM:** configured; C2 measurement pending. Retains the original
-  TP4/DP1/EP1 concurrency sweep and TP8/DP1/EP1 concurrency-4 point.
+- **W4A4 TRT-LLM:** C2 measurement completed on 2026-09-19: all 16 points and
+  10,240/10,240 measured requests passed. See [results, charts and runtime limits](results/c2-w4a4-20260919/README.md).
+  Retains the original TP4/DP1/EP1 concurrency sweep and TP8/DP1/EP1 concurrency-4 point.
 - **W4A16 MegaMoE:** prepared and deferred until the optimization stack is ready.
   It has not been run or measured. Its entry point refuses to run unless the
   caller explicitly sets `RUN_MEGAMOE=true`.

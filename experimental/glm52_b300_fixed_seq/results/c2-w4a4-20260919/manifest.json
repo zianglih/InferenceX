@@ -1,0 +1,1274 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-09-19T09:47:44.256343+00:00",
+  "source_root": "/Users/ziangli/playground/projects/inferencex-glm52-b300-config-audit/artifacts/measured/c2-w4a4-20260919",
+  "validated_cases": [
+    "1k1k/w4a4-trtllm/tp4_conc128",
+    "1k1k/w4a4-trtllm/tp4_conc16",
+    "1k1k/w4a4-trtllm/tp4_conc256",
+    "1k1k/w4a4-trtllm/tp4_conc32",
+    "1k1k/w4a4-trtllm/tp4_conc4",
+    "1k1k/w4a4-trtllm/tp4_conc64",
+    "1k1k/w4a4-trtllm/tp4_conc8",
+    "1k1k/w4a4-trtllm/tp8_conc4",
+    "8k1k/w4a4-trtllm/tp4_conc128",
+    "8k1k/w4a4-trtllm/tp4_conc16",
+    "8k1k/w4a4-trtllm/tp4_conc256",
+    "8k1k/w4a4-trtllm/tp4_conc32",
+    "8k1k/w4a4-trtllm/tp4_conc4",
+    "8k1k/w4a4-trtllm/tp4_conc64",
+    "8k1k/w4a4-trtllm/tp4_conc8",
+    "8k1k/w4a4-trtllm/tp8_conc4"
+  ],
+  "note": "SHA256 covers every original file. Files with included=false remain in the source archive, including server logs and GPU telemetry.",
+  "files": [
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/benchmark.log",
+      "size_bytes": 54081,
+      "sha256": "c8bb8421696cb946df0d09aeb66d051afd866853c63e8ecc4ca5347c3cd9b8c5",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/benchmark_command.sh",
+      "size_bytes": 792,
+      "sha256": "672c2a789cb78fd690f7a3233411fc7a641216e466081a295d317dc833edf921",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/gpu_metrics.csv",
+      "size_bytes": 312156,
+      "sha256": "9ea23301533f47b4bd3babb4815bcb3fa0d083e962455bb04b0ef1958d27f907",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/metadata.json",
+      "size_bytes": 2262,
+      "sha256": "f2c0f26977074b58bfc18ff9aeb27da43f0126d48220036b501ecbbec2c1bfe8",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "dbfd49775c7cf7f51ab73ffc078bb5353d31c7ef91970e0a6875a4d0ee6c2d67",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/result.json",
+      "size_bytes": 14739,
+      "sha256": "0b8c8da3a8e7b9e7a7bd580274b122e95a3e6ee502362bb5b891fa2a106f6544",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/server.log",
+      "size_bytes": 431489,
+      "sha256": "3ea7c86b24af89348038d0915fbc49b3aaf6d921c15de82b7f44c71495015eb0",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/server_command.sh",
+      "size_bytes": 1348,
+      "sha256": "23974846f3d077cd86edb5901e231dcba23f3100201e50bbc44523e42887064f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/server_info.after.json",
+      "size_bytes": 34576,
+      "sha256": "cdb01a585240d247bc7ca6aa36a2040f525d88d112fcc9a72c420a38b53ed12f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/server_info.before.json",
+      "size_bytes": 34518,
+      "sha256": "14e195d57f4128570a09340fe33d89d42a65bd8c44da1737da9112010c7d0a4e",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc128/status.json",
+      "size_bytes": 301,
+      "sha256": "e2c837f25c6f35a6b6fc47566f87fe329284af286358342773900b08f77ce82c",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/benchmark.log",
+      "size_bytes": 15464,
+      "sha256": "6fa78c15d88c5579ae80b6d73a9b78e531568cb038e8d1cac63503b5f84d469b",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/benchmark_command.sh",
+      "size_bytes": 789,
+      "sha256": "771d791f3b33c192b2cd660357adc4034a50354b58052e4041b76d6cf154c904",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/gpu_metrics.csv",
+      "size_bytes": 202482,
+      "sha256": "5bc02b7fe6ff80fac32f2cbdf1b7ad6adb39ad2e2817cebd3199a4d5ab919c90",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/metadata.json",
+      "size_bytes": 2259,
+      "sha256": "ee608e098de10e926ce8bb476bef9722a381be7b15fd52c10182d880e6f104cc",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "eff95c065031f13f669ec380b234bb11879c912d9ddf4df10a41403cd43cc204",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/result.json",
+      "size_bytes": 3257,
+      "sha256": "b8b23b1a7864d1dd7b0696dbfce37afda26f313fcd21a6b71e9be6625353a570",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/server.log",
+      "size_bytes": 135560,
+      "sha256": "5e5f388b7817850f7b33692e003359487be70ae64b258ffb8abb4d57a45ed693",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/server_command.sh",
+      "size_bytes": 1346,
+      "sha256": "96829c32d628dbb34c61fcc5579ba805251a9153b11619bf32bfe190af2cb7b9",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/server_info.after.json",
+      "size_bytes": 34424,
+      "sha256": "bb3c1225696a6d56904bda12c7cca9137a35d672e78a654bbf9d8c9d7e14de6b",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/server_info.before.json",
+      "size_bytes": 34365,
+      "sha256": "1270ccebca110051f29f9e2404ee51131fc17b66ce61d95abdaf9054ae0e2b11",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc16/status.json",
+      "size_bytes": 297,
+      "sha256": "c1f266cff7746e57912221a30537a9b9f92007a51cb1b0d0fb07534fc8105cd2",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/benchmark.log",
+      "size_bytes": 104811,
+      "sha256": "39cdfaa417fce3ea920a68fef441da3bc88100f30ab4ebcafb80fc8a0c37850c",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/benchmark_command.sh",
+      "size_bytes": 792,
+      "sha256": "8cf059ba323940da9b618dfd3b5910f548d38932d27fa2747400e99f2d35d105",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/gpu_metrics.csv",
+      "size_bytes": 538972,
+      "sha256": "604931b5aab00cda4454f51894a3a66b1bb0e1e7744010e173cdda7171f7d179",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/metadata.json",
+      "size_bytes": 2262,
+      "sha256": "564908d00aa2b34d00ddc6e402130ce81284a20a6e5431b14e07b9feaeec7aac",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "9c78081898b4b1402fa41600a4bbf91ab45dc07d1d5b9e57bafb97379aea0f16",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/result.json",
+      "size_bytes": 27832,
+      "sha256": "aac8c75c0788566d7221719bb5393bff13a0bacba95fcda7139eb0dc9cb50f80",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/server.log",
+      "size_bytes": 783823,
+      "sha256": "abd0c2a3544b6490ca74809dec60290822af90a0ca40c23c1d401dde299f5672",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/server_command.sh",
+      "size_bytes": 1348,
+      "sha256": "7c0f39d83a65cf1b4d109f9f5d44b17104d8a485b09b3015ca736a93d5e40d8d",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/server_info.after.json",
+      "size_bytes": 34706,
+      "sha256": "b393543c4e7667318864826410633e9b2c95321000fb776d7dc798b5d80dade4",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/server_info.before.json",
+      "size_bytes": 34649,
+      "sha256": "4f02a0898034f26185eb35b859e5e8acbc7fc76466ea0756e5de9542480c070c",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc256/status.json",
+      "size_bytes": 301,
+      "sha256": "92f20234f473b0bcba0c2e7251574a9a1b7c5a8e0d3701e4430ebed1f02b418f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/benchmark.log",
+      "size_bytes": 22410,
+      "sha256": "60622491fcaf45ff68e7222966c5138935ade52a717a652d35b45fbbe83430f3",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/benchmark_command.sh",
+      "size_bytes": 789,
+      "sha256": "7b02f65ad7eaf2bf648f2c7cc595db0ca970f18203c6b9df7eb8ba146d69be81",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/gpu_metrics.csv",
+      "size_bytes": 217404,
+      "sha256": "b41c2873d269ad7d017d5ffa72457e08f024691f06ee0a7e1a09ecd0cca5b2b6",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/metadata.json",
+      "size_bytes": 2259,
+      "sha256": "7a9d83b14784e3f4e2c30a8627cc063410caa1773df515f8154563459b250e9f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "10f1bfb716bfcdf8cc481224bd2eb937d7eef0da5a26d444ef094174ffaddd58",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/result.json",
+      "size_bytes": 4909,
+      "sha256": "3bf81be770da24dbc2587d57bbb850854498e3cbc61e0b48ceb3b2d69b40df27",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/server.log",
+      "size_bytes": 184806,
+      "sha256": "bcee8acf63f30b5c1569af0800360853ccf032f0e37c30f5a88444a6ff1b0634",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/server_command.sh",
+      "size_bytes": 1346,
+      "sha256": "02815e8b38f3dc72640c27a9772c90121e17d924822ad7d8df3e4ce7acc39672",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/server_info.after.json",
+      "size_bytes": 34471,
+      "sha256": "79aba8000d6ab90d621d789fa5760d7e8e4269406fd408ed7c1719b73fe64eb3",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/server_info.before.json",
+      "size_bytes": 34413,
+      "sha256": "33dc334c7aef650cd87661770cda0e40088bba1ef08e17aed37c61abac2ed63d",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc32/status.json",
+      "size_bytes": 297,
+      "sha256": "79e4d71101e383667d63b57a72a0c80973ca66f19c356c7bda2fc746a5ed51ae",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/benchmark.log",
+      "size_bytes": 8033,
+      "sha256": "22734374b2b8f5d22fdadd8aa3eaa3e633f16020b20f5247ab749ccb4fe288e9",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/benchmark_command.sh",
+      "size_bytes": 786,
+      "sha256": "c12ed092b78f017bd03c4aa9749aafbb73f9aff61a43d938c1881523575b16a5",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/gpu_metrics.csv",
+      "size_bytes": 172700,
+      "sha256": "09baea5b7ce159ba9489c2a2e13e01409035eb2e9faaf30b24d59970d342caca",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/metadata.json",
+      "size_bytes": 2256,
+      "sha256": "9f828c2601cb575a8d31ee11bf04526affcbaf8e25eff06ef52cada1df93e743",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "dbe5d15635f99a1ce15974b889a9c3b4365a25012bda92353ddb23a18d164298",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/result.json",
+      "size_bytes": 2023,
+      "sha256": "d42fb64829471e34f941dd912f999e1fef46ab62395e8843806ec5857ed81969",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/server.log",
+      "size_bytes": 91698,
+      "sha256": "3f5531044a76d5cc4918962c769bc1a6c77b58a3ec49397224ae660a4a893e1d",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/server_command.sh",
+      "size_bytes": 1344,
+      "sha256": "5c6364376c6b0020219e8a8c96ca888b40298693a4ec89ddc6a8f5daceceda79",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/server_info.after.json",
+      "size_bytes": 34370,
+      "sha256": "f4e02a451dcde7fbfdc10752052f193ef309db1026f8fb010c36ffc928b3599b",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/server_info.before.json",
+      "size_bytes": 34313,
+      "sha256": "cad687467c7408ebf1a1ac9331dd2726e6f52781729126d0d9f93d0d25bf54ea",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc4/status.json",
+      "size_bytes": 293,
+      "sha256": "d60370516644738fe69cf2ad6a7d19110b74003f9ff682626929dc9732f13b32",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/benchmark.log",
+      "size_bytes": 34610,
+      "sha256": "d2316e767af4cd4124a546f0099f36be1b3c7b96f79c1cbab5d7066c5aeeb6b0",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/benchmark_command.sh",
+      "size_bytes": 789,
+      "sha256": "5c4ecb9c69ffcbb83c31fab7341c2701636e96d7f9ae0391dea69aad6fc5ed78",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/gpu_metrics.csv",
+      "size_bytes": 252867,
+      "sha256": "af5d89fa47aa8c73c06cc97a36d0a15fe9e06eb1ae1e9fbd699b89da3a0de8db",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/metadata.json",
+      "size_bytes": 2260,
+      "sha256": "10fa52d3a4c8713d2006b1088caefaa53ee3ab88502acb6f2cd6fe2835f88167",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "7a035899a9bec7babac76b3fee649b806365435a6db7ea74f6ec657b5fda81a4",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/result.json",
+      "size_bytes": 8173,
+      "sha256": "35bbb07b487e46c504483aaa6e55390b55394291ba46dad5376e6032f7193d87",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/server.log",
+      "size_bytes": 276334,
+      "sha256": "effc1f41f4baccc86696f6a5fe35cedd3f67f53df68a1a4a3b325719e9469398",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/server_command.sh",
+      "size_bytes": 1346,
+      "sha256": "2a696b7e41252f33b04d1e3dfe5cd6457f4e1dce6400f8bc46b0adbf0f335961",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/server_info.after.json",
+      "size_bytes": 34515,
+      "sha256": "306018818f3f2ee1b8c4492b86ef9788e84714d84755ef68232509d078eae9d1",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/server_info.before.json",
+      "size_bytes": 34457,
+      "sha256": "2bab8998eda3882110eba3e4b6c35f12ae03488c4ed99c3bfadbf5a59e2d7dd4",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc64/status.json",
+      "size_bytes": 297,
+      "sha256": "0b0655193b53f86d95fcf49703d675acf31338dae0c3ddddc5b66e2af622baf0",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/benchmark.log",
+      "size_bytes": 10423,
+      "sha256": "27d18e9d06f83d38a3c69d82c973c019cdb605b9346c3b1f9c66c10ca4cbaee5",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/benchmark_command.sh",
+      "size_bytes": 786,
+      "sha256": "40bc81054d863f76c12e5cf1954fe75f8dd0f491e68877118cf3c1fd9a876fd4",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/gpu_metrics.csv",
+      "size_bytes": 184708,
+      "sha256": "5011dabdf1420a21324f8b63652113c4af8f28fba6379990980436141079bb5c",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/metadata.json",
+      "size_bytes": 2257,
+      "sha256": "8fea784c73c975233ee5e3a721d40b1eda9034aa6e71f1866f0c791e09718a6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "af44d603fb01e7156906f4f00823ce4f646eb17137d44638826975ef6904474f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/result.json",
+      "size_bytes": 2435,
+      "sha256": "7a8c52c270d7a077d9f14ab09abd35bbc3aa8b468cef7ff677705ca6de28a5d1",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/server.log",
+      "size_bytes": 106492,
+      "sha256": "92a06fac19d337566be29ee1758e41e1f32707c5539829e35bf02fc9b23aace2",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/server_command.sh",
+      "size_bytes": 1344,
+      "sha256": "bcaca3c20db2582e33f988e62031b9603c673c160b7e9f088f634490a8902f3e",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/server_info.after.json",
+      "size_bytes": 34380,
+      "sha256": "e6846486d8ab2a7240c736aec9952bf4118d22f526c00e502782b0c17c00e0a8",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/server_info.before.json",
+      "size_bytes": 34321,
+      "sha256": "195f14db6b9420d572a7c64f626e5feaae5bf5c5d11643868ab30f39256f0cf8",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp4_conc8/status.json",
+      "size_bytes": 293,
+      "sha256": "2ae06a1b68e98fa934bc4f4705ef61ff7c42a1a6a8e861a0228b6881842421a4",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/benchmark.log",
+      "size_bytes": 8103,
+      "sha256": "93f97fdf5d2e1b1e222663ffab6bc007b6c84d78b81b8f15fe3d4aa0d3874f69",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/benchmark_command.sh",
+      "size_bytes": 786,
+      "sha256": "a3c72f31a8115b4f82d41a98f9ac4c4f2067905d7790accaecc3b8bdd44e448f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/gpu_metrics.csv",
+      "size_bytes": 165389,
+      "sha256": "682a1041724776900d91dfd0cb30881a7cc379cbdbb1fbd6a1e9fe01e1383502",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/metadata.json",
+      "size_bytes": 2264,
+      "sha256": "98cdded2b894d7bedc3c1a2460a6c558f73d6b2b59bd2e06f24b9a0274504501",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "4890d62cab36f8395c2487f731ab0257f32ba78c945dcdf3e73eade9c418e03b",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/result.json",
+      "size_bytes": 2024,
+      "sha256": "d7263ed9679fe3b57dc12092301ad7de9c37946283a098848d218b30aeb499b6",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/server.log",
+      "size_bytes": 110142,
+      "sha256": "161f606b186ec5c6fdeae69175b2f72fe9d22103f692971a3dd3610b00fbe5cb",
+      "included": false
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/server_command.sh",
+      "size_bytes": 1356,
+      "sha256": "42a824d24516a7187ea175f173a30c1f9d4bc0fc13a8f927445a4d1a7628e2d3",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/server_info.after.json",
+      "size_bytes": 34375,
+      "sha256": "1ce06e49c44d120fdebc148a49ec3a728dd17041f55befe5f39856606ab99fdf",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/server_info.before.json",
+      "size_bytes": 34317,
+      "sha256": "cbd7636b91d62b4866a50ffafcbc6ece7ca6ca687b69f6befe188197a7d542d5",
+      "included": true
+    },
+    {
+      "path": "1k1k/w4a4-trtllm/tp8_conc4/status.json",
+      "size_bytes": 293,
+      "sha256": "cde5896f5dbf1b2815786a9a148f0d16201f10f3d46bcccd400bdab0ee4739f9",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/benchmark.log",
+      "size_bytes": 60248,
+      "sha256": "a65eb45dd0bf6554d135190287a21e684212ba1d9e8ceab888ef5c4c0aabe76e",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/benchmark_command.sh",
+      "size_bytes": 792,
+      "sha256": "bbc07a2cc5131b7e7f804aa40e7ce221741fdd7d209b1acb8cfef37b1509deeb",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/gpu_metrics.csv",
+      "size_bytes": 525054,
+      "sha256": "c27668660b4325bdeedf1cf8e53428b5debd02c52d1979c8c8db948ff360487d",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/metadata.json",
+      "size_bytes": 2262,
+      "sha256": "9af058942887e9d7cfc11ff8f627018a2b8dfd5bda63dc3fbfbfe4c56a86cbdb",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "31a9a12db7678b090abd801aaa4b231eeea125755816f51a76f2470c7801fb97",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/result.json",
+      "size_bytes": 15854,
+      "sha256": "3e3f67cdcb8b0cd72ad5feb8411b3c27b28070d0612e69b8a4ed30cddfba813d",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/server.log",
+      "size_bytes": 457227,
+      "sha256": "08b16a24b408a0c017aab5f51eaa30e0edcf395f9ade967d5af3366569f96cc8",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/server_command.sh",
+      "size_bytes": 1348,
+      "sha256": "23974846f3d077cd86edb5901e231dcba23f3100201e50bbc44523e42887064f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/server_info.after.json",
+      "size_bytes": 34577,
+      "sha256": "8d38fb9a4f2c093f1fe6659d060b5cabb8af3c2c07453a74623e582b0894f72a",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/server_info.before.json",
+      "size_bytes": 34519,
+      "sha256": "a0efff7136cf15e337470a652c023d3a4f481ae64775ed5e3d0ab50d20a9b259",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc128/status.json",
+      "size_bytes": 301,
+      "sha256": "955eb1ea85034460568f1e75824af593e61c43b104916ed1f95a65485c0da06b",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/benchmark.log",
+      "size_bytes": 15799,
+      "sha256": "723ce1412c9aa674c2dfd28271af0e017e9cee4055afb2d942bc6f7dc0202a3c",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/benchmark_command.sh",
+      "size_bytes": 789,
+      "sha256": "17bdcd04695c7c2478a61590b8c9dcab5319efc961f38d20494df3de4e2418cd",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/gpu_metrics.csv",
+      "size_bytes": 234809,
+      "sha256": "09bf13ecd27496ae546026f0c4b0ceeb227843e278ac9b521bbb3b34b0ed25c2",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/metadata.json",
+      "size_bytes": 2259,
+      "sha256": "3f53b84dbb4fd7dace152fb86e1098dd74afdc0e2bc28c31ca7bc566b1d29885",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "2dce16351a5fb060678678fcd9f0aaa0557c10d82bfe4ee99c514372cc340621",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/result.json",
+      "size_bytes": 3407,
+      "sha256": "5f1ba1c0c11ef6d328d4a55926b776259e3cba164bb281b4a5914111e877117f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/server.log",
+      "size_bytes": 141288,
+      "sha256": "28859e64267f878928e88d3825dc53cbbca2a6af53def3de140a3c2e3df58f3b",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/server_command.sh",
+      "size_bytes": 1346,
+      "sha256": "96829c32d628dbb34c61fcc5579ba805251a9153b11619bf32bfe190af2cb7b9",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/server_info.after.json",
+      "size_bytes": 34421,
+      "sha256": "4fb9c57d77c373b487752aa3bd043558e06fd9a6e5398bf847bdf27ad5fccc91",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/server_info.before.json",
+      "size_bytes": 34364,
+      "sha256": "bd49a271b0f078b559eb949a65fc1cb4da26f8b9900f2cec440062009ebd2afa",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc16/status.json",
+      "size_bytes": 297,
+      "sha256": "f37ae256e7c70420270f23b22ee24bff0946fdce7cb9a66bb1fd916db5263acc",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/benchmark.log",
+      "size_bytes": 110255,
+      "sha256": "4d4770fb059bd7567058d3cc3b9e1573a73732d9932938ac26e7d3617d1e2e4c",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/benchmark_command.sh",
+      "size_bytes": 792,
+      "sha256": "df129290dbdb5e90d6b03f52d7280e05a955766b132fdc25d51e6605e5d384d2",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/gpu_metrics.csv",
+      "size_bytes": 953165,
+      "sha256": "0561851ad2d328c713919ca9b41dc5e6fbc435ca238fc38125970268039e9d94",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/metadata.json",
+      "size_bytes": 2262,
+      "sha256": "fad49a116cd624b3eccf532375902efb4da9e1a82f9e3cbc0ed2e85630af1d56",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "5c2c37a3007790d0e5e6a0c0b031b79cbdd5f9007ec403a063f02f7cb314ebe7",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/result.json",
+      "size_bytes": 30101,
+      "sha256": "f3c947014eeecdeb77e7cece8e3154aca587e0ea0482c6376de0360d0f563b4d",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/server.log",
+      "size_bytes": 862765,
+      "sha256": "78981f97a0d0fa3e4fba2111a7b02a571869add1ef91a138a4118651025da464",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/server_command.sh",
+      "size_bytes": 1348,
+      "sha256": "7c0f39d83a65cf1b4d109f9f5d44b17104d8a485b09b3015ca736a93d5e40d8d",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/server_info.after.json",
+      "size_bytes": 34707,
+      "sha256": "ba3c987086ce3b20ece7033b26a78d6a7f59706b75fc9b4cc82fb9ab7d32c84b",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/server_info.before.json",
+      "size_bytes": 34648,
+      "sha256": "358b0a2758b8cfed72d3acf4cd4ea5435efd5d1fb90366efdfc356635922ca96",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc256/status.json",
+      "size_bytes": 301,
+      "sha256": "66c9aad073ab267f66c32ff445818d3f75c5b8bdf19270e09811bc0a5d570e21",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/benchmark.log",
+      "size_bytes": 23341,
+      "sha256": "9029b3a96de412bf75740a6d159c1283b3a5c26fb92c880f80b345d8884d631b",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/benchmark_command.sh",
+      "size_bytes": 789,
+      "sha256": "6ae30039ae20307c7d787930d289990d9afe95bea23a723bced9ddfc29968be4",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/gpu_metrics.csv",
+      "size_bytes": 279368,
+      "sha256": "6bf7d0c0702920645456d2d1fea51fd847b8b257907976679ab6a90bb2baa633",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/metadata.json",
+      "size_bytes": 2259,
+      "sha256": "dee414a8db2d73438459de63894512022844d33622d9df05e9f51efca603fcf6",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "4a4a6b3659dd3cad9f00739b58ccc8c6deff69e47e23247fbbb1e0e6e92e5f8d",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/result.json",
+      "size_bytes": 5187,
+      "sha256": "1dfa76dddb0c787ed0b5dc09d0c49617b1732925599ef57bda02c55cfea29883",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/server.log",
+      "size_bytes": 194296,
+      "sha256": "02c9bab036bd9667bbe518bfd334a3cea1621ece2959e6079034a1b366a9c9b2",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/server_command.sh",
+      "size_bytes": 1346,
+      "sha256": "02815e8b38f3dc72640c27a9772c90121e17d924822ad7d8df3e4ce7acc39672",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/server_info.after.json",
+      "size_bytes": 34472,
+      "sha256": "4175b705de21459d9989db50801d6074a3268a6293fd2586715347e91a6e27f0",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/server_info.before.json",
+      "size_bytes": 34413,
+      "sha256": "6f5e43783a63c3844f7e6be9af71a05b26aecb2e8e21f6b46bb2a796beae0c79",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc32/status.json",
+      "size_bytes": 297,
+      "sha256": "16172973d66cb84c3d48545d3ff79f1e62df0fb22b7b5f399270c78a1784cfdb",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/benchmark.log",
+      "size_bytes": 8327,
+      "sha256": "a76557ddb3580e078e98bee18f5efc4c3c000413ec7deae68cadc5c359cd5a7c",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/benchmark_command.sh",
+      "size_bytes": 786,
+      "sha256": "37e16d3f0b087682a32da57958bd62e43cb9d5a85438a6f5093dfb7dcb6c2181",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/gpu_metrics.csv",
+      "size_bytes": 406455,
+      "sha256": "61e0beb6451e0af4560b32debc3e8ae788f1ad27cee24328acf3d824a5d0ab9c",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/metadata.json",
+      "size_bytes": 2256,
+      "sha256": "89c7afd24f90b44098106ccafd858c86d329b964b87bb8dfea6d5a542b5d02af",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "40ab451fea9b6d6f8b49c06b571993a5de574f9a6bc46f730430deb35fa86cbe",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/result.json",
+      "size_bytes": 2055,
+      "sha256": "f3ff3df54dfd6d3db130f04b9ce6250586e7b9c1db921e7bc02e0f0d544234f9",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/server.log",
+      "size_bytes": 104102,
+      "sha256": "0633f99f737ad27d7c44a45ea6b93192d993ff340e1e47c89e05a0be3844f434",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/server_command.sh",
+      "size_bytes": 1344,
+      "sha256": "5c6364376c6b0020219e8a8c96ca888b40298693a4ec89ddc6a8f5daceceda79",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/server_info.after.json",
+      "size_bytes": 34370,
+      "sha256": "fa086d921e4598d872edd71ec63760db1092cf9e16a83616bea49daad7433179",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/server_info.before.json",
+      "size_bytes": 34312,
+      "sha256": "81f143336caf5c22d0cbb1815f50fba75d97fd1fadf268eb5e0bb7a4f9561588",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc4/status.json",
+      "size_bytes": 293,
+      "sha256": "57eb371673067c94aeffb2cba810f55f484c66f947564acb1e3edcffabf94ada",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/benchmark.log",
+      "size_bytes": 37518,
+      "sha256": "7c58a58fc5406928a12f6b69fd4d4cb406b1cdc68a6ea7e4731f6f25c95e1d89",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/benchmark_command.sh",
+      "size_bytes": 789,
+      "sha256": "76b9884acc819095893a6ec2d1aee5167d215fabffa2642ccfed970a410da300",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/gpu_metrics.csv",
+      "size_bytes": 365083,
+      "sha256": "769edc889bd9d25a5ff861ceb390b435118a85fbb349eab04158d190c3af5d3b",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/metadata.json",
+      "size_bytes": 2260,
+      "sha256": "6c4c7d7a763a963f77ba930617096064cc1fab9e0c54f7fd70dd0a5222eb1930",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "702a2430e2b370aff9643e98a377d8e12ddbbaf8b41801f5548bdb00969ef23e",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/result.json",
+      "size_bytes": 8732,
+      "sha256": "199baa6eebfd30b497a11a1bcfdc9856e896e6f46d45d37014974c4abf5415d1",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/server.log",
+      "size_bytes": 301815,
+      "sha256": "4c101443f02892129dbbc3ab13fe76c3b0118c9dc65bfa592050a0c7cb9b296a",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/server_command.sh",
+      "size_bytes": 1346,
+      "sha256": "2a696b7e41252f33b04d1e3dfe5cd6457f4e1dce6400f8bc46b0adbf0f335961",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/server_info.after.json",
+      "size_bytes": 34509,
+      "sha256": "086ffc905f91eed901ddfc61701717eccf430b518157fc84e576b006c07fa322",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/server_info.before.json",
+      "size_bytes": 34452,
+      "sha256": "b670e64bb6cd2a057dd1172dc787c55d5623e50d6e57fbe38a173650bc0aa50c",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc64/status.json",
+      "size_bytes": 297,
+      "sha256": "e4609fb6da21a6bec0fce2d26cb1c9c711708162665b5b469e361ca715861455",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/benchmark.log",
+      "size_bytes": 10821,
+      "sha256": "14bf342866597a22b864fb408af2f25bde1df5736f3d4bb0ec3a64af217dbda8",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/benchmark_command.sh",
+      "size_bytes": 786,
+      "sha256": "de754735632fb0fdd1383a0ed16dd4c96a5dae0f034bbe39ddff6ac06d0fb05b",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/gpu_metrics.csv",
+      "size_bytes": 206542,
+      "sha256": "61eafbba8154f9ab443ec5b4ea795b9993b3a8431df51e8ba01f8e32db6f13db",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/metadata.json",
+      "size_bytes": 2257,
+      "sha256": "f698d9779de74a9c2d99ad12d2d933e53b63748d5bf28350dc50d636eaa79ae1",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "acf3757fc7067cf88955aa81bd7bde0def4a294de965fbaa9077c4d60812bb03",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/result.json",
+      "size_bytes": 2503,
+      "sha256": "a3b63eb5f7a82313d64515606b7fd71f5184b821d99c9ab0db75f3bd30e341c6",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/server.log",
+      "size_bytes": 112733,
+      "sha256": "adba9ad64fa8b0759ba13741d3abea13e494fa815b11bbeb1cb12da57aac5053",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/server_command.sh",
+      "size_bytes": 1344,
+      "sha256": "bcaca3c20db2582e33f988e62031b9603c673c160b7e9f088f634490a8902f3e",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/server_info.after.json",
+      "size_bytes": 34379,
+      "sha256": "4e10bf8abd4b91f65b6be54a7485937d7ac796f46d2e76522a0f09936889b806",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/server_info.before.json",
+      "size_bytes": 34322,
+      "sha256": "e832105c28cfaa6bb893b538ef3a9b92a07b564ab5586ed7cc59e47596f6fbd4",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp4_conc8/status.json",
+      "size_bytes": 293,
+      "sha256": "414e0004f84d255508f57d4459cc1ab68199294b352009c200c82d276b4cd62b",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/benchmark.log",
+      "size_bytes": 8273,
+      "sha256": "204c9e5e8f34766b79ff1d419cca7a624639b61c7985d9135264c86db20c0ee2",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/benchmark_command.sh",
+      "size_bytes": 786,
+      "sha256": "08abd23ee4bccb97745353f2ea67370a8dd46c38f0c24cc73ca3562dd8f516d1",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/gpu_metrics.csv",
+      "size_bytes": 210487,
+      "sha256": "d83a126f3b61236379706e8f2ff56ba2c6209c9d0e911d20c6d1a4671dd8c25d",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/gpu_metrics_identity.csv",
+      "size_bytes": 798,
+      "sha256": "f290db75bf88bbc998f8a538bc3afffd90fef9f4e8ad37651ac3b9ce0fd5b0da",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/metadata.json",
+      "size_bytes": 2264,
+      "sha256": "0598a1fce722533d4c10ab3007c7251fe307fc755745b67a2f098dcb666466e8",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/nvidia-smi.txt",
+      "size_bytes": 4265,
+      "sha256": "c5bfb22ae9602dac7a504ab3c5743ae76f5fbfb27b20ee3e18d61af2ac1d0964",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/packages.json",
+      "size_bytes": 16687,
+      "sha256": "06f32e66454b7cb6946a87441ba4cd18362afc0ad874c98570596a263adaab6f",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/result.json",
+      "size_bytes": 2054,
+      "sha256": "349a6e327ffcc9badd6e6ee751286bcae3cc3c9c5ce34d77598840b1720325bb",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/server.log",
+      "size_bytes": 134399,
+      "sha256": "3734eb0b72e8b266aa923ba66c4646668589b5371a3303cd822f6871a97f46d7",
+      "included": false
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/server_command.sh",
+      "size_bytes": 1356,
+      "sha256": "42a824d24516a7187ea175f173a30c1f9d4bc0fc13a8f927445a4d1a7628e2d3",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/server_info.after.json",
+      "size_bytes": 34374,
+      "sha256": "35fccb67b4dc1ad0630a280898f0e90cd23c4af4cb0a1bfa86b99f2dd411d17a",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/server_info.before.json",
+      "size_bytes": 34317,
+      "sha256": "15fa7d233becf8638a2b7f77ba1b0cea0ad2ed7bc7e8c82bf4cb1cf400cf27bb",
+      "included": true
+    },
+    {
+      "path": "8k1k/w4a4-trtllm/tp8_conc4/status.json",
+      "size_bytes": 293,
+      "sha256": "69c8a137ae9e6612f750848425395d5c17ec472c453f13d7b48a0e552eb73cf1",
+      "included": true
+    }
+  ]
+}

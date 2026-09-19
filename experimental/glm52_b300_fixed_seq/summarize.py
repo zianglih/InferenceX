@@ -174,7 +174,20 @@ def link(path: str, output: Path, label: str) -> str:
 
 
 def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) -> None:
-    included = [row for row in rows if row["included"]]
+    included = sorted(
+        (row for row in rows if row["included"]),
+        key=lambda row: (
+            row["scenario"],
+            row["tp"],
+            row["dp"],
+            row["ep"],
+            row["backend"],
+            row["run_id"],
+            row["image"],
+            row["sglang_commit"],
+            row["concurrency"],
+        ),
+    )
     lines = [
         "# GLM-5.2 B300 / 1k1k and 8k1k / MTP",
         "",
