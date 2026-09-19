@@ -36,6 +36,7 @@ GROUP_KEYS = (
     "image",
     "sglang_commit",
     "prefill_cuda_graph_policy",
+    "random_range_ratio",
     "isl",
     "osl",
 )
@@ -53,6 +54,7 @@ def read_case(path: Path) -> dict[str, Any]:
         "included": False,
         "exclusion_reasons": [],
         "metrics": {},
+        "observed_token_lengths": {},
         "derived": {},
     }
     reasons = row["exclusion_reasons"]
@@ -102,6 +104,19 @@ def read_case(path: Path) -> dict[str, Any]:
             and key not in ("num_prompts", "max_concurrency", "best_of")
         }
         row["completed"] = result.get("completed")
+        for key in ("input_lens", "output_lens"):
+            values = result.get(key)
+            if (
+                isinstance(values, list)
+                and values
+                and all(number(value) for value in values)
+            ):
+                row["observed_token_lengths"][key] = {
+                    "count": len(values),
+                    "min": min(values),
+                    "mean": sum(values) / len(values),
+                    "max": max(values),
+                }
         expected = metadata.get("num_prompts")
         completed = result.get("completed")
         if type(expected) is int and type(completed) is int:
@@ -163,13 +178,19 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
     lines = [
         "# GLM-5.2 B300 / 1k1k and 8k1k / MTP",
         "",
-        f"Included cases: **{len(included)}/{len(rows)}**. "
+        f"Included cases: **{len(included)}/{len(rows)} discovered metadata files**. "
         "Only completed cases with every requested benchmark request successful are plotted. "
-        "Failed, missing, and still-running cases remain in `summary.json` and the exclusions below.",
+        "Discovered failed, missing-result, and still-running cases remain in `summary.json` and "
+        "the exclusions below. Cases without metadata are not counted; this count does not establish "
+        "completion of the planned matrix.",
         "",
         "Measurements are closed-loop synthetic request-rate=inf runs. "
         "Each point is one case, without cross-run averaging or a latency-SLO gate. "
-        "1k1k means 1024 input / 1024 output; 8k1k means 8192 input / 1024 output. "
+        "1k1k sets input/output caps to 1024/1024 tokens; 8k1k sets them to 8192/1024 tokens. "
+        "Lengths are sampled using each case's `random_range_ratio`, not fixed to these caps. "
+        "The sampler draws inclusive integer lengths from floor(ratio × cap) to cap; "
+        "for chat-template input it first subtracts template overhead, then applies the template "
+        "and retokenizes. Raw `input_lens` and `output_lens` retain observed request lengths. "
         "Workloads are plotted in separate figures. "
         "Different topology, GPU count, runtime, backend, or prefill CUDA graph policy configurations are separate series; "
         "comparisons are system configurations, not isolated kernel-precision speedups.",
@@ -220,6 +241,33 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
             + row["scenario"]
             + " | "
             + " | ".join(fmt(row["metrics"].get(key)) for key in LATENCY_KEYS)
+            + " |"
+        )
+    lines += [
+        "",
+        "## Workload accounting",
+        "",
+        "| Case | Scenario | random_range_ratio | input_lens min / mean / max (tokens) | output_lens min / mean / max (tokens) |",
+        "|---|---|---:|---:|---:|",
+    ]
+    for row in included:
+        observed = row["observed_token_lengths"]
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    row["summary_case_id"],
+                    row["scenario"],
+                    fmt(row.get("random_range_ratio")),
+                    *[
+                        " / ".join(
+                            fmt(observed.get(key, {}).get(stat))
+                            for stat in ("min", "mean", "max")
+                        )
+                        for key in ("input_lens", "output_lens")
+                    ],
+                ]
+            )
             + " |"
         )
     lines += [
@@ -281,7 +329,10 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
         "失败、缺失结果和运行中的实验保留在 JSON 与排除列表中。输出吞吐只计算生成 token，"
         "总吞吐同时计算输入与生成 token。延迟保持毫秒单位；median 为 P50。"
         "交互性为 1000 / median_tpot_ms，不包含首个 token，也不代表满足某项延迟 SLO。"
-        "1k1k 和 8k1k 分别绘图。不同拓扑、GPU 数量和运行环境分别展示，不能解释为单独改变内核精度的收益。",
+        "1k1k 和 8k1k 表示配置的长度上限，实际长度按 random_range_ratio 采样，并非每个请求都等于上限。"
+        "输入还包含聊天模板与重新分词的影响；表中列出实际输入和输出长度。"
+        "两种负载分别绘图。不同拓扑、GPU 数量和运行环境分别展示，不能解释为单独改变内核精度的收益。"
+        "汇总数量仅代表发现的 metadata 文件，不证明计划矩阵已完成。",
         "",
         "</details>",
         "",
@@ -310,6 +361,7 @@ def plot_results(rows: list[dict[str, Any]], output: Path, scenario: str) -> lis
         label = (
             f"{first['backend_label']} · {topology(first)} · {first['run_id']}"
             f" · prefill graphs: {first.get('prefill_cuda_graph_policy') or 'unknown'}"
+            f" · length ratio: {first.get('random_range_ratio')}"
         )
         series.append((points, label, plt.get_cmap("tab10")(index % 10)))
     names = []
@@ -323,7 +375,7 @@ def plot_results(rows: list[dict[str, Any]], output: Path, scenario: str) -> lis
         margin = (legend_height + 0.45) / (height + legend_height)
         isl, osl = SCENARIOS[scenario]
         fig.suptitle(
-            f"GLM-5.2 · B300 · {scenario} · {isl} input / {osl} output · MTP",
+            f"GLM-5.2 · B300 · {scenario} · input/output caps {isl}/{osl} tokens · MTP",
             fontsize=14,
         )
         fig.tight_layout(rect=(0, margin, 1, 0.94))
@@ -487,7 +539,12 @@ def main() -> None:
                 f"plotting requires matplotlib ({exc}); use --no-plots for JSON and Markdown only"
             )
     write_markdown(rows, args.output, charts)
+    for row in rows:
+        for field in ("metadata_file", "result_file", "case"):
+            if field in row:
+                row[field] = os.path.relpath(row[field], args.output)
     summary = {
+        "artifact_path_base": "directory containing summary.json; raw metadata paths retain original runtime provenance",
         "case_count": len(rows),
         "included_case_count": sum(row["included"] for row in rows),
         "excluded_case_count": sum(not row["included"] for row in rows),
