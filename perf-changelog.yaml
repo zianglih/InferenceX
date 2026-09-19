@@ -8412,4 +8412,4 @@
   description:
     - "Add a fork-only GLM-5.2 NVFP4 B300 8k1k and 1k1k experiment: preserve the archived W4A4 TRT-LLM sweep, pin SGLang PR 39210 and the CUDA 13 nightly, and prepare a deferred W4A16 MegaMoE arm. Official AgentX and retired GLM-5 configurations remain unchanged."
     - "在个人 fork 添加 GLM-5.2 NVFP4 B300 8k1k 与 1k1k 实验：保留原 W4A4 TRT-LLM 压测方法，固定 SGLang PR 39210 与 CUDA 13 nightly，另备待优化完成后运行的 W4A16 MegaMoE 配置。"
-  pr-link: TBD
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
