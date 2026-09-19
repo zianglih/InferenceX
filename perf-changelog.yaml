@@ -8405,3 +8405,11 @@
     - "Enable required telemetry on seven GB200 aggregate recipes, preserve failed-job artifacts, and reserve CUDA Graph memory in the five TP8/PP2 recipes."
     - "为七个 GB200 Kimi-K3 聚合配方启用必需实测功耗并保留失败产物；五个 TP8/PP2 配方为 CUDA Graph 预留显存。"
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/3045
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Add a fork-only GLM-5.2 NVFP4 B300 8k1k and 1k1k experiment: preserve the archived W4A4 TRT-LLM sweep, pin SGLang PR 39210 and the CUDA 13 nightly, and prepare a deferred W4A16 MegaMoE arm. Official AgentX and retired GLM-5 configurations remain unchanged."
+    - "在个人 fork 添加 GLM-5.2 NVFP4 B300 8k1k 与 1k1k 实验：保留原 W4A4 TRT-LLM 压测方法，固定 SGLang PR 39210 与 CUDA 13 nightly，另备待优化完成后运行的 W4A16 MegaMoE 配置。"
+  pr-link: TBD
