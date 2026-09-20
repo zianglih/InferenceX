@@ -8429,3 +8429,13 @@
     - "Set the MegaMoE server request cap to max(client concurrency, DP): SGLang 50eeb742 divides max_running_requests by attention DP and rejects a zero per-rank cap. TP8/DP8 at client concurrency 4 therefore uses server cap 8 while preserving client concurrency 4 and 40 measured requests; TP4 points are unchanged. Record server_max_running_requests separately from client concurrency. Fresh performance validation remains pending."
     - "MegaMoE server 请求上限改为 max(client concurrency, DP)：SGLang 50eeb742 将 max_running_requests 除以 attention DP，且不允许每 rank 上限为零。因此 TP8/DP8、client 并发 4 时使用 server 上限 8，client 并发 4 与 40 个正式请求不变，其余 TP4 点不变；单独记录 server_max_running_requests，新性能验证仍待完成。"
   pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Prepare a new DP-aligned TRT-LLM control via config-trtllm-aligned.env. Both new arms use PARALLEL_TOPOLOGY=dp-ep, TP=DP=EP, disabled prefill CUDA graphs, TRT-LLM/none MTP draft, inherited draft quantization and server cap max(client concurrency, DP). Preserve the completed DP1/EP1 16-point baseline as a separate historical reference; neither new arm has started measurement."
+    - "Keep the aligned TRT-LLM control on image FlashInfer 0.6.18/CuTe DSL 4.6.2, versus MegaMoE FlashInfer 0.7.0 at ad0a5e5e78e57070ec7c582efe733cb55cd8839f/CuTe DSL 4.7.1. Precision, backend and software differences remain. The main plot compares only aligned runs using per-request interactivity 1000/median_tpot_ms and output_throughput/gpu_count; historical results are plotted separately."
+    - "通过 config-trtllm-aligned.env 新增 DP 对齐的 TRT-LLM 对照。新两套方案均使用 PARALLEL_TOPOLOGY=dp-ep、TP=DP=EP、禁用 prefill CUDA graph、TRT-LLM/none MTP draft、继承 draft 量化，以及 max(client concurrency, DP) 的 server 上限。原 DP1/EP1 的已完成 16 点保留为独立历史参考；新两套方案均尚未启动测量。"
+    - "对齐版 TRT-LLM 保留镜像的 FlashInfer 0.6.18/CuTe DSL 4.6.2，MegaMoE 使用 FlashInfer 0.7.0 的 ad0a5e5e78e57070ec7c582efe733cb55cd8839f/CuTe DSL 4.7.1；精度、backend 和软件差异仍存在。主图仅比较对齐后的新结果，X 为每请求交互性 1000/median_tpot_ms，Y 为 output_throughput/gpu_count；历史结果单独作图。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1

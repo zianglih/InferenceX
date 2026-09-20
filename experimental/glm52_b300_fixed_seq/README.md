@@ -6,12 +6,17 @@ This fork-only experiment carries the archived GLM-5 B300 workload forward to
 `nvidia/GLM-5.2-NVFP4`. It is separate from the current AgentX configurations and
 does not reactivate deprecated benchmark definitions or publish dashboard results.
 
-- **W4A4 TRT-LLM:** C2 measurement completed on 2026-09-19: all 16 points and
+- **Historical W4A4 TRT-LLM reference:** C2 measurement completed on 2026-09-19: all 16 points and
   10,240/10,240 measured requests passed. See [results, charts and runtime limits](results/c2-w4a4-20260919/README.md).
-  Retains the original TP4/DP1/EP1 concurrency sweep and TP8/DP1/EP1 concurrency-4 point.
+  Retains the original TP4/DP1/EP1 concurrency sweep and TP8/DP1/EP1 concurrency-4 point;
+  these results remain unchanged and separate from the new comparison.
+- **New W4A4 TRT-LLM control:** [`config-trtllm-aligned.env`](config-trtllm-aligned.env)
+  aligns DP attention, TP=DP=EP, prefill graphs and draft settings with MegaMoE.
+  Its 16-point measurement has not started. It retains FlashInfer 0.6.18 and CuTe DSL 4.6.2.
 - **Optimized W4A16 MegaMoE:** prepared with the pinned FlashInfer PR #5019 source
-  and a native TRT-LLM BF16 MTP draft. The new 16-point measurement is pending;
-  configuration readiness is not a performance result. Source
+  and a native TRT-LLM BF16 MTP draft. Its new 16-point measurement has not started;
+  configuration readiness is not a performance result. The main Pareto comparison
+  will use this arm and the new aligned TRT-LLM control. Source
   [`config-megamoe.env`](config-megamoe.env) after the base config to enable this arm.
 - **Quality:** these scripts collect throughput and latency, not model accuracy.
   They use real MTP verification; inherited simulated acceptance settings are cleared.
@@ -20,8 +25,12 @@ does not reactivate deprecated benchmark definitions or publish dashboard result
 
 [`config.env`](config.env) is the executable experiment configuration. Source it,
 then explicitly supply local paths and a unique run ID. No script downloads weights,
-installs packages, or upgrades FlashInfer. The baseline uses the image's installed
-FlashInfer unchanged. MegaMoE additionally uses [`config-megamoe.env`](config-megamoe.env)
+installs packages, or upgrades FlashInfer. The base configuration selects
+`PARALLEL_TOPOLOGY=tp` and `PREFILL_CUDA_GRAPH_POLICY=latest-default` for the historical
+topology. Both [`config-trtllm-aligned.env`](config-trtllm-aligned.env) and
+[`config-megamoe.env`](config-megamoe.env) select `dp-ep` and `disabled`.
+The historical reference and new TRT-LLM control use the image's installed
+FlashInfer unchanged. MegaMoE additionally uses its overlay
 to pin optimized FlashInfer source and requires a separately prepared dependency
 stack. Source checkouts must match their pins; `PYTHONPATH` and runtime import
 checks select them. Keep the measured baseline's source, packages and cache archive
@@ -37,8 +46,8 @@ separate from the optimized run.
 | Quantization / KV cache | `modelopt_fp4` / `fp8_e4m3` |
 | Attention | `dsa`, with TRT-LLM prefill and decode |
 | MTP | EAGLE: 3 steps, top-k 1, 4 draft tokens |
-| Draft MoE | W4A4: native inherited settings; MegaMoE: `flashinfer_trtllm`, A2A `none`; neither explicitly overrides draft quantization |
-| Memory / prefill | `0.85`, chunked prefill and max prefill tokens both `32768` |
+| Draft MoE | Both new arms: explicit `flashinfer_trtllm`, A2A `none`; historical reference: native inherited settings; no explicit draft quantization override |
+| Memory / prefill | `0.85`; CLI chunked prefill and max prefill tokens both `32768`, with DP normalization below |
 | Cache / streaming | Radix cache disabled; stream interval `30` |
 | Workload | Random, input cap `8192` or `1024`, output cap `1024`, range ratio `0.8`, chat template |
 | Requests / warmup | `10 × concurrency` measured; `2 × concurrency` warmup |
@@ -50,27 +59,38 @@ comparing results. The shared InferenceX client uses an infinite request rate,
 limits maximum concurrency, and ignores EOS. These are throughput sweeps without
 an interactive latency SLO. Each point is one measured run, not a multi-run median.
 
-| Arm | Target runner / A2A | TP / DP / EP | Prefill CUDA graphs |
-| --- | --- | --- | --- |
-| W4A4 | `flashinfer_trtllm` / `none` | TP / 1 / 1 | Pinned SGLang default |
-| W4A16 | `flashinfer_megamoe` / `flashinfer_megamoe` | TP / TP / TP, DP attention enabled | Disabled: current MegaMoE limitation |
+| Arm | Target runner / A2A | TP / DP / EP | Prefill CUDA graphs | FlashInfer / CuTe DSL |
+| --- | --- | --- | --- | --- |
+| Historical W4A4 reference | `flashinfer_trtllm` / `none` | TP / 1 / 1 | Pinned SGLang default | 0.6.18 / 4.6.2 |
+| New aligned W4A4 control | `flashinfer_trtllm` / `none` | TP / TP / TP, DP attention enabled | Disabled | 0.6.18 / 4.6.2 |
+| New W4A16 MegaMoE | `flashinfer_megamoe` / `flashinfer_megamoe` | TP / TP / TP, DP attention enabled | Disabled | 0.7.0 at `ad0a5e5e` / 4.7.1 |
 
-The baseline server request cap equals client concurrency. MegaMoE uses
+At the pinned SGLang commit, MegaMoE [requires DP attention and DP=TP](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/arg_groups/moe_hook.py#L275-L303)
+and [forces EP=TP](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/arg_groups/overrides.py#L1630-L1672).
+TRT-LLM's NVFP4 path [passes local expert offsets and counts](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/layers/quantization/modelopt_quant.py#L2996-L3031),
+so the new control uses the same expert partitioning with standard communication.
+Source compatibility still requires fresh runtime validation.
+
+The historical server request cap equals client concurrency. Both new arms use
 `max(client concurrency, DP)` because the pinned SGLang divides that cap by
-attention DP and requires at least one request per rank. Thus MegaMoE TP8/C4 has
+attention DP and requires at least one request per rank. Thus both new TP8/C4 cases have
 a server cap of **8**, while client concurrency remains **4** and the measured
 request count remains **40**. The TP4 points are unchanged. Metadata records
 `server_max_running_requests` separately from client `concurrency`.
-At MegaMoE TP8/C4, the configured decode graph maximum remains **4**, but the
+At TP8/C4 in either new arm, the configured decode graph maximum remains **4**, but the
 per-DP request capacity limits capture buckets to `[1]`. The shared chunked-prefill
 CLI value `32768` resolves to **8192 per DP rank at TP4** and **4096 at TP8** in
-the MegaMoE arm; its prefill graphs remain disabled independently.
+both new arms; their prefill graphs remain disabled independently. These are
+[source-derived pool limits](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/mem_cache/kv_cache_configurator.py#L2267-L2320)
+and [capture-bucket filtering](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/model_executor/runner/base_cuda_graph_runner.py#L66-L105),
+to be checked against each run's resolved settings and logs.
 
 Both use BF16 activations at the model interface, BF16 MegaMoE combine storage,
 per-token FP4 activation quantization disabled, and in-kernel FC2 reduction disabled.
 Only the MegaMoE arm enables `SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=1`.
-The future comparison changes precision, MoE backend, parallel topology and prefill
-graph policy together; it does not isolate the effect of a MegaMoE kernel.
+The main comparison aligns parallel topology, prefill graph policy and draft
+backend. Target W4A4 versus W4A16 precision, MoE/communication backend, FlashInfer
+source and CuTe DSL version still differ; it does not isolate a kernel-only speedup.
 
 The archived script's explicit `--quantization fp8` is incompatible with this
 serialized NVFP4 checkpoint and is corrected to `modelopt_fp4`. Removed CLI names
@@ -78,18 +98,18 @@ are migrated to `dsa`, `--dsa-*-backend`, and `--cuda-graph-max-bs-decode`; the 
 configured graph bound still equals concurrency; the server request-cap exception is described
 above. The removed
 `SGLANG_ENABLE_SPEC_V2` setting is omitted because V2 is always active at this HEAD.
-The baseline preserves native draft settings. The optimized MegaMoE arm explicitly
+The historical reference preserves native draft settings. Both new arms explicitly
 sets `--speculative-moe-runner-backend flashinfer_trtllm` and
 `--speculative-moe-a2a-backend none`, and omits
 `--speculative-draft-model-quantization`. This replaces the earlier Triton/unquant
-draft setup. As in the baseline, the serialized draft quantization setting can
+draft setup in the MegaMoE arm. As in the historical reference, the serialized draft quantization setting can
 inherit `modelopt_fp4`, while the GLM NextN decoder constructs its native BF16 MoE
-with `quant_config=None`; the inherited label does not make its weights FP4.
-The draft MoE backend now matches the baseline, but its execution topology does
-not: the MegaMoE arm uses DP=TP=EP with DP attention, versus baseline DP1/EP1.
-The two arms therefore do not have identical draft execution paths.
+with [`quant_config=None`](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/models/deepseek_nextn.py#L64-L79);
+the inherited label does not make its weights FP4. The new arms align draft
+backend and topology, but their FlashInfer versions differ, so they are not
+identical software execution paths.
 
-## Run the baseline
+## Run the historical topology
 
 Use the configured image on one B300 node. Prepare a complete local snapshot of the
 pinned model revision, a clean SGLang checkout at the configured commit, and the
@@ -102,7 +122,7 @@ source experimental/glm52_b300_fixed_seq/config.env
 export SGLANG_SOURCE_ROOT=/data/home/ziangli/inferencex-glm52-b300/sources/sglang
 export MODEL_PATH=/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4
 export OUTPUT_ROOT=/data/home/ziangli/inferencex-glm52-b300/results
-export RUN_ID=c2-w4a4-first
+export RUN_ID=c2-w4a4-historical-repeat
 bash experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp.sh
 ```
 
@@ -113,6 +133,23 @@ with `export SCENARIOS='8k1k:8192:1024'` or `export SCENARIOS='1k1k:1024:1024'`.
 measurements; existing case directories are never overwritten. Each case launches
 its own server, records results, stops its owned process group, and fails the sweep
 on a server/client/cleanup error or any missing measured request.
+
+## Run the aligned TRT-LLM control
+
+Use the original image environment with FlashInfer 0.6.18 and CuTe DSL 4.6.2,
+not the environment upgraded for MegaMoE. Set the same local model/source/output
+paths as above, then select the control overlay and a separate run ID:
+
+```bash
+source experimental/glm52_b300_fixed_seq/config.env
+source experimental/glm52_b300_fixed_seq/config-trtllm-aligned.env
+export RUN_ID=c2-w4a4-dp-aligned-first
+bash experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp.sh
+```
+
+The overlay changes topology and prefill policy, not installed packages. Record
+the fresh 16-point result independently; the historical DP1/EP1 measurements do
+not substitute for this control.
 
 ## Prepare the optimized MegaMoE arm
 
@@ -149,5 +186,29 @@ python3 experimental/glm52_b300_fixed_seq/summarize.py \
 ```
 
 Plot output requires `matplotlib`; `--no-plots` produces JSON and Markdown without
-it. Preserve failed artifacts and do not present pending MegaMoE points as measured
+it. Preserve failed artifacts and do not present either pending new arm as measured
 data. Normalize throughput using the recorded GPU count when comparing TP4 and TP8.
+
+## Main Pareto comparison
+
+Use [`plot_pareto.py`](plot_pareto.py) with only the new aligned TRT-LLM and MegaMoE
+run roots, after measurement. Keep 8k1k and 1k1k in separate plots and plot the
+historical reference separately:
+
+```bash
+python3 experimental/glm52_b300_fixed_seq/plot_pareto.py \
+    --results "$ALIGNED_TRT_ROOT" "$MEGAMOE_RESULT_ROOT" \
+    --output "$OUTPUT_ROOT/pareto-aligned" --dp-attention-aligned
+```
+
+The main x axis is **per-request interactivity = `1000 / median_tpot_ms`**
+(tok/s/user), and y is **`output_throughput / gpu_count`** (output tok/s/GPU).
+Both increase toward the preferred frontier. Interactivity excludes the first
+token; it is neither mean request rate nor proof of a latency SLO. DP/EP share the
+same TP GPUs and do not multiply the denominator. The E2EL view is supplementary.
+These formulas follow the [pinned fixed-sequence producer](https://github.com/SemiAnalysisAI/InferenceX/blob/8979f7c4cdd2946a02b459d5e62018e41bc02405/infx/results/fixed_sequence.py#L187-L207),
+with the [pinned interactivity metric](https://github.com/SemiAnalysisAI/InferenceX-app/blob/b4b72f4f39ad6148f3477dcf67eb6a77257e7bb9/packages/app/src/components/inference/metric-registry.ts#L701-L708)
+and [selected output-only y metric](https://github.com/SemiAnalysisAI/InferenceX-app/blob/b4b72f4f39ad6148f3477dcf67eb6a77257e7bb9/packages/app/src/components/inference/metric-registry.ts#L76-L82).
+The plotting helper validates alignment, rejects mixed historical/aligned inputs,
+keeps successful observed points visible and labels client concurrency plus TP/DP/EP.
+Neither new arm has measured points to plot yet.

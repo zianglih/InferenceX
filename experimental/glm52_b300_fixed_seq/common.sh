@@ -10,7 +10,20 @@ run_glm52_sweep() {
         CHUNKED_PREFILL_SIZE MAX_PREFILL_TOKENS SPECULATIVE_NUM_STEPS \
         SPECULATIVE_EAGLE_TOPK SPECULATIVE_NUM_DRAFT_TOKENS CLEANUP_TERM_SECONDS \
         CLEANUP_KILL_SECONDS EVAL_ONLY PROFILE SGLANG_SOURCE_ROOT MODEL_PATH \
-        MODEL_REVISION OUTPUT_ROOT RUN_ID
+        MODEL_REVISION OUTPUT_ROOT RUN_ID PARALLEL_TOPOLOGY PREFILL_CUDA_GRAPH_POLICY
+
+    case "$PARALLEL_TOPOLOGY" in
+        tp|dp-ep) ;;
+        *) echo "Unsupported PARALLEL_TOPOLOGY: $PARALLEL_TOPOLOGY" >&2; return 1 ;;
+    esac
+    case "$PREFILL_CUDA_GRAPH_POLICY" in
+        latest-default|disabled) ;;
+        *) echo "Unsupported PREFILL_CUDA_GRAPH_POLICY: $PREFILL_CUDA_GRAPH_POLICY" >&2; return 1 ;;
+    esac
+    if [[ "$backend" == w4a16_megamoe && ( "$PARALLEL_TOPOLOGY" != dp-ep || "$PREFILL_CUDA_GRAPH_POLICY" != disabled ) ]]; then
+        echo 'MegaMoE requires PARALLEL_TOPOLOGY=dp-ep and PREFILL_CUDA_GRAPH_POLICY=disabled.' >&2
+        return 1
+    fi
 
     if [[ "$EVAL_ONLY" != false || "$PROFILE" != 0 ]]; then
         echo 'This experiment requires EVAL_ONLY=false and PROFILE=0.' >&2
@@ -91,6 +104,14 @@ run_glm52_case() {
     fi
     mkdir -p "$CASE_DIR"
     export DP=1 EP=1 SERVER_MAX_RUNNING_REQUESTS="$CONC"
+    if [[ "$PARALLEL_TOPOLOGY" == dp-ep ]]; then
+        export DP="$TP" EP="$TP"
+        # DP attention divides this server-wide limit among DP workers.
+        # Preserve client concurrency while giving every worker one slot.
+        if [[ "$SERVER_MAX_RUNNING_REQUESTS" -lt "$DP" ]]; then
+            export SERVER_MAX_RUNNING_REQUESTS="$DP"
+        fi
+    fi
     export SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=0
     export SGLANG_FLASHINFER_NVFP4_PER_TOKEN_ACTIVATION=0
     export SGLANG_FLASHINFER_MEGAMOE_COMBINE_DTYPE=bf16
@@ -123,27 +144,26 @@ run_glm52_case() {
     )
     case "$BACKEND" in
         w4a4_trtllm)
-            server_args+=(--data-parallel-size "$DP" --expert-parallel-size "$EP"
-                --moe-runner-backend flashinfer_trtllm --moe-a2a-backend none)
+            server_args+=(--moe-runner-backend flashinfer_trtllm --moe-a2a-backend none)
             ;;
         w4a16_megamoe)
-            export DP="$TP" EP="$TP"
-            # DP attention divides this server-wide limit among DP workers.
-            # Preserve client concurrency while giving every worker one slot.
-            if [[ "$SERVER_MAX_RUNNING_REQUESTS" -lt "$DP" ]]; then
-                export SERVER_MAX_RUNNING_REQUESTS="$DP"
-            fi
             export SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=1
             mkdir -p "$MEGAMOE_CACHE_ROOT/tp$TP"
             export FLASHINFER_MOE_EP_KNOB_CACHE="$MEGAMOE_CACHE_ROOT/tp$TP/knobs.json"
-            server_args+=(--data-parallel-size "$DP" --expert-parallel-size "$EP"
-                --enable-dp-attention --moe-runner-backend flashinfer_megamoe
-                --moe-a2a-backend flashinfer_megamoe --cuda-graph-backend-prefill disabled
-                --speculative-moe-runner-backend flashinfer_trtllm --speculative-moe-a2a-backend none)
+            server_args+=(--moe-runner-backend flashinfer_megamoe
+                --moe-a2a-backend flashinfer_megamoe)
             ;;
         *) echo "Unsupported backend: $BACKEND" >&2; return 1 ;;
     esac
-    server_args+=(--max-running-requests "$SERVER_MAX_RUNNING_REQUESTS")
+    server_args+=(--data-parallel-size "$DP" --expert-parallel-size "$EP"
+        --max-running-requests "$SERVER_MAX_RUNNING_REQUESTS")
+    if [[ "$PARALLEL_TOPOLOGY" == dp-ep ]]; then
+        server_args+=(--enable-dp-attention --speculative-moe-runner-backend flashinfer_trtllm
+            --speculative-moe-a2a-backend none)
+    fi
+    if [[ "$PREFILL_CUDA_GRAPH_POLICY" == disabled ]]; then
+        server_args+=(--cuda-graph-backend-prefill disabled)
+    fi
     benchmark_args=(
         --model "$MODEL" --tokenizer "$MODEL_PATH" --port "$PORT" --backend vllm
         --input-len "$ISL" --output-len "$OSL" --random-range-ratio "$RANDOM_RANGE_RATIO"

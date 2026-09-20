@@ -143,9 +143,8 @@ def start(case_dir):
                 or key
                 in ("CUDA_VISIBLE_DEVICES", "PYTHONPATH", "PYTHONNOUSERSITE", "PORT")
             },
-            "prefill_cuda_graph_policy": "latest-default"
-            if os.environ["BACKEND"] == "w4a4_trtllm"
-            else "disabled",
+            "parallel_topology": os.environ["PARALLEL_TOPOLOGY"],
+            "prefill_cuda_graph_policy": os.environ["PREFILL_CUDA_GRAPH_POLICY"],
             "quality_evaluation": "not_run",
         }
     )
