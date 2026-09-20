@@ -1,0 +1,45 @@
+{
+  "completed_at": "2026-09-20T13:32:31.828178+00:00",
+  "source_heads": {
+    "flashinfer": "f9dd3c10541e087b716772245a9d033499745048",
+    "sglang": "50eeb742961908afa68f4f523a1a19c5de6eb0b3",
+    "inferencex": "3433a0c1169a6b162edf91c7ea193196c08a6386"
+  },
+  "imports": {
+    "flashinfer": "/data/home/ziangli/inferencex-glm52-b300/sources/flashinfer-f9dd3c10/flashinfer/__init__.py",
+    "sglang": "/data/home/ziangli/inferencex-glm52-b300/sources/sglang/python/sglang/__init__.py",
+    "cutlass": "/opt/sglang/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/__init__.py"
+  },
+  "versions": {
+    "sglang": "0.0.0.dev1+g20518d851",
+    "sglang-kernel": "0.4.7",
+    "flashinfer-python": "0.7.0",
+    "flashinfer-cubin": null,
+    "flashinfer-jit-cache": null,
+    "torch": "2.13.0+cu130",
+    "triton": "3.7.1",
+    "transformers": "5.12.1",
+    "setuptools": "84.0.0",
+    "packaging": "26.3",
+    "apache-tvm-ffi": "0.1.11",
+    "ninja": "1.13.2",
+    "nvidia-cutlass-dsl": "4.7.1",
+    "nvidia-cutlass-dsl-libs-base": "4.7.1",
+    "nvidia-cutlass-dsl-libs-core": "4.7.1",
+    "nvidia-cutlass-dsl-libs-cu12": "4.7.1",
+    "nvidia-cutlass-dsl-libs-cu13": "4.7.1",
+    "nvshmem4py-cu13": "0.3.1",
+    "nvidia-nvshmem-cu13": "3.4.5",
+    "cuda-python": "13.4.1",
+    "cuda-bindings": "13.4.2",
+    "cuda-core": "1.2.0",
+    "nccl-extensions": "0.1.0",
+    "nccl4py": "0.5.0",
+    "cuda-tile": "1.6.0rc5",
+    "nvidia-cudnn-frontend": "1.29.0",
+    "nvidia-nccl-cu13": "2.30.7"
+  },
+  "base_runtime_preserved": true,
+  "package_delta_allowed": true,
+  "flashinfer_cubin_and_jit_absent": true
+}

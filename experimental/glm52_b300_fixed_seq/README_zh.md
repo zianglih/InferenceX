@@ -19,7 +19,7 @@
 - **W4A16 CuTe DSL split MoE：**通过 [`config-cutedsl.env`](config-cutedsl.env) 和
   [`w4a16_cutedsl_mtp.sh`](w4a16_cutedsl_mtp.sh) 准备独立第三组，固定 FlashInfer
   PR #5319，设置 `SGLANG_FLASHINFER_MOE_FUSED_FINALIZE=0` 与
-  `SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=1`；实际测量待完成。
+  `SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=1`；全部 16 个点已完成。
 - **质量：**脚本测吞吐与延迟，不评估模型精度。MTP 使用真实验证，并清除继承的
   simulated acceptance 设置。
 
@@ -217,7 +217,7 @@ python3 experimental/glm52_b300_fixed_seq/summarize.py \
 
 ## 主 Pareto 对比图
 
-各组测量完成后，用 [`plot_pareto.py`](plot_pareto.py) 读取对齐版 TRT-LLM、MegaMoE
+用 [`plot_pareto.py`](plot_pareto.py) 读取对齐版 TRT-LLM、MegaMoE
 和 CuTe DSL 三个 run root。8k1k、1k1k 分别作图，历史参考另行作图：
 
 ```bash
@@ -234,4 +234,4 @@ DP/EP 使用同一组 TP GPU，不再乘入分母。E2EL 图作为补充视图�
 并对应[固定版本的交互性指标](https://github.com/SemiAnalysisAI/InferenceX-app/blob/b4b72f4f39ad6148f3477dcf67eb6a77257e7bb9/packages/app/src/components/inference/metric-registry.ts#L701-L708)
 和[仅输出吞吐的 Y 指标](https://github.com/SemiAnalysisAI/InferenceX-app/blob/b4b72f4f39ad6148f3477dcf67eb6a77257e7bb9/packages/app/src/components/inference/metric-registry.ts#L76-L82)。
 绘图脚本检查对齐配置，拒绝混用历史与对齐版结果，保留成功实测点，并标注 client
-并发和 TP/DP/EP。完整三组对比仍待完成；旧 0.85 的局部观测单独保留，不作为该图输入。
+并发和 TP/DP/EP。三组 **48 个点、30,720 个成功测量请求**全部完成，见[完整报告与图表](results/c2-three-arm-dp-mem80-20260920/comparison_zh.md)及[原始指标全表](results/c2-three-arm-dp-mem80-20260920/raw_metrics_zh.md)。MegaMoE 的输出吞吐/GPU 在 1k1k 全部八个点高于 CuTe split（+1.99% 至 +16.91%）；8k1k 七个点较低，仅 TP8/C4 较高（+5.62%）。这是不同 FlashInfer head 的单次端到端观测，不能视作独立 kernel 加速。旧 0.85 局部观测仍单独保留，不作为该图输入。

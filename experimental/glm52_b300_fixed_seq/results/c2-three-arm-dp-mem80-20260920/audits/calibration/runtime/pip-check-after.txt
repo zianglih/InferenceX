@@ -1,0 +1,12 @@
+nixl 1.4.1 requires nixl-cu12, which is not installed.
+retinaface-py 0.0.2 requires opencv-python, which is not installed.
+cosmos-guardrail 0.3.1 requires opencv-python, which is not installed.
+sglang 0.0.0.dev1+g20518d851 has requirement flashinfer_python[cu13]==0.6.18, but you have flashinfer-python 0.7.0.
+sglang 0.0.0.dev1+g20518d851 has requirement nvidia-cutlass-dsl[cu13]==4.6.2, but you have nvidia-cutlass-dsl 4.7.1.
+inflect 7.5.0 has requirement typeguard>=4.0.1, but you have typeguard 2.13.3.
+cosmos-guardrail 0.3.1 has requirement imageio>=2.37.0, but you have imageio 2.36.0.
+quack-kernels 0.6.4 has requirement nvidia-cutlass-dsl==4.6.2, but you have nvidia-cutlass-dsl 4.7.1.
+torch 2.13.0+cu130 has requirement nvidia-nccl-cu13==2.29.7; platform_system == "Linux", but you have nvidia-nccl-cu13 2.30.7.
+moviepy 2.2.1 has requirement pillow<12.0,>=9.2.0, but you have pillow 12.3.0.
+grpcio-health-checking 1.81.1 has requirement protobuf<7.0.0,>=6.33.5, but you have protobuf 7.36.2.
+grpcio-reflection 1.81.1 has requirement protobuf<7.0.0,>=6.33.5, but you have protobuf 7.36.2.

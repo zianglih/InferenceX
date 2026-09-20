@@ -1,0 +1,55 @@
++ run_server_client env PYTHONPATH=/data/home/ziangli/inferencex-glm52-b300/sources/inferencex-mem80-20260920:/data/home/ziangli/inferencex-glm52-b300/sources/sglang/python:/data/home/ziangli/inferencex-glm52-b300/sources/flashinfer-ad0a5e5e:/data/home/ziangli/inferencex-glm52-b300/sources/inferencex-mem80-20260920 python3 -m infx.bench_serving.benchmark_serving --model nvidia/GLM-5.2-NVFP4 --backend vllm --base-url http://0.0.0.0:30000 --dataset-name random --random-input-len 8192 --random-output-len 1024 --random-range-ratio 0.8 --num-prompts 40 --max-concurrency 4 --request-rate inf --ignore-eos --save-result --num-warmups 8 --percentile-metrics ttft,tpot,itl,e2el --result-dir /data/home/ziangli/inferencex-glm52-b300/results/c2-w4a16-megamoe-mem80-20260920/8k1k/w4a16-megamoe/tp8_conc4 --result-filename result.json --use-chat-template --tokenizer /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4
++ [[ -n /tmp/inferencex-server-state.u0xfaD ]]
++ PYTHONPATH=/data/home/ziangli/inferencex-glm52-b300/sources/inferencex-mem80-20260920:/data/home/ziangli/inferencex-glm52-b300/sources/sglang/python:/data/home/ziangli/inferencex-glm52-b300/sources/flashinfer-ad0a5e5e:/data/home/ziangli/inferencex-glm52-b300/sources/inferencex-mem80-20260920
++ python3 -m infx.bench_serving.server_watch run --state /tmp/inferencex-server-state.u0xfaD -- env PYTHONPATH=/data/home/ziangli/inferencex-glm52-b300/sources/inferencex-mem80-20260920:/data/home/ziangli/inferencex-glm52-b300/sources/sglang/python:/data/home/ziangli/inferencex-glm52-b300/sources/flashinfer-ad0a5e5e:/data/home/ziangli/inferencex-glm52-b300/sources/inferencex-mem80-20260920 python3 -m infx.bench_serving.benchmark_serving --model nvidia/GLM-5.2-NVFP4 --backend vllm --base-url http://0.0.0.0:30000 --dataset-name random --random-input-len 8192 --random-output-len 1024 --random-range-ratio 0.8 --num-prompts 40 --max-concurrency 4 --request-rate inf --ignore-eos --save-result --num-warmups 8 --percentile-metrics ttft,tpot,itl,e2el --result-dir /data/home/ziangli/inferencex-glm52-b300/results/c2-w4a16-megamoe-mem80-20260920/8k1k/w4a16-megamoe/tp8_conc4 --result-filename result.json --use-chat-template --tokenizer /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4
+Namespace(backend='vllm', base_url='http://0.0.0.0:30000', host='127.0.0.1', port=8000, endpoint='/v1/completions', dataset_name='random', dataset_path=None, max_concurrency=4, model='nvidia/GLM-5.2-NVFP4', tokenizer='/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4', best_of=1, use_beam_search=False, num_prompts=40, logprobs=None, request_rate=inf, burstiness=1.0, seed=0, trust_remote_code=False, disable_tqdm=False, profile=False, save_result=True, save_detailed=False, metadata=None, result_dir='/data/home/ziangli/inferencex-glm52-b300/results/c2-w4a16-megamoe-mem80-20260920/8k1k/w4a16-megamoe/tp8_conc4', result_filename='result.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='90,99,99.9', goodput=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, random_input_len=8192, random_output_len=1024, random_range_ratio=0.8, random_prefix_len=0, use_chat_template=True, random_num_workers=0, dsv4=False, hf_subset=None, hf_split=None, hf_output_len=None, tokenizer_mode='auto', served_model_name=None, lora_modules=None, num_warmups=8)
+Generating 40 prompts using 8 worker processes...
+Prompt generation completed in 3.6s
+-------------------  Input/Output Length Statistics  -------------------
+ input_lens : min=6628  max=8180  mean=7354.25  avg_token_mismatch=12.00 
+ output_lens: min=820   max=1022  mean=920.12  
+------------------------------------------------------------------------ 
+
+Starting initial single prompt test run...
+Warming up with 8 requests...
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:06<00:46,  6.68s/it] 25%|██▌       | 2/8 [00:07<00:20,  3.40s/it] 38%|███▊      | 3/8 [00:08<00:11,  2.27s/it] 62%|██████▎   | 5/8 [00:14<00:08,  2.76s/it] 75%|███████▌  | 6/8 [00:15<00:04,  2.09s/it] 88%|████████▊ | 7/8 [00:15<00:01,  1.61s/it]100%|██████████| 8/8 [00:16<00:00,  1.25s/it]100%|██████████| 8/8 [00:16<00:00,  2.03s/it]
+Warmup completed.
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+  0%|          | 0/40 [00:00<?, ?it/s]Starting main benchmark run...
+  2%|▎         | 1/40 [00:06<04:10,  6.42s/it]  5%|▌         | 2/40 [00:07<02:09,  3.41s/it]  8%|▊         | 3/40 [00:08<01:22,  2.23s/it] 10%|█         | 4/40 [00:09<01:04,  1.79s/it] 12%|█▎        | 5/40 [00:14<01:42,  2.93s/it] 15%|█▌        | 6/40 [00:16<01:22,  2.42s/it] 18%|█▊        | 7/40 [00:17<01:04,  1.97s/it] 20%|██        | 8/40 [00:18<00:56,  1.77s/it] 22%|██▎       | 9/40 [00:23<01:23,  2.71s/it] 25%|██▌       | 10/40 [00:24<01:10,  2.37s/it] 28%|██▊       | 11/40 [00:25<00:54,  1.86s/it] 30%|███       | 12/40 [00:26<00:41,  1.50s/it] 32%|███▎      | 13/40 [00:30<01:05,  2.41s/it] 35%|███▌      | 14/40 [00:32<00:58,  2.26s/it] 38%|███▊      | 15/40 [00:33<00:44,  1.80s/it] 40%|████      | 16/40 [00:35<00:43,  1.83s/it] 42%|████▎     | 17/40 [00:38<00:51,  2.26s/it] 45%|████▌     | 18/40 [00:40<00:47,  2.14s/it] 48%|████▊     | 19/40 [00:42<00:44,  2.14s/it] 50%|█████     | 20/40 [00:43<00:34,  1.71s/it] 52%|█████▎    | 21/40 [00:46<00:39,  2.09s/it] 55%|█████▌    | 22/40 [00:48<00:37,  2.07s/it] 57%|█████▊    | 23/40 [00:50<00:35,  2.10s/it] 60%|██████    | 24/40 [00:51<00:27,  1.73s/it] 62%|██████▎   | 25/40 [00:54<00:31,  2.11s/it] 65%|██████▌   | 26/40 [00:57<00:32,  2.34s/it] 68%|██████▊   | 27/40 [00:57<00:23,  1.83s/it] 70%|███████   | 28/40 [00:59<00:21,  1.80s/it] 72%|███████▎  | 29/40 [01:01<00:21,  1.91s/it] 75%|███████▌  | 30/40 [01:05<00:25,  2.56s/it] 78%|███████▊  | 31/40 [01:06<00:17,  2.00s/it] 80%|████████  | 32/40 [01:07<00:13,  1.68s/it] 82%|████████▎ | 33/40 [01:08<00:11,  1.59s/it] 85%|████████▌ | 34/40 [01:13<00:15,  2.64s/it] 88%|████████▊ | 35/40 [01:14<00:10,  2.19s/it] 90%|█████████ | 36/40 [01:15<00:06,  1.72s/it] 92%|█████████▎| 37/40 [01:16<00:04,  1.55s/it] 95%|█████████▌| 38/40 [01:20<00:04,  2.26s/it] 98%|█████████▊| 39/40 [01:21<00:01,  1.74s/it]100%|██████████| 40/40 [01:21<00:00,  1.41s/it]100%|██████████| 40/40 [01:21<00:00,  2.05s/it]
+============ Serving Benchmark Result ============
+Successful requests:                     40        
+Benchmark duration (s):                  81.82     
+Total input tokens:                      294170    
+Total generated tokens:                  36805     
+Request throughput (req/s):              0.49      
+Output token throughput (tok/s):         449.85    
+Total Token throughput (tok/s):          4045.34   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          629.13    
+Median TTFT (ms):                        580.81    
+P90 TTFT (ms):                           627.89    
+P99 TTFT (ms):                           1207.78   
+P99.9 TTFT (ms):                         1210.09   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.04      
+Median TPOT (ms):                        8.20      
+P90 TPOT (ms):                           9.10      
+P99 TPOT (ms):                           9.80      
+P99.9 TPOT (ms):                         9.88      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           646.01    
+Median ITL (ms):                         422.57    
+P90 ITL (ms):                            1502.95   
+P99 ITL (ms):                            2604.18   
+P99.9 ITL (ms):                          3136.73   
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          8009.84   
+Median E2EL (ms):                        7910.53   
+P90 E2EL (ms):                           9183.84   
+P99 E2EL (ms):                           9813.25   
+P99.9 E2EL (ms):                         9878.11   
+==================================================
++ set +x

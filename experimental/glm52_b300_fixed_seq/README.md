@@ -19,7 +19,7 @@ does not reactivate deprecated benchmark definitions or publish dashboard result
 - **W4A16 CuTe DSL split MoE:** [`config-cutedsl.env`](config-cutedsl.env) and
   [`w4a16_cutedsl_mtp.sh`](w4a16_cutedsl_mtp.sh) prepare a separate third arm at
   FlashInfer PR #5319. It sets `SGLANG_FLASHINFER_MOE_FUSED_FINALIZE=0` and
-  `SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=1`; measurement remains pending.
+  `SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=1`; all 16 points completed.
 - **Quality:** these scripts collect throughput and latency, not model accuracy.
   They use real MTP verification; inherited simulated acceptance settings are cleared.
 
@@ -242,7 +242,7 @@ data. Normalize throughput using the recorded GPU count when comparing TP4 and T
 ## Main Pareto comparison
 
 Use [`plot_pareto.py`](plot_pareto.py) with the aligned TRT-LLM, MegaMoE and CuTe DSL
-run roots after their measurements complete. Keep 8k1k and 1k1k in separate plots and plot the
+completed run roots. Keep 8k1k and 1k1k in separate plots and plot the
 historical reference separately:
 
 ```bash
@@ -261,4 +261,4 @@ with the [pinned interactivity metric](https://github.com/SemiAnalysisAI/Inferen
 and [selected output-only y metric](https://github.com/SemiAnalysisAI/InferenceX-app/blob/b4b72f4f39ad6148f3477dcf67eb6a77257e7bb9/packages/app/src/components/inference/metric-registry.ts#L76-L82).
 The plotting helper validates alignment, rejects mixed historical/aligned inputs,
 keeps successful observed points visible and labels client concurrency plus TP/DP/EP.
-The complete memory-fraction-0.80 comparison is pending; partial 0.85 observations are retained separately and are not inputs to its plots.
+The complete memory-fraction-0.80 comparison contains **48 points and 30,720 successful measured requests**. See the [full report and figures](results/c2-three-arm-dp-mem80-20260920/comparison.md) and [all raw metric tables](results/c2-three-arm-dp-mem80-20260920/raw_metrics.md). MegaMoE output throughput/GPU exceeds CuTe split at all eight 1k1k coordinates (+1.99% to +16.91%); at 8k1k it is lower at seven coordinates and higher at TP8/C4 (+5.62%). These are single-run end-to-end observations with different FlashInfer heads, not isolated kernel speedups. Partial 0.85 observations remain separate and are not plot inputs.
