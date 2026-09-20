@@ -4,6 +4,7 @@ REPO_ROOT=$(cd "$EXPERIMENT_DIR/../.." && pwd)
 source "$REPO_ROOT/benchmarks/benchmark_lib.sh"
 
 run_glm52_sweep() {
+    local backend="$1" scenario_case sweep_case
     check_env_vars IMAGE SGLANG_COMMIT MODEL HARDWARE SWEEP_CASES GPU_IDS SCENARIOS \
         RANDOM_RANGE_RATIO PROMPTS_PER_CONCURRENCY PORT MEM_FRACTION_STATIC \
         CHUNKED_PREFILL_SIZE MAX_PREFILL_TOKENS SPECULATIVE_NUM_STEPS \
@@ -37,6 +38,11 @@ run_glm52_sweep() {
     fi
     git -C "$SGLANG_SOURCE_ROOT" diff --exit-code HEAD -- python
     export PYTHONPATH="$SGLANG_SOURCE_ROOT/python:$REPO_ROOT"
+    if [[ "$backend" == w4a16_megamoe ]]; then
+        check_env_vars FLASHINFER_SOURCE_ROOT FLASHINFER_COMMIT FLASHINFER_CUDA_ARCH_LIST \
+            MEGAMOE_CACHE_ROOT
+        export PYTHONPATH="$SGLANG_SOURCE_ROOT/python:$FLASHINFER_SOURCE_ROOT:$REPO_ROOT"
+    fi
     export PYTHONNOUSERSITE=1
     export SGLANG_ENABLE_JIT_DEEPGEMM=1
     # Spec V2 is always active at the pinned HEAD; its old environment flag is removed.
@@ -45,7 +51,6 @@ run_glm52_sweep() {
     python3 "$EXPERIMENT_DIR/artifacts.py" verify-source
     command -v setsid >/dev/null
 
-    local backend="$1" scenario_case sweep_case
     for scenario_case in $SCENARIOS; do
         if [[ ! "$scenario_case" =~ ^[a-zA-Z0-9][a-zA-Z0-9._-]*:[1-9][0-9]*:[1-9][0-9]*$ ]]; then
             echo "Invalid name:input:output scenario: $scenario_case" >&2
@@ -71,7 +76,7 @@ run_glm52_sweep() {
 
 run_glm52_case() {
     check_env_vars SCENARIO ISL OSL TP CONC BACKEND
-    local -a gpu_ids server_args benchmark_args
+    local -a gpu_ids server_args benchmark_args runtime_env
     IFS=, read -r -a gpu_ids <<< "$GPU_IDS"
     if [[ "$TP" -gt "${#gpu_ids[@]}" ]]; then
         echo "TP=$TP exceeds configured GPU_IDS=$GPU_IDS." >&2
@@ -85,7 +90,7 @@ run_glm52_case() {
         return 1
     fi
     mkdir -p "$CASE_DIR"
-    export DP=1 EP=1
+    export DP=1 EP=1 SERVER_MAX_RUNNING_REQUESTS="$CONC"
     export SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=0
     export SGLANG_FLASHINFER_NVFP4_PER_TOKEN_ACTIVATION=0
     export SGLANG_FLASHINFER_MEGAMOE_COMBINE_DTYPE=bf16
@@ -106,7 +111,7 @@ run_glm52_case() {
         --tool-call-parser glm47 --reasoning-parser glm45
         --kv-cache-dtype fp8_e4m3 --attention-backend dsa
         --dsa-decode-backend trtllm --dsa-prefill-backend trtllm
-        --cuda-graph-max-bs-decode "$CONC" --max-running-requests "$CONC"
+        --cuda-graph-max-bs-decode "$CONC"
         --mem-fraction-static "$MEM_FRACTION_STATIC"
         --chunked-prefill-size "$CHUNKED_PREFILL_SIZE" --max-prefill-tokens "$MAX_PREFILL_TOKENS"
         --flashinfer-allreduce-fusion-backend auto --disable-radix-cache --stream-interval 30
@@ -123,15 +128,22 @@ run_glm52_case() {
             ;;
         w4a16_megamoe)
             export DP="$TP" EP="$TP"
+            # DP attention divides this server-wide limit among DP workers.
+            # Preserve client concurrency while giving every worker one slot.
+            if [[ "$SERVER_MAX_RUNNING_REQUESTS" -lt "$DP" ]]; then
+                export SERVER_MAX_RUNNING_REQUESTS="$DP"
+            fi
             export SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=1
+            mkdir -p "$MEGAMOE_CACHE_ROOT/tp$TP"
+            export FLASHINFER_MOE_EP_KNOB_CACHE="$MEGAMOE_CACHE_ROOT/tp$TP/knobs.json"
             server_args+=(--data-parallel-size "$DP" --expert-parallel-size "$EP"
                 --enable-dp-attention --moe-runner-backend flashinfer_megamoe
                 --moe-a2a-backend flashinfer_megamoe --cuda-graph-backend-prefill disabled
-                --speculative-moe-runner-backend triton --speculative-moe-a2a-backend none
-                --speculative-draft-model-quantization unquant)
+                --speculative-moe-runner-backend flashinfer_trtllm --speculative-moe-a2a-backend none)
             ;;
         *) echo "Unsupported backend: $BACKEND" >&2; return 1 ;;
     esac
+    server_args+=(--max-running-requests "$SERVER_MAX_RUNNING_REQUESTS")
     benchmark_args=(
         --model "$MODEL" --tokenizer "$MODEL_PATH" --port "$PORT" --backend vllm
         --input-len "$ISL" --output-len "$OSL" --random-range-ratio "$RANDOM_RANGE_RATIO"
@@ -142,14 +154,21 @@ run_glm52_case() {
     python3 "$EXPERIMENT_DIR/artifacts.py" start
     nvidia-smi > "$CASE_DIR/nvidia-smi.txt"
     python3 -m pip list --format=json > "$CASE_DIR/packages.json"
-    write_command "$CASE_DIR/server_command.sh" env \
+    runtime_env=(
         PYTHONPATH="$PYTHONPATH" PYTHONNOUSERSITE=1 CUDA_VISIBLE_DEVICES="$CUDA_VISIBLE_DEVICES" \
         SGLANG_ENABLE_JIT_DEEPGEMM="$SGLANG_ENABLE_JIT_DEEPGEMM" \
         SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16="$SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16" \
         SGLANG_FLASHINFER_NVFP4_PER_TOKEN_ACTIVATION="$SGLANG_FLASHINFER_NVFP4_PER_TOKEN_ACTIVATION" \
         SGLANG_FLASHINFER_MEGAMOE_COMBINE_DTYPE="$SGLANG_FLASHINFER_MEGAMOE_COMBINE_DTYPE" \
-        SGLANG_FLASHINFER_MEGAMOE_IN_KERNEL_FC2_REDUCE="$SGLANG_FLASHINFER_MEGAMOE_IN_KERNEL_FC2_REDUCE" \
-        "${server_args[@]}"
+        SGLANG_FLASHINFER_MEGAMOE_IN_KERNEL_FC2_REDUCE="$SGLANG_FLASHINFER_MEGAMOE_IN_KERNEL_FC2_REDUCE"
+    )
+    if [[ "$BACKEND" == w4a16_megamoe ]]; then
+        runtime_env+=(FLASHINFER_SOURCE_ROOT="$FLASHINFER_SOURCE_ROOT"
+            FLASHINFER_COMMIT="$FLASHINFER_COMMIT"
+            FLASHINFER_CUDA_ARCH_LIST="$FLASHINFER_CUDA_ARCH_LIST"
+            FLASHINFER_MOE_EP_KNOB_CACHE="$FLASHINFER_MOE_EP_KNOB_CACHE")
+    fi
+    write_command "$CASE_DIR/server_command.sh" env "${runtime_env[@]}" "${server_args[@]}"
     write_command "$CASE_DIR/benchmark_command.sh" env PYTHONPATH="$PYTHONPATH" EVAL_ONLY=false PROFILE=0 \
         bash -c 'source "$1"; shift; run_benchmark_serving "$@"' _ \
         "$REPO_ROOT/benchmarks/benchmark_lib.sh" "${benchmark_args[@]}"

@@ -1,5 +1,6 @@
 """Record local experiment provenance and enforce complete request counts."""
 
+import importlib
 import importlib.metadata
 import json
 import os
@@ -17,6 +18,59 @@ def write_json(path, value):
     path.write_text(json.dumps(value, indent=2) + "\n")
 
 
+def flashinfer_source_provenance():
+    source_root = os.environ.get("FLASHINFER_SOURCE_ROOT")
+    expected_commit = os.environ.get("FLASHINFER_COMMIT")
+    if source_root is None and expected_commit is None:
+        return {}
+    if not source_root or not expected_commit:
+        raise SystemExit(
+            "FLASHINFER_SOURCE_ROOT and FLASHINFER_COMMIT must both be nonempty"
+        )
+    source_root = Path(source_root).resolve()
+    actual_commit = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=source_root, text=True
+    ).strip()
+    if actual_commit != expected_commit:
+        raise SystemExit(
+            f"FlashInfer HEAD is {actual_commit}, expected {expected_commit}"
+        )
+    dirty = subprocess.check_output(
+        ["git", "status", "--porcelain", "--untracked-files=normal"],
+        cwd=source_root,
+        text=True,
+    ).strip()
+    if dirty:
+        raise SystemExit(f"FlashInfer source is not clean:\n{dirty}")
+    flashinfer = importlib.import_module("flashinfer")
+    actual_path = Path(flashinfer.__file__).resolve()
+    if actual_path.parent != source_root / "flashinfer":
+        raise SystemExit(
+            f"FlashInfer import resolved to {actual_path}, expected {source_root / 'flashinfer'}"
+        )
+    compiler_modules = {
+        name: str(Path(importlib.import_module(name).__file__).resolve())
+        for name in ("cutlass", "cutlass.cute", "cutlass.cutlass_dsl")
+    }
+    compiler_version = importlib.metadata.version("nvidia-cutlass-dsl")
+    compiler_libraries = {
+        distribution.metadata["Name"]: distribution.version
+        for distribution in importlib.metadata.distributions()
+        if distribution.metadata.get("Name", "").startswith("nvidia-cutlass-dsl-libs-")
+    }
+    return {
+        "flashinfer_source_root": str(source_root),
+        "flashinfer_commit": actual_commit,
+        "flashinfer_import_path": str(actual_path),
+        "flashinfer_import_version": flashinfer.__version__,
+        "cute_dsl_compiler": {
+            "version": compiler_version,
+            "library_versions": compiler_libraries,
+            "import_paths": compiler_modules,
+        },
+    }
+
+
 def verify_source():
     import sglang
 
@@ -25,6 +79,9 @@ def verify_source():
     if actual != expected:
         raise SystemExit(f"SGLang import resolved to {actual}, expected {expected}")
     print(f"Verified source import: {actual}")
+    provenance = flashinfer_source_provenance()
+    if provenance:
+        print(json.dumps(provenance, indent=2))
 
 
 def start(case_dir):
@@ -48,6 +105,7 @@ def start(case_dir):
         "ep": "EP",
         "gpu_count": "TP",
         "concurrency": "CONC",
+        "server_max_running_requests": "SERVER_MAX_RUNNING_REQUESTS",
         "isl": "ISL",
         "osl": "OSL",
     }
@@ -91,6 +149,7 @@ def start(case_dir):
             "quality_evaluation": "not_run",
         }
     )
+    metadata.update(flashinfer_source_provenance())
     write_json(case_dir / "metadata.json", metadata)
 
 

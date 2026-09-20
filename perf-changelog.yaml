@@ -8413,3 +8413,19 @@
     - "Add a fork-only GLM-5.2 NVFP4 B300 8k1k and 1k1k experiment: preserve the archived W4A4 TRT-LLM sweep, pin SGLang PR 39210 and the CUDA 13 nightly, and prepare a deferred W4A16 MegaMoE arm. Official AgentX and retired GLM-5 configurations remain unchanged."
     - "在个人 fork 添加 GLM-5.2 NVFP4 B300 8k1k 与 1k1k 实验：保留原 W4A4 TRT-LLM 压测方法，固定 SGLang PR 39210 与 CUDA 13 nightly，另备待优化完成后运行的 W4A16 MegaMoE 配置。"
   pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Prepare the optimized fork-only GLM-5.2 B300 W4A16 MegaMoE 8k1k/1k1k sweep with config-megamoe.env pinning FlashInfer PR 5019 at ad0a5e5e78e57070ec7c582efe733cb55cd8839f and CUDA target 10.3a; fresh source-specific caches and explicit source provenance are required. Performance measurement remains pending."
+    - "Switch the MTP draft runner from triton to flashinfer_trtllm, keep draft A2A none, and remove the explicit unquant draft override so GLM NextN uses its native BF16 path with inherited quantization metadata. Target DP=TP=EP and disabled prefill graphs remain different from the measured DP1/EP1 W4A4 baseline."
+    - "准备个人 fork 的优化版 GLM-5.2 B300 W4A16 MegaMoE 8k1k/1k1k sweep：config-megamoe.env 固定 FlashInfer PR 5019 的 ad0a5e5e78e57070ec7c582efe733cb55cd8839f 与 CUDA 目标 10.3a，要求独立源码 cache 和明确的源码 provenance；性能测量仍待完成。"
+    - "MTP draft runner 从 triton 改为 flashinfer_trtllm，保留 draft A2A none，并移除显式 unquant 覆盖，使 GLM NextN 使用带继承量化元数据的原生 BF16 路径；target DP=TP=EP 与禁用 prefill graph 仍区别于已测 DP1/EP1 W4A4 baseline。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Set the MegaMoE server request cap to max(client concurrency, DP): SGLang 50eeb742 divides max_running_requests by attention DP and rejects a zero per-rank cap. TP8/DP8 at client concurrency 4 therefore uses server cap 8 while preserving client concurrency 4 and 40 measured requests; TP4 points are unchanged. Record server_max_running_requests separately from client concurrency. Fresh performance validation remains pending."
+    - "MegaMoE server 请求上限改为 max(client concurrency, DP)：SGLang 50eeb742 将 max_running_requests 除以 attention DP，且不允许每 rank 上限为零。因此 TP8/DP8、client 并发 4 时使用 server 上限 8，client 并发 4 与 40 个正式请求不变，其余 TP4 点不变；单独记录 server_max_running_requests，新性能验证仍待完成。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1

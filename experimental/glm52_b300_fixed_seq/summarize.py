@@ -35,6 +35,9 @@ GROUP_KEYS = (
     "model_revision",
     "image",
     "sglang_commit",
+    "flashinfer_commit",
+    "flashinfer_version",
+    "cute_dsl_version",
     "prefill_cuda_graph_policy",
     "random_range_ratio",
     "isl",
@@ -65,6 +68,12 @@ def read_case(path: Path) -> dict[str, Any]:
         row["metadata"] = metadata
         for key in GROUP_KEYS + ("concurrency", "num_prompts"):
             row[key] = metadata.get(key)
+        row["flashinfer_version"] = metadata.get(
+            "flashinfer_import_version"
+        ) or metadata.get("versions", {}).get("flashinfer-python")
+        row["cute_dsl_version"] = metadata.get("cute_dsl_compiler", {}).get(
+            "version"
+        ) or metadata.get("versions", {}).get("nvidia-cutlass-dsl")
         if metadata.get("backend") not in BACKENDS:
             reasons.append("unknown backend")
         row["backend_label"] = BACKENDS.get(metadata.get("backend"), "Unknown backend")
@@ -185,6 +194,9 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
             row["run_id"],
             row["image"],
             row["sglang_commit"],
+            row.get("flashinfer_commit") or "",
+            row.get("flashinfer_version") or "",
+            row.get("cute_dsl_version") or "",
             row["concurrency"],
         ),
     )
@@ -287,8 +299,8 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
         "",
         "## Provenance",
         "",
-        "| Case | Run | Raw results and metadata | Model | Image | SGLang commit | Prefill CUDA graph policy |",
-        "|---|---|---|---|---|---|---|",
+        "| Case | Run | Raw results and metadata | Model | Image | SGLang commit | FlashInfer commit / version | CuTe DSL version | Prefill CUDA graph policy |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
     for row in included:
         lines.append(
@@ -303,6 +315,10 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
                     cell(row["model"]),
                     cell(row["image"]),
                     cell(row["sglang_commit"]),
+                    cell(row.get("flashinfer_commit") or "image-provided")
+                    + " / "
+                    + cell(row.get("flashinfer_version") or "unknown"),
+                    cell(row.get("cute_dsl_version") or "unknown"),
                     cell(row.get("prefill_cuda_graph_policy")),
                 ]
             )
@@ -375,6 +391,8 @@ def plot_results(rows: list[dict[str, Any]], output: Path, scenario: str) -> lis
             f"{first['backend_label']} · {topology(first)} · {first['run_id']}"
             f" · prefill graphs: {first.get('prefill_cuda_graph_policy') or 'unknown'}"
             f" · length ratio: {first.get('random_range_ratio')}"
+            f" · FI: {str(first.get('flashinfer_commit') or 'image')[:8]}/{first.get('flashinfer_version') or 'unknown'}"
+            f" · CuTe: {first.get('cute_dsl_version') or 'unknown'}"
         )
         series.append((points, label, plt.get_cmap("tab10")(index % 10)))
     names = []
