@@ -11,11 +11,10 @@ does not reactivate deprecated benchmark definitions or publish dashboard result
   Retains the original TP4/DP1/EP1 concurrency sweep and TP8/DP1/EP1 concurrency-4 point;
   these results remain unchanged and separate from the new comparison.
 - **New W4A4 TRT-LLM control:** [`config-trtllm-aligned.env`](config-trtllm-aligned.env)
-  aligns DP attention, TP=DP=EP, prefill graphs and draft settings with MegaMoE.
+  aligns DP attention, TP=DP=EP, prefill graphs, draft settings and memory reservation with MegaMoE.
   Its 16-point measurement has not started. It retains FlashInfer 0.6.18 and CuTe DSL 4.6.2.
 - **Optimized W4A16 MegaMoE:** prepared with the pinned FlashInfer PR #5019 source
-  and a native TRT-LLM BF16 MTP draft. Its new 16-point measurement has not started;
-  configuration readiness is not a performance result. The main Pareto comparison
+  and a native TRT-LLM BF16 MTP draft. The first memory-fraction-0.85 attempt completed six points, then failed during C256 warmup. A fresh complete comparison uses memory fraction 0.80 in both arms; its results remain pending. The main Pareto comparison
   will use this arm and the new aligned TRT-LLM control. Source
   [`config-megamoe.env`](config-megamoe.env) after the base config to enable this arm.
 - **Quality:** these scripts collect throughput and latency, not model accuracy.
@@ -47,7 +46,7 @@ separate from the optimized run.
 | Attention | `dsa`, with TRT-LLM prefill and decode |
 | MTP | EAGLE: 3 steps, top-k 1, 4 draft tokens |
 | Draft MoE | Both new arms: explicit `flashinfer_trtllm`, A2A `none`; historical reference: native inherited settings; no explicit draft quantization override |
-| Memory / prefill | `0.85`; CLI chunked prefill and max prefill tokens both `32768`, with DP normalization below |
+| Memory / prefill | Historical `0.85`; both new aligned arms `0.80`; CLI chunked prefill and max prefill tokens both `32768`, with DP normalization below |
 | Cache / streaming | Radix cache disabled; stream interval `30` |
 | Workload | Random, input cap `8192` or `1024`, output cap `1024`, range ratio `0.8`, chat template |
 | Requests / warmup | `10 × concurrency` measured; `2 × concurrency` warmup |
@@ -70,6 +69,17 @@ and [forces EP=TP](https://github.com/sgl-project/sglang/blob/50eeb742961908afa6
 TRT-LLM's NVFP4 path [passes local expert offsets and counts](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/layers/quantization/modelopt_quant.py#L2996-L3031),
 so the new control uses the same expert partitioning with standard communication.
 Source compatibility still requires fresh runtime validation.
+
+The first DP-aligned MegaMoE attempt at `mem_fraction_static=0.85` stopped during
+8k1k TP4/C256 warmup: the native BF16 TRT-LLM MTP prefill path could not allocate
+its 3.16 GiB workspace with 1.37 GiB free. No measured C256 result was produced.
+[The failed case and recovery record](results/failures/c2-w4a16-megamoe-20260920/README.md)
+are preserved separately. Both new overlays now use **0.80** to reserve additional
+runtime workspace, and both complete 16-point sweeps use fresh run IDs. C256 runs
+first in each scenario to check the failing peak early; the matrix and request
+counts are unchanged. The six successful 0.85 points are diagnostic observations,
+not reused in the 0.80 comparison. Metadata, resolved arguments and plot grouping
+record the memory fraction. Runtime validation of the new profile is pending.
 
 The historical server request cap equals client concurrency. Both new arms use
 `max(client concurrency, DP)` because the pinned SGLang divides that cap by
@@ -147,7 +157,7 @@ export RUN_ID=c2-w4a4-dp-aligned-first
 bash experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp.sh
 ```
 
-The overlay changes topology and prefill policy, not installed packages. Record
+The overlay changes topology, prefill policy and memory reservation, not installed packages. Record
 the fresh 16-point result independently; the historical DP1/EP1 measurements do
 not substitute for this control.
 
@@ -211,4 +221,4 @@ with the [pinned interactivity metric](https://github.com/SemiAnalysisAI/Inferen
 and [selected output-only y metric](https://github.com/SemiAnalysisAI/InferenceX-app/blob/b4b72f4f39ad6148f3477dcf67eb6a77257e7bb9/packages/app/src/components/inference/metric-registry.ts#L76-L82).
 The plotting helper validates alignment, rejects mixed historical/aligned inputs,
 keeps successful observed points visible and labels client concurrency plus TP/DP/EP.
-Neither new arm has measured points to plot yet.
+The complete memory-fraction-0.80 comparison is pending; partial 0.85 observations are retained separately and are not inputs to its plots.

@@ -117,6 +117,7 @@ def validate_comparison(rows: list[dict], require_aligned: bool) -> None:
                 "ep": row["tp"],
                 "server_max_running_requests": max(row["concurrency"], row["tp"]),
                 "prefill_cuda_graph_policy": "disabled",
+                "mem_fraction_static": 0.80,
             }
             for key, value in expected.items():
                 if row["metadata"].get(key) != value:
@@ -253,7 +254,8 @@ def draw(points: list[dict], output: Path, scenario: str, mode: str) -> dict:
         label = (
             f"{p['backend_label']} · B300 · {p['run_id']}\n"
             f"FI {p.get('flashinfer_version') or '?'} @ {(p.get('flashinfer_commit') or 'image-provided')[:14]} · "
-            f"CuTe {p.get('cute_dsl_version') or '?'} · prefill graphs: {p['prefill_cuda_graph_policy']}"
+            f"CuTe {p.get('cute_dsl_version') or '?'} · prefill graphs: {p['prefill_cuda_graph_policy']}\n"
+            f"Static memory fraction: {p.get('mem_fraction_static') or 'not recorded'}"
         )
         legend.append(Line2D([], [], color=color, lw=1.5, label=label))
         series.append(
@@ -375,7 +377,7 @@ def write_report(
         "# Unofficial GLM-5.2 B300: InferenceX metric views",
         "",
         (
-            "This comparison requires TP=DP=EP, disabled prefill CUDA graphs, and "
+            "This comparison requires TP=DP=EP, disabled prefill CUDA graphs, static memory fraction 0.80, and "
             "server max-running-requests=max(client C, TP) for every included case. "
             "Historical DP1/EP1 results are excluded and must be plotted separately. "
             "Point labels always show client concurrency; TP8/C4 therefore remains C=4."
@@ -417,8 +419,8 @@ def write_report(
     lines += [
         "## Measurements",
         "",
-        "| Case | Scenario | Backend | TP/DP/EP | C | Success | median_intvty (tok/s/user) | median_e2el (s) | output_tput_per_gpu (tok/s/chip) | output_throughput (tok/s) | total_token_throughput (tok/s) | Raw |",
-        "|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|",
+        "| Case | Scenario | Backend | TP/DP/EP | C | Static memory fraction | Success | median_intvty (tok/s/user) | median_e2el (s) | output_tput_per_gpu (tok/s/chip) | output_throughput (tok/s) | total_token_throughput (tok/s) | Raw |",
+        "|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
     ]
     for p in points:
         lines.append(
@@ -432,6 +434,7 @@ def write_report(
                         p["backend_label"],
                         f"{p['tp']}/{p['dp']}/{p['ep']}",
                         p["concurrency"],
+                        p.get("mem_fraction_static") or "not recorded",
                         f"{p['completed']}/{p['num_prompts']}",
                         fmt(p["median_intvty"]),
                         fmt(p["median_e2el"]),
@@ -460,7 +463,7 @@ def main() -> None:
     parser.add_argument(
         "--dp-attention-aligned",
         action="store_true",
-        help="Require the aligned control/Mega topology, prefill policy and server cap; reject historical DP1/EP1 cases",
+        help="Require aligned topology, prefill policy, server cap and static memory fraction 0.80; reject historical DP1/EP1 cases",
     )
     args = parser.parse_args()
     paths = sorted(

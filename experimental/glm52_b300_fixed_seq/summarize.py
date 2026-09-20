@@ -39,6 +39,7 @@ GROUP_KEYS = (
     "flashinfer_version",
     "cute_dsl_version",
     "prefill_cuda_graph_policy",
+    "mem_fraction_static",
     "random_range_ratio",
     "isl",
     "osl",
@@ -92,6 +93,11 @@ def read_case(path: Path) -> dict[str, Any]:
         for key in ("run_id", "hardware", "model", "image", "sglang_commit"):
             if not metadata.get(key):
                 reasons.append(f"missing {key}")
+        if "mem_fraction_static" in metadata and (
+            not number(metadata["mem_fraction_static"])
+            or not 0 < metadata["mem_fraction_static"] < 1
+        ):
+            reasons.append("mem_fraction_static must be a number between 0 and 1")
         if metadata.get("status") != "completed":
             reasons.append(f"case status is {metadata.get('status')!r}")
         if SCENARIOS.get(metadata.get("scenario")) != (
@@ -217,7 +223,7 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
         "for chat-template input it first subtracts template overhead, then applies the template "
         "and retokenizes. Raw `input_lens` and `output_lens` retain observed request lengths. "
         "Workloads are plotted in separate figures. "
-        "Different topology, GPU count, runtime, backend, or prefill CUDA graph policy configurations are separate series; "
+        "Different topology, GPU count, runtime, backend, prefill CUDA graph policy, or static memory fraction configurations are separate series; "
         "comparisons are system configurations, not isolated kernel-precision speedups.",
         "",
         "`output_throughput` counts generated tokens; `total_token_throughput` counts input plus "
@@ -299,8 +305,8 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
         "",
         "## Provenance",
         "",
-        "| Case | Run | Raw results and metadata | Model | Image | SGLang commit | FlashInfer commit / version | CuTe DSL version | Prefill CUDA graph policy |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| Case | Run | Raw results and metadata | Model | Image | SGLang commit | FlashInfer commit / version | CuTe DSL version | Prefill CUDA graph policy | Static memory fraction |",
+        "|---|---|---|---|---|---|---|---|---|---|",
     ]
     for row in included:
         lines.append(
@@ -320,6 +326,7 @@ def write_markdown(rows: list[dict[str, Any]], output: Path, charts: list[str]) 
                     + cell(row.get("flashinfer_version") or "unknown"),
                     cell(row.get("cute_dsl_version") or "unknown"),
                     cell(row.get("prefill_cuda_graph_policy")),
+                    cell(row.get("mem_fraction_static") or "not recorded"),
                 ]
             )
             + " |"
@@ -393,6 +400,7 @@ def plot_results(rows: list[dict[str, Any]], output: Path, scenario: str) -> lis
             f" · length ratio: {first.get('random_range_ratio')}"
             f" · FI: {str(first.get('flashinfer_commit') or 'image')[:8]}/{first.get('flashinfer_version') or 'unknown'}"
             f" · CuTe: {first.get('cute_dsl_version') or 'unknown'}"
+            f" · static memory: {first.get('mem_fraction_static') or 'not recorded'}"
         )
         series.append((points, label, plt.get_cmap("tab10")(index % 10)))
     names = []

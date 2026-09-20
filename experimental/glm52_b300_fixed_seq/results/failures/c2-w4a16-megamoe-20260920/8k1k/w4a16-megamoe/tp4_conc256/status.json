@@ -1,0 +1,9 @@
+{
+  "status": "failed",
+  "exit_code": 1,
+  "expected": 2560,
+  "completed": null,
+  "failed": null,
+  "finished_at": "2026-09-20T07:37:50.680777+00:00",
+  "artifact_error": "[Errno 2] No such file or directory: '/data/home/ziangli/inferencex-glm52-b300/results/c2-w4a16-megamoe-20260920/8k1k/w4a16-megamoe/tp4_conc256/result.json'"
+}

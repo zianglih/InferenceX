@@ -11,10 +11,10 @@
   保留原来的 TP4/DP1/EP1 并发 sweep，以及 TP8/DP1/EP1、并发 4 的点；原始结果不变，
   与新一轮对照分开保存。
 - **新增 W4A4 TRT-LLM 对照：**通过 [`config-trtllm-aligned.env`](config-trtllm-aligned.env)
-  将 DP attention、TP=DP=EP、prefill graph 和 draft 设置与 MegaMoE 对齐。
+  将 DP attention、TP=DP=EP、prefill graph、draft 设置与显存预留与 MegaMoE 对齐。
   新 16 点测量尚未启动；保留 FlashInfer 0.6.18 与 CuTe DSL 4.6.2。
 - **优化版 W4A16 MegaMoE：**已准备固定 FlashInfer PR #5019 源码与原生 TRT-LLM
-  BF16 MTP draft。新一轮 16 点测量尚未启动；配置就绪不代表性能结果。主 Pareto 图将比较
+  BF16 MTP draft。首次显存比例 0.85 的运行完成六个点后，在 C256 warmup 阶段失败；新两组均改为 0.80 并完整重跑，结果仍待完成。主 Pareto 图将比较
   此方案与新增的对齐版 TRT-LLM 对照。先 source 基础
   配置，再 source [`config-megamoe.env`](config-megamoe.env) 启用此方案。
 - **质量：**脚本测吞吐与延迟，不评估模型精度。MTP 使用真实验证，并清除继承的
@@ -43,7 +43,7 @@
 | Attention | `dsa`，prefill 和 decode 均使用 TRT-LLM |
 | MTP | EAGLE：3 steps、top-k 1、4 draft tokens |
 | Draft MoE | 新两套方案：显式 `flashinfer_trtllm`、A2A `none`；历史参考：原生继承设置；均不显式覆盖 draft 量化 |
-| 显存 / prefill | `0.85`；CLI chunked prefill 与 max prefill tokens 均为 `32768`，DP 归一化见下文 |
+| 显存 / prefill | 历史方案 `0.85`；新两组对齐方案均为 `0.80`；CLI chunked prefill 与 max prefill tokens 均为 `32768`，DP 归一化见下文 |
 | Cache / streaming | 禁用 radix cache；stream interval 为 `30` |
 | Workload | Random，input 上限 `8192` 或 `1024`、output 上限 `1024`、range ratio `0.8`、chat template |
 | 请求数 / warmup | 正式测量 `10 × concurrency`；warmup `2 × concurrency` |
@@ -64,6 +64,15 @@ rate、限制最大并发并忽略 EOS。这是没有 interactive latency SLO �
 并[强制 EP=TP](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/arg_groups/overrides.py#L1630-L1672)。
 TRT-LLM 的 NVFP4 路径会[传入本地 expert 的 offset 和数量](https://github.com/sgl-project/sglang/blob/50eeb742961908afa68f4f523a1a19c5de6eb0b3/python/sglang/srt/layers/quantization/modelopt_quant.py#L2996-L3031)，
 所以新对照可采用相同的 expert 分片，通信仍走标准路径。源码支持仍需新的实际运行验证。
+
+首次 DP 对齐的 MegaMoE 在 `mem_fraction_static=0.85` 下于 8k1k TP4/C256
+warmup 阶段停止：原生 BF16 TRT-LLM MTP prefill 路径要申请 3.16 GiB workspace，
+但仅剩 1.37 GiB 显存，未产生该点的正式测量结果。
+[失败原始文件与恢复说明](results/failures/c2-w4a16-megamoe-20260920/README_zh.md)
+独立保留。新两组 overlay 均改为 **0.80**，预留更多运行时 workspace，并使用新 run ID
+完整重跑各 16 点。每个 scenario 先跑 C256，提前验证此前失败的峰值；矩阵与请求数不变。
+此前成功的六个 0.85 点仅作为诊断记录，不复用于 0.80 的对比。Metadata、实际解析参数
+和绘图分组均记录显存比例；新配置仍需实际运行验证。
 
 历史方案的 server 请求上限等于 client 并发。新两套方案均使用
 `max(client concurrency, DP)`，因为固定 SGLang 会将此上限除以 attention DP，
@@ -132,7 +141,7 @@ export RUN_ID=c2-w4a4-dp-aligned-first
 bash experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp.sh
 ```
 
-Overlay 改变拓扑和 prefill 策略，不修改已安装的包。新 16 点结果独立记录；历史
+Overlay 改变拓扑、prefill 策略与显存预留，不修改已安装的包。新 16 点结果独立记录；历史
 DP1/EP1 的测量不能替代此对照。
 
 ## 准备优化版 MegaMoE

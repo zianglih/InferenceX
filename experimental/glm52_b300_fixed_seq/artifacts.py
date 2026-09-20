@@ -134,6 +134,7 @@ def start(case_dir):
             * int(os.environ["PROMPTS_PER_CONCURRENCY"]),
             "num_warmups": 2 * int(os.environ["CONC"]),
             "random_range_ratio": float(os.environ["RANDOM_RANGE_RATIO"]),
+            "mem_fraction_static": float(os.environ["MEM_FRACTION_STATIC"]),
             "started_at": utc_now(),
             "versions": versions,
             "environment": {

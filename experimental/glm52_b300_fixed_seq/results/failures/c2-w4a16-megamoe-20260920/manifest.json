@@ -1,0 +1,67 @@
+{
+  "run_id": "c2-w4a16-megamoe-20260920",
+  "classification": "failed during warmup; no measured result for this case",
+  "full_incomplete_run_archive_sha256": "fd18815af835bdc62d659bd8f0ea7bacb7136d465e2d7ecc9647eaf59880d145",
+  "files": [
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/benchmark.log",
+      "bytes": 4025,
+      "sha256": "221f013b57b0be9592a7814df819a2cfab25921a7c72ab9f17adaceaaf21ee8b"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/benchmark_command.sh",
+      "bytes": 923,
+      "sha256": "348e777c61edbdd3c705b9ed112de487b9fd0b7dcd7ca098f2832273ad5b21c5"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/gpu_metrics.csv",
+      "bytes": 194108,
+      "sha256": "34ec277cad2fdf639c09a000d93ee36f5fa7817a9af32420bb6966c93020df7c"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/gpu_metrics_identity.csv",
+      "bytes": 798,
+      "sha256": "e6e91a5a3e5145703666a8216f6dc03a730376bc7f8972ebcf74c4b61f0664f5"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/metadata.json",
+      "bytes": 3792,
+      "sha256": "dd622e73aa76033c1a50b03942725bc8b337b7d98e25319f79511d978d120809"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/nvidia-smi.txt",
+      "bytes": 4265,
+      "sha256": "0011bd3b2f8e48c296ac4e39a802cc58be25810835e2b2b787f58e49100b100f"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/packages.json",
+      "bytes": 16724,
+      "sha256": "ed50a5d2e8a252d11e75ae415125030838a50193d1214ae48756b16adc0a2b8c"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/server.log",
+      "bytes": 98515,
+      "sha256": "6eeb4eaeb36f5faf552cd5afda5379a197165e088a1337ef8d9450c9ee6cbb23"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/server_command.sh",
+      "bytes": 1902,
+      "sha256": "ce94fe63cabf5252e7f13d62e2af6597c0efad85357b68a37913368fe9653bca"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/server_info.after.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/server_info.before.json",
+      "bytes": 85633,
+      "sha256": "15d7a414f9fc8ff1900103be8c21dea3c653c9959dc97e1d1b3d5bef42d88086"
+    },
+    {
+      "path": "8k1k/w4a16-megamoe/tp4_conc256/status.json",
+      "bytes": 335,
+      "sha256": "f59e10b30be74c12b0a4d6e24e30be222bce39363fde8c0a9be17bd1d85864e0"
+    }
+  ]
+}
