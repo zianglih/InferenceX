@@ -20,8 +20,8 @@ run_glm52_sweep() {
         latest-default|disabled) ;;
         *) echo "Unsupported PREFILL_CUDA_GRAPH_POLICY: $PREFILL_CUDA_GRAPH_POLICY" >&2; return 1 ;;
     esac
-    if [[ "$backend" == w4a16_megamoe && ( "$PARALLEL_TOPOLOGY" != dp-ep || "$PREFILL_CUDA_GRAPH_POLICY" != disabled ) ]]; then
-        echo 'MegaMoE requires PARALLEL_TOPOLOGY=dp-ep and PREFILL_CUDA_GRAPH_POLICY=disabled.' >&2
+    if [[ ( "$backend" == w4a16_megamoe || "$backend" == w4a16_cutedsl ) && ( "$PARALLEL_TOPOLOGY" != dp-ep || "$PREFILL_CUDA_GRAPH_POLICY" != disabled ) ]]; then
+        echo 'W4A16 arms require PARALLEL_TOPOLOGY=dp-ep and PREFILL_CUDA_GRAPH_POLICY=disabled.' >&2
         return 1
     fi
 
@@ -51,17 +51,32 @@ run_glm52_sweep() {
     fi
     git -C "$SGLANG_SOURCE_ROOT" diff --exit-code HEAD -- python
     export PYTHONPATH="$SGLANG_SOURCE_ROOT/python:$REPO_ROOT"
-    if [[ "$backend" == w4a16_megamoe ]]; then
-        check_env_vars FLASHINFER_SOURCE_ROOT FLASHINFER_COMMIT FLASHINFER_CUDA_ARCH_LIST \
-            MEGAMOE_CACHE_ROOT
+    if [[ "$backend" == w4a16_megamoe || "$backend" == w4a16_cutedsl ]]; then
+        check_env_vars FLASHINFER_SOURCE_ROOT FLASHINFER_COMMIT FLASHINFER_CUDA_ARCH_LIST
         export PYTHONPATH="$SGLANG_SOURCE_ROOT/python:$FLASHINFER_SOURCE_ROOT:$REPO_ROOT"
+    fi
+    if [[ "$backend" == w4a16_megamoe ]]; then
+        check_env_vars MEGAMOE_CACHE_ROOT
+    elif [[ "$backend" == w4a16_cutedsl ]]; then
+        check_env_vars CUTEDSL_CACHE_ROOT FLASHINFER_EXPECTED_VERSION CUTE_DSL_EXPECTED_VERSION
+        if [[ "$CUTEDSL_CACHE_ROOT" != /* || "$CUTEDSL_CACHE_ROOT" == /workspace || "$CUTEDSL_CACHE_ROOT" == /workspace/* ]]; then
+            echo 'CUTEDSL_CACHE_ROOT must be an absolute path outside /workspace.' >&2
+            return 1
+        fi
+        export SGLANG_CACHE_DIR="$CUTEDSL_CACHE_ROOT/sglang"
+        export FLASHINFER_WORKSPACE_BASE="$CUTEDSL_CACHE_ROOT"
+        unset FLASHINFER_MOE_EP_KNOB_CACHE
     fi
     export PYTHONNOUSERSITE=1
     export SGLANG_ENABLE_JIT_DEEPGEMM=1
     # Spec V2 is always active at the pinned HEAD; its old environment flag is removed.
     unset SGLANG_ENABLE_SPEC_V2
     unset SGLANG_SIMULATE_ACC_LEN SGLANG_SIMULATE_ACC_METHOD SGLANG_SIMULATE_ACC_TOKEN_MODE
-    python3 "$EXPERIMENT_DIR/artifacts.py" verify-source
+    if [[ "$backend" == w4a16_cutedsl ]]; then
+        python3 "$EXPERIMENT_DIR/artifacts.py" verify-cutedsl-source
+    else
+        python3 "$EXPERIMENT_DIR/artifacts.py" verify-source
+    fi
     command -v setsid >/dev/null
 
     for scenario_case in $SCENARIOS; do
@@ -153,6 +168,11 @@ run_glm52_case() {
             server_args+=(--moe-runner-backend flashinfer_megamoe
                 --moe-a2a-backend flashinfer_megamoe)
             ;;
+        w4a16_cutedsl)
+            export SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16=1
+            export SGLANG_FLASHINFER_MOE_FUSED_FINALIZE=0
+            server_args+=(--moe-runner-backend flashinfer_cutedsl --moe-a2a-backend none)
+            ;;
         *) echo "Unsupported backend: $BACKEND" >&2; return 1 ;;
     esac
     server_args+=(--data-parallel-size "$DP" --expert-parallel-size "$EP"
@@ -182,11 +202,17 @@ run_glm52_case() {
         SGLANG_FLASHINFER_MEGAMOE_COMBINE_DTYPE="$SGLANG_FLASHINFER_MEGAMOE_COMBINE_DTYPE" \
         SGLANG_FLASHINFER_MEGAMOE_IN_KERNEL_FC2_REDUCE="$SGLANG_FLASHINFER_MEGAMOE_IN_KERNEL_FC2_REDUCE"
     )
-    if [[ "$BACKEND" == w4a16_megamoe ]]; then
+    if [[ "$BACKEND" == w4a16_megamoe || "$BACKEND" == w4a16_cutedsl ]]; then
         runtime_env+=(FLASHINFER_SOURCE_ROOT="$FLASHINFER_SOURCE_ROOT"
             FLASHINFER_COMMIT="$FLASHINFER_COMMIT"
-            FLASHINFER_CUDA_ARCH_LIST="$FLASHINFER_CUDA_ARCH_LIST"
-            FLASHINFER_MOE_EP_KNOB_CACHE="$FLASHINFER_MOE_EP_KNOB_CACHE")
+            FLASHINFER_CUDA_ARCH_LIST="$FLASHINFER_CUDA_ARCH_LIST")
+    fi
+    if [[ "$BACKEND" == w4a16_megamoe ]]; then
+        runtime_env+=(FLASHINFER_MOE_EP_KNOB_CACHE="$FLASHINFER_MOE_EP_KNOB_CACHE")
+    elif [[ "$BACKEND" == w4a16_cutedsl ]]; then
+        runtime_env+=(SGLANG_FLASHINFER_MOE_FUSED_FINALIZE="$SGLANG_FLASHINFER_MOE_FUSED_FINALIZE"
+            SGLANG_CACHE_DIR="$SGLANG_CACHE_DIR"
+            FLASHINFER_WORKSPACE_BASE="$FLASHINFER_WORKSPACE_BASE")
     fi
     write_command "$CASE_DIR/server_command.sh" env "${runtime_env[@]}" "${server_args[@]}"
     write_command "$CASE_DIR/benchmark_command.sh" env PYTHONPATH="$PYTHONPATH" EVAL_ONLY=false PROFILE=0 \

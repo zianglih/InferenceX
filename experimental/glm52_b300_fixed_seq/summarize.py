@@ -15,6 +15,7 @@ from typing import Any
 BACKENDS = {
     "w4a4_trtllm": "W4A4 TRT-LLM",
     "w4a16_megamoe": "W4A16 MegaMoE",
+    "w4a16_cutedsl": "W4A16 CuTe split MoE",
 }
 SCENARIOS = {"1k1k": (1024, 1024), "8k1k": (8192, 1024)}
 LATENCY_KEYS = [

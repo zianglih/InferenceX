@@ -8447,3 +8447,12 @@
     - "Reserve native BF16 TRT-LLM MTP runtime workspace by using mem_fraction_static=0.80 in both new DP-aligned arms, after the 0.85 MegaMoE attempt failed during 8k1k TP4/C256 warmup. Preserve the failed case and six completed diagnostic points; restart both complete matrices under new run IDs, running C256 first. Record and validate memory reservation in metadata and comparison grouping."
     - "首次0.85 MegaMoE在8k1k TP4/C256 warmup发生原生BF16 TRT-LLM MTP workspace OOM后，新两组DP对齐方案均改用mem_fraction_static=0.80。保留失败现场与六个已完成诊断点；新run ID完整重跑两组，优先C256，并在metadata与对比分组记录和校验显存预留。"
   pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_cutedsl_mtp
+  description:
+    - "Add a separate fork-only GLM-5.2 B300 W4A16 CuTe DSL split-MoE arm pinned to FlashInfer PR 5319 f9dd3c10541e087b716772245a9d033499745048, with target flashinfer_cutedsl/none, W4A16 enabled and fused finalize disabled. Preserve aligned DP=TP=EP, memory fraction 0.80, disabled prefill graphs, native BF16 TRT-LLM/none MTP, both workloads and the C256-first 16-point matrix. Require clean source/import provenance, CuTe DSL 4.7.1 and separate source-specific caches; GPU performance and accuracy remain unvalidated."
+    - "Reuse existing aligned TRT-LLM and MegaMoE runs without rerunning or changing their runtime branches; record the third arm's own InferenceX and FlashInfer commits."
+    - "在个人 fork 新增独立 GLM-5.2 B300 W4A16 CuTe DSL split-MoE 组，固定 FlashInfer PR 5319 的 f9dd3c10541e087b716772245a9d033499745048，target 使用 flashinfer_cutedsl/none，开启 W4A16 并关闭 fused finalize。保留 DP=TP=EP、显存比例0.80、禁用 prefill graph、原生 BF16 TRT-LLM/none MTP、两个 workload 与 C256 优先的16点矩阵；要求干净源码/import 来源、CuTe DSL 4.7.1 和独立源码 cache，GPU性能与精度仍待验证。"
+    - "复用已有对齐版 TRT-LLM 和 MegaMoE 运行，不重跑、不改变其 runtime 分支；单独记录第三组 InferenceX 与 FlashInfer 提交。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1

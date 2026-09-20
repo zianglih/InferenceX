@@ -222,7 +222,11 @@ def draw(points: list[dict], output: Path, scenario: str, mode: str) -> dict:
         groups[tuple(point[key] for key in SERIES_KEYS)].append(point)
     fig, ax = plt.subplots(figsize=(14, 10), dpi=160)
     fig.subplots_adjust(left=0.085, right=0.98, top=0.90, bottom=0.32)
-    colors = {"w4a4_trtllm": "#1769aa", "w4a16_megamoe": "#d65f16"}
+    colors = {
+        "w4a4_trtllm": "#1769aa",
+        "w4a16_megamoe": "#d65f16",
+        "w4a16_cutedsl": "#8a4db3",
+    }
     legend = []
     series = []
     for values in groups.values():

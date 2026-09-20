@@ -82,6 +82,38 @@ def verify_source():
     provenance = flashinfer_source_provenance()
     if provenance:
         print(json.dumps(provenance, indent=2))
+    return provenance
+
+
+def verify_cutedsl_source():
+    provenance = verify_source()
+    expected_flashinfer = os.environ["FLASHINFER_EXPECTED_VERSION"]
+    expected_compiler = os.environ["CUTE_DSL_EXPECTED_VERSION"]
+    if provenance.get("flashinfer_import_version") != expected_flashinfer:
+        raise SystemExit(f"CuTe DSL arm requires FlashInfer {expected_flashinfer}")
+    if importlib.metadata.version("flashinfer-python") != expected_flashinfer:
+        raise SystemExit("FlashInfer package/import versions differ")
+    for package in ("flashinfer-cubin", "flashinfer-jit-cache"):
+        try:
+            importlib.metadata.version(package)
+        except importlib.metadata.PackageNotFoundError:
+            continue
+        raise SystemExit(f"CuTe DSL source arm requires {package} to be absent")
+    for package in (
+        "nvidia-cutlass-dsl",
+        "nvidia-cutlass-dsl-libs-base",
+        "nvidia-cutlass-dsl-libs-core",
+        "nvidia-cutlass-dsl-libs-cu12",
+        "nvidia-cutlass-dsl-libs-cu13",
+    ):
+        if importlib.metadata.version(package) != expected_compiler:
+            raise SystemExit(f"CuTe DSL arm requires {package}=={expected_compiler}")
+    for name in (
+        "FLASHINFER_DISABLE_VERSION_CHECK",
+        "FLASHINFER_CUBIN_CHECKSUM_DISABLED",
+    ):
+        if os.environ.get(name):
+            raise SystemExit(f"CuTe DSL source arm rejects {name}")
 
 
 def start(case_dir):
@@ -204,6 +236,8 @@ if __name__ == "__main__":
     action = sys.argv[1]
     if action == "verify-source":
         verify_source()
+    elif action == "verify-cutedsl-source":
+        verify_cutedsl_source()
     elif action == "start":
         start(Path(os.environ["CASE_DIR"]))
     elif action == "finish":
