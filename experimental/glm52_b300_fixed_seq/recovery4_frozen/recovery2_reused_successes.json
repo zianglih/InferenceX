@@ -1,0 +1,119 @@
+{
+  "calibration_parent_sha256": "faefc26ca26c58419f5628dea0a67b391332a64056b0c987dfb8ddcc57d090e0",
+  "raw_files": {
+    "8k1k/w4a16-megamoe/tp4_conc256/autotune_cache.before.json": {
+      "bytes": 240860,
+      "sha256": "f45aaf3787cd3fd48936745e783137be9d7fd4906f752ae7fdc0bf487fb84a2e"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/benchmark.log": {
+      "bytes": 98210,
+      "sha256": "c565eda4b1fd5e31c3363ba801f406f945fb0c20f9f5b8ec890c01653259b58e"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/benchmark_command.sh": {
+      "bytes": 1068,
+      "sha256": "876c1535d2d9c46bf1812a4d44a974da84d61c16cfa12b16ea2af8bec7d23d02"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/gpu_metrics.csv": {
+      "bytes": 1920316,
+      "sha256": "37c2c2fab19b33cd71ecd5095540e24f32ad50e6adffc0a34c6dd75ac7edef73"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/gpu_metrics_identity.csv": {
+      "bytes": 798,
+      "sha256": "4c468b0786567b7ba8a3dad8014af0ac0755a6f5d4f75ba356e63ca813bb0185"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/metadata.json": {
+      "bytes": 4848,
+      "sha256": "caecf559acf0f2ecaf304b8463cb979124afccbddde287a066469c9542816458"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/nvidia-smi.txt": {
+      "bytes": 4265,
+      "sha256": "c3845b21ada511fbbbd1ad14255380ef17df755b84689907946a5a0415a11d96"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/packages.json": {
+      "bytes": 16793,
+      "sha256": "85b426cef47e564a066a0ac11c06e60682984f41350f72fb14ea9ab2bb93a663"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/result.json": {
+      "bytes": 30097,
+      "sha256": "3ed73ec5f27d8de42c4aa54bfca5b5b652ebf80d4aad00a4069b349b114885e1"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/server.log": {
+      "bytes": 1157059,
+      "sha256": "0daae6eb5f7d8c5f3dc82192e7e6bf02ff1fd100151152169e1427fd9d202deb"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/server_command.sh": {
+      "bytes": 2947,
+      "sha256": "9ef7e658db74c2bb429a4611c5f6e8519eb5b10476ffade59f4c0fb896f49e7b"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/server_info.after.json": {
+      "bytes": 89281,
+      "sha256": "69b85cdf22bc0c4c8292165d5aa5445a3f89694e8efc3cf9ed8e1e5ac639e8da"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/server_info.before.json": {
+      "bytes": 89046,
+      "sha256": "895a6dad2b1cc109cd7d0e5d99fb69b6962f08c9450c48e17df0409256b13821"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc256/status.json": {
+      "bytes": 301,
+      "sha256": "b3595b87c1559cba1c0372b38902825e8cfbcf4d668cb6e647dbc3acada67606"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/autotune_cache.before.json": {
+      "bytes": 240864,
+      "sha256": "b19c1a914918bcb4e7df37ef3d20189c94bf4ac4b1023f81b65b0e5cd3c92e9c"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/benchmark.log": {
+      "bytes": 8910,
+      "sha256": "915546dbdded561ef108e466c318be31e6e8f879d5388d9d015b4e92f112ee10"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/benchmark_command.sh": {
+      "bytes": 1062,
+      "sha256": "57f87ac6309bf11b0882a043e5c747f12be53c31372d892e343d14605bb89402"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/gpu_metrics.csv": {
+      "bytes": 233473,
+      "sha256": "1cbcdaced6e2542b64706d0ce0dd5cb2ce5095e2ac05c5ee91b9e0b1007a9a5c"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/gpu_metrics_identity.csv": {
+      "bytes": 798,
+      "sha256": "4c468b0786567b7ba8a3dad8014af0ac0755a6f5d4f75ba356e63ca813bb0185"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/metadata.json": {
+      "bytes": 4840,
+      "sha256": "76c876310491eff7a1408854e8470dc656f76656f3b2240680b790b8f5a11f88"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/nvidia-smi.txt": {
+      "bytes": 4265,
+      "sha256": "62cc305063677bf7ad084eb303ee0ed563fb42f6e722801b9e3517f6305a83ef"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/packages.json": {
+      "bytes": 16793,
+      "sha256": "85b426cef47e564a066a0ac11c06e60682984f41350f72fb14ea9ab2bb93a663"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/result.json": {
+      "bytes": 2052,
+      "sha256": "46d40c45aa4cb4da6a255bf253e9c08bd6b793bf9ba680727e30c4383a75e8dc"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/server.log": {
+      "bytes": 153867,
+      "sha256": "99d618ed3a51955561fb87638ea9bc4f4b68cd219e5af56f9b5f3e29e88f0f95"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/server_command.sh": {
+      "bytes": 2943,
+      "sha256": "f1e2acd68cafbab0cb497f65787346c39746ac7c31011973038e5ccdab0f3530"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/server_info.after.json": {
+      "bytes": 88426,
+      "sha256": "c8ca957708ee97b203d52ff68819ca94a4d7a1f04d5751e20ca366cafe9acb11"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/server_info.before.json": {
+      "bytes": 88205,
+      "sha256": "9913484852586f074f9a826cff68c842ecd50df76f95818f431a3d24fc81e754"
+    },
+    "8k1k/w4a16-megamoe/tp4_conc4/status.json": {
+      "bytes": 293,
+      "sha256": "0a00b6969b9a5f520225db15c88ce8678024a60e1f18ca923e7fe5ff76d20b67"
+    }
+  },
+  "run_id": "c2-w4a16-megamoe-autotune-20260921-recovery1",
+  "two_case_parent_sha256": "1b2751ceb3fcd9d9fe9653f975cce8fca53ad941faac7f793bd104eb684e8f3e"
+}
