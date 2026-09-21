@@ -6,6 +6,27 @@ This fork-only experiment carries the archived GLM-5 B300 workload forward to
 `nvidia/GLM-5.2-NVFP4`. It is separate from the current AgentX configurations and
 does not reactivate deprecated benchmark definitions or publish dashboard results.
 
+## Current continuation: recovery3
+
+Recovery1 preserved two accepted 8k1k/TP4 points (C256 and C4, 2,600 requests),
+then failed at C8 startup with an unestablished NVSHMEM initialization cause.
+Recovery2 also stopped before C8 measurement: its clean FlashInfer clone omitted
+build-generated `flashinfer/data` links, so JIT could not find `fp4Quantize.cpp`.
+Both attempts and their sources, caches and failure archives remain unchanged.
+
+[Recovery3](RECOVERY3.md) uses a fresh root and run ID, explicitly prepares the
+five source-declared data links and version metadata, and verifies their source
+origins before launch. It initializes and archives all three pinned dependencies.
+No kernel, package, numerical tolerance or workload change is made. This fixes the
+observed recovery2 preparation omission; it does not establish a fix for recovery1's
+NVSHMEM failure. The new continuation must pass its own real first-case audit.
+
+Only the remaining 14 coordinates / 7,640 requests are scheduled. The two accepted
+recovery1 points retain their original raw bytes, run ID and recipe pin. Final
+16-point acceptance, comparisons with the historical controls and new Pareto plots
+remain pending. The recovery1 preparation commands below describe historical
+setup; use the separate recovery3 guide for the authorized continuation.
+
 ## Authorized MegaMoE follow-up (recovery preparation)
 
 `config-megamoe.env` now overrides the base SGLang pin with rebased

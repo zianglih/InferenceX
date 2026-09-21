@@ -6,6 +6,22 @@
 `nvidia/GLM-5.2-NVFP4`。它独立于当前 AgentX 配置，不恢复已弃用的官方 benchmark
 定义，也不直接发布 dashboard 结果。
 
+## 当前续跑：recovery3
+
+Recovery1 保留了通过审计的 8k1k/TP4 C256、C4 两点（2,600 个请求），随后 C8
+在启动时出现 NVSHMEM 初始化错误，具体原因未明。Recovery2 也未进入 C8 测量：
+新的 FlashInfer clone 遗漏构建阶段生成的 `flashinfer/data` 链接，导致 JIT 找不到
+`fp4Quantize.cpp`。两次尝试的源码、cache、原始记录与失败归档完整保留。
+
+[Recovery3](RECOVERY3_zh.md) 使用新的 root 和 run ID，显式准备上游声明的五个
+资源链接与版本元数据，并在启动前验证实际来源；同时初始化、归档三个固定依赖。
+不改 kernel、软件包、数值容差或 workload。这修复的是已确认的 recovery2 环境准备
+遗漏，不代表已经修复 recovery1 的 NVSHMEM 问题。新的首个实际测点仍需独立审计。
+
+只运行剩余 14 点 / 7,640 个请求；此前两点保留真实 run ID、recipe 和原始文件。
+完整 16 点验收、历史对照比较及新 Pareto 图仍待完成。下文 recovery1 准备命令是
+历史设置说明，当前续跑应使用单独的 recovery3 指南。
+
 ## 已授权的 MegaMoE 后续运行（恢复准备中）
 
 `config-megamoe.env` 现覆盖基础配置中的 SGLang pin，使用 rebase 后的
