@@ -6,6 +6,68 @@ This fork-only experiment carries the archived GLM-5 B300 workload forward to
 `nvidia/GLM-5.2-NVFP4`. It is separate from the current AgentX configurations and
 does not reactivate deprecated benchmark definitions or publish dashboard results.
 
+## Authorized MegaMoE follow-up (preparing)
+
+`config-megamoe.env` now overrides the base SGLang pin with rebased
+[PR #39210](https://github.com/sgl-project/sglang/pull/39210) head
+`6d8a58f177a1488e10e8567a3fa4b4fccd0a26e2`. The integration owner completed final-head unit, native EP4 and model validation.
+The user authorized publishing the new scripts, then running only MegaMoE.
+Full GLM-5.2 MTP serving and performance validation are the purpose of this new run.
+
+The [Docker Hub tags](https://hub.docker.com/r/lmsysorg/sglang/tags) checked on
+2026-09-21 UTC still list `nightly-dev-cu13-20260918-20518d85` as the latest
+CUDA 13 dev nightly supporting linux/amd64. The overlay pins that image's amd64
+manifest `sha256:b518f4f8cd15664cf0f733e9bf4fd2105c9c994882a369b247364394db99f596`.
+The newer `nightly-cu134-20260920-efa7be2` supports arm64 only. Thus the image
+release is unchanged; the SGLang source changes. FlashInfer remains at `ad0a5e5e`.
+
+The authorized follow-up will measure **only the new MegaMoE arm**, then compare
+it with the completed TRT-LLM and CuTe split controls. The user accepts their
+different SGLang/dependency environments; the size of that effect is not yet
+measured. Preserve the original 48-point report separately, and label the new
+comparison with each arm's own pins rather than as an environment-matched or
+kernel-only comparison. DP attention, TP=DP=EP, memory `0.80`, disabled prefill
+graphs, TRT-LLM/none MTP, both workloads and the 16-point matrix remain unchanged.
+
+Use a fresh source checkout, run ID, output directory and `MEGAMOE_CACHE_ROOT`.
+The runner sets `SGLANG_CACHE_DIR=$MEGAMOE_CACHE_ROOT/sglang` and
+`FLASHINFER_WORKSPACE_BASE=$MEGAMOE_CACHE_ROOT`; the overlay explicitly enables
+`SGLANG_FLASHINFER_AUTOTUNE_CACHE=1` for reuse within this new campaign. The new
+adapter's authoritative tactic records live in SGLang's namespaced autotune JSON,
+not the legacy per-TP `knobs.json`. CuTe DSL, CUDA, Torch extensions/Inductor,
+Triton and XDG caches also use explicit subdirectories of this campaign root.
+Mega's own decode/prefill profiles do not
+require `SGLANG_FLASHINFER_AUTOTUNE_EXTEND=1`; that does not establish prefill
+tuning coverage for every other operator or the MTP draft.
+
+The old project setup/launch helpers describe the completed run and must not be
+reused with its old paths or IDs. Actual source imports, dependencies, tuning
+coverage and memory headroom still require new runtime validation. Sourcing this
+overlay selects the new pins; it does not install that stack or start a server.
+
+[`campaign_20260921.py`](campaign_20260921.py) prepares an unused campaign root,
+verifies the existing FI/CuTe stack, and changes only the editable FlashInfer source
+binding without installing dependencies. Run from the published recipe checkout
+on the idle retained node; provide the explicit image/node provenance receipt.
+Review `environment/setup-completed.json` before the separate launch command:
+
+```bash
+python3 experimental/glm52_b300_fixed_seq/campaign_20260921.py prepare \
+  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921 \
+  --recipe-commit "$(git rev-parse HEAD)" \
+  --model-path /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4 \
+  --image-receipt /path/to/image-receipt.json
+python3 /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921/sources/inferencex/experimental/glm52_b300_fixed_seq/campaign_20260921.py launch \
+  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921
+```
+
+The worker records benchmark and overall exit codes separately and archives
+raw/environment/source evidence plus the dedicated cache after the benchmark exits.
+The archive's request/provenance check does not replace the independent runtime
+and tuning audit. `status` reads the launch/exit state; failed evidence is retained.
+
+## Completed baseline
+
 - **Historical W4A4 TRT-LLM reference:** C2 measurement completed on 2026-09-19: all 16 points and
   10,240/10,240 measured requests passed. See [results, charts and runtime limits](results/c2-w4a4-20260919/README.md).
   Retains the original TP4/DP1/EP1 concurrency sweep and TP8/DP1/EP1 concurrency-4 point;
@@ -13,9 +75,9 @@ does not reactivate deprecated benchmark definitions or publish dashboard result
 - **New W4A4 TRT-LLM control:** [`config-trtllm-aligned.env`](config-trtllm-aligned.env)
   aligns DP attention, TP=DP=EP, prefill graphs, draft settings and memory reservation with MegaMoE.
   It retains FlashInfer 0.6.18 and CuTe DSL 4.6.2; its existing 0.80 run is reused unchanged.
-- **Optimized W4A16 MegaMoE:** prepared with the pinned FlashInfer PR #5019 source
-  and a native TRT-LLM BF16 MTP draft. The first memory-fraction-0.85 attempt completed six points, then failed during C256 warmup. The existing complete-matrix attempt uses memory fraction 0.80 and is reused without rerunning points for the third arm. Source
-  [`config-megamoe.env`](config-megamoe.env) after the base config to enable this arm.
+- **Completed W4A16 MegaMoE:** used the pinned FlashInfer PR #5019 source
+  and a native TRT-LLM BF16 MTP draft. The first memory-fraction-0.85 attempt completed six points, then failed during C256 warmup. The complete-matrix run uses memory fraction 0.80 and remains preserved. The current
+  [`config-megamoe.env`](config-megamoe.env) prepares the follow-up above; it no longer reproduces that run's SGLang pin.
 - **W4A16 CuTe DSL split MoE:** [`config-cutedsl.env`](config-cutedsl.env) and
   [`w4a16_cutedsl_mtp.sh`](w4a16_cutedsl_mtp.sh) prepare a separate third arm at
   FlashInfer PR #5319. It sets `SGLANG_FLASHINFER_MOE_FUSED_FINALIZE=0` and
@@ -39,7 +101,7 @@ separate from the optimized run.
 | Field | Value |
 | --- | --- |
 | Image | `lmsysorg/sglang:nightly-dev-cu13-20260918-20518d85` |
-| SGLang | [PR #39210](https://github.com/sgl-project/sglang/pull/39210), `50eeb742961908afa68f4f523a1a19c5de6eb0b3` |
+| SGLang | Base / completed arms: `50eeb742961908afa68f4f523a1a19c5de6eb0b3`; next MegaMoE only: `6d8a58f177a1488e10e8567a3fa4b4fccd0a26e2` ([PR #39210](https://github.com/sgl-project/sglang/pull/39210)) |
 | MegaMoE FlashInfer | [PR #5019](https://github.com/flashinfer-ai/flashinfer/pull/5019), `ad0a5e5e78e57070ec7c582efe733cb55cd8839f`; B300 build target `10.3a` |
 | CuTe DSL FlashInfer | [PR #5319](https://github.com/flashinfer-ai/flashinfer/pull/5319), `f9dd3c10541e087b716772245a9d033499745048`; B300 build target `10.3a` |
 | Model | `nvidia/GLM-5.2-NVFP4` |

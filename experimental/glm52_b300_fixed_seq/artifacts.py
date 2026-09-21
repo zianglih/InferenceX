@@ -1,21 +1,82 @@
 """Record local experiment provenance and enforce complete request counts."""
 
+import hashlib
 import importlib
 import importlib.metadata
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from pathlib import Path
 
 
 def utc_now():
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 def write_json(path, value):
     path.write_text(json.dumps(value, indent=2) + "\n")
+
+
+def snapshot_autotune(case_dir):
+    """Freeze only startup tactic JSON, before benchmark requests can change it."""
+    source = Path(os.environ["SGLANG_CACHE_DIR"]) / "flashinfer" / "autotune"
+    if not source.is_absolute() or not source.is_dir():
+        raise SystemExit(f"Missing absolute startup autotune cache: {source}")
+    if any(p.is_symlink() for p in (source, *source.parents)):
+        raise SystemExit("Autotune cache root must not traverse symbolic links")
+
+    def inventory():
+        paths = []
+        for base, dirs, names in os.walk(source, followlinks=False):
+            for name in dirs + names:
+                entry = Path(base) / name
+                if entry.is_symlink():
+                    raise SystemExit(f"Unexpected autotune cache link: {entry}")
+            for name in names:
+                entry = Path(base) / name
+                if name.endswith(".json"):
+                    if not entry.is_file():
+                        raise SystemExit(f"Unexpected autotune cache entry: {entry}")
+                    paths.append(entry)
+        if not paths or len(paths) > 8192:
+            raise SystemExit(f"Unexpected autotune JSON count: {len(paths)}")
+        if sum(p.stat().st_size for p in paths) > 128 * 1024 * 1024:
+            raise SystemExit("Startup autotune JSON exceeds the 128 MiB snapshot limit")
+        return sorted(paths)
+
+    paths = inventory()
+    records = []
+    for path in paths:
+        raw = path.read_bytes()
+        content = raw.decode("utf-8")
+        json.loads(content)
+        records.append(
+            {
+                "path": str(path.relative_to(source)),
+                "size": len(raw),
+                "sha256": hashlib.sha256(raw).hexdigest(),
+                "content": content,
+            }
+        )
+    if inventory() != paths or any(
+        hashlib.sha256(path.read_bytes()).hexdigest() != record["sha256"]
+        for path, record in zip(paths, records, strict=True)
+    ):
+        raise SystemExit("Autotune cache changed during its pre-benchmark snapshot")
+    document = {
+        "schema_version": 1,
+        "created_at_utc": utc_now(),
+        "cache_root": str(source),
+        "files": records,
+    }
+    destination = case_dir / "autotune_cache.before.json"
+    # Exclusive creation preserves any earlier receipt and fails the case on conflict.
+    with destination.open("x") as stream:
+        json.dump(document, stream, indent=2)
+        stream.write("\n")
+    print(f"Recorded {len(records)} startup tactic JSON files: {destination}")
 
 
 def flashinfer_source_provenance():
@@ -174,7 +235,18 @@ def start(case_dir):
                 for key, value in sorted(os.environ.items())
                 if key.startswith(("SGLANG_", "FLASHINFER_"))
                 or key
-                in ("CUDA_VISIBLE_DEVICES", "PYTHONPATH", "PYTHONNOUSERSITE", "PORT")
+                in (
+                    "CUDA_VISIBLE_DEVICES",
+                    "PYTHONPATH",
+                    "PYTHONNOUSERSITE",
+                    "PORT",
+                    "CUTE_DSL_CACHE_DIR",
+                    "CUDA_CACHE_PATH",
+                    "TORCH_EXTENSIONS_DIR",
+                    "XDG_CACHE_HOME",
+                    "TRITON_CACHE_DIR",
+                    "TORCHINDUCTOR_CACHE_DIR",
+                )
             },
             "parallel_topology": os.environ["PARALLEL_TOPOLOGY"],
             "prefill_cuda_graph_policy": os.environ["PREFILL_CUDA_GRAPH_POLICY"],
@@ -240,6 +312,8 @@ if __name__ == "__main__":
         verify_cutedsl_source()
     elif action == "start":
         start(Path(os.environ["CASE_DIR"]))
+    elif action == "snapshot-autotune":
+        snapshot_autotune(Path(os.environ["CASE_DIR"]))
     elif action == "finish":
         raise SystemExit(finish(Path(os.environ["CASE_DIR"]), int(sys.argv[2])))
     else:

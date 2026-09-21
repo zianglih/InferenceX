@@ -6,6 +6,60 @@
 `nvidia/GLM-5.2-NVFP4`。它独立于当前 AgentX 配置，不恢复已弃用的官方 benchmark
 定义，也不直接发布 dashboard 结果。
 
+## 已授权的 MegaMoE 后续运行（准备中）
+
+`config-megamoe.env` 现覆盖基础配置中的 SGLang pin，使用 rebase 后的
+[PR #39210](https://github.com/sgl-project/sglang/pull/39210) head
+`6d8a58f177a1488e10e8567a3fa4b4fccd0a26e2`。Integration 负责方已完成最终 head 的单测、EP4 native 与模型验证。
+用户已授权先发布新脚本，再单独运行 MegaMoE。完整 GLM-5.2 MTP serving 与性能
+验证由本次新运行完成。
+
+2026-09-21 UTC 核查的 [Docker Hub tags](https://hub.docker.com/r/lmsysorg/sglang/tags)
+中，最新支持 linux/amd64 的 CUDA 13 dev nightly 仍是
+`nightly-dev-cu13-20260918-20518d85`。Overlay 固定其 amd64 manifest
+`sha256:b518f4f8cd15664cf0f733e9bf4fd2105c9c994882a369b247364394db99f596`。
+较新的 `nightly-cu134-20260920-efa7be2` 仅支持 arm64。因此镜像 release 没变，
+更新的是 SGLang 源码；FlashInfer 仍固定为 `ad0a5e5e`。
+
+后续范围是**只测新版 MegaMoE**，与已完成的 TRT-LLM、CuTe split 对照比较。
+用户接受各组 SGLang/依赖环境不同，但差异的影响尚未测量。原 48 点报告独立保留，
+新比较逐组标注 pin，不称为完全一致环境或单独 kernel 的比较。DP attention、
+TP=DP=EP、显存比例 `0.80`、禁用 prefill graph、TRT-LLM/none MTP、
+两个 workload 与 16 点矩阵均保持不变。
+
+使用新的源码 checkout、run ID、输出目录和 `MEGAMOE_CACHE_ROOT`。Runner 设置
+`SGLANG_CACHE_DIR=$MEGAMOE_CACHE_ROOT/sglang` 与
+`FLASHINFER_WORKSPACE_BASE=$MEGAMOE_CACHE_ROOT`；overlay 显式设置
+`SGLANG_FLASHINFER_AUTOTUNE_CACHE=1`，允许本轮内部复用调优结果。新 adapter 的
+tactic 记录位于 SGLang 的 namespaced autotune JSON，而非旧的每 TP `knobs.json`。
+CuTe DSL、CUDA、Torch extensions/Inductor、Triton 与 XDG cache 也显式使用本轮 cache root 下的独立子目录。
+Mega 自身的 decode/prefill profile 不依赖 `SGLANG_FLASHINFER_AUTOTUNE_EXTEND=1`；
+这不代表其他算子或 MTP draft 的 prefill 调优也已覆盖。
+
+旧项目 setup/launch helpers 描述的是已完成运行，不能沿用其旧路径或 run ID
+启动新任务。实际源码 import、依赖兼容、调优覆盖和显存余量仍需新的运行验证。
+Source 此 overlay 只选择新 pin，不会安装依赖或启动 server。
+
+[`campaign_20260921.py`](campaign_20260921.py) 在全新的 campaign root 中准备环境，
+核对已有 FI/CuTe stack，仅切换 FlashInfer editable 源码绑定，不安装依赖。
+在已空闲的保留节点上，从已发布 recipe checkout 运行，并提供明确的镜像/节点来源回执。
+检查 `environment/setup-completed.json` 后，再执行独立的 launch 命令：
+
+```bash
+python3 experimental/glm52_b300_fixed_seq/campaign_20260921.py prepare \
+  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921 \
+  --recipe-commit "$(git rev-parse HEAD)" \
+  --model-path /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4 \
+  --image-receipt /path/to/image-receipt.json
+python3 /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921/sources/inferencex/experimental/glm52_b300_fixed_seq/campaign_20260921.py launch \
+  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921
+```
+
+Worker 分别记录 benchmark 与整体退出码，测量退出后归档原始数据、环境/源码证据和独立 cache。
+归档中的请求数/来源检查不代替独立 runtime 与调优审计。`status` 读取启动/退出状态，失败证据保留。
+
+## 已完成的 baseline
+
 - **历史 W4A4 TRT-LLM 参考：**C2 测量已于 2026-09-19 完成，全部 16 个点和 10,240/10,240 个
   正式请求通过。参见[结果、图表与运行时限制](results/c2-w4a4-20260919/README_zh.md)。
   保留原来的 TP4/DP1/EP1 并发 sweep，以及 TP8/DP1/EP1、并发 4 的点；原始结果不变，
@@ -13,9 +67,9 @@
 - **新增 W4A4 TRT-LLM 对照：**通过 [`config-trtllm-aligned.env`](config-trtllm-aligned.env)
   将 DP attention、TP=DP=EP、prefill graph、draft 设置与显存预留与 MegaMoE 对齐。
   保留 FlashInfer 0.6.18 与 CuTe DSL 4.6.2；复用现有 0.80 运行，不重跑。
-- **优化版 W4A16 MegaMoE：**已准备固定 FlashInfer PR #5019 源码与原生 TRT-LLM
-  BF16 MTP draft。首次显存比例 0.85 的运行完成六个点后，在 C256 warmup 阶段失败；现有完整矩阵运行使用 0.80，新增第三组时复用该运行，不重跑已有点。先 source 基础
-  配置，再 source [`config-megamoe.env`](config-megamoe.env) 启用此方案。
+- **已完成的 W4A16 MegaMoE：**使用固定 FlashInfer PR #5019 源码与原生 TRT-LLM
+  BF16 MTP draft。首次显存比例 0.85 的运行完成六个点后，在 C256 warmup 阶段失败；完整矩阵运行使用 0.80，结果继续保留。当前
+  [`config-megamoe.env`](config-megamoe.env) 准备上述后续运行，已不再使用该历史运行的 SGLang pin。
 - **W4A16 CuTe DSL split MoE：**通过 [`config-cutedsl.env`](config-cutedsl.env) 和
   [`w4a16_cutedsl_mtp.sh`](w4a16_cutedsl_mtp.sh) 准备独立第三组，固定 FlashInfer
   PR #5319，设置 `SGLANG_FLASHINFER_MOE_FUSED_FINALIZE=0` 与
@@ -37,7 +91,7 @@ TRT-LLM、MegaMoE 与 CuTe DSL 的 overlay 均选择 `dp-ep`、`disabled`。
 | 字段 | 值 |
 | --- | --- |
 | 镜像 | `lmsysorg/sglang:nightly-dev-cu13-20260918-20518d85` |
-| SGLang | [PR #39210](https://github.com/sgl-project/sglang/pull/39210)，`50eeb742961908afa68f4f523a1a19c5de6eb0b3` |
+| SGLang | 基础配置 / 已完成各组：`50eeb742961908afa68f4f523a1a19c5de6eb0b3`；仅后续 MegaMoE：`6d8a58f177a1488e10e8567a3fa4b4fccd0a26e2`（[PR #39210](https://github.com/sgl-project/sglang/pull/39210)） |
 | MegaMoE FlashInfer | [PR #5019](https://github.com/flashinfer-ai/flashinfer/pull/5019)，`ad0a5e5e78e57070ec7c582efe733cb55cd8839f`；B300 编译目标 `10.3a` |
 | CuTe DSL FlashInfer | [PR #5319](https://github.com/flashinfer-ai/flashinfer/pull/5319)，`f9dd3c10541e087b716772245a9d033499745048`；B300 编译目标 `10.3a` |
 | 模型 | `nvidia/GLM-5.2-NVFP4` |

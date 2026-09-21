@@ -56,7 +56,20 @@ run_glm52_sweep() {
         export PYTHONPATH="$SGLANG_SOURCE_ROOT/python:$FLASHINFER_SOURCE_ROOT:$REPO_ROOT"
     fi
     if [[ "$backend" == w4a16_megamoe ]]; then
-        check_env_vars MEGAMOE_CACHE_ROOT
+        check_env_vars MEGAMOE_CACHE_ROOT SGLANG_FLASHINFER_AUTOTUNE_CACHE
+        if [[ "$MEGAMOE_CACHE_ROOT" != /* || "$MEGAMOE_CACHE_ROOT" == /workspace || "$MEGAMOE_CACHE_ROOT" == /workspace/* ]]; then
+            echo 'MEGAMOE_CACHE_ROOT must be an absolute path outside /workspace.' >&2
+            return 1
+        fi
+        # The new adapter stores Mega tactics in SGLang's namespaced autotune cache.
+        export SGLANG_CACHE_DIR="$MEGAMOE_CACHE_ROOT/sglang"
+        export FLASHINFER_WORKSPACE_BASE="$MEGAMOE_CACHE_ROOT"
+        export CUTE_DSL_CACHE_DIR="$MEGAMOE_CACHE_ROOT/cute-dsl"
+        export CUDA_CACHE_PATH="$MEGAMOE_CACHE_ROOT/cuda"
+        export TORCH_EXTENSIONS_DIR="$MEGAMOE_CACHE_ROOT/torch-extensions"
+        export TORCHINDUCTOR_CACHE_DIR="$MEGAMOE_CACHE_ROOT/torchinductor"
+        export TRITON_CACHE_DIR="$MEGAMOE_CACHE_ROOT/triton"
+        export XDG_CACHE_HOME="$MEGAMOE_CACHE_ROOT/xdg"
     elif [[ "$backend" == w4a16_cutedsl ]]; then
         check_env_vars CUTEDSL_CACHE_ROOT FLASHINFER_EXPECTED_VERSION CUTE_DSL_EXPECTED_VERSION
         if [[ "$CUTEDSL_CACHE_ROOT" != /* || "$CUTEDSL_CACHE_ROOT" == /workspace || "$CUTEDSL_CACHE_ROOT" == /workspace/* ]]; then
@@ -208,7 +221,16 @@ run_glm52_case() {
             FLASHINFER_CUDA_ARCH_LIST="$FLASHINFER_CUDA_ARCH_LIST")
     fi
     if [[ "$BACKEND" == w4a16_megamoe ]]; then
-        runtime_env+=(FLASHINFER_MOE_EP_KNOB_CACHE="$FLASHINFER_MOE_EP_KNOB_CACHE")
+        runtime_env+=(FLASHINFER_MOE_EP_KNOB_CACHE="$FLASHINFER_MOE_EP_KNOB_CACHE"
+            SGLANG_CACHE_DIR="$SGLANG_CACHE_DIR"
+            SGLANG_FLASHINFER_AUTOTUNE_CACHE="$SGLANG_FLASHINFER_AUTOTUNE_CACHE"
+            FLASHINFER_WORKSPACE_BASE="$FLASHINFER_WORKSPACE_BASE"
+            CUTE_DSL_CACHE_DIR="$CUTE_DSL_CACHE_DIR"
+            CUDA_CACHE_PATH="$CUDA_CACHE_PATH"
+            TORCH_EXTENSIONS_DIR="$TORCH_EXTENSIONS_DIR"
+            TORCHINDUCTOR_CACHE_DIR="$TORCHINDUCTOR_CACHE_DIR"
+            TRITON_CACHE_DIR="$TRITON_CACHE_DIR"
+            XDG_CACHE_HOME="$XDG_CACHE_HOME")
     elif [[ "$BACKEND" == w4a16_cutedsl ]]; then
         runtime_env+=(SGLANG_FLASHINFER_MOE_FUSED_FINALIZE="$SGLANG_FLASHINFER_MOE_FUSED_FINALIZE"
             SGLANG_CACHE_DIR="$SGLANG_CACHE_DIR"
@@ -224,6 +246,9 @@ run_glm52_case() {
     GLM52_SERVER_PID=$!
     wait_for_server_ready --port "$PORT" --server-log "$CASE_DIR/server.log" --server-pid "$GLM52_SERVER_PID"
     curl --fail --silent --show-error "http://127.0.0.1:$PORT/get_server_info" > "$CASE_DIR/server_info.before.json"
+    if [[ "$BACKEND" == w4a16_megamoe ]]; then
+        python3 "$EXPERIMENT_DIR/artifacts.py" snapshot-autotune
+    fi
     run_benchmark_serving "${benchmark_args[@]}" 2>&1 | tee "$CASE_DIR/benchmark.log" || benchmark_rc=$?
     curl --fail --silent --show-error "http://127.0.0.1:$PORT/get_server_info" > "$CASE_DIR/server_info.after.json" || return 1
     return "$benchmark_rc"
