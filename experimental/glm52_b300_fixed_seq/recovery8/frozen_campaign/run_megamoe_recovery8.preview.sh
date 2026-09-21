@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Continue only the fourteen unaccepted coordinates; recovery1 stays immutable.
+set -eo pipefail
+: "${CAMPAIGN_HELPER_ROOT:?Missing reviewed campaign helper root}"
+: "${R8_EXECUTION_LOCK:?Missing execution lock}"
+# This candidate rejects before sourcing recipe or touching model/cache/results.
+python3 "$CAMPAIGN_HELPER_ROOT/campaign.py" --check-execution "$R8_EXECUTION_LOCK"
+EXPERIMENT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+source "$EXPERIMENT_DIR/config.env"
+source "$EXPERIMENT_DIR/config-megamoe.env"
+source "$EXPERIMENT_DIR/common.sh"
+check_env_vars CAMPAIGN_TASK_ROOT CAMPAIGN_MODEL_PATH CAMPAIGN_RECIPE_ROOT CAMPAIGN_RUN_ID
+[[ "$CAMPAIGN_RUN_ID" == c2-w4a16-megamoe-autotune-20260921-recovery8 ]] || exit 1
+[[ "$REPO_ROOT" == "$CAMPAIGN_RECIPE_ROOT" ]] || exit 1
+export REPO_ROOT EXPERIMENT_DIR CAMPAIGN_TASK_ROOT CAMPAIGN_MODEL_PATH CAMPAIGN_RECIPE_ROOT CAMPAIGN_RUN_ID
+export CAMPAIGN_HELPER_ROOT R8_EXECUTION_LOCK
+export R8_CASE_ADAPTER="$CAMPAIGN_HELPER_ROOT/case_entry.py"
+python3 "$CAMPAIGN_HELPER_ROOT/campaign.py" --prepare-native-parents "$CAMPAIGN_TASK_ROOT" --activation "$R8_EXECUTION_LOCK"
+export SGLANG_SOURCE_ROOT="$CAMPAIGN_TASK_ROOT/sources/sglang"
+export FLASHINFER_SOURCE_ROOT="$CAMPAIGN_TASK_ROOT/sources/flashinfer"
+export MEGAMOE_CACHE_ROOT="$CAMPAIGN_TASK_ROOT/caches/megamoe"
+export MODEL_PATH="$CAMPAIGN_MODEL_PATH" OUTPUT_ROOT="$CAMPAIGN_TASK_ROOT/results"
+export RUN_ID="$CAMPAIGN_RUN_ID" HF_HOME="$CAMPAIGN_TASK_ROOT/hf-home"
+export PYTHONUNBUFFERED=1 MAX_JOBS=16 FLASHINFER_NVCC_THREADS=2
+cd "$CAMPAIGN_RECIPE_ROOT"
+export SCENARIOS='8k1k:8192:1024'
+export SWEEP_CASES='4:8 4:16 4:32 4:64 4:128 8:4'
+run_glm52_sweep w4a16_megamoe
+export SCENARIOS='1k1k:1024:1024'
+export SWEEP_CASES='4:256 4:4 4:8 4:16 4:32 4:64 4:128 8:4'
+run_glm52_sweep w4a16_megamoe
