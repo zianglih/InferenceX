@@ -8479,3 +8479,10 @@
     - "Recovery3 continues 14 remaining points under a fresh run identity and reuses the two accepted recovery1 points unchanged. Preserve the recovery1 NVSHMEM startup failure and the separate recovery2 missing-resource failure. Recreate the five upstream-generated FlashInfer data links and build metadata in the new pinned source tree, register and archive all three dependencies, and validate real JIT resource paths before launch. This repairs preparation, not the unestablished NVSHMEM cause; runtime packages, kernels, tolerances and workloads are unchanged. No new performance result is claimed."
     - "Recovery3 使用新的 run identity 继续剩余14点，原 recovery1 两个已验收点保持不变。保留 recovery1 NVSHMEM 启动失败与 recovery2 独立的源码资源缺失失败。在新固定源码目录恢复上游生成的五个 FlashInfer data 链接与 build metadata，注册并归档全部三个依赖，启动前校验真实 JIT 资源路径。此修改修复准备过程，不宣称解决尚未定位的 NVSHMEM 问题；runtime 包、kernel、数值容差和 workload 均不变，不宣称新的性能结果。"
   pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Recovery5 prepares the remaining 14 MegaMoE points on a verified different physical B300 node while retaining the failed node for NVSHMEM diagnostics. Reuse the two accepted recovery1 points unchanged; preserve all recovery1-4 failures. Keep exact image/source/runtime/workload pins, use new source/run/cache roots, and require actual preparation and first-C8 audits. No new performance or root-cause claim."
+    - "Recovery5 在已确认不同的 B300 物理节点准备剩余14个 MegaMoE 测点，原故障节点保留用于 NVSHMEM 诊断。原 recovery1 两个已验收点保持不变，完整保留 recovery1-4 失败。镜像、源码、runtime 与 workload pin 不变，使用新 source/run/cache 目录，仍要求实际准备验收和首个 C8 审计；不宣称新的性能结果或已定位根因。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1

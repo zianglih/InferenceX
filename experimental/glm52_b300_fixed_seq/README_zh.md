@@ -6,21 +6,23 @@
 `nvidia/GLM-5.2-NVFP4`。它独立于当前 AgentX 配置，不恢复已弃用的官方 benchmark
 定义，也不直接发布 dashboard 结果。
 
-## 当前续跑：recovery3
+## 当前续跑：在不同物理节点上运行 recovery5
 
-Recovery1 保留了通过审计的 8k1k/TP4 C256、C4 两点（2,600 个请求），随后 C8
-在启动时出现 NVSHMEM 初始化错误，具体原因未明。Recovery2 也未进入 C8 测量：
-新的 FlashInfer clone 遗漏构建阶段生成的 `flashinfer/data` 链接，导致 JIT 找不到
-`fp4Quantize.cpp`。两次尝试的源码、cache、原始记录与失败归档完整保留。
+[Recovery5](RECOVERY5_zh.md) 在新的 8-B300 节点 `hu-pdx-142` 上运行剩余
+14 点 / 7,640 个请求。原节点 `hu-pdx-126` 保留用于独立的真实权重 NVSHMEM
+诊断。实测两边的驱动与初始完整 package inventory 一致，8 张 GPU 的 UUID
+全部不同。源码、镜像、依赖版本、服务参数与客户端 workload 保持不变；新节点成功
+只能支持进一步调查节点相关因素，不能直接证明根因。
 
-[Recovery3](RECOVERY3_zh.md) 使用新的 root 和 run ID，显式准备上游声明的五个
-资源链接与版本元数据，并在启动前验证实际来源；同时初始化、归档三个固定依赖。
-不改 kernel、软件包、数值容差或 workload。这修复的是已确认的 recovery2 环境准备
-遗漏，不代表已经修复 recovery1 的 NVSHMEM 问题。新的首个实际测点仍需独立审计。
+Recovery1 已验收的 8k1k/TP4 C256、C4 两点（2,600 个请求）保留原始文件和 pin。
+Recovery1、recovery3、recovery4 的 C8 启动失败，以及 recovery2 独立的资源缺失
+失败均完整保留。Recovery4 使用同一物理主机上的干净容器和空 cache，仍出现
+`nvshmem API called before nvshmem_init`，没有产生正式测量结果。
 
-只运行剩余 14 点 / 7,640 个请求；此前两点保留真实 run ID、recipe 和原始文件。
-完整 16 点验收、历史对照比较及新 Pareto 图仍待完成。下文 recovery1 准备命令是
-历史设置说明，当前续跑应使用单独的 recovery3 指南。
+新 bootstrap 与 continuation 使用独立的源码、run、cache identity，复用已审查的
+冻结准备代码；准备阶段不启动服务。实际环境验收与首个 C8 测点独立审计仍然必需。
+完整 16 点及更新后的 48 点 Pareto 对照待完成。下文历史准备命令不得覆盖旧尝试，
+当前续跑请使用 recovery5 指南。
 
 ## 已授权的 MegaMoE 后续运行（恢复准备中）
 

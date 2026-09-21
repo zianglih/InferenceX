@@ -6,26 +6,27 @@ This fork-only experiment carries the archived GLM-5 B300 workload forward to
 `nvidia/GLM-5.2-NVFP4`. It is separate from the current AgentX configurations and
 does not reactivate deprecated benchmark definitions or publish dashboard results.
 
-## Current continuation: recovery3
+## Current continuation: recovery5 on a different physical node
 
-Recovery1 preserved two accepted 8k1k/TP4 points (C256 and C4, 2,600 requests),
-then failed at C8 startup with an unestablished NVSHMEM initialization cause.
-Recovery2 also stopped before C8 measurement: its clean FlashInfer clone omitted
-build-generated `flashinfer/data` links, so JIT could not find `fp4Quantize.cpp`.
-Both attempts and their sources, caches and failure archives remain unchanged.
+[Recovery5](RECOVERY5.md) runs the remaining 14 points / 7,640 requests on a new
+8-B300 node, `hu-pdx-142`. The prior node, `hu-pdx-126`, remains available for
+separate real-weight NVSHMEM diagnostics. Their observed driver and pristine
+package inventories match; all eight GPU UUIDs differ. Sources, image, package
+pins, server settings and client workloads remain fixed. A successful new-node
+run would support further node-specific investigation, not establish root cause.
 
-[Recovery3](RECOVERY3.md) uses a fresh root and run ID, explicitly prepares the
-five source-declared data links and version metadata, and verifies their source
-origins before launch. It initializes and archives all three pinned dependencies.
-No kernel, package, numerical tolerance or workload change is made. This fixes the
-observed recovery2 preparation omission; it does not establish a fix for recovery1's
-NVSHMEM failure. The new continuation must pass its own real first-case audit.
+Recovery1's accepted 8k1k/TP4 C256 and C4 points (2,600 requests) retain their
+original bytes and pins. Recovery1, recovery3 and recovery4 C8 startup failures,
+and recovery2's separate missing-resource failure, remain preserved. Recovery4
+used a fresh container and empty cache on the same physical host and reproduced
+`nvshmem API called before nvshmem_init`; it produced no measured point.
 
-Only the remaining 14 coordinates / 7,640 requests are scheduled. The two accepted
-recovery1 points retain their original raw bytes, run ID and recipe pin. Final
-16-point acceptance, comparisons with the historical controls and new Pareto plots
-remain pending. The recovery1 preparation commands below describe historical
-setup; use the separate recovery3 guide for the authorized continuation.
+The new bootstrap and continuation use exclusive source/run/cache identities and
+the reviewed frozen preparation primitives. Preparation never starts serving.
+Actual environment validation and an independent first-C8 audit remain required.
+Final 16-point acceptance and the refreshed 48-point Pareto comparison are pending.
+Historical setup below must not overwrite an earlier attempt; use the recovery5
+guide for the current continuation.
 
 ## Authorized MegaMoE follow-up (recovery preparation)
 
