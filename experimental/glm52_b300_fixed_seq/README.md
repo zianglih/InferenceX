@@ -6,7 +6,7 @@ This fork-only experiment carries the archived GLM-5 B300 workload forward to
 `nvidia/GLM-5.2-NVFP4`. It is separate from the current AgentX configurations and
 does not reactivate deprecated benchmark definitions or publish dashboard results.
 
-## Authorized MegaMoE follow-up (preparing)
+## Authorized MegaMoE follow-up (recovery preparation)
 
 `config-megamoe.env` now overrides the base SGLang pin with rebased
 [PR #39210](https://github.com/sgl-project/sglang/pull/39210) head
@@ -29,6 +29,13 @@ comparison with each arm's own pins rather than as an environment-matched or
 kernel-only comparison. DP attention, TP=DP=EP, memory `0.80`, disabled prefill
 graphs, TRT-LLM/none MTP, both workloads and the 16-point matrix remain unchanged.
 
+The first new attempt lost its devbox during startup; no completed measurement had
+been verified. The cause is unknown. Preserve that attempt and use a fresh root
+and explicit `--run-id` for recovery. Each finalized, audited point will also be
+compared with the original MegaMoE, Split and TRT-LLM measurements to flag possible
+regressions before the full sweep completes. Partial comparisons remain separate
+from final plots and cannot isolate integration causality across different environments.
+
 Use a fresh source checkout, run ID, output directory and `MEGAMOE_CACHE_ROOT`.
 The runner sets `SGLANG_CACHE_DIR=$MEGAMOE_CACHE_ROOT/sglang` and
 `FLASHINFER_WORKSPACE_BASE=$MEGAMOE_CACHE_ROOT`; the overlay explicitly enables
@@ -48,17 +55,19 @@ overlay selects the new pins; it does not install that stack or start a server.
 [`campaign_20260921.py`](campaign_20260921.py) prepares an unused campaign root,
 verifies the existing FI/CuTe stack, and changes only the editable FlashInfer source
 binding without installing dependencies. Run from the published recipe checkout
-on the idle retained node; provide the explicit image/node provenance receipt.
+on the idle selected node after preparing the pinned dependencies; provide the explicit image/node provenance receipt.
 Review `environment/setup-completed.json` before the separate launch command:
 
 ```bash
 python3 experimental/glm52_b300_fixed_seq/campaign_20260921.py prepare \
-  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921 \
+  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1 \
+  --run-id c2-w4a16-megamoe-autotune-20260921-recovery1 \
   --recipe-commit "$(git rev-parse HEAD)" \
   --model-path /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4 \
   --image-receipt /path/to/image-receipt.json
-python3 /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921/sources/inferencex/experimental/glm52_b300_fixed_seq/campaign_20260921.py launch \
-  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921
+python3 /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/inferencex/experimental/glm52_b300_fixed_seq/campaign_20260921.py launch \
+  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1 \
+  --run-id c2-w4a16-megamoe-autotune-20260921-recovery1
 ```
 
 The worker records benchmark and overall exit codes separately and archives

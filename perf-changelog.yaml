@@ -8465,3 +8465,10 @@
     - "准备仅重跑 MegaMoE 的 GLM-5.2 B300 sweep，固定 rebase 后 SGLang PR 39210 的 6d8a58f177a1488e10e8567a3fa4b4fccd0a26e2，保留 FlashInfer ad0a5e5e、0.80 显存比例、DP attention/MTP 与16点 workload。最新兼容的 CUDA 13 dev nightly 仍为20260918-20518d85，固定其 amd64 digest b518f4f8cd15664cf0f733e9bf4fd2105c9c994882a369b247364394db99f596。"
     - "隔离并记录新版 SGLang namespaced autotune cache；复用各自原环境下已完成的 TRT-LLM 和 CuTe split 结果，原48点报告独立保留。新 serving 性能仍待测量，环境差异的影响未单独隔离。"
   pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Allow an explicit validated run ID for the MegaMoE campaign helper and wrapper. Bind preparation, launch, worker, matrix validation and archives to that ID so recovery from devbox loss preserves the interrupted attempt under its original root. Runtime pins, tuning, request policy and 16-point matrix are unchanged; no new measured result is claimed."
+    - "MegaMoE campaign helper 与 wrapper 支持显式且经过校验的 run ID；准备、启动、worker、矩阵校验和归档均绑定该 ID，在 devbox 丢失后使用新的运行目录恢复，并保留原中断尝试。Runtime pin、调优、请求策略与16点矩阵不变，不宣称新的实测结果。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1

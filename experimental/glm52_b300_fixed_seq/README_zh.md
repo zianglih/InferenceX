@@ -6,7 +6,7 @@
 `nvidia/GLM-5.2-NVFP4`。它独立于当前 AgentX 配置，不恢复已弃用的官方 benchmark
 定义，也不直接发布 dashboard 结果。
 
-## 已授权的 MegaMoE 后续运行（准备中）
+## 已授权的 MegaMoE 后续运行（恢复准备中）
 
 `config-megamoe.env` 现覆盖基础配置中的 SGLang pin，使用 rebase 后的
 [PR #39210](https://github.com/sgl-project/sglang/pull/39210) head
@@ -27,6 +27,11 @@
 TP=DP=EP、显存比例 `0.80`、禁用 prefill graph、TRT-LLM/none MTP、
 两个 workload 与 16 点矩阵均保持不变。
 
+第一次新尝试在启动期间失去 devbox，当时尚无已核验的完整测点，原因未明。
+保留中断尝试，恢复时使用新的 root 并显式传入 `--run-id`。每个已结束并通过审计的
+新测点都会与原 MegaMoE、Split 和 TRT-LLM 对比，提前标出潜在回退；部分结果与
+最终图分开，不把不同环境下的性能变化直接归因于 integration。
+
 使用新的源码 checkout、run ID、输出目录和 `MEGAMOE_CACHE_ROOT`。Runner 设置
 `SGLANG_CACHE_DIR=$MEGAMOE_CACHE_ROOT/sglang` 与
 `FLASHINFER_WORKSPACE_BASE=$MEGAMOE_CACHE_ROOT`；overlay 显式设置
@@ -42,17 +47,19 @@ Source 此 overlay 只选择新 pin，不会安装依赖或启动 server。
 
 [`campaign_20260921.py`](campaign_20260921.py) 在全新的 campaign root 中准备环境，
 核对已有 FI/CuTe stack，仅切换 FlashInfer editable 源码绑定，不安装依赖。
-在已空闲的保留节点上，从已发布 recipe checkout 运行，并提供明确的镜像/节点来源回执。
+在选定且空闲的节点上先准备固定依赖，再从已发布 recipe checkout 运行，并提供明确的镜像/节点来源回执。
 检查 `environment/setup-completed.json` 后，再执行独立的 launch 命令：
 
 ```bash
 python3 experimental/glm52_b300_fixed_seq/campaign_20260921.py prepare \
-  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921 \
+  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1 \
+  --run-id c2-w4a16-megamoe-autotune-20260921-recovery1 \
   --recipe-commit "$(git rev-parse HEAD)" \
   --model-path /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4 \
   --image-receipt /path/to/image-receipt.json
-python3 /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921/sources/inferencex/experimental/glm52_b300_fixed_seq/campaign_20260921.py launch \
-  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921
+python3 /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/inferencex/experimental/glm52_b300_fixed_seq/campaign_20260921.py launch \
+  --task-root /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1 \
+  --run-id c2-w4a16-megamoe-autotune-20260921-recovery1
 ```
 
 Worker 分别记录 benchmark 与整体退出码，测量退出后归档原始数据、环境/源码证据和独立 cache。

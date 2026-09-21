@@ -14,6 +14,8 @@ this script cannot discover a container image digest from inside the container.
 Preparation requires the already installed FI/CuTe stack. Only its editable FI
 source binding changes; no dependencies are installed. Failed preparation is
 retained and refuses retry into the same directory. A launch is never implicit.
+For a replacement campaign, pass a fresh --task-root and --run-id on every action.
+The default run ID retains the original campaign identity; sealed inputs must match.
 """
 
 import argparse
@@ -63,6 +65,17 @@ PACKAGES = (
 
 def now():
     return datetime.now(UTC).isoformat()
+
+
+def validate_run_id(value):
+    if (
+        not isinstance(value, str)
+        or re.fullmatch(r"[a-z0-9][a-z0-9-]{0,127}", value) is None
+    ):
+        raise ValueError(
+            "Run ID must be a lowercase alphanumeric/hyphen slug of 1-128 characters"
+        )
+    return value
 
 
 def sha(path):
@@ -258,6 +271,7 @@ def inventory(root):
 
 
 def prepare(args, root):
+    run_id = validate_run_id(args.run_id)
     if re.fullmatch(r"[0-9a-f]{40}", args.recipe_commit) is None:
         raise ValueError("--recipe-commit must be a full commit SHA")
     image_receipt = json.loads(args.image_receipt.read_text())
@@ -283,7 +297,7 @@ def prepare(args, root):
         "sglang_commit": SG,
         "flashinfer_commit": FI,
         "image": IMAGE,
-        "run_id": RUN_ID,
+        "run_id": run_id,
     }
     write_json(evidence / "inputs.json", inputs)
     shutil.copyfile(__file__, evidence / "preparation-helper.py")
@@ -431,7 +445,8 @@ def prepare(args, root):
     print(json.dumps({"prepared": True, "root": str(root), "launch_performed": False}))
 
 
-def verified_inputs(root):
+def verified_inputs(root, run_id=RUN_ID):
+    validate_run_id(run_id)
     evidence = root / "environment"
     receipt = json.loads((evidence / "setup-completed.json").read_text())
     for relative, record in receipt["files"].items():
@@ -444,7 +459,11 @@ def verified_inputs(root):
         ):
             raise ValueError(f"Preparation evidence changed: {relative}")
     inputs = receipt["inputs"]
-    if inputs["task_root"] != str(root) or inputs["image"] != IMAGE:
+    if (
+        inputs["task_root"] != str(root)
+        or inputs["image"] != IMAGE
+        or inputs["run_id"] != run_id
+    ):
         raise ValueError("Preparation identity mismatch")
     for name, expected in (
         ("sglang", SG),
@@ -458,7 +477,8 @@ def verified_inputs(root):
     return inputs
 
 
-def full_matrix(run, recipe_commit):
+def full_matrix(run, recipe_commit, run_id=RUN_ID):
+    validate_run_id(run_id)
     expected = {
         f"{s}/w4a16-megamoe/tp{tp}_conc{c}": (s, tp, c)
         for s in ("8k1k", "1k1k")
@@ -494,7 +514,7 @@ def full_matrix(run, recipe_commit):
         status = json.loads((case / "status.json").read_text())
         result = json.loads((case / "result.json").read_text())
         fields = {
-            "run_id": RUN_ID,
+            "run_id": run_id,
             "scenario": scenario,
             "backend": "w4a16_megamoe",
             "tp": tp,
@@ -591,15 +611,18 @@ def seal_tar(path, entries):
 
 
 def archive_run(root, inputs, benchmark_code):
+    run_id = validate_run_id(inputs["run_id"])
     idle()
-    run = root / "results" / RUN_ID
+    run = root / "results" / run_id
     complete = (
-        full_matrix(run, inputs["recipe_commit"]) if benchmark_code == 0 else None
+        full_matrix(run, inputs["recipe_commit"], run_id)
+        if benchmark_code == 0
+        else None
     )
     cache = root / "caches/megamoe"
     if not cache.is_dir():
         raise FileNotFoundError(cache)
-    manifest = root / "archives" / f"{RUN_ID}-cache-manifest.json"
+    manifest = root / "archives" / f"{run_id}-cache-manifest.json"
     cache_inventory = inventory(cache)
     external_entries = []
     # This is a preservation archive, never automatically extracted. Link targets
@@ -642,16 +665,16 @@ def archive_run(root, inputs, benchmark_code):
             raise ValueError("Cache changed since its preservation manifest")
     else:
         write_json(manifest, cache_inventory)
-    raw_entries = [(root / "environment", f"{RUN_ID}-environment")]
+    raw_entries = [(root / "environment", f"{run_id}-environment")]
     if run.exists():
-        raw_entries.append((run, RUN_ID))
+        raw_entries.append((run, run_id))
     for suffix in ("launch.json", "launch.log", "benchmark-exit.json"):
-        path = root / "results" / f"{RUN_ID}-{suffix}"
+        path = root / "results" / f"{run_id}-{suffix}"
         if path.exists():
             raw_entries.append((path, path.name))
-    raw = seal_tar(root / "archives" / f"{RUN_ID}-raw.tar.gz", raw_entries)
+    raw = seal_tar(root / "archives" / f"{run_id}-raw.tar.gz", raw_entries)
     caches = seal_tar(
-        root / "archives" / f"{RUN_ID}-caches.tar.gz",
+        root / "archives" / f"{run_id}-caches.tar.gz",
         [(cache, "megamoe"), (manifest, manifest.name), *external_entries],
     )
     result = {
@@ -662,7 +685,7 @@ def archive_run(root, inputs, benchmark_code):
         "caches": caches,
         "cache_manifest_sha256": sha(manifest),
     }
-    receipt = root / "archives" / f"{RUN_ID}-archives.json"
+    receipt = root / "archives" / f"{run_id}-archives.json"
     if receipt.exists():
         previous = json.loads(receipt.read_text())
         for key in ("benchmark_exit_code", "complete_matrix", "cache_manifest_sha256"):
@@ -676,7 +699,8 @@ def archive_run(root, inputs, benchmark_code):
     return result
 
 
-def worker(root):
+def worker(root, run_id=RUN_ID):
+    validate_run_id(run_id)
     result = {"started_at": now(), "exit_code": 1}
     child = None
 
@@ -688,7 +712,7 @@ def worker(root):
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
     try:
-        inputs = verified_inputs(root)
+        inputs = verified_inputs(root, run_id)
         before = json.loads((root / "environment/runtime-after.json").read_text())
         if probe() != before:
             raise ValueError("Runtime drift since preparation")
@@ -705,6 +729,7 @@ def worker(root):
             "CAMPAIGN_TASK_ROOT": str(root),
             "CAMPAIGN_MODEL_PATH": inputs["model_path"],
             "CAMPAIGN_RECIPE_ROOT": str(root / "sources/inferencex"),
+            "CAMPAIGN_RUN_ID": inputs["run_id"],
         }
         child = subprocess.Popen(
             [
@@ -716,7 +741,7 @@ def worker(root):
         rc = child.wait()
         result["benchmark_exit_code"] = rc
         atomic_json(
-            root / "results" / f"{RUN_ID}-benchmark-exit.json",
+            root / "results" / f"{run_id}-benchmark-exit.json",
             {"exit_code": rc, "finished_at": now()},
         )
         result["archives"] = archive_run(root, inputs, rc)
@@ -731,22 +756,30 @@ def worker(root):
                 result["child_cleanup_pending"] = True
     finally:
         result["finished_at"] = now()
-        atomic_json(root / "results" / f"{RUN_ID}-exit.json", result)
+        atomic_json(root / "results" / f"{run_id}-exit.json", result)
     return result["exit_code"]
 
 
-def launch(root):
-    inputs = verified_inputs(root)
+def launch(root, run_id=RUN_ID):
+    inputs = verified_inputs(root, run_id)
     idle()
     results = root / "results"
-    if (results / RUN_ID).exists() or any(results.glob(f"{RUN_ID}-*")):
+    if (results / run_id).exists() or any(results.glob(f"{run_id}-*")):
         raise FileExistsError(
             "Campaign already launched or has partial launch evidence"
         )
     script = root / "sources/inferencex" / RELATIVE / Path(__file__).name
-    with (results / f"{RUN_ID}-launch.log").open("xb") as log:
+    with (results / f"{run_id}-launch.log").open("xb") as log:
         process = subprocess.Popen(
-            [sys.executable, str(script), "worker", "--task-root", str(root)],
+            [
+                sys.executable,
+                str(script),
+                "worker",
+                "--task-root",
+                str(root),
+                "--run-id",
+                run_id,
+            ],
             stdout=log,
             stderr=subprocess.STDOUT,
             stdin=subprocess.DEVNULL,
@@ -760,19 +793,25 @@ def launch(root):
         "helper_sha256": sha(script),
         "inputs": inputs,
     }
-    atomic_json(results / f"{RUN_ID}-launch.json", receipt)
+    atomic_json(results / f"{run_id}-launch.json", receipt)
     print(json.dumps(receipt, indent=2))
 
 
-def status(root):
+def status(root, run_id=RUN_ID):
+    validate_run_id(run_id)
+    inputs = json.loads((root / "environment/setup-completed.json").read_text())[
+        "inputs"
+    ]
+    if inputs["task_root"] != str(root) or inputs["run_id"] != run_id:
+        raise ValueError("Preparation identity mismatch")
     results = root / "results"
     output = {
-        "run_id": RUN_ID,
+        "run_id": run_id,
         "observed_at": now(),
-        "finalized_cases": len(list((results / RUN_ID).rglob("status.json"))),
+        "finalized_cases": len(list((results / run_id).rglob("status.json"))),
     }
     for name in ("launch", "benchmark-exit", "exit"):
-        path = results / f"{RUN_ID}-{name}.json"
+        path = results / f"{run_id}-{name}.json"
         output[name] = json.loads(path.read_text()) if path.is_file() else None
     if output["launch"] and output["exit"] is None:
         pid = output["launch"]["pid"]
@@ -793,6 +832,7 @@ def main():
         "action", choices=("prepare", "launch", "worker", "status", "archive")
     )
     parser.add_argument("--task-root", required=True, type=Path)
+    parser.add_argument("--run-id", default=RUN_ID, type=validate_run_id)
     parser.add_argument("--recipe-commit")
     parser.add_argument("--model-path", type=Path)
     parser.add_argument("--image-receipt", type=Path)
@@ -815,15 +855,15 @@ def main():
             )
         prepare(args, root)
     elif args.action == "launch":
-        launch(root)
+        launch(root, args.run_id)
     elif args.action == "worker":
-        return worker(root)
+        return worker(root, args.run_id)
     elif args.action == "status":
-        status(root)
+        status(root, args.run_id)
     else:
-        inputs = verified_inputs(root)
+        inputs = verified_inputs(root, args.run_id)
         code = json.loads(
-            (root / "results" / f"{RUN_ID}-benchmark-exit.json").read_text()
+            (root / "results" / f"{args.run_id}-benchmark-exit.json").read_text()
         )["exit_code"]
         print(json.dumps(archive_run(root, inputs, code), indent=2))
     return 0
