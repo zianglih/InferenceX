@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status": "NOT_BOUND",
+  "root": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery7",
+  "run_id": "c2-w4a16-megamoe-autotune-20260921-recovery7",
+  "node": {
+    "name": "infx-glm52-stock-0921",
+    "hostname": null,
+    "cluster": "c2",
+    "namespace": "ziangli"
+  },
+  "publication": null,
+  "gate_receipts": {
+    "stock_sg_c8": null,
+    "stock_payload_preservation": null,
+    "source_payload_preservation": null,
+    "bootstrap_acceptance": null,
+    "execution_review": null
+  },
+  "native_binding": null,
+  "selected": null,
+  "prior_owners": null,
+  "base_environment": null,
+  "model_path": null,
+  "reused_raw_root": null,
+  "runtime_guard": null,
+  "sglang_seed": null
+}

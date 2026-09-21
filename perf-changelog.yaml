@@ -8486,3 +8486,10 @@
     - "Recovery5 prepares the remaining 14 MegaMoE points on a verified different physical B300 node while retaining the failed node for NVSHMEM diagnostics. Reuse the two accepted recovery1 points unchanged; preserve all recovery1-4 failures. Keep exact image/source/runtime/workload pins, use new source/run/cache roots, and require actual preparation and first-C8 audits. No new performance or root-cause claim."
     - "Recovery5 在已确认不同的 B300 物理节点准备剩余14个 MegaMoE 测点，原故障节点保留用于 NVSHMEM 诊断。原 recovery1 两个已验收点保持不变，完整保留 recovery1-4 失败。镜像、源码、runtime 与 workload pin 不变，使用新 source/run/cache 目录，仍要求实际准备验收和首个 C8 审计；不宣称新的性能结果或已定位根因。"
   pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Recovery7 prepares the 14 remaining MegaMoE points using SGLang26c4100954 and the unmodified NVSHMEM3.4.5 wheel. The integration supplies narrowly scoped single-node W4A16 proxy-disable defaults; the launcher records all-rank defaults/native origins before clients. Preserve the original workload and two accepted SG6d8 points unchanged, with mixed source/default provenance. Actual startup and first-case acceptance are required; this recipe is not a new performance result."
+    - "Recovery7 使用 SGLang26c4100954 和未修改的 NVSHMEM3.4.5 wheel 准备剩余14点；integration 提供限定单节点 W4A16 的关闭 proxy 默认值，启动器在客户端运行前记录所有 rank 的实际默认值与 native 来源。原 workload 和两个已验收 SG6d8 测点不变，明确混合源码与默认值来源。仍需实际启动和首点验收；脚本本身不是新的性能结果。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
