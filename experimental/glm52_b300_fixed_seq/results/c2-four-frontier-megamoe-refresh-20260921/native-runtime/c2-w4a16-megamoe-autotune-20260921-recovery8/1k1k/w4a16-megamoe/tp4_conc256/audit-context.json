@@ -1,0 +1,164 @@
+{
+  "case": "1k1k/w4a16-megamoe/tp4_conc256",
+  "hook_dir": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8-stage/recovery8/frozen_campaign/frozen_case/frozen",
+  "hostname": "hu-pdx-30",
+  "model_path": "/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4",
+  "native_contract": {
+    "case": "1k1k/w4a16-megamoe/tp4_conc256",
+    "defaults": {
+      "NVSHMEM_DEBUG": "INFO",
+      "NVSHMEM_DISABLE_LOCAL_ONLY_PROXY": "1",
+      "NVSHMEM_IB_ENABLE_IBGDA": "0",
+      "NVSHMEM_REMOTE_TRANSPORT": "none"
+    },
+    "execution_status": "REVIEWED_SUCCESSOR_REQUIRED",
+    "hook_sha256": "3d771b443e741ffaff6f7696578b69e323f96f758af4f1d28f1e9f94cae1d36f",
+    "hostname": "hu-pdx-30",
+    "native_contract_sha256": "e694764564ddfd7178cd57d6aab6c467111bbd3fff7a6039f8811381066f050f",
+    "native_members": {
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_bootstrap_mpi.so.3": {
+        "bytes": 23952,
+        "sha256": "3e74d9a3b5200a2ce2b07fb30e038d540837c0933de2ff236d249d8a67873a27"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_bootstrap_pmi.so.3": {
+        "bytes": 39456,
+        "sha256": "6a36f8359bafce06f795adc5a26f135fc605b0f8a7638123a0fe199ade7282de"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_bootstrap_pmi2.so.3": {
+        "bytes": 54112,
+        "sha256": "d557779ea58feca4e841968ff2921e6836160b30bf249469061c72e25798233f"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_bootstrap_pmix.so.3": {
+        "bytes": 56504,
+        "sha256": "e48719713a8223e3e3c8eb3a949ee9546b94b7d4282c2f1df8eda3ff2168d169"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_bootstrap_shmem.so.3": {
+        "bytes": 19704,
+        "sha256": "3bd997af7faec7fd3b3d3f415fb9d74cf66a5b19bb145ecda09c4fa52f75ecd5"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_transport_ibdevx.so.3": {
+        "bytes": 1042080,
+        "sha256": "a1ed2a6d18bcd56ecbaedbef82cb1de993b16b3597213fb675838852a29a2d5b"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_transport_ibgda.so.3": {
+        "bytes": 1076872,
+        "sha256": "a0189481792c908b10d8c72018ae7e58a0f8f2b3902badfdc18cbde282f4386e"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_transport_ibrc.so.3": {
+        "bytes": 1042816,
+        "sha256": "03e48811b134feb920b0440cf219944876166b8e34877a0f831c660726a13bc1"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_transport_libfabric.so.3": {
+        "bytes": 1026672,
+        "sha256": "539fac610565bb5aad80959715a91de27fc4babb2466c1f163a87171003fe01c"
+      },
+      "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_transport_ucx.so.3": {
+        "bytes": 55912,
+        "sha256": "1c79a8749a2c493f32c60a551ff7947c3c57d8b4e0d77b63f03e1c3d542c12cb"
+      }
+    },
+    "nonce": "f1eb6a72-b753-4452-8da2-3ee28bf6a8ec",
+    "proof_root": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/native-runtime/c2-w4a16-megamoe-autotune-20260921-recovery8/1k1k/w4a16-megamoe/tp4_conc256/proof",
+    "provider_source": {
+      "path": "/opt/sglang/lib/python3.12/site-packages/nvshmem/core/init_fini.py",
+      "sha256": "c1dab3cb1a55254128b6f937c95bcd3c95bfeab48f0bf8efde1f494ce4ace9a8"
+    },
+    "run_id": "c2-w4a16-megamoe-autotune-20260921-recovery8",
+    "runtime_seal_sha256": "b8e6b4a4660c0f9f1f6e70cf4ccb009045447a7a386add969edf44b4febe1dd8",
+    "selected": {
+      "host": {
+        "bytes": 41241312,
+        "resolved_path": "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/libnvshmem_host.so.3",
+        "sha256": "c43004bb93053aa70603a204fe0c9052bdd29f38822d3048599183f8d5930d8f"
+      },
+      "uid": {
+        "bytes": 73704,
+        "resolved_path": "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_bootstrap_uid.so.3",
+        "sha256": "69b2b46a146adec27389c3bbdb46efd3d0853dc32eead1f6e08d6d906ad70c82"
+      }
+    },
+    "selected_prefix": "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem",
+    "source_origins": {
+      "flashinfer": {
+        "path": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/flashinfer/flashinfer/__init__.py",
+        "sha256": "c16462859defd38449f80aa35790f4d3ee71af86a157069838af661a48755857"
+      },
+      "sglang": {
+        "path": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/sglang/python/sglang/__init__.py",
+        "sha256": "0c6bd1b5bc75da013d49d26f7799ca36d682779293405dce1adc193b97a0e6bd"
+      }
+    },
+    "source_pins": {
+      "bootstrap_sglang": "6d8a58f177a1488e10e8567a3fa4b4fccd0a26e2",
+      "flashinfer": "ad0a5e5e78e57070ec7c582efe733cb55cd8839f",
+      "sglang": "26c41009549f9ad407e107b33d5144f6e085418b"
+    },
+    "stock_manifest_sha256": "a439c1cdb802138005dd7d0524f22113dab02f9c01dbabd3b293049c0eff1f4f",
+    "tp": 4
+  },
+  "port": 30000,
+  "producer_hook": {
+    "bytes": 12271,
+    "sha256": "3d771b443e741ffaff6f7696578b69e323f96f758af4f1d28f1e9f94cae1d36f"
+  },
+  "public_environment": {
+    "CUDA_CACHE_PATH": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe/cuda",
+    "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+    "CUTE_DSL_CACHE_DIR": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe/cute-dsl",
+    "FLASHINFER_COMMIT": "ad0a5e5e78e57070ec7c582efe733cb55cd8839f",
+    "FLASHINFER_CUDA_ARCH_LIST": "10.3a",
+    "FLASHINFER_MOE_EP_KNOB_CACHE": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe/tp4/knobs.json",
+    "FLASHINFER_SOURCE_ROOT": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/flashinfer",
+    "FLASHINFER_WORKSPACE_BASE": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe",
+    "LD_LIBRARY_PATH": "/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONPATH": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/sglang/python:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/flashinfer:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/inferencex",
+    "SGLANG_CACHE_DIR": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe/sglang",
+    "SGLANG_ENABLE_JIT_DEEPGEMM": "1",
+    "SGLANG_FLASHINFER_AUTOTUNE_CACHE": "1",
+    "SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16": "1",
+    "SGLANG_FLASHINFER_MEGAMOE_COMBINE_DTYPE": "bf16",
+    "SGLANG_FLASHINFER_MEGAMOE_IN_KERNEL_FC2_REDUCE": "0",
+    "SGLANG_FLASHINFER_NVFP4_PER_TOKEN_ACTIVATION": "0",
+    "TORCHINDUCTOR_CACHE_DIR": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe/torchinductor",
+    "TORCH_EXTENSIONS_DIR": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe/torch-extensions",
+    "TRITON_CACHE_DIR": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe/triton",
+    "XDG_CACHE_HOME": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/caches/megamoe/xdg"
+  },
+  "recipe_commit": "30305fe9594b640116e32161a3e769d4430460fe",
+  "run_id": "c2-w4a16-megamoe-autotune-20260921-recovery8",
+  "runtime": {
+    "completed_timestamp": 1790032554.604113,
+    "inputs": {
+      "model_path": "/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4"
+    },
+    "runtime_versions": {
+      "cuda-bindings": "13.4.2",
+      "cuda-core": "1.2.0",
+      "cuda-python": "13.4.1",
+      "cupti-python": "13.2.0",
+      "flashinfer-cubin": null,
+      "flashinfer-jit-cache": null,
+      "flashinfer-python": "0.7.0",
+      "nccl-extensions": "0.1.0",
+      "nvidia-cuda-cupti": "13.2.86",
+      "nvidia-cutlass-dsl": "4.7.1",
+      "nvidia-cutlass-dsl-libs-base": "4.7.1",
+      "nvidia-cutlass-dsl-libs-core": "4.7.1",
+      "nvidia-cutlass-dsl-libs-cu12": "4.7.1",
+      "nvidia-cutlass-dsl-libs-cu13": "4.7.1",
+      "nvidia-nccl-cu13": "2.30.7",
+      "sglang-kernel": "0.4.7",
+      "torch": "2.13.0+cu130",
+      "transformers": "5.12.1",
+      "triton": "3.7.1"
+    }
+  },
+  "schema_version": 2,
+  "setup_seal": {
+    "bytes": 34729,
+    "sha256": "b8e6b4a4660c0f9f1f6e70cf4ccb009045447a7a386add969edf44b4febe1dd8"
+  },
+  "status": "DECLARED_AUDIT_INPUTS_NOT_ENVIRONMENT_ACCEPTANCE",
+  "task_root": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8"
+}

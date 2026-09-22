@@ -1,0 +1,23 @@
+{
+  "at": 1790038927.3307123,
+  "birth": {
+    "pgid": 57010,
+    "pid": 57010,
+    "ppid": 51076,
+    "sid": 57010,
+    "starttime": 313724217,
+    "state": "R"
+  },
+  "known": {
+    "57010": {
+      "pgid": 57010,
+      "pid": 57010,
+      "ppid": 51076,
+      "sid": 57010,
+      "starttime": 313724217,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 57010
+}

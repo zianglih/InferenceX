@@ -1,0 +1,23 @@
+{
+  "at": 1790036684.2233539,
+  "birth": {
+    "pgid": 45102,
+    "pid": 45102,
+    "ppid": 40866,
+    "sid": 45102,
+    "starttime": 313499906,
+    "state": "R"
+  },
+  "known": {
+    "45102": {
+      "pgid": 45102,
+      "pid": 45102,
+      "ppid": 40866,
+      "sid": 45102,
+      "starttime": 313499906,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 45102
+}

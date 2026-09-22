@@ -1,0 +1,57 @@
+{
+  "members": {
+    "lib/libnvshmem_host.so.3": {
+      "bytes": 41241312,
+      "sha256": "c43004bb93053aa70603a204fe0c9052bdd29f38822d3048599183f8d5930d8f"
+    },
+    "lib/nvshmem_bootstrap_mpi.so.3": {
+      "bytes": 23952,
+      "sha256": "3e74d9a3b5200a2ce2b07fb30e038d540837c0933de2ff236d249d8a67873a27"
+    },
+    "lib/nvshmem_bootstrap_pmi.so.3": {
+      "bytes": 39456,
+      "sha256": "6a36f8359bafce06f795adc5a26f135fc605b0f8a7638123a0fe199ade7282de"
+    },
+    "lib/nvshmem_bootstrap_pmi2.so.3": {
+      "bytes": 54112,
+      "sha256": "d557779ea58feca4e841968ff2921e6836160b30bf249469061c72e25798233f"
+    },
+    "lib/nvshmem_bootstrap_pmix.so.3": {
+      "bytes": 56504,
+      "sha256": "e48719713a8223e3e3c8eb3a949ee9546b94b7d4282c2f1df8eda3ff2168d169"
+    },
+    "lib/nvshmem_bootstrap_shmem.so.3": {
+      "bytes": 19704,
+      "sha256": "3bd997af7faec7fd3b3d3f415fb9d74cf66a5b19bb145ecda09c4fa52f75ecd5"
+    },
+    "lib/nvshmem_bootstrap_uid.so.3": {
+      "bytes": 73704,
+      "sha256": "69b2b46a146adec27389c3bbdb46efd3d0853dc32eead1f6e08d6d906ad70c82"
+    },
+    "lib/nvshmem_transport_ibdevx.so.3": {
+      "bytes": 1042080,
+      "sha256": "a1ed2a6d18bcd56ecbaedbef82cb1de993b16b3597213fb675838852a29a2d5b"
+    },
+    "lib/nvshmem_transport_ibgda.so.3": {
+      "bytes": 1076872,
+      "sha256": "a0189481792c908b10d8c72018ae7e58a0f8f2b3902badfdc18cbde282f4386e"
+    },
+    "lib/nvshmem_transport_ibrc.so.3": {
+      "bytes": 1042816,
+      "sha256": "03e48811b134feb920b0440cf219944876166b8e34877a0f831c660726a13bc1"
+    },
+    "lib/nvshmem_transport_libfabric.so.3": {
+      "bytes": 1026672,
+      "sha256": "539fac610565bb5aad80959715a91de27fc4babb2466c1f163a87171003fe01c"
+    },
+    "lib/nvshmem_transport_ucx.so.3": {
+      "bytes": 55912,
+      "sha256": "1c79a8749a2c493f32c60a551ff7947c3c57d8b4e0d77b63f03e1c3d542c12cb"
+    }
+  },
+  "selected": {
+    "host": "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/libnvshmem_host.so.3",
+    "plugin": "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem/lib/nvshmem_bootstrap_uid.so.3",
+    "prefix": "/opt/sglang/lib/python3.12/site-packages/nvidia/nvshmem"
+  }
+}

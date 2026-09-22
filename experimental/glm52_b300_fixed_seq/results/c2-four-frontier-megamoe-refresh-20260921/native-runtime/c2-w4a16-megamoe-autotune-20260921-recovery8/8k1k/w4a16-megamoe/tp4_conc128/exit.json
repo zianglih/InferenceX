@@ -1,0 +1,106 @@
+{
+  "at": 1790038280.24671,
+  "benchmark_exit": 0,
+  "cleanup": [
+    {
+      "birth": {
+        "pgid": 50914,
+        "pid": 50914,
+        "ppid": 46027,
+        "sid": 50914,
+        "starttime": 313658792,
+        "state": "R"
+      },
+      "cleanup_pending": false,
+      "errors": [],
+      "label": "server-info-after",
+      "leader_pid": 50914,
+      "remaining": [],
+      "returncode": 0
+    },
+    {
+      "birth": {
+        "pgid": 49878,
+        "pid": 49878,
+        "ppid": 46027,
+        "sid": 49878,
+        "starttime": 313588899,
+        "state": "R"
+      },
+      "cleanup_pending": false,
+      "errors": [],
+      "label": "benchmark",
+      "leader_pid": 49878,
+      "remaining": [],
+      "returncode": 0
+    },
+    {
+      "birth": {
+        "pgid": 49877,
+        "pid": 49877,
+        "ppid": 46027,
+        "sid": 49877,
+        "starttime": 313588851,
+        "state": "R"
+      },
+      "cleanup_pending": false,
+      "errors": [],
+      "label": "snapshot-autotune",
+      "leader_pid": 49877,
+      "remaining": [],
+      "returncode": 0
+    },
+    {
+      "birth": {
+        "pgid": 49876,
+        "pid": 49876,
+        "ppid": 46027,
+        "sid": 49876,
+        "starttime": 313588780,
+        "state": "R"
+      },
+      "cleanup_pending": false,
+      "errors": [],
+      "label": "server-info-before",
+      "leader_pid": 49876,
+      "remaining": [],
+      "returncode": 0
+    },
+    {
+      "birth": {
+        "pgid": 46260,
+        "pid": 46260,
+        "ppid": 46027,
+        "sid": 46260,
+        "starttime": 313545574,
+        "state": "R"
+      },
+      "cleanup_pending": false,
+      "errors": [],
+      "label": "readiness",
+      "leader_pid": 46260,
+      "remaining": [],
+      "returncode": 0
+    },
+    {
+      "birth": {
+        "pgid": 23591,
+        "pid": 46259,
+        "ppid": 46027,
+        "sid": 23591,
+        "starttime": 313545573,
+        "state": "R"
+      },
+      "cleanup_pending": false,
+      "errors": [],
+      "label": "server",
+      "leader_pid": 46259,
+      "remaining": [],
+      "returncode": -9
+    }
+  ],
+  "error": null,
+  "exit_code": 0,
+  "native_after": true,
+  "status": "CASE_PHASES_COMPLETED"
+}

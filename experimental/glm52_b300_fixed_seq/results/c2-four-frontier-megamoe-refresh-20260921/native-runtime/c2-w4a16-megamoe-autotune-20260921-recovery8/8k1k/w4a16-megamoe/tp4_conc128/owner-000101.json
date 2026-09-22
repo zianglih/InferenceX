@@ -1,0 +1,23 @@
+{
+  "at": 1790037572.9608867,
+  "birth": {
+    "pgid": 49876,
+    "pid": 49876,
+    "ppid": 46027,
+    "sid": 49876,
+    "starttime": 313588780,
+    "state": "R"
+  },
+  "known": {
+    "49876": {
+      "pgid": 49876,
+      "pid": 49876,
+      "ppid": 46027,
+      "sid": 49876,
+      "starttime": 313588780,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 49876
+}

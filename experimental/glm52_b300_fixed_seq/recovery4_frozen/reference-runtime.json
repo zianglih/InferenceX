@@ -1,0 +1,30 @@
+{
+  "gpu": "name, uuid, driver_version, memory.total [MiB]\nNVIDIA B300 SXM6 AC, GPU-6cf38cbd-1d3c-762d-0eeb-23a100b9957e, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-087b80ea-bf85-5eab-b2d7-dcbd48b8a04d, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-7161944d-a424-7cf8-fab4-3c558b36cc4b, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-77cd824e-de9a-07f2-4265-6ced60a9fafc, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-afaf753d-48bf-a4e3-3429-63cf47520cb2, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-e57116b5-f481-8ec6-f998-67abc57dc8b5, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-2d93ae19-4023-3d65-ddf9-5faf95b43128, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-5607426e-64c2-b183-4cf8-f44edb595c11, 590.48.01, 275040 MiB",
+  "nccl": [
+    2,
+    29,
+    7
+  ],
+  "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0",
+  "torch_cuda": "13.0",
+  "torch_import": "/opt/sglang/lib/python3.12/site-packages/torch/__init__.py",
+  "versions": {
+    "cuda-bindings": "13.4.2",
+    "cuda-core": "1.2.0",
+    "cuda-python": "13.4.1",
+    "flashinfer-cubin": null,
+    "flashinfer-jit-cache": null,
+    "flashinfer-python": "0.7.0",
+    "nccl-extensions": "0.1.0",
+    "nvidia-cutlass-dsl": "4.7.1",
+    "nvidia-cutlass-dsl-libs-base": "4.7.1",
+    "nvidia-cutlass-dsl-libs-core": "4.7.1",
+    "nvidia-cutlass-dsl-libs-cu12": "4.7.1",
+    "nvidia-cutlass-dsl-libs-cu13": "4.7.1",
+    "nvidia-nccl-cu13": "2.30.7",
+    "sglang-kernel": "0.4.7",
+    "torch": "2.13.0+cu130",
+    "transformers": "5.12.1",
+    "triton": "3.7.1"
+  }
+}

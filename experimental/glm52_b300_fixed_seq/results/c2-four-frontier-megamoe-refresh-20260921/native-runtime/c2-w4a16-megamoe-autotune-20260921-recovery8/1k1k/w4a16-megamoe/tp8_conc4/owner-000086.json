@@ -1,0 +1,23 @@
+{
+  "at": 1790043662.4868867,
+  "birth": {
+    "pgid": 93366,
+    "pid": 93366,
+    "ppid": 88172,
+    "sid": 93366,
+    "starttime": 314197732,
+    "state": "R"
+  },
+  "known": {
+    "93366": {
+      "pgid": 93366,
+      "pid": 93366,
+      "ppid": 88172,
+      "sid": 93366,
+      "starttime": 314197732,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 93366
+}

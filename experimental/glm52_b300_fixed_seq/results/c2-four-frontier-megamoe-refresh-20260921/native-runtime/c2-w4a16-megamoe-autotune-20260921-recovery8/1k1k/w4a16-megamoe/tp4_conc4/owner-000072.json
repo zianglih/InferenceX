@@ -1,0 +1,23 @@
+{
+  "at": 1790040304.859366,
+  "birth": {
+    "pgid": 65245,
+    "pid": 65245,
+    "ppid": 62562,
+    "sid": 65245,
+    "starttime": 313861970,
+    "state": "R"
+  },
+  "known": {
+    "65245": {
+      "pgid": 65245,
+      "pid": 65245,
+      "ppid": 62562,
+      "sid": 65245,
+      "starttime": 313861970,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 65245
+}

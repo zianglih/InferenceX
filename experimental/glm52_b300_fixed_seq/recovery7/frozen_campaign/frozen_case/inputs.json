@@ -1,0 +1,84 @@
+{
+  "files": {
+    "artifacts/megamoe-recovery6-candidate-parent-independent-review/REVIEW.json": {
+      "bytes": 12850,
+      "sha256": "dff064040170fa1dcab27b311d302ac1f886bc0cfa5d19444f0c7316cf69d1db"
+    },
+    "inferencex/benchmarks/benchmark_lib.sh": {
+      "bytes": 131664,
+      "sha256": "305a5cc1f29e17b18e43cbdbb21761bd72497e08720159397b7daafddbf0cea4"
+    },
+    "inferencex/experimental/glm52_b300_fixed_seq/artifacts.py": {
+      "bytes": 12236,
+      "sha256": "fb44ffd02e98e8b4b76589d9a158a6dad4cb6447d73f3a6ab7ecbf0e793bd1bd"
+    },
+    "inferencex/experimental/glm52_b300_fixed_seq/common.sh": {
+      "bytes": 13533,
+      "sha256": "fc1bad0736dc3136c0ef28d8cd497db12e7d2c9b28e969ffcf9efdb8a14b6d1b"
+    },
+    "inferencex/experimental/glm52_b300_fixed_seq/run_megamoe_recovery3.sh": {
+      "bytes": 1064,
+      "sha256": "ae96cbb490c9b57dd74016a19552ae0a8bcff6b08df630613313282b75ccaa38"
+    },
+    "recovery7/stock-native.json": {
+      "bytes": 2160,
+      "copy": "frozen/stock-native.json",
+      "sha256": "a439c1cdb802138005dd7d0524f22113dab02f9c01dbabd3b293049c0eff1f4f"
+    },
+    "recovery7/stock.py": {
+      "bytes": 7324,
+      "copy": "frozen/stock.py",
+      "sha256": "3c85e3bef23c7fcf7636db98b12d9f37135e4a127a9365f86bf45cf7ab04bce7"
+    },
+    "setup/megamoe_recovery6_candidate/audit_native.py": {
+      "ancestor_descriptor": {
+        "bytes": 5395,
+        "sha256": "5a935a59bc0c5526756b00c42b0082cb2934a7f0248be022bac9e35958c5f173"
+      },
+      "bytes": 5490,
+      "copy": "frozen/audit_native.py",
+      "sha256": "3a08db1f950ec9e665ee77ac36ee061411383ccee29fda0bd9e8f1a0d1de3589",
+      "successor_copy": true
+    },
+    "setup/megamoe_recovery6_candidate/candidate.json": {
+      "ancestor_descriptor": {
+        "bytes": 5159,
+        "sha256": "ce1a56199fadc0e708584e200103988f7f45c2de2f6218e55ab2f5bb14287ad0"
+      },
+      "bytes": 5070,
+      "copy": "frozen/candidate.json",
+      "sha256": "2c10ef28214713e06bee130ec6da8d1188cc614f00d903074f52e8e884b20444",
+      "successor_copy": true
+    },
+    "setup/megamoe_recovery6_candidate/natural_proof.py": {
+      "ancestor_descriptor": {
+        "bytes": 10787,
+        "sha256": "76680314b578e8afd1cf5793572ffd74d6ec30edc30d4c5bb6db23121f6f95a3"
+      },
+      "bytes": 12271,
+      "copy": "frozen/natural_proof.py",
+      "sha256": "c24e7c31ec99762f016b9c4894429d7ffee7cdc75224522fac2595af13f41652",
+      "successor_copy": true
+    },
+    "setup/megamoe_recovery6_candidate/producer.py": {
+      "ancestor_descriptor": {
+        "bytes": 9516,
+        "sha256": "a439bbf8f436f4b82acd22fc4f1776501b8b527848c4194e16c657926e822cb3"
+      },
+      "bytes": 7895,
+      "copy": "frozen/producer.py",
+      "sha256": "01156521f9016c87408cd48538daa9c1f1497e438f7364b4626f9bc14c5a0804",
+      "successor_copy": true
+    },
+    "setup/megamoe_recovery6_candidate/sitecustomize.py": {
+      "ancestor_descriptor": {
+        "bytes": 197,
+        "sha256": "b648b8838c92bdb7758ae50ad22bc01ece8b9b954eced5fe28d48eb9f9967dff"
+      },
+      "bytes": 197,
+      "copy": "frozen/sitecustomize.py",
+      "sha256": "524594987f6bdea3335f3a80a5dff295d0228a014beb182d104021d31e1fd7cf",
+      "successor_copy": true
+    }
+  }
+}

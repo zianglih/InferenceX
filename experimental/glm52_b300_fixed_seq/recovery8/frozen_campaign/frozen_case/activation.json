@@ -1,0 +1,9 @@
+{
+  "status": "NOT_EXECUTION_READY",
+  "resource": null,
+  "source_runtime_seal": null,
+  "patched_c8_acceptance": null,
+  "native_binary_payload_acceptance": null,
+  "publication": null,
+  "execution_review": null
+}

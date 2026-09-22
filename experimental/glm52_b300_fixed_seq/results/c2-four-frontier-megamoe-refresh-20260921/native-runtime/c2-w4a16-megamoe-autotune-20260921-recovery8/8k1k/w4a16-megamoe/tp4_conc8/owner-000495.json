@@ -1,0 +1,23 @@
+{
+  "at": 1790034911.0704145,
+  "birth": {
+    "pgid": 29896,
+    "pid": 29896,
+    "ppid": 24200,
+    "sid": 29896,
+    "starttime": 313322591,
+    "state": "R"
+  },
+  "known": {
+    "29896": {
+      "pgid": 29896,
+      "pid": 29896,
+      "ppid": 24200,
+      "sid": 29896,
+      "starttime": 313322591,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 29896
+}

@@ -1,0 +1,23 @@
+{
+  "at": 1790041341.6456742,
+  "birth": {
+    "pgid": 74944,
+    "pid": 74944,
+    "ppid": 70868,
+    "sid": 74944,
+    "starttime": 313965648,
+    "state": "R"
+  },
+  "known": {
+    "74944": {
+      "pgid": 74944,
+      "pid": 74944,
+      "ppid": 70868,
+      "sid": 74944,
+      "starttime": 313965648,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 74944
+}

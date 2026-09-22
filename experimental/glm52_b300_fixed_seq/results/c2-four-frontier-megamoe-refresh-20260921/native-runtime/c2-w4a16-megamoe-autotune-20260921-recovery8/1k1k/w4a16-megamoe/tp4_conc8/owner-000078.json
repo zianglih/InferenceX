@@ -1,0 +1,23 @@
+{
+  "at": 1790040736.499817,
+  "birth": {
+    "pgid": 69587,
+    "pid": 69587,
+    "ppid": 66213,
+    "sid": 69587,
+    "starttime": 313905134,
+    "state": "R"
+  },
+  "known": {
+    "69587": {
+      "pgid": 69587,
+      "pid": 69587,
+      "ppid": 66213,
+      "sid": 69587,
+      "starttime": 313905134,
+      "state": "R"
+    }
+  },
+  "label": "snapshot-autotune",
+  "pid": 69587
+}

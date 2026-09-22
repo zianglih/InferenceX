@@ -1,0 +1,26 @@
+--- common.sh (frozen)
++++ common.sh (disabled per-case candidate)
+@@ -236,22 +236,8 @@
+             SGLANG_CACHE_DIR="$SGLANG_CACHE_DIR"
+             FLASHINFER_WORKSPACE_BASE="$FLASHINFER_WORKSPACE_BASE")
+     fi
+-    write_command "$CASE_DIR/server_command.sh" env "${runtime_env[@]}" "${server_args[@]}"
+-    write_command "$CASE_DIR/benchmark_command.sh" env PYTHONPATH="$PYTHONPATH" EVAL_ONLY=false PROFILE=0 \
+-        bash -c 'source "$1"; shift; run_benchmark_serving "$@"' _ \
+-        "$REPO_ROOT/benchmarks/benchmark_lib.sh" "${benchmark_args[@]}"
+-
+     start_gpu_monitor --output "$CASE_DIR/gpu_metrics.csv"
+-    setsid "${server_args[@]}" > "$CASE_DIR/server.log" 2>&1 &
+-    GLM52_SERVER_PID=$!
+-    wait_for_server_ready --port "$PORT" --server-log "$CASE_DIR/server.log" --server-pid "$GLM52_SERVER_PID"
+-    curl --fail --silent --show-error "http://127.0.0.1:$PORT/get_server_info" > "$CASE_DIR/server_info.before.json"
+-    if [[ "$BACKEND" == w4a16_megamoe ]]; then
+-        python3 "$EXPERIMENT_DIR/artifacts.py" snapshot-autotune
+-    fi
+-    run_benchmark_serving "${benchmark_args[@]}" 2>&1 | tee "$CASE_DIR/benchmark.log" || benchmark_rc=$?
+-    curl --fail --silent --show-error "http://127.0.0.1:$PORT/get_server_info" > "$CASE_DIR/server_info.after.json" || return 1
+-    return "$benchmark_rc"
++    python3 "$R6_CASE_ADAPTER" --case-from-environment --activation "$R6_EXECUTION_LOCK"
+ }
+ 
+ finish_glm52_case() {

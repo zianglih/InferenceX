@@ -1,0 +1,23 @@
+{
+  "at": 1790043664.1330512,
+  "birth": {
+    "pgid": 93367,
+    "pid": 93367,
+    "ppid": 88172,
+    "sid": 93367,
+    "starttime": 314197897,
+    "state": "R"
+  },
+  "known": {
+    "93367": {
+      "pgid": 93367,
+      "pid": 93367,
+      "ppid": 88172,
+      "sid": 93367,
+      "starttime": 314197897,
+      "state": "R"
+    }
+  },
+  "label": "snapshot-autotune",
+  "pid": 93367
+}

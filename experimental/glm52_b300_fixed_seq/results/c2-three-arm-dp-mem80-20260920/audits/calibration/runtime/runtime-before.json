@@ -1,0 +1,40 @@
+{
+  "versions": {
+    "sglang": "0.0.0.dev1+g20518d851",
+    "sglang-kernel": "0.4.7",
+    "flashinfer-python": "0.6.18",
+    "flashinfer-cubin": "0.6.18",
+    "flashinfer-jit-cache": "0.6.18+cu130",
+    "torch": "2.13.0+cu130",
+    "triton": "3.7.1",
+    "transformers": "5.12.1",
+    "setuptools": "84.0.0",
+    "packaging": "26.3",
+    "apache-tvm-ffi": "0.1.11",
+    "ninja": "1.13.2",
+    "nvidia-cutlass-dsl": "4.6.2",
+    "nvidia-cutlass-dsl-libs-base": "4.6.2",
+    "nvidia-cutlass-dsl-libs-core": "4.6.2",
+    "nvidia-cutlass-dsl-libs-cu12": "4.6.2",
+    "nvidia-cutlass-dsl-libs-cu13": "4.6.2",
+    "nvshmem4py-cu13": "0.3.1",
+    "nvidia-nvshmem-cu13": "3.4.5",
+    "cuda-python": "13.4.1",
+    "cuda-bindings": "13.4.2",
+    "cuda-core": "1.2.0",
+    "nccl-extensions": null,
+    "nccl4py": "0.5.0",
+    "cuda-tile": "1.6.0rc5",
+    "nvidia-cudnn-frontend": "1.29.0",
+    "nvidia-nccl-cu13": "2.30.7"
+  },
+  "torch_import": "/opt/sglang/lib/python3.12/site-packages/torch/__init__.py",
+  "torch_cuda": "13.0",
+  "nccl": [
+    2,
+    29,
+    7
+  ],
+  "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0\n",
+  "gpu": "name, uuid, driver_version, memory.total [MiB]\nNVIDIA B300 SXM6 AC, GPU-d93d350c-cee3-9958-efbc-858df8ae6900, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-ece6550f-030d-daf2-0d1e-3cf9a64bc867, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-954444e1-e6fc-84d7-fa69-3f79cff93803, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-fb8676be-04ce-2d25-09b4-c3395627db23, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-0cfac2c1-90d6-e3ef-e0fe-a28e4a738ff5, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-9fd08ab3-c47b-f8bd-65e3-fe7d2e2e9598, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-720d81f6-3495-c524-093c-27bc96bfb72d, 590.48.01, 275040 MiB\nNVIDIA B300 SXM6 AC, GPU-f2c25b02-738b-cbbe-29d2-30f6e323f282, 590.48.01, 275040 MiB\n"
+}

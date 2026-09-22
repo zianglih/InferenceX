@@ -1,0 +1,182 @@
+{
+  "activation.template.json": {
+    "bytes": 733,
+    "sha256": "d55318154fced82ea62a8ecf9a43239b9471c85243c36c653c614ae3568f850d"
+  },
+  "case_entry.py": {
+    "bytes": 491,
+    "sha256": "41f2cd2ddb851d6326b763534ab1cee19df96bbc73855a0e013116b5d6d38916"
+  },
+  "cli.py": {
+    "bytes": 3206,
+    "sha256": "a0975e9414b8e47d087a8e4b92b672d521cbc5459424359be3297724bc3a4121"
+  },
+  "core.py": {
+    "bytes": 25033,
+    "sha256": "f8d205cc69dee42d587a9defffdb45b67d395b633589a3662a5c2f7346981c26"
+  },
+  "final_join.py": {
+    "bytes": 11507,
+    "sha256": "ef11daa2ee4cc661cafbc01e2318f56d8624c50568792ce316002d04ea52c793"
+  },
+  "frozen_campaign/README.md": {
+    "bytes": 293,
+    "sha256": "ac02838aab8a242fcfe0ebd51ce4f1f34eb681ae052e199f341507fc5f0ccaa4"
+  },
+  "frozen_campaign/activation.json": {
+    "bytes": 255,
+    "sha256": "6524cf3f95a92ed408987c628803e1157a185e1924f6629594be408d4987ed99"
+  },
+  "frozen_campaign/campaign.py": {
+    "bytes": 10074,
+    "sha256": "6493e15be1c778b3914a2746cf002e94c5e1ed813d516f6cfa58000449e29528"
+  },
+  "frozen_campaign/case_entry.py": {
+    "bytes": 164,
+    "sha256": "0a1d717679ca58def0a7303cf97b72bc6c5257807068f2e97a7878e8f48ff83f"
+  },
+  "frozen_campaign/common.preview.sh": {
+    "bytes": 12587,
+    "sha256": "13d3a5578458990985adf48c613f74aff4b6d7bf1cc98d65b2834e626ed8c88b"
+  },
+  "frozen_campaign/entrypoint.delta": {
+    "bytes": 1415,
+    "sha256": "b2abba0571b0ddda55b560517e0cf83e24a788e2e2afec14eb717e1eaaddec30"
+  },
+  "frozen_campaign/frozen_case/README.md": {
+    "bytes": 293,
+    "sha256": "ac02838aab8a242fcfe0ebd51ce4f1f34eb681ae052e199f341507fc5f0ccaa4"
+  },
+  "frozen_campaign/frozen_case/activation.json": {
+    "bytes": 217,
+    "sha256": "a9e16d622e9e267fdfeb554384a47256be74dcada773a9a57561b11a1fa68c54"
+  },
+  "frozen_campaign/frozen_case/case_adapter.py": {
+    "bytes": 18628,
+    "sha256": "2224b0cb6e2af55608e67684f6aef1f1c38d00669af160e7767330de19fd857c"
+  },
+  "frozen_campaign/frozen_case/common.preview.sh": {
+    "bytes": 12587,
+    "sha256": "13d3a5578458990985adf48c613f74aff4b6d7bf1cc98d65b2834e626ed8c88b"
+  },
+  "frozen_campaign/frozen_case/frozen/audit_native.py": {
+    "bytes": 5490,
+    "sha256": "3a08db1f950ec9e665ee77ac36ee061411383ccee29fda0bd9e8f1a0d1de3589"
+  },
+  "frozen_campaign/frozen_case/frozen/candidate.json": {
+    "bytes": 5070,
+    "sha256": "67c56f9529c1be1ee1a3d295dbdc19c54432e4bb50dcc3ae269263ca0d7310e3"
+  },
+  "frozen_campaign/frozen_case/frozen/natural_proof.py": {
+    "bytes": 12271,
+    "sha256": "3d771b443e741ffaff6f7696578b69e323f96f758af4f1d28f1e9f94cae1d36f"
+  },
+  "frozen_campaign/frozen_case/frozen/producer.py": {
+    "bytes": 7895,
+    "sha256": "51822d2b3409a685de5c49a4e4b4959a606eb12643981d169d806455d340ff4f"
+  },
+  "frozen_campaign/frozen_case/frozen/sitecustomize.py": {
+    "bytes": 197,
+    "sha256": "177fc688f27df12ef4d2ec5c3227fcf1f7a7e1c7711b87450d8cdbb912bd1649"
+  },
+  "frozen_campaign/frozen_case/frozen/stock-native.json": {
+    "bytes": 2160,
+    "sha256": "a439c1cdb802138005dd7d0524f22113dab02f9c01dbabd3b293049c0eff1f4f"
+  },
+  "frozen_campaign/frozen_case/frozen/stock.py": {
+    "bytes": 7324,
+    "sha256": "a777d61430848caafe4ca9abaebfad7e953c3723a261f9aabbd416b69ec63e5e"
+  },
+  "frozen_campaign/frozen_case/inputs.json": {
+    "bytes": 3219,
+    "sha256": "726a0b358e7bea038bfd9bb777b33e26e54b23f65baa762acb9dfb80c1507714"
+  },
+  "frozen_campaign/frozen_case/owned.py": {
+    "bytes": 7385,
+    "sha256": "7401dd93ce07fad2e84b9e379340e2cb7906ee56c4a173f54da0771a1d5a9c84"
+  },
+  "frozen_campaign/frozen_case/recipe_delta.patch": {
+    "bytes": 1443,
+    "sha256": "bea08ad011c0d1a5f7ab92321629610399f5e830ee7717e6cbfb560e2f22a50b"
+  },
+  "frozen_campaign/frozen_case/recipe_delta.py": {
+    "bytes": 984,
+    "sha256": "12c995cc9d2d159fce984fb630617ffbf06afcf3915884eac6cd295bda4dca86"
+  },
+  "frozen_campaign/inputs.json": {
+    "bytes": 6605,
+    "sha256": "f8614d14af836e950c0e3e223311f06810dd0bcd3f868fa1d2d763f0d38de1cb"
+  },
+  "frozen_campaign/recipe/common.sh": {
+    "bytes": 13533,
+    "sha256": "fc1bad0736dc3136c0ef28d8cd497db12e7d2c9b28e969ffcf9efdb8a14b6d1b"
+  },
+  "frozen_campaign/recipe/config-megamoe.env": {
+    "bytes": 1132,
+    "sha256": "734321c42e3b634503c8071e4bd47650fd0882b9e115b123d56189f85d3e268b"
+  },
+  "frozen_campaign/recipe/config.env": {
+    "bytes": 1031,
+    "sha256": "af420cd68a57107961e2dbba0ba5e608b9b4d9aa6f82081c07a66f9a8de217d2"
+  },
+  "frozen_campaign/recipe/run_megamoe_recovery3.sh": {
+    "bytes": 1064,
+    "sha256": "ae96cbb490c9b57dd74016a19552ae0a8bcff6b08df630613313282b75ccaa38"
+  },
+  "frozen_campaign/render_recipe.py": {
+    "bytes": 1896,
+    "sha256": "9401c74da140bb041327cacd40224d8e9a2b46e6b2471b5ccd4bfbff8977e9f7"
+  },
+  "frozen_campaign/reuse.json": {
+    "bytes": 4989,
+    "sha256": "2f3ccb31296bf146e115dcc9af4a6a0a432f5235734eff8d5fcc1d64c06d012b"
+  },
+  "frozen_campaign/run_megamoe_recovery8.preview.sh": {
+    "bytes": 1823,
+    "sha256": "8c17fa80ae189621f9c94617d3e9b953c560049845daa3211b3ca0510bbda078"
+  },
+  "lifecycle.py": {
+    "bytes": 9863,
+    "sha256": "86dcd0dacab3982066523f981120d3c13244597fe8658fc6b87fb9f19a16fa65"
+  },
+  "owned_history.py": {
+    "bytes": 8981,
+    "sha256": "80f0011f89f74e02875c171c5cf5091d2ceeed30f6c0d299a75d8c45106425b2"
+  },
+  "owner_ledger.py": {
+    "bytes": 8579,
+    "sha256": "5e1e9a5b7ce9debf0af8e4a4dc108ba1b70c984640754992821d427eb8d5c033"
+  },
+  "primitive-lock.json": {
+    "bytes": 807,
+    "sha256": "30690d00ee4a2034d9ee1dab0cd252ff384514a11373bc3ff19fa7961ccac6b6"
+  },
+  "primitives/archive.py": {
+    "bytes": 31560,
+    "sha256": "a3d0490a474897b25eece24fe6e89d8e3ca5a43b2ed5177ca5e43aab8ec9135a"
+  },
+  "primitives/checkpoint.py": {
+    "bytes": 23847,
+    "sha256": "ebeb67415bee4613c104b2ea9b933ee4f0a6da0fe52d07790ad2d27aef083822"
+  },
+  "primitives/guard.py": {
+    "bytes": 10597,
+    "sha256": "de74cde9169ced69a5a4db99a8bc670729b7f6644cd1e4cf7bce49326be76f13"
+  },
+  "primitives/layout.py": {
+    "bytes": 20352,
+    "sha256": "5a90a63f157a81ce9ebda5aed0806cc692b57efb030a992f07e47c9fe93c2011"
+  },
+  "publication/common-recovery8.sh": {
+    "bytes": 12920,
+    "sha256": "dd783f056366fe24d3939b8969f1f9b43029c395005f11cab074f53e37da2444"
+  },
+  "publication/run_megamoe_recovery8.sh": {
+    "bytes": 1947,
+    "sha256": "4bc539877e94b981e85192aed0f51b514195f5343d397a78ddd58a80f7f0358f"
+  },
+  "stock-native.json": {
+    "bytes": 2160,
+    "sha256": "a439c1cdb802138005dd7d0524f22113dab02f9c01dbabd3b293049c0eff1f4f"
+  }
+}

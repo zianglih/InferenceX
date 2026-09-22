@@ -1,0 +1,23 @@
+{
+  "at": 1790042551.788914,
+  "birth": {
+    "pgid": 83527,
+    "pid": 83527,
+    "ppid": 79334,
+    "sid": 83527,
+    "starttime": 314086662,
+    "state": "R"
+  },
+  "known": {
+    "83527": {
+      "pgid": 83527,
+      "pid": 83527,
+      "ppid": 79334,
+      "sid": 83527,
+      "starttime": 314086662,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 83527
+}

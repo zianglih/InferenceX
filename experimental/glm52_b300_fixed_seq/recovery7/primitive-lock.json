@@ -1,0 +1,22 @@
+{
+  "archive.py": {
+    "bytes": 31560,
+    "sha256": "a3d0490a474897b25eece24fe6e89d8e3ca5a43b2ed5177ca5e43aab8ec9135a",
+    "source": "inferencex/experimental/glm52_b300_fixed_seq/campaign_20260921.py"
+  },
+  "checkpoint.py": {
+    "bytes": 23847,
+    "sha256": "ebeb67415bee4613c104b2ea9b933ee4f0a6da0fe52d07790ad2d27aef083822",
+    "source": "setup/recovery4_frozen/bootstrap_megamoe_recovery1.py"
+  },
+  "guard.py": {
+    "bytes": 10597,
+    "sha256": "de74cde9169ced69a5a4db99a8bc670729b7f6644cd1e4cf7bce49326be76f13",
+    "source": "setup/nvshmem_real_c8_d8_nvdiag/preflight.py"
+  },
+  "layout.py": {
+    "bytes": 20352,
+    "sha256": "5a90a63f157a81ce9ebda5aed0806cc692b57efb030a992f07e47c9fe93c2011",
+    "source": "inferencex/experimental/glm52_b300_fixed_seq/continue_megamoe_recovery3.py"
+  }
+}

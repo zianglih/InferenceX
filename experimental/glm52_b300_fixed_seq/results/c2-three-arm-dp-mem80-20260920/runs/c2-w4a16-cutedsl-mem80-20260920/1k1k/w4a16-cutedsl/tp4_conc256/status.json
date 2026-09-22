@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "exit_code": 0,
+  "expected": 2560,
+  "completed": 2560,
+  "failed": 0,
+  "finished_at": "2026-09-20T15:47:15.924558+00:00",
+  "benchmark_outcome": {
+    "status": "passed",
+    "requested": 2560,
+    "completed": 2560,
+    "failed": 0,
+    "max_failure_rate": 0.05
+  }
+}

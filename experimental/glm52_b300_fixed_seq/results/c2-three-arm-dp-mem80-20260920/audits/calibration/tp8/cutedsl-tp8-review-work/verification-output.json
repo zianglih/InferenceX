@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "review_status": "passed",
+  "issue_count": 0,
+  "issues": [],
+  "created_at": "2026-09-20T15:39:47.221074+00:00",
+  "case": "8k1k/w4a16-cutedsl/tp8_conc4",
+  "run_id": "c2-w4a16-cutedsl-mem80-20260920",
+  "raw_file_sha256": {
+    "result.json": "ce9110452b1f46d78d204f8914cf599f1a1dda82e964f5d585486de0515d043d",
+    "benchmark.log": "fd22252cc05857979d89d4c23b5f886ca0cc617b5d43723c958d67c4513a8f39",
+    "metadata.json": "0af75be6e1650490d3e841d4ff6f43f4b49220787b92cbbd7b0271bf631eee13",
+    "status.json": "aed7c6ac8318ed65434031573b42a5d27ab4e21109d8b12d02113162249d1e7a",
+    "server_command.sh": "d7c301e751ec17fb8e9ee26251e5901eab588045ada7ef4141d67180f5ff54d1",
+    "benchmark_command.sh": "9a0c6a4a6a79c05fa40cf5579397155fab98a7ae941b34bfedc537605c5c210b",
+    "server_info.before.json": "4a59344bc36c3dd2a072393bc1d7ebdc153c86bade3e58e1249fe9d56f1d2514",
+    "server_info.after.json": "a200c14a2840f2e0f18914654c730f3097d7c32d63742cac80fb9f80c166cdc5",
+    "packages.json": "e1dcab7b0f6c7466331c0198f1d8cb06178e3f145d58d4c44fc11f83ecac83dd",
+    "nvidia-smi.txt": "e388334aa3cbfab76318797996b3b56aed8ab186bde3e70181be5406a65eb691",
+    "server.log": "7068a3c631346d6edc8c4a5cd56b52ee35b49795aa614bfe8cedb71bdce89918",
+    "gpu_metrics.csv": "a16eccd206580ba39a5269757cda98906a02f0b2b4061f583a87dc401bddabd4",
+    "gpu_metrics_identity.csv": "e6e91a5a3e5145703666a8216f6dc03a730376bc7f8972ebcf74c4b61f0664f5"
+  },
+  "runtime_receipt_sha256": {
+    "runtime-before.json": "eb59e4ef095825d16f8a1ad06e8262af11a83cea0f75295664ae3dc7b34680b2",
+    "runtime-after.json": "9dfec69076c193c6182c9880cda5420a6621fc1a515bb227e9978792dc854b2d",
+    "packages-before.txt": "daf2f918c4d87a4086274d9ac916771d14a2d7e3bf1fbbbe447623f343fb6232",
+    "packages-after.txt": "92500c18a8e99ee7674020f7a8fdf67e82424dfc590b89588f9669f7c089112a",
+    "pip-check-before.txt": "76647019eb884e09e2526a382998bc8d80f6432ec6fae12c54ef3ce47da21aaa",
+    "pip-check-after.txt": "3979603ecea611e442f757c799ea81613208a1d9726d417ef88c7d715afddaf0",
+    "source-imports.json": "337c9c2f9826951933e149bcdc7426bb897905996d6630c5cd7acc95864b7e28",
+    "setup-completed.json": "8ac8ddf18f2d872ea46481bfc301865024d839ee0171ad7351e4fd8e2d320d97"
+  },
+  "pins": {
+    "inferencex_commit": "3433a0c1169a6b162edf91c7ea193196c08a6386",
+    "sglang_commit": "50eeb742961908afa68f4f523a1a19c5de6eb0b3",
+    "flashinfer_commit": "f9dd3c10541e087b716772245a9d033499745048",
+    "mem_fraction_static": 0.8,
+    "model_revision": "53e0691e21895a3863a606dfd12910c69eba94ab",
+    "image": "lmsysorg/sglang:nightly-dev-cu13-20260918-20518d85"
+  },
+  "normalized_settings": {
+    "tp_size": 8,
+    "dp_size": 8,
+    "ep_size": 8,
+    "enable_dp_attention": true,
+    "max_running_requests": 8,
+    "chunked_prefill_size": 4096,
+    "mem_fraction_static": 0.8,
+    "moe_runner_backend": "flashinfer_cutedsl",
+    "moe_a2a_backend": "none",
+    "speculative_moe_runner_backend": "flashinfer_trtllm",
+    "speculative_moe_a2a_backend": "none",
+    "speculative_draft_model_quantization": "modelopt_fp4",
+    "_speculative_draft_quantization_explicitly_set": false,
+    "cuda_graph_backend_prefill": "disabled",
+    "configured_decode_max_bs": 4,
+    "actual_capture_max": 1
+  },
+  "independent_state_checks": {
+    "before": [
+      {
+        "response_index": 0,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": null
+      },
+      {
+        "response_index": 1,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": null
+      },
+      {
+        "response_index": 2,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": null
+      },
+      {
+        "response_index": 3,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": null
+      },
+      {
+        "response_index": 4,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": null
+      },
+      {
+        "response_index": 5,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": null
+      },
+      {
+        "response_index": 6,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": null
+      },
+      {
+        "response_index": 7,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": null
+      }
+    ],
+    "after": [
+      {
+        "response_index": 0,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": 3.0026041666666665
+      },
+      {
+        "response_index": 1,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": 2.9885869565217393
+      },
+      {
+        "response_index": 2,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": 2.897448979591837
+      },
+      {
+        "response_index": 3,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": 3.1277173913043477
+      },
+      {
+        "response_index": 4,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": 3.0733333333333333
+      },
+      {
+        "response_index": 5,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": 3.002659574468085
+      },
+      {
+        "response_index": 6,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": 3.0988372093023258
+      },
+      {
+        "response_index": 7,
+        "world_size": 8,
+        "effective_max_running_requests_per_dp": 1,
+        "avg_spec_accept_length": 2.8255208333333335
+      }
+    ]
+  },
+  "measured_counts": {
+    "requested": 40,
+    "completed": 40,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "measurement": {
+    "duration": 86.41708802198991,
+    "total_input_tokens": 294170,
+    "total_output_tokens": 36805,
+    "output_throughput": 425.8995627188283,
+    "total_token_throughput": 3829.971682403592,
+    "request_throughput": 0.4628714171648725,
+    "median_tpot_ms": 8.597220336384785
+  },
+  "measured_start_utc": "2026-09-20T15:31:54.450646+00:00",
+  "measured_end_utc": "2026-09-20T15:33:20.867735+00:00",
+  "output_tokens_per_second_per_gpu": 53.23744533985354,
+  "interactivity": 116.31666525607622,
+  "graph_log_counts_by_phase": {
+    "before:Prefill:False": 25,
+    "before:Decode:True": 63,
+    "boundary:Decode:True": 3,
+    "measured:Prefill:False": 80,
+    "measured:Decode:True": 306
+  },
+  "diagnostic_counts_by_phase": {
+    "untimed:warning": 1,
+    "before:warning": 33,
+    "before:cutedsl_w4a16": 6,
+    "before:bf16_trtllm": 20,
+    "after:sigterm": 1,
+    "after:sigquit": 2
+  },
+  "diagnostic_evidence": [
+    {
+      "line": 991,
+      "phase": "after",
+      "tag": "sigterm",
+      "text": "[2026-09-20 15:33:22] SIGTERM received. signum=None frame=None. Draining requests and shutting down..."
+    },
+    {
+      "line": 992,
+      "phase": "after",
+      "tag": "sigquit",
+      "text": "[2026-09-20 15:33:22] Subprocess scheduler_0 (pid=168915) crashed with exit code -15. Triggering SIGQUIT for cleanup..."
+    },
+    {
+      "line": 993,
+      "phase": "after",
+      "tag": "sigquit",
+      "text": "[2026-09-20 15:33:22] SIGQUIT received. signum=None, frame=None. It usually means one child failed."
+    }
+  ],
+  "actual_capture_evidence": [
+    {
+      "line": 303,
+      "kind": "target verify",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:46 DP3 TP3 EP3] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=52.75 GB"
+    },
+    {
+      "line": 304,
+      "kind": "target verify",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:46 DP0 TP0 EP0] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=52.87 GB"
+    },
+    {
+      "line": 305,
+      "kind": "target verify",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:46 DP1 TP1 EP1] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=52.75 GB"
+    },
+    {
+      "line": 306,
+      "kind": "target verify",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:46 DP5 TP5 EP5] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=52.75 GB"
+    },
+    {
+      "line": 307,
+      "kind": "target verify",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:46 DP4 TP4 EP4] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=52.75 GB"
+    },
+    {
+      "line": 308,
+      "kind": "target verify",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:46 DP2 TP2 EP2] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=52.75 GB"
+    },
+    {
+      "line": 309,
+      "kind": "target verify",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:46 DP7 TP7 EP7] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=53.37 GB"
+    },
+    {
+      "line": 310,
+      "kind": "target verify",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:46 DP6 TP6 EP6] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=52.75 GB"
+    },
+    {
+      "line": 321,
+      "kind": "draft decode",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:30:49 DP0 TP0 EP0] Capture draft decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1], avail mem=52.68 GB"
+    },
+    {
+      "line": 370,
+      "kind": "draft extend",
+      "buckets": [
+        1
+      ],
+      "text": "[2026-09-20 15:31:04 DP0 TP0 EP0] Capture draft extend CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=52.57 GB"
+    }
+  ],
+  "transfer_identity": {
+    "path": "/Users/ziangli/playground/projects/inferencex-glm52-b300-config-audit/artifacts/measured/c2-w4a16-cutedsl-mem80-20260920-completed-20260920T153612Z.tar.gz",
+    "sha256": "6a558cfb5c0d620468194ec37290b954904ac8247f63884d2de0a5d91c9ec037",
+    "receipt_sha256": "fcd25ea90e7fb5869dd3d721777ce724ec5e1e27e09268e6037992796dce6066"
+  },
+  "setup_review_identity": {
+    "path": "cutedsl-first-case-independent-review.json",
+    "sha256": "285050d54496413d73c17d3c49e604aa0e42664f5346e840f662610c2a07d5e8"
+  },
+  "review_scope": "Independent direct raw/command/state/log/package/receipt and collector hash review; imports no auditor code. TP8/C4 only; not a full-sweep or quality claim."
+}

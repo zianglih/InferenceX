@@ -1,0 +1,211 @@
+{
+  "activation": {
+    "environment": null,
+    "execution_review": null,
+    "published_recipe": null,
+    "source_layout": null,
+    "stock_c8": null,
+    "stock_payload": null
+  },
+  "autotune_extend_override": null,
+  "execution_status": "NOT_EXECUTION_READY",
+  "final_archive_native_payloads_required": true,
+  "flashinfer_commit": "ad0a5e5e78e57070ec7c582efe733cb55cd8839f",
+  "native_proof_binds_original_raw14": true,
+  "native_proof_namespace": "<task_root>/native-runtime/<run_id>/<case>",
+  "remaining": [
+    {
+      "case": "8k1k/w4a16-megamoe/tp4_conc8",
+      "concurrency": 8,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 8192,
+      "output_len": 1024,
+      "requests": 80,
+      "scenario": "8k1k",
+      "server_max_running_requests": 8,
+      "tp": 4
+    },
+    {
+      "case": "8k1k/w4a16-megamoe/tp4_conc16",
+      "concurrency": 16,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 8192,
+      "output_len": 1024,
+      "requests": 160,
+      "scenario": "8k1k",
+      "server_max_running_requests": 16,
+      "tp": 4
+    },
+    {
+      "case": "8k1k/w4a16-megamoe/tp4_conc32",
+      "concurrency": 32,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 8192,
+      "output_len": 1024,
+      "requests": 320,
+      "scenario": "8k1k",
+      "server_max_running_requests": 32,
+      "tp": 4
+    },
+    {
+      "case": "8k1k/w4a16-megamoe/tp4_conc64",
+      "concurrency": 64,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 8192,
+      "output_len": 1024,
+      "requests": 640,
+      "scenario": "8k1k",
+      "server_max_running_requests": 64,
+      "tp": 4
+    },
+    {
+      "case": "8k1k/w4a16-megamoe/tp4_conc128",
+      "concurrency": 128,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 8192,
+      "output_len": 1024,
+      "requests": 1280,
+      "scenario": "8k1k",
+      "server_max_running_requests": 128,
+      "tp": 4
+    },
+    {
+      "case": "8k1k/w4a16-megamoe/tp8_conc4",
+      "concurrency": 4,
+      "dp": 8,
+      "ep": 8,
+      "input_len": 8192,
+      "output_len": 1024,
+      "requests": 40,
+      "scenario": "8k1k",
+      "server_max_running_requests": 8,
+      "tp": 8
+    },
+    {
+      "case": "1k1k/w4a16-megamoe/tp4_conc256",
+      "concurrency": 256,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 1024,
+      "output_len": 1024,
+      "requests": 2560,
+      "scenario": "1k1k",
+      "server_max_running_requests": 256,
+      "tp": 4
+    },
+    {
+      "case": "1k1k/w4a16-megamoe/tp4_conc4",
+      "concurrency": 4,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 1024,
+      "output_len": 1024,
+      "requests": 40,
+      "scenario": "1k1k",
+      "server_max_running_requests": 4,
+      "tp": 4
+    },
+    {
+      "case": "1k1k/w4a16-megamoe/tp4_conc8",
+      "concurrency": 8,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 1024,
+      "output_len": 1024,
+      "requests": 80,
+      "scenario": "1k1k",
+      "server_max_running_requests": 8,
+      "tp": 4
+    },
+    {
+      "case": "1k1k/w4a16-megamoe/tp4_conc16",
+      "concurrency": 16,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 1024,
+      "output_len": 1024,
+      "requests": 160,
+      "scenario": "1k1k",
+      "server_max_running_requests": 16,
+      "tp": 4
+    },
+    {
+      "case": "1k1k/w4a16-megamoe/tp4_conc32",
+      "concurrency": 32,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 1024,
+      "output_len": 1024,
+      "requests": 320,
+      "scenario": "1k1k",
+      "server_max_running_requests": 32,
+      "tp": 4
+    },
+    {
+      "case": "1k1k/w4a16-megamoe/tp4_conc64",
+      "concurrency": 64,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 1024,
+      "output_len": 1024,
+      "requests": 640,
+      "scenario": "1k1k",
+      "server_max_running_requests": 64,
+      "tp": 4
+    },
+    {
+      "case": "1k1k/w4a16-megamoe/tp4_conc128",
+      "concurrency": 128,
+      "dp": 4,
+      "ep": 4,
+      "input_len": 1024,
+      "output_len": 1024,
+      "requests": 1280,
+      "scenario": "1k1k",
+      "server_max_running_requests": 128,
+      "tp": 4
+    },
+    {
+      "case": "1k1k/w4a16-megamoe/tp8_conc4",
+      "concurrency": 4,
+      "dp": 8,
+      "ep": 8,
+      "input_len": 1024,
+      "output_len": 1024,
+      "requests": 40,
+      "scenario": "1k1k",
+      "server_max_running_requests": 8,
+      "tp": 8
+    }
+  ],
+  "resources": {
+    "host": null,
+    "model_path": null,
+    "namespace": null,
+    "node": null,
+    "recipe_commit": null,
+    "runtime_seal": null,
+    "source_roots": null,
+    "task_root": null
+  },
+  "reuse": {
+    "cases": [
+      "8k1k/w4a16-megamoe/tp4_conc256",
+      "8k1k/w4a16-megamoe/tp4_conc4"
+    ],
+    "manifest_sha256": "2f3ccb31296bf146e115dcc9af4a6a0a432f5235734eff8d5fcc1d64c06d012b",
+    "native_provenance": "original-wheel; not patched",
+    "raw_file_count": 28,
+    "requests": 2600,
+    "run_id": "c2-w4a16-megamoe-autotune-20260921-recovery1"
+  },
+  "run_id": "c2-w4a16-megamoe-autotune-20260921-recovery8",
+  "schema_version": 1,
+  "sglang_commit": "26c41009549f9ad407e107b33d5144f6e085418b",
+  "source_input_manifest": "source-inputs.json"
+}

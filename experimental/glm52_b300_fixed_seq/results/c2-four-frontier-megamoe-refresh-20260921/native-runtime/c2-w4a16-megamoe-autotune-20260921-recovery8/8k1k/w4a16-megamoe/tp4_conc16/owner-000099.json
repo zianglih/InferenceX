@@ -1,0 +1,23 @@
+{
+  "at": 1790035511.1132388,
+  "birth": {
+    "pgid": 35975,
+    "pid": 35975,
+    "ppid": 30052,
+    "sid": 35975,
+    "starttime": 313382595,
+    "state": "R"
+  },
+  "known": {
+    "35975": {
+      "pgid": 35975,
+      "pid": 35975,
+      "ppid": 30052,
+      "sid": 35975,
+      "starttime": 313382595,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 35975
+}

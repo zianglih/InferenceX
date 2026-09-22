@@ -1,0 +1,23 @@
+{
+  "at": 1790038273.081349,
+  "birth": {
+    "pgid": 50914,
+    "pid": 50914,
+    "ppid": 46027,
+    "sid": 50914,
+    "starttime": 313658792,
+    "state": "R"
+  },
+  "known": {
+    "50914": {
+      "pgid": 50914,
+      "pid": 50914,
+      "ppid": 46027,
+      "sid": 50914,
+      "starttime": 313658792,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 50914
+}

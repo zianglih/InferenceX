@@ -1,0 +1,23 @@
+{
+  "at": 1790038820.1322298,
+  "birth": {
+    "pgid": 56589,
+    "pid": 56589,
+    "ppid": 51076,
+    "sid": 56589,
+    "starttime": 313713497,
+    "state": "R"
+  },
+  "known": {
+    "56589": {
+      "pgid": 56589,
+      "pid": 56589,
+      "ppid": 51076,
+      "sid": 56589,
+      "starttime": 313713497,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 56589
+}

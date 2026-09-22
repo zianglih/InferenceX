@@ -1,0 +1,55 @@
++ run_server_client env PYTHONPATH=/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/inferencex:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/sglang/python:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/flashinfer:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/inferencex python3 -m infx.bench_serving.benchmark_serving --model nvidia/GLM-5.2-NVFP4 --backend vllm --base-url http://0.0.0.0:30000 --dataset-name random --random-input-len 8192 --random-output-len 1024 --random-range-ratio 0.8 --num-prompts 40 --max-concurrency 4 --request-rate inf --ignore-eos --save-result --num-warmups 8 --percentile-metrics ttft,tpot,itl,e2el --result-dir /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/results/c2-w4a16-megamoe-autotune-20260921-recovery1/8k1k/w4a16-megamoe/tp4_conc4 --result-filename result.json --use-chat-template --tokenizer /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4
++ [[ -n /tmp/inferencex-server-state.QEYIJu ]]
++ PYTHONPATH=/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/inferencex:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/sglang/python:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/flashinfer:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/inferencex
++ python3 -m infx.bench_serving.server_watch run --state /tmp/inferencex-server-state.QEYIJu -- env PYTHONPATH=/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/inferencex:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/sglang/python:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/flashinfer:/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/sources/inferencex python3 -m infx.bench_serving.benchmark_serving --model nvidia/GLM-5.2-NVFP4 --backend vllm --base-url http://0.0.0.0:30000 --dataset-name random --random-input-len 8192 --random-output-len 1024 --random-range-ratio 0.8 --num-prompts 40 --max-concurrency 4 --request-rate inf --ignore-eos --save-result --num-warmups 8 --percentile-metrics ttft,tpot,itl,e2el --result-dir /data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/results/c2-w4a16-megamoe-autotune-20260921-recovery1/8k1k/w4a16-megamoe/tp4_conc4 --result-filename result.json --use-chat-template --tokenizer /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4
+Namespace(backend='vllm', base_url='http://0.0.0.0:30000', host='127.0.0.1', port=8000, endpoint='/v1/completions', dataset_name='random', dataset_path=None, max_concurrency=4, model='nvidia/GLM-5.2-NVFP4', tokenizer='/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4', best_of=1, use_beam_search=False, num_prompts=40, logprobs=None, request_rate=inf, burstiness=1.0, seed=0, trust_remote_code=False, disable_tqdm=False, profile=False, save_result=True, save_detailed=False, metadata=None, result_dir='/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery1/results/c2-w4a16-megamoe-autotune-20260921-recovery1/8k1k/w4a16-megamoe/tp4_conc4', result_filename='result.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='90,99,99.9', goodput=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, random_input_len=8192, random_output_len=1024, random_range_ratio=0.8, random_prefix_len=0, use_chat_template=True, random_num_workers=0, dsv4=False, hf_subset=None, hf_split=None, hf_output_len=None, tokenizer_mode='auto', served_model_name=None, lora_modules=None, num_warmups=8)
+Generating 40 prompts using 8 worker processes...
+Prompt generation completed in 3.8s
+-------------------  Input/Output Length Statistics  -------------------
+ input_lens : min=6628  max=8180  mean=7354.25  avg_token_mismatch=12.00 
+ output_lens: min=820   max=1022  mean=920.12  
+------------------------------------------------------------------------ 
+
+Starting initial single prompt test run...
+Warming up with 8 requests...
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:07<00:51,  7.33s/it] 25%|██▌       | 2/8 [00:07<00:19,  3.20s/it] 38%|███▊      | 3/8 [00:08<00:10,  2.12s/it] 62%|██████▎   | 5/8 [00:15<00:08,  2.88s/it] 75%|███████▌  | 6/8 [00:15<00:04,  2.16s/it]100%|██████████| 8/8 [00:16<00:00,  1.36s/it]100%|██████████| 8/8 [00:16<00:00,  2.07s/it]
+Warmup completed.
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+  0%|          | 0/40 [00:00<?, ?it/s]Starting main benchmark run...
+  2%|▎         | 1/40 [00:06<04:22,  6.72s/it] 10%|█         | 4/40 [00:09<01:10,  1.95s/it] 12%|█▎        | 5/40 [00:13<01:34,  2.71s/it] 15%|█▌        | 6/40 [00:14<01:12,  2.13s/it] 18%|█▊        | 7/40 [00:16<01:09,  2.12s/it] 20%|██        | 8/40 [00:18<01:01,  1.93s/it] 22%|██▎       | 9/40 [00:22<01:21,  2.64s/it] 25%|██▌       | 10/40 [00:22<00:57,  1.90s/it] 28%|██▊       | 11/40 [00:24<00:51,  1.78s/it] 30%|███       | 12/40 [00:25<00:49,  1.76s/it] 32%|███▎      | 13/40 [00:30<01:07,  2.51s/it] 35%|███▌      | 14/40 [00:30<00:49,  1.91s/it] 38%|███▊      | 15/40 [00:32<00:44,  1.77s/it] 40%|████      | 16/40 [00:34<00:44,  1.87s/it] 42%|████▎     | 17/40 [00:38<00:57,  2.49s/it] 45%|████▌     | 18/40 [00:39<00:45,  2.05s/it] 48%|████▊     | 19/40 [00:40<00:38,  1.83s/it] 50%|█████     | 20/40 [00:40<00:26,  1.34s/it] 52%|█████▎    | 21/40 [00:45<00:46,  2.44s/it] 55%|█████▌    | 22/40 [00:46<00:37,  2.08s/it] 57%|█████▊    | 23/40 [00:47<00:29,  1.71s/it] 60%|██████    | 24/40 [00:48<00:21,  1.32s/it] 62%|██████▎   | 25/40 [00:52<00:35,  2.38s/it] 65%|██████▌   | 26/40 [00:54<00:28,  2.02s/it] 68%|██████▊   | 27/40 [00:54<00:21,  1.65s/it] 70%|███████   | 28/40 [00:55<00:15,  1.30s/it] 72%|███████▎  | 29/40 [00:59<00:23,  2.15s/it] 75%|███████▌  | 30/40 [01:01<00:22,  2.21s/it] 78%|███████▊  | 31/40 [01:02<00:16,  1.85s/it] 80%|████████  | 32/40 [01:03<00:10,  1.37s/it] 82%|████████▎ | 33/40 [01:07<00:15,  2.19s/it] 85%|████████▌ | 34/40 [01:09<00:13,  2.22s/it] 88%|████████▊ | 35/40 [01:10<00:09,  1.82s/it] 90%|█████████ | 36/40 [01:13<00:08,  2.22s/it] 92%|█████████▎| 37/40 [01:15<00:06,  2.11s/it] 95%|█████████▌| 38/40 [01:16<00:03,  1.88s/it] 98%|█████████▊| 39/40 [01:20<00:02,  2.38s/it]100%|██████████| 40/40 [01:20<00:00,  1.75s/it]100%|██████████| 40/40 [01:20<00:00,  2.02s/it]
+============ Serving Benchmark Result ============
+Successful requests:                     40        
+Benchmark duration (s):                  80.62     
+Total input tokens:                      294170    
+Total generated tokens:                  36805     
+Request throughput (req/s):              0.50      
+Output token throughput (tok/s):         456.50    
+Total Token throughput (tok/s):          4105.17   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          868.15    
+Median TTFT (ms):                        565.43    
+P90 TTFT (ms):                           1136.80   
+P99 TTFT (ms):                           3567.26   
+P99.9 TTFT (ms):                         3634.46   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          7.58      
+Median TPOT (ms):                        7.62      
+P90 TPOT (ms):                           8.37      
+P99 TPOT (ms):                           9.87      
+P99.9 TPOT (ms):                         10.54     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           655.25    
+Median ITL (ms):                         439.82    
+P90 ITL (ms):                            1451.23   
+P99 ITL (ms):                            2773.63   
+P99.9 ITL (ms):                          4646.14   
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          7830.21   
+Median E2EL (ms):                        7684.17   
+P90 E2EL (ms):                           9034.38   
+P99 E2EL (ms):                           10487.92  
+P99.9 E2EL (ms):                         10664.58  
+==================================================
++ set +x

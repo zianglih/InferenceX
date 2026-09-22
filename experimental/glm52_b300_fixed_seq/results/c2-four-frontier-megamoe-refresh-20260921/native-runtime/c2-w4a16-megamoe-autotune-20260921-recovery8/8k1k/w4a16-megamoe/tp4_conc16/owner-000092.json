@@ -1,0 +1,23 @@
+{
+  "at": 1790035309.1821263,
+  "birth": {
+    "pgid": 34325,
+    "pid": 34325,
+    "ppid": 30052,
+    "sid": 34325,
+    "starttime": 313362402,
+    "state": "R"
+  },
+  "known": {
+    "34325": {
+      "pgid": 34325,
+      "pid": 34325,
+      "ppid": 30052,
+      "sid": 34325,
+      "starttime": 313362402,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 34325
+}

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "source \"$1\"; wait_for_server_ready --port \"$2\" --server-log \"$3\" --server-pid \"$4\" || exit $?; cp -- \"$INFERENCEX_SERVER_STATE\" \"$5\" || exit $?; printf \"%s\\n\" \"$INFERENCEX_SERVER_STATE\"",
+    "_",
+    "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/inferencex/benchmarks/benchmark_lib.sh",
+    "30000",
+    "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/results/c2-w4a16-megamoe-autotune-20260921-recovery8/8k1k/w4a16-megamoe/tp4_conc32/server.log",
+    "36531",
+    "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/native-runtime/c2-w4a16-megamoe-autotune-20260921-recovery8/8k1k/w4a16-megamoe/tp4_conc32/server-watch.json"
+  ],
+  "at": 1790035542.2449934,
+  "base_environment_sha256": "ecc0028cf76540bae2bfd594d6cdb0d7b1efba86a2becaaafb81c0f78c297876",
+  "environment_delta": {}
+}

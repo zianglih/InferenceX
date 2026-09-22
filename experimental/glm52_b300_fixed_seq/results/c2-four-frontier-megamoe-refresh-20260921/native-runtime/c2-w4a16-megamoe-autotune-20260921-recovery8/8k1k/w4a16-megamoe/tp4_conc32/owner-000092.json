@@ -1,0 +1,23 @@
+{
+  "at": 1790035919.3421395,
+  "birth": {
+    "pgid": 39599,
+    "pid": 39599,
+    "ppid": 36282,
+    "sid": 39599,
+    "starttime": 313423418,
+    "state": "R"
+  },
+  "known": {
+    "39599": {
+      "pgid": 39599,
+      "pid": 39599,
+      "ppid": 36282,
+      "sid": 39599,
+      "starttime": 313423418,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 39599
+}

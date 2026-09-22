@@ -1,0 +1,24 @@
+{
+  "files": {
+    "plot_group.py": {
+      "bytes": 8360,
+      "sha256": "6fffc0c374f121b3736673dd680bd6a34b698d58363ccbde1265ef17fa5b7a03"
+    },
+    "plot_pareto.py": {
+      "bytes": 21834,
+      "sha256": "88ab86292569a50dab77a93d3e86534f0ebe6f3478d91325612acdef100f9f29"
+    },
+    "replot.py": {
+      "bytes": 5582,
+      "sha256": "ec832fd1fdf74f737fa735577cb42161e987f18c8b0f45aa8a61feb04cd6dd02"
+    },
+    "summarize.py": {
+      "bytes": 24377,
+      "sha256": "cc8c254f72a6d64706f75aa8cba6722e66ea5c50aedc948bd8f80bad797698b5"
+    }
+  },
+  "frontier_source": "https://github.com/SemiAnalysisAI/InferenceX-app/blob/b4b72f4f39ad6148f3477dcf67eb6a77257e7bb9/packages/app/src/",
+  "metric_source": "https://github.com/SemiAnalysisAI/InferenceX/blob/8979f7c4cdd2946a02b459d5e62018e41bc02405/infx/results/fixed_sequence.py#L187-L207",
+  "schema_version": 1,
+  "scope": "Exact frozen metric/frontier functions; four separate series and no pooled global frontier"
+}

@@ -1,0 +1,23 @@
+{
+  "at": 1790041906.0524619,
+  "birth": {
+    "pgid": 79172,
+    "pid": 79172,
+    "ppid": 75106,
+    "sid": 79172,
+    "starttime": 314022089,
+    "state": "R"
+  },
+  "known": {
+    "79172": {
+      "pgid": 79172,
+      "pid": 79172,
+      "ppid": 75106,
+      "sid": 79172,
+      "starttime": 314022089,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 79172
+}

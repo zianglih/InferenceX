@@ -8405,3 +8405,107 @@
     - "Enable required telemetry on seven GB200 aggregate recipes, preserve failed-job artifacts, and reserve CUDA Graph memory in the five TP8/PP2 recipes."
     - "为七个 GB200 Kimi-K3 聚合配方启用必需实测功耗并保留失败产物；五个 TP8/PP2 配方为 CUDA Graph 预留显存。"
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/3045
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Add a fork-only GLM-5.2 NVFP4 B300 8k1k and 1k1k experiment: preserve the archived W4A4 TRT-LLM sweep, pin SGLang PR 39210 and the CUDA 13 nightly, and prepare a deferred W4A16 MegaMoE arm. Official AgentX and retired GLM-5 configurations remain unchanged."
+    - "在个人 fork 添加 GLM-5.2 NVFP4 B300 8k1k 与 1k1k 实验：保留原 W4A4 TRT-LLM 压测方法，固定 SGLang PR 39210 与 CUDA 13 nightly，另备待优化完成后运行的 W4A16 MegaMoE 配置。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Prepare the optimized fork-only GLM-5.2 B300 W4A16 MegaMoE 8k1k/1k1k sweep with config-megamoe.env pinning FlashInfer PR 5019 at ad0a5e5e78e57070ec7c582efe733cb55cd8839f and CUDA target 10.3a; fresh source-specific caches and explicit source provenance are required. Performance measurement remains pending."
+    - "Switch the MTP draft runner from triton to flashinfer_trtllm, keep draft A2A none, and remove the explicit unquant draft override so GLM NextN uses its native BF16 path with inherited quantization metadata. Target DP=TP=EP and disabled prefill graphs remain different from the measured DP1/EP1 W4A4 baseline."
+    - "准备个人 fork 的优化版 GLM-5.2 B300 W4A16 MegaMoE 8k1k/1k1k sweep：config-megamoe.env 固定 FlashInfer PR 5019 的 ad0a5e5e78e57070ec7c582efe733cb55cd8839f 与 CUDA 目标 10.3a，要求独立源码 cache 和明确的源码 provenance；性能测量仍待完成。"
+    - "MTP draft runner 从 triton 改为 flashinfer_trtllm，保留 draft A2A none，并移除显式 unquant 覆盖，使 GLM NextN 使用带继承量化元数据的原生 BF16 路径；target DP=TP=EP 与禁用 prefill graph 仍区别于已测 DP1/EP1 W4A4 baseline。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Set the MegaMoE server request cap to max(client concurrency, DP): SGLang 50eeb742 divides max_running_requests by attention DP and rejects a zero per-rank cap. TP8/DP8 at client concurrency 4 therefore uses server cap 8 while preserving client concurrency 4 and 40 measured requests; TP4 points are unchanged. Record server_max_running_requests separately from client concurrency. Fresh performance validation remains pending."
+    - "MegaMoE server 请求上限改为 max(client concurrency, DP)：SGLang 50eeb742 将 max_running_requests 除以 attention DP，且不允许每 rank 上限为零。因此 TP8/DP8、client 并发 4 时使用 server 上限 8，client 并发 4 与 40 个正式请求不变，其余 TP4 点不变；单独记录 server_max_running_requests，新性能验证仍待完成。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Prepare a new DP-aligned TRT-LLM control via config-trtllm-aligned.env. Both new arms use PARALLEL_TOPOLOGY=dp-ep, TP=DP=EP, disabled prefill CUDA graphs, TRT-LLM/none MTP draft, inherited draft quantization and server cap max(client concurrency, DP). Preserve the completed DP1/EP1 16-point baseline as a separate historical reference; neither new arm has started measurement."
+    - "Keep the aligned TRT-LLM control on image FlashInfer 0.6.18/CuTe DSL 4.6.2, versus MegaMoE FlashInfer 0.7.0 at ad0a5e5e78e57070ec7c582efe733cb55cd8839f/CuTe DSL 4.7.1. Precision, backend and software differences remain. The main plot compares only aligned runs using per-request interactivity 1000/median_tpot_ms and output_throughput/gpu_count; historical results are plotted separately."
+    - "通过 config-trtllm-aligned.env 新增 DP 对齐的 TRT-LLM 对照。新两套方案均使用 PARALLEL_TOPOLOGY=dp-ep、TP=DP=EP、禁用 prefill CUDA graph、TRT-LLM/none MTP draft、继承 draft 量化，以及 max(client concurrency, DP) 的 server 上限。原 DP1/EP1 的已完成 16 点保留为独立历史参考；新两套方案均尚未启动测量。"
+    - "对齐版 TRT-LLM 保留镜像的 FlashInfer 0.6.18/CuTe DSL 4.6.2，MegaMoE 使用 FlashInfer 0.7.0 的 ad0a5e5e78e57070ec7c582efe733cb55cd8839f/CuTe DSL 4.7.1；精度、backend 和软件差异仍存在。主图仅比较对齐后的新结果，X 为每请求交互性 1000/median_tpot_ms，Y 为 output_throughput/gpu_count；历史结果单独作图。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a4_trtllm_mtp
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Reserve native BF16 TRT-LLM MTP runtime workspace by using mem_fraction_static=0.80 in both new DP-aligned arms, after the 0.85 MegaMoE attempt failed during 8k1k TP4/C256 warmup. Preserve the failed case and six completed diagnostic points; restart both complete matrices under new run IDs, running C256 first. Record and validate memory reservation in metadata and comparison grouping."
+    - "首次0.85 MegaMoE在8k1k TP4/C256 warmup发生原生BF16 TRT-LLM MTP workspace OOM后，新两组DP对齐方案均改用mem_fraction_static=0.80。保留失败现场与六个已完成诊断点；新run ID完整重跑两组，优先C256，并在metadata与对比分组记录和校验显存预留。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_cutedsl_mtp
+  description:
+    - "Add a separate fork-only GLM-5.2 B300 W4A16 CuTe DSL split-MoE arm pinned to FlashInfer PR 5319 f9dd3c10541e087b716772245a9d033499745048, with target flashinfer_cutedsl/none, W4A16 enabled and fused finalize disabled. Preserve aligned DP=TP=EP, memory fraction 0.80, disabled prefill graphs, native BF16 TRT-LLM/none MTP, both workloads and the C256-first 16-point matrix. Require clean source/import provenance, CuTe DSL 4.7.1 and separate source-specific caches; GPU performance and accuracy remain unvalidated."
+    - "Reuse existing aligned TRT-LLM and MegaMoE runs without rerunning or changing their runtime branches; record the third arm's own InferenceX and FlashInfer commits."
+    - "在个人 fork 新增独立 GLM-5.2 B300 W4A16 CuTe DSL split-MoE 组，固定 FlashInfer PR 5319 的 f9dd3c10541e087b716772245a9d033499745048，target 使用 flashinfer_cutedsl/none，开启 W4A16 并关闭 fused finalize。保留 DP=TP=EP、显存比例0.80、禁用 prefill graph、原生 BF16 TRT-LLM/none MTP、两个 workload 与 C256 优先的16点矩阵；要求干净源码/import 来源、CuTe DSL 4.7.1 和独立源码 cache，GPU性能与精度仍待验证。"
+    - "复用已有对齐版 TRT-LLM 和 MegaMoE 运行，不重跑、不改变其 runtime 分支；单独记录第三组 InferenceX 与 FlashInfer 提交。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Prepare a fresh MegaMoE-only GLM-5.2 B300 sweep at rebased SGLang PR 39210 head 6d8a58f177a1488e10e8567a3fa4b4fccd0a26e2, retaining FlashInfer ad0a5e5e and the 0.80 DP-attention/MTP 16-point workload. Pin the latest compatible CUDA 13 dev nightly, still 20260918-20518d85, to its amd64 digest b518f4f8cd15664cf0f733e9bf4fd2105c9c994882a369b247364394db99f596."
+    - "Isolate and record the new SGLang namespaced autotune cache. Reuse historical TRT-LLM and CuTe split results under their original environments; preserve the previous 48-point report. New serving performance is pending and environment effects are not isolated."
+    - "准备仅重跑 MegaMoE 的 GLM-5.2 B300 sweep，固定 rebase 后 SGLang PR 39210 的 6d8a58f177a1488e10e8567a3fa4b4fccd0a26e2，保留 FlashInfer ad0a5e5e、0.80 显存比例、DP attention/MTP 与16点 workload。最新兼容的 CUDA 13 dev nightly 仍为20260918-20518d85，固定其 amd64 digest b518f4f8cd15664cf0f733e9bf4fd2105c9c994882a369b247364394db99f596。"
+    - "隔离并记录新版 SGLang namespaced autotune cache；复用各自原环境下已完成的 TRT-LLM 和 CuTe split 结果，原48点报告独立保留。新 serving 性能仍待测量，环境差异的影响未单独隔离。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Allow an explicit validated run ID for the MegaMoE campaign helper and wrapper. Bind preparation, launch, worker, matrix validation and archives to that ID so recovery from devbox loss preserves the interrupted attempt under its original root. Runtime pins, tuning, request policy and 16-point matrix are unchanged; no new measured result is claimed."
+    - "MegaMoE campaign helper 与 wrapper 支持显式且经过校验的 run ID；准备、启动、worker、矩阵校验和归档均绑定该 ID，在 devbox 丢失后使用新的运行目录恢复，并保留原中断尝试。Runtime pin、调优、请求策略与16点矩阵不变，不宣称新的实测结果。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Recovery3 continues 14 remaining points under a fresh run identity and reuses the two accepted recovery1 points unchanged. Preserve the recovery1 NVSHMEM startup failure and the separate recovery2 missing-resource failure. Recreate the five upstream-generated FlashInfer data links and build metadata in the new pinned source tree, register and archive all three dependencies, and validate real JIT resource paths before launch. This repairs preparation, not the unestablished NVSHMEM cause; runtime packages, kernels, tolerances and workloads are unchanged. No new performance result is claimed."
+    - "Recovery3 使用新的 run identity 继续剩余14点，原 recovery1 两个已验收点保持不变。保留 recovery1 NVSHMEM 启动失败与 recovery2 独立的源码资源缺失失败。在新固定源码目录恢复上游生成的五个 FlashInfer data 链接与 build metadata，注册并归档全部三个依赖，启动前校验真实 JIT 资源路径。此修改修复准备过程，不宣称解决尚未定位的 NVSHMEM 问题；runtime 包、kernel、数值容差和 workload 均不变，不宣称新的性能结果。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Recovery5 prepares the remaining 14 MegaMoE points on a verified different physical B300 node while retaining the failed node for NVSHMEM diagnostics. Reuse the two accepted recovery1 points unchanged; preserve all recovery1-4 failures. Keep exact image/source/runtime/workload pins, use new source/run/cache roots, and require actual preparation and first-C8 audits. No new performance or root-cause claim."
+    - "Recovery5 在已确认不同的 B300 物理节点准备剩余14个 MegaMoE 测点，原故障节点保留用于 NVSHMEM 诊断。原 recovery1 两个已验收点保持不变，完整保留 recovery1-4 失败。镜像、源码、runtime 与 workload pin 不变，使用新 source/run/cache 目录，仍要求实际准备验收和首个 C8 审计；不宣称新的性能结果或已定位根因。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Recovery7 prepares the 14 remaining MegaMoE points using SGLang26c4100954 and the unmodified NVSHMEM3.4.5 wheel. The integration supplies narrowly scoped single-node W4A16 proxy-disable defaults; the launcher records all-rank defaults/native origins before clients. Preserve the original workload and two accepted SG6d8 points unchanged, with mixed source/default provenance. Actual startup and first-case acceptance are required; this recipe is not a new performance result."
+    - "Recovery7 使用 SGLang26c4100954 和未修改的 NVSHMEM3.4.5 wheel 准备剩余14点；integration 提供限定单节点 W4A16 的关闭 proxy 默认值，启动器在客户端运行前记录所有 rank 的实际默认值与 native 来源。原 workload 和两个已验收 SG6d8 测点不变，明确混合源码与默认值来源。仍需实际启动和首点验收；脚本本身不是新的性能结果。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Recovery8 preserves failed Recovery7 preparation and fetches the exact SGLang parent from the verified local seed before unchanged source-diff checks. Fresh run/root identity; remaining14 coordinates, client sampling, stock NVSHMEM/SGLang workaround and reused2 points are unchanged. No new performance result is claimed."
+    - "Recovery8 保留失败的 Recovery7 准备记录，从已验证的本地 seed 获取确切 SGLang 父对象，再执行原有源码差异检查。使用新 run/root，剩余14点、客户端采样、原版 NVSHMEM/SGLang workaround 和复用两点保持不变；不宣称新性能结果。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Publish the completed GLM-5.2 B300 MegaMoE refresh: 14 new stock-NVSHMEM/SGLang26c points plus two unchanged recovery1 points, totaling 16 points and 10,240 measured requests. Reuse 32 historical Split/TRT controls and preserve the original Mega16 as a separate fourth Pareto curve. Publish bilingual full raw tables, signed latency/throughput comparisons, 64 source-bound plotted observations and portable replot inputs."
+    - "Keep the mixed source/native/cache provenance and observed 1k1k regressions explicit. Complete source/raw/cache archive verification is recorded separately; whole-interval throughput is not decode-only throughput and the comparison does not isolate causality or statistical significance."
+    - "发布完整 GLM-5.2 B300 MegaMoE 更新：14个新 SG26c/原版 NVSHMEM 测点加两点原样复用，共16点、10,240正式请求；复用32点历史 Split/TRT，并保留原始 Mega16 作为独立第四条 Pareto 曲线。提供双语完整原始表、有符号吞吐/延迟比较、64个可追溯观测和独立复绘输入。"
+    - "明确混合源码/native/cache来源及1k1k实测回退；源码、raw和cache归档验证独立记录。全区间吞吐不是单独decode吞吐，不宣称隔离因果或统计显著性。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1
