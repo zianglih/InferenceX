@@ -1,0 +1,23 @@
+{
+  "at": 1790043762.8077362,
+  "birth": {
+    "pgid": 93781,
+    "pid": 93781,
+    "ppid": 88172,
+    "sid": 93781,
+    "starttime": 314207764,
+    "state": "R"
+  },
+  "known": {
+    "93781": {
+      "pgid": 93781,
+      "pid": 93781,
+      "ppid": 88172,
+      "sid": 93781,
+      "starttime": 314207764,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 93781
+}

@@ -1,0 +1,23 @@
+{
+  "at": 1790042299.7883213,
+  "birth": {
+    "pgid": 82954,
+    "pid": 82954,
+    "ppid": 79334,
+    "sid": 82954,
+    "starttime": 314061462,
+    "state": "R"
+  },
+  "known": {
+    "82954": {
+      "pgid": 82954,
+      "pid": 82954,
+      "ppid": 79334,
+      "sid": 82954,
+      "starttime": 314061462,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 82954
+}

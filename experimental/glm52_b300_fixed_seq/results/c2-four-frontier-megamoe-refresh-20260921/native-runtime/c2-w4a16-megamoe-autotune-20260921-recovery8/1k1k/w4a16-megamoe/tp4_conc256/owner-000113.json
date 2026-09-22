@@ -1,0 +1,23 @@
+{
+  "at": 1790039460.6751332,
+  "birth": {
+    "pgid": 61521,
+    "pid": 61521,
+    "ppid": 57414,
+    "sid": 61521,
+    "starttime": 313777551,
+    "state": "R"
+  },
+  "known": {
+    "61521": {
+      "pgid": 61521,
+      "pid": 61521,
+      "ppid": 57414,
+      "sid": 61521,
+      "starttime": 313777551,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 61521
+}

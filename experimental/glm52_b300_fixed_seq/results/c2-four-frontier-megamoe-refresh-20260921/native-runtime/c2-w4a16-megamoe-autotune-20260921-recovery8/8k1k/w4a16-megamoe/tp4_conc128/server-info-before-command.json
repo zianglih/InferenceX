@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "curl",
+    "--fail",
+    "--silent",
+    "--show-error",
+    "http://127.0.0.1:30000/get_server_info"
+  ],
+  "at": 1790037572.9569142,
+  "base_environment_sha256": "bac3911c2057c478cde05656486514b3bc2534934d0d05b0626640a84c3f9da7",
+  "environment_delta": {}
+}

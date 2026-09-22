@@ -1,0 +1,23 @@
+{
+  "at": 1790039976.7618842,
+  "birth": {
+    "pgid": 62400,
+    "pid": 62400,
+    "ppid": 57414,
+    "sid": 62400,
+    "starttime": 313829160,
+    "state": "R"
+  },
+  "known": {
+    "62400": {
+      "pgid": 62400,
+      "pid": 62400,
+      "ppid": 57414,
+      "sid": 62400,
+      "starttime": 313829160,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 62400
+}

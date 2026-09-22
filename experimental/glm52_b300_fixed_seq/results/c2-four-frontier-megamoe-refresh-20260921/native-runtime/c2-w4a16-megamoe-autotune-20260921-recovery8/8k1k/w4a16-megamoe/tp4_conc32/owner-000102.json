@@ -1,0 +1,23 @@
+{
+  "at": 1790036206.2860675,
+  "birth": {
+    "pgid": 40545,
+    "pid": 40545,
+    "ppid": 36282,
+    "sid": 40545,
+    "starttime": 313452112,
+    "state": "R"
+  },
+  "known": {
+    "40545": {
+      "pgid": 40545,
+      "pid": 40545,
+      "ppid": 36282,
+      "sid": 40545,
+      "starttime": 313452112,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 40545
+}

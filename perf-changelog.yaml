@@ -8500,3 +8500,12 @@
     - "Recovery8 preserves failed Recovery7 preparation and fetches the exact SGLang parent from the verified local seed before unchanged source-diff checks. Fresh run/root identity; remaining14 coordinates, client sampling, stock NVSHMEM/SGLang workaround and reused2 points are unchanged. No new performance result is claimed."
     - "Recovery8 保留失败的 Recovery7 准备记录，从已验证的本地 seed 获取确切 SGLang 父对象，再执行原有源码差异检查。使用新 run/root，剩余14点、客户端采样、原版 NVSHMEM/SGLang workaround 和复用两点保持不变；不宣称新性能结果。"
   pr-link: https://github.com/zianglih/InferenceX/pull/1
+
+- config-keys:
+    - experimental/glm52_b300_fixed_seq/w4a16_megamoe_mtp
+  description:
+    - "Publish the completed GLM-5.2 B300 MegaMoE refresh: 14 new stock-NVSHMEM/SGLang26c points plus two unchanged recovery1 points, totaling 16 points and 10,240 measured requests. Reuse 32 historical Split/TRT controls and preserve the original Mega16 as a separate fourth Pareto curve. Publish bilingual full raw tables, signed latency/throughput comparisons, 64 source-bound plotted observations and portable replot inputs."
+    - "Keep the mixed source/native/cache provenance and observed 1k1k regressions explicit. Complete source/raw/cache archive verification is recorded separately; whole-interval throughput is not decode-only throughput and the comparison does not isolate causality or statistical significance."
+    - "发布完整 GLM-5.2 B300 MegaMoE 更新：14个新 SG26c/原版 NVSHMEM 测点加两点原样复用，共16点、10,240正式请求；复用32点历史 Split/TRT，并保留原始 Mega16 作为独立第四条 Pareto 曲线。提供双语完整原始表、有符号吞吐/延迟比较、64个可追溯观测和独立复绘输入。"
+    - "明确混合源码/native/cache来源及1k1k实测回退；源码、raw和cache归档验证独立记录。全区间吞吐不是单独decode吞吐，不宣称隔离因果或统计显著性。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/1

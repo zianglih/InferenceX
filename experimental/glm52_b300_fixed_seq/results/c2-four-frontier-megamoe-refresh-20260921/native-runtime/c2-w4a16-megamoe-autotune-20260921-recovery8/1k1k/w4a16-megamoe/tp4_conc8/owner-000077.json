@@ -1,0 +1,23 @@
+{
+  "at": 1790040735.7928064,
+  "birth": {
+    "pgid": 69586,
+    "pid": 69586,
+    "ppid": 66213,
+    "sid": 69586,
+    "starttime": 313905063,
+    "state": "R"
+  },
+  "known": {
+    "69586": {
+      "pgid": 69586,
+      "pid": 69586,
+      "ppid": 66213,
+      "sid": 69586,
+      "starttime": 313905063,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 69586
+}

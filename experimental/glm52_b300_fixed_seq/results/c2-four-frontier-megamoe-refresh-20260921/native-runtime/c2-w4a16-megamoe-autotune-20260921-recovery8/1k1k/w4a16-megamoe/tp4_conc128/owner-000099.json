@@ -1,0 +1,23 @@
+{
+  "at": 1790042966.6052964,
+  "birth": {
+    "pgid": 87378,
+    "pid": 87378,
+    "ppid": 83689,
+    "sid": 87378,
+    "starttime": 314128144,
+    "state": "R"
+  },
+  "known": {
+    "87378": {
+      "pgid": 87378,
+      "pid": 87378,
+      "ppid": 83689,
+      "sid": 87378,
+      "starttime": 314128144,
+      "state": "R"
+    }
+  },
+  "label": "snapshot-autotune",
+  "pid": 87378
+}

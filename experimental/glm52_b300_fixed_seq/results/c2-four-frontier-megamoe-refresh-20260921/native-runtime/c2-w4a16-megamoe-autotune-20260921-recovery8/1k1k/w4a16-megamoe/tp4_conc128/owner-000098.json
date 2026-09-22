@@ -1,0 +1,23 @@
+{
+  "at": 1790042965.8424773,
+  "birth": {
+    "pgid": 87377,
+    "pid": 87377,
+    "ppid": 83689,
+    "sid": 87377,
+    "starttime": 314128068,
+    "state": "R"
+  },
+  "known": {
+    "87377": {
+      "pgid": 87377,
+      "pid": 87377,
+      "ppid": 83689,
+      "sid": 87377,
+      "starttime": 314128068,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 87377
+}

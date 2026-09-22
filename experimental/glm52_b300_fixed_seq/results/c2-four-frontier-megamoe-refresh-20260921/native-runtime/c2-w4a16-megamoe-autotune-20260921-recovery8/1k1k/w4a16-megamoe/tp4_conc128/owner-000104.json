@@ -1,0 +1,23 @@
+{
+  "at": 1790043305.4586213,
+  "birth": {
+    "pgid": 88010,
+    "pid": 88010,
+    "ppid": 83689,
+    "sid": 88010,
+    "starttime": 314162029,
+    "state": "R"
+  },
+  "known": {
+    "88010": {
+      "pgid": 88010,
+      "pid": 88010,
+      "ppid": 83689,
+      "sid": 88010,
+      "starttime": 314162029,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 88010
+}

@@ -1,0 +1,50 @@
+{
+  "at": 1790035920.040722,
+  "covered_ranks": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "device_wait_timeout_and_global_exit_functionality": "disabled by this native configuration",
+  "lines": [
+    {
+      "device": 3,
+      "host": "hu-pdx-30",
+      "line": 508,
+      "pid": 37347,
+      "text": "hu-pdx-30:37347:37347 [3] NVSHMEM INFO Proxy is disabled. Device side wait_until timeouts and global exit will not function.If this is undesired behavior, Please unset NVSHMEM_DISABLE_LOCAL_ONLY_PROXY, or set it to false.",
+      "tid": 37347
+    },
+    {
+      "device": 2,
+      "host": "hu-pdx-30",
+      "line": 511,
+      "pid": 37345,
+      "text": "hu-pdx-30:37345:37345 [2] NVSHMEM INFO Proxy is disabled. Device side wait_until timeouts and global exit will not function.If t",
+      "tid": 37345
+    },
+    {
+      "device": 1,
+      "host": "hu-pdx-30",
+      "line": 511,
+      "pid": 37297,
+      "text": "hu-pdx-30:37297:37297 [1] NVSHMEM INFO Proxy is disabled. Device side wait_until timeouts and global exit will not function.If t",
+      "tid": 37297
+    },
+    {
+      "device": 0,
+      "host": "hu-pdx-30",
+      "line": 511,
+      "pid": 37289,
+      "text": "hu-pdx-30:37289:37289 [0] NVSHMEM INFO Proxy is disabled. Device side wait_until timeouts and global exit will not function.If this is undesired behavior, Please unset NVSHMEM_DISABLE_LOCAL_ONLY_PROXY, or set it to false.",
+      "tid": 37289
+    }
+  ],
+  "native_private_state_read": false,
+  "schema_version": 1,
+  "server_log_prefix": {
+    "bytes": 135646,
+    "sha256": "847f060a976cf236aa2b5b049632ab2117b25eb0a6eb91c3278afe1c966aeef3"
+  }
+}

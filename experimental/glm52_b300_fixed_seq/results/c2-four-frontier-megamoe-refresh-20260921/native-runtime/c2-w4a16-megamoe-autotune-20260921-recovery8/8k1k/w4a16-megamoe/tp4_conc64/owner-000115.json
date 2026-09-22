@@ -1,0 +1,23 @@
+{
+  "at": 1790037110.2436543,
+  "birth": {
+    "pgid": 45871,
+    "pid": 45871,
+    "ppid": 40866,
+    "sid": 45871,
+    "starttime": 313542508,
+    "state": "R"
+  },
+  "known": {
+    "45871": {
+      "pgid": 45871,
+      "pid": 45871,
+      "ppid": 40866,
+      "sid": 45871,
+      "starttime": 313542508,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 45871
+}

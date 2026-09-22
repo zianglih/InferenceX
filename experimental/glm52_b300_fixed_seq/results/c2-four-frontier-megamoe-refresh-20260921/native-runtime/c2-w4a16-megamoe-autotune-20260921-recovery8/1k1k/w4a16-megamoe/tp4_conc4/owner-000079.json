@@ -1,0 +1,23 @@
+{
+  "at": 1790040403.18386,
+  "birth": {
+    "pgid": 65907,
+    "pid": 65907,
+    "ppid": 62562,
+    "sid": 65907,
+    "starttime": 313871802,
+    "state": "R"
+  },
+  "known": {
+    "65907": {
+      "pgid": 65907,
+      "pid": 65907,
+      "ppid": 62562,
+      "sid": 65907,
+      "starttime": 313871802,
+      "state": "R"
+    }
+  },
+  "label": "server-info-after",
+  "pid": 65907
+}

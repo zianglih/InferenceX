@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "python3",
+    "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/inferencex/experimental/glm52_b300_fixed_seq/artifacts.py",
+    "snapshot-autotune"
+  ],
+  "at": 1790042300.4914699,
+  "base_environment_sha256": "2b2e7bb6fd3747e1b6f090983932d84618c40765977f1ae3837ecde7a860efe1",
+  "environment_delta": {}
+}

@@ -1,0 +1,23 @@
+{
+  "at": 1790034764.2547238,
+  "birth": {
+    "pgid": 29397,
+    "pid": 29397,
+    "ppid": 24200,
+    "sid": 29397,
+    "starttime": 313307909,
+    "state": "R"
+  },
+  "known": {
+    "29397": {
+      "pgid": 29397,
+      "pid": 29397,
+      "ppid": 24200,
+      "sid": 29397,
+      "starttime": 313307909,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 29397
+}

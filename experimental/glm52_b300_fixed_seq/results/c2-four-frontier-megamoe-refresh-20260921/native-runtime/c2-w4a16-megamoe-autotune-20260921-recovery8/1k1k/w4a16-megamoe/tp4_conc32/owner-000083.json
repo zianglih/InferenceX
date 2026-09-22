@@ -1,0 +1,23 @@
+{
+  "at": 1790041719.9297879,
+  "birth": {
+    "pgid": 78671,
+    "pid": 78671,
+    "ppid": 75106,
+    "sid": 78671,
+    "starttime": 314003477,
+    "state": "R"
+  },
+  "known": {
+    "78671": {
+      "pgid": 78671,
+      "pid": 78671,
+      "ppid": 75106,
+      "sid": 78671,
+      "starttime": 314003477,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 78671
+}

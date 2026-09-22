@@ -1,0 +1,23 @@
+{
+  "at": 1790041194.0507824,
+  "birth": {
+    "pgid": 73708,
+    "pid": 73708,
+    "ppid": 70868,
+    "sid": 73708,
+    "starttime": 313950889,
+    "state": "R"
+  },
+  "known": {
+    "73708": {
+      "pgid": 73708,
+      "pid": 73708,
+      "ppid": 70868,
+      "sid": 73708,
+      "starttime": 313950889,
+      "state": "R"
+    }
+  },
+  "label": "server-info-before",
+  "pid": 73708
+}

@@ -1,0 +1,40 @@
+{
+  "argv": [
+    "bash",
+    "-c",
+    "source \"$1\"; shift; run_benchmark_serving \"$@\"",
+    "_",
+    "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/inferencex/benchmarks/benchmark_lib.sh",
+    "--model",
+    "nvidia/GLM-5.2-NVFP4",
+    "--tokenizer",
+    "/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4",
+    "--port",
+    "30000",
+    "--backend",
+    "vllm",
+    "--input-len",
+    "1024",
+    "--output-len",
+    "1024",
+    "--random-range-ratio",
+    "0.8",
+    "--num-prompts",
+    "40",
+    "--max-concurrency",
+    "4",
+    "--result-filename",
+    "result",
+    "--result-dir",
+    "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/results/c2-w4a16-megamoe-autotune-20260921-recovery8/1k1k/w4a16-megamoe/tp8_conc4",
+    "--bench-serving-dir",
+    "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/sources/inferencex",
+    "--use-chat-template"
+  ],
+  "at": 1790043664.666774,
+  "base_environment_sha256": "1d9cffe3987ed0b3664cd24881db19e46afbaac1dc77f6bafa4e72fb1e51114b",
+  "environment_delta": {
+    "INFERENCEX_SERVER_PID": "88403",
+    "INFERENCEX_SERVER_STATE": "/data/home/ziangli/inferencex-glm52-megamoe-autotune-20260921-recovery8/native-runtime/c2-w4a16-megamoe-autotune-20260921-recovery8/1k1k/w4a16-megamoe/tp8_conc4/server-watch.json"
+  }
+}
