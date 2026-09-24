@@ -1,6 +1,4 @@
-# GLM-5.2 MegaMoE, nominal 1k input / 2k output
-
-**English** | [中文](README_zh.md)
+# GLM-5.2 MegaMoE, nominal 1k input / 8k output
 
 This standalone single-node recipe measures **24 new points** on eight B300 GPUs.
 It does not reuse measurements from the earlier GLM-5.2 experiment. Both target
@@ -15,7 +13,7 @@ or automatic retry.
 | Parallelism | TP = EP = DP attention = 4 or 8, one node |
 | Client concurrency | 4, 8, 16, 32, 64, 128 in each of four precision/topology groups |
 | Execution order per group | **128, 4, 8, 16, 32, 64**; W4A4 TP4, W4A4 TP8, W4A16 TP4, W4A16 TP8 |
-| Workload | Nominal input 1024 / output 2048, random ratio **0.8**, seed **0**, chat template |
+| Workload | Nominal input 1024 / output 8192, random ratio **0.8**, seed **0**, chat template |
 | Requests | 2×C warmup, 10×C measured; 2,016 warmup and 10,080 measured attempts in total |
 | Traffic / sampling | Unlimited arrival rate; current InferenceX `vllm` HTTP client, temperature 0, ignore EOS |
 | MTP | EAGLE, 3 steps / top-k 1 / 4 draft tokens; native BF16 draft path, `flashinfer_trtllm` / `none` |
@@ -24,10 +22,19 @@ or automatic retry.
 | Decode | Graph max batch = C; server max running requests = max(C, DP) |
 | Native communication | `NVSHMEM_REMOTE_TRANSPORT=none`, `NVSHMEM_IB_ENABLE_IBGDA=0`, `NVSHMEM_DISABLE_LOCAL_ONLY_PROXY=1` |
 
-The input length is nominal: the unchanged client accounts for the chat template
+Both lengths are nominal: the unchanged client accounts for the chat template
 and samples lengths. Inspect saved `input_lens` and `output_lens`, not the nominal
 labels, when comparing points. Each same-concurrency point must reproduce both
 ordered arrays from the first newly measured point. A mismatch stops the campaign.
+The unchanged ratio-0.8 client samples requested output lengths from 6,553 through
+8,192 tokens; use the saved output lengths for actual token accounting.
+Before the HTTP client runs, `requested-lengths.json` saves the unchanged client's
+seeded CPU request plan using the same tokenizer and sampler. Both ordered arrays
+must exactly equal the completed arrays, so internally consistent but clipped
+output lengths are rejected. The plan is not server-output or numerical proof.
+Completed output lengths use the shared client's `usage.completion_tokens` when
+available, otherwise its tokenizer fallback; this is not independent token-content
+or numerical validation.
 The shared client drains warmup requests but does not export individual warmup
 outcomes; `Warmup completed` is not an independent numerical correctness claim.
 
@@ -51,9 +58,11 @@ Follow the [one-time installation instructions](INSTALL.md), then validate the i
 two source checkouts, compiled dependencies and revision-pinned local checkpoint once. Do not rebuild or reinstall between arms.
 Copy the config outside the source tree, fill its actual paths/environment, and
 create only the parent of `run_root`. The run root itself must not exist.
+The example sets a 14,400-second benchmark safety timeout; server readiness remains
+3,600 seconds. These are failure bounds, not runtime or performance estimates.
 
 ```bash
-RECIPE=experimental/glm52_megamoe_1k2k
+RECIPE=experimental/glm52_megamoe_1k8k
 cp "$RECIPE/config.example.json" /data/experiments/campaign.json
 # Edit campaign.json to the validated installation paths and image environment.
 python3 "$RECIPE/run.py" --config /data/experiments/campaign.json --plan \
@@ -102,6 +111,7 @@ Each exclusive `cases/<precision>-tp<TP>-ep<EP>-dp<DP>-c<C>/` contains:
 - `settings.json`, exact server/client argv and environments, source/freeze receipts;
 - raw server/client logs, server-watch identity, birth-bound ownership/cleanup receipts;
 - `server_info.before.json` and `.after.json` with resolved settings and MTP counters;
+- `requested-lengths.json`, binding the measured request plan to the client source and model path;
 - `result.json`, including ordered length arrays and the client's original scalar/tail metrics;
 - GPU samples with actual timestamps, utilization, memory, power and process listings;
 - idle-only cache inventories and tactic copies;
@@ -123,15 +133,16 @@ inspection of selected kernel paths and autotune profile coverage for both preci
 
 Copy only manifest-sealed case evidence into a local run tree, retaining exact file
 bytes and the root config/worker receipts. The reader verifies each case manifest,
-completion/cleanup, settings, source/freeze and same-C ordered length arrays.
+completion/cleanup, settings, source/freeze, requested-versus-completed ordered
+length equality and same-C ordered length arrays.
 Use a fresh output directory for each invocation:
 
 ```bash
-python3 experimental/glm52_megamoe_1k2k/results.py \
+python3 experimental/glm52_megamoe_1k8k/results.py \
   --run-root /data/experiments/collected-run \
   --output /data/experiments/results-partial --partial
 # After all 24 points and worker termination:
-python3 experimental/glm52_megamoe_1k2k/results.py \
+python3 experimental/glm52_megamoe_1k8k/results.py \
   --run-root /data/experiments/collected-run \
   --output /data/experiments/results-final
 ```
@@ -148,8 +159,8 @@ analysis environment; it does not belong in the serving install.
 ## Local check and attribution
 
 ```bash
-python3 -B experimental/glm52_megamoe_1k2k/check.py
-bash -n experimental/glm52_megamoe_1k2k/benchmark_mtp.sh
+python3 -B experimental/glm52_megamoe_1k8k/check.py
+bash -n experimental/glm52_megamoe_1k8k/benchmark_mtp.sh
 ```
 
 These CPU checks exercise the actual matrix/command/environment/result code and

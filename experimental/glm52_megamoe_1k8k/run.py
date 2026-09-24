@@ -663,6 +663,78 @@ def validate_result(result: dict, case: dict) -> dict:
     return {k: result[k] for k in ("input_lens", "output_lens")}
 
 
+def requested_lengths(model_path: str, count: int, destination: Path) -> None:
+    """Reproduce the unchanged client's CPU request plan, without sending requests."""
+    import random
+
+    import numpy as np
+
+    from infx.bench_serving import benchmark_serving as client
+
+    if (
+        Path(client.__file__).resolve()
+        != REPO / "infx/bench_serving/benchmark_serving.py"
+    ):
+        raise ValueError("Request-plan client origin differs")
+    if count <= 0:
+        raise ValueError("Positive request count required")
+    random.seed(0)
+    np.random.seed(0)
+    tokenizer = client._load_tokenizer(
+        model_path, tokenizer_mode="auto", trust_remote_code=False
+    )
+    requests = client.sample_random_requests(
+        prefix_len=0,
+        input_len=1024,
+        output_len=8192,
+        num_prompts=count,
+        range_ratio=0.8,
+        tokenizer=tokenizer,
+        use_chat_template=True,
+        dsv4=False,
+        tokenizer_id=model_path,
+        tokenizer_mode="auto",
+        trust_remote_code=False,
+        num_workers=0,
+    )
+    value = {
+        "scope": "deterministic request plan, not server output",
+        "seed": 0,
+        "nominal_input": 1024,
+        "nominal_output": 8192,
+        "ratio": 0.8,
+        "num_prompts": count,
+        "model_path": model_path,
+        "client_source": digest(Path(client.__file__)),
+        "input_lens": [row[1] for row in requests],
+        "output_lens": [row[2] for row in requests],
+    }
+    with destination.open("x") as f:
+        json.dump(value, f, indent=2, sort_keys=True)
+        f.write("\n")
+
+
+def validate_requested_lengths(
+    planned: dict, result: dict, case: dict, cfg: dict
+) -> None:
+    expected = {
+        "seed": 0,
+        "nominal_input": 1024,
+        "nominal_output": 8192,
+        "ratio": 0.8,
+        "num_prompts": case["measured_requests"],
+        "model_path": cfg["model_path"],
+        "client_source": digest(REPO / "infx/bench_serving/benchmark_serving.py"),
+    }
+    if any(planned.get(k) != v for k, v in expected.items()):
+        raise ValueError("Requested-length plan settings/source differ")
+    for key in ("input_lens", "output_lens"):
+        if planned.get(key) != result[key]:
+            raise ValueError(
+                f"Requested versus completed ordered {key} differ; possible truncation"
+            )
+
+
 def validate_client_log(text: str, case: dict) -> None:
     # benchmark_lib intentionally exposes no seed override. Bind its unchanged
     # client default AND check the actual Namespace emitted by this invocation.
@@ -707,7 +779,7 @@ def run_case(cfg: dict, case: dict, references: dict, baseline: dict) -> None:
             "config": cfg,
             "environment": env,
             "nominal_input": 1024,
-            "nominal_output": 2048,
+            "nominal_output": 8192,
             "ratio": 0.8,
             "seed": 0,
             "seed_source": "unchanged shared client default; checked in actual Namespace",
@@ -792,6 +864,12 @@ def run_case(cfg: dict, case: dict, references: dict, baseline: dict) -> None:
         validate_server_info(info, cfg, case)
         result = json.loads((directory / "result.json").read_text())
         lengths = validate_result(result, case)
+        validate_requested_lengths(
+            json.loads((directory / "requested-lengths.json").read_text()),
+            result,
+            case,
+            cfg,
+        )
         validate_client_log((directory / "benchmark.log").read_text(), case)
         save(
             directory / "metrics.json",
@@ -943,7 +1021,10 @@ def run(cfg: dict) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--config", type=Path)
+    parser.add_argument("--model-path")
+    parser.add_argument("--num-prompts", type=int)
+    parser.add_argument("--destination", type=Path)
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument(
         "--plan",
@@ -953,7 +1034,21 @@ def main() -> None:
     mode.add_argument(
         "--run", action="store_true", help="Execute once in a fresh exclusive run root"
     )
+    mode.add_argument(
+        "--request-lengths",
+        action="store_true",
+        help="Save a CPU-only deterministic request plan",
+    )
     args = parser.parse_args()
+    if args.request_lengths:
+        if not args.model_path or not args.num_prompts or not args.destination:
+            parser.error(
+                "--request-lengths requires --model-path, --num-prompts and --destination"
+            )
+        requested_lengths(args.model_path, args.num_prompts, args.destination)
+        return
+    if args.config is None:
+        parser.error("--config is required for --plan or --run")
     cfg = read_config(args.config)
     if args.plan:
         print(

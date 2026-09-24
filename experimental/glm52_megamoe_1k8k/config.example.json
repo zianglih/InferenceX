@@ -1,6 +1,6 @@
 {
-  "run_id": "glm52-megamoe-1k2k-20260923-all24",
-  "run_root": "/data/experiments/glm52-megamoe-1k2k-20260923-all24",
+  "run_id": "glm52-megamoe-1k8k-20260924-all24",
+  "run_root": "/data/experiments/glm52-megamoe-1k8k-20260924-all24",
   "python": "/opt/sglang/bin/python3",
   "sglang_root": "/data/sources/sglang",
   "sglang_commit": "16c1b8638b462ca1b896e2b76d5c002caf06988b",
@@ -13,7 +13,7 @@
   "gpu_ids": ["0", "1", "2", "3", "4", "5", "6", "7"],
   "port": 30000,
   "ready_timeout_seconds": 3600,
-  "benchmark_timeout_seconds": 3600,
+  "benchmark_timeout_seconds": 14400,
   "term_seconds": 30,
   "kill_seconds": 15,
   "monitor_interval_seconds": 5,

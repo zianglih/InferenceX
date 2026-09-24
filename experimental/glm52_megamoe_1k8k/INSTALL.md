@@ -1,9 +1,10 @@
 # One-time shared FlashInfer installation
 
-**English** | [中文](INSTALL_zh.md)
-
 Use this setup once for both W4A4 and W4A16, before the [serial campaign](README.md).
 These are the reviewed installation commands, not a claim that installation or GPU validation has completed.
+Changing the workload to 1k/8k does not require a new environment or another installation.
+Reuse the existing installation once its terminal receipts are accepted; the fresh-path
+example below is only for a node that has not been set up.
 
 - Image: `lmsysorg/sglang:nightly-dev-cu13-20260924-ffac53d7`; amd64 manifest `sha256:21d494298cea9592b92903f368f8b34c96e908b2eb64ca84fe195c6d1f0e1cd3`.
 - SGLang: `16c1b8638b462ca1b896e2b76d5c002caf06988b`; FlashInfer: `19e8aebb541684df09e12cc79610338aa429a2cf`.
@@ -15,7 +16,7 @@ Run on a qualified idle B300 node in a fresh directory. Keep the full command/st
 ```bash
 set -eo pipefail
 BOOT_PY=/opt/sglang/bin/python3
-BOOT_ROOT=/data/experiments/glm52-1k2k-install
+BOOT_ROOT=/data/experiments/glm52-1k8k-install
 # Supply a fresh owned path; this example deliberately refuses an existing root.
 test ! -e "$BOOT_ROOT"
 mkdir "$BOOT_ROOT"

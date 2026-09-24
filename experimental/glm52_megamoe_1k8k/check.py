@@ -31,7 +31,7 @@ def config() -> dict:
         "gpu_ids": [str(i) for i in range(8)],
         "port": 30000,
         "ready_timeout_seconds": 3600,
-        "benchmark_timeout_seconds": 3600,
+        "benchmark_timeout_seconds": 14400,
         "term_seconds": 30,
         "kill_seconds": 15,
         "monitor_interval_seconds": 5,
@@ -142,6 +142,104 @@ class Checks(unittest.TestCase):
         ):
             with self.assertRaises(ValueError):
                 run.validate_client_log(bad, case)
+
+    def test_request_plan_calls_original_sampler_after_seeding(self):
+        events = []
+        tokenizer = object()
+
+        def load(*args, **kwargs):
+            events.append(("tokenizer", args, kwargs))
+            return tokenizer
+
+        def sample(**kwargs):
+            events.append(("sample", kwargs))
+            return [("first", 901, 8192), ("second", 1007, 6553)]
+
+        client = SimpleNamespace(
+            __file__=str(run.REPO / "infx/bench_serving/benchmark_serving.py"),
+            _load_tokenizer=load,
+            sample_random_requests=sample,
+        )
+        modules = {
+            "numpy": SimpleNamespace(
+                random=SimpleNamespace(seed=lambda n: events.append(("numpy", n)))
+            ),
+            "infx.bench_serving": SimpleNamespace(benchmark_serving=client),
+        }
+        with (
+            tempfile.TemporaryDirectory() as d,
+            patch.dict(sys.modules, modules),
+            patch("random.seed", side_effect=lambda n: events.append(("random", n))),
+        ):
+            destination = Path(d) / "requested-lengths.json"
+            run.requested_lengths("/model", 2, destination)
+            saved = json.loads(destination.read_text())
+            self.assertEqual(events[:2], [("random", 0), ("numpy", 0)])
+            self.assertEqual(
+                events[2],
+                (
+                    "tokenizer",
+                    ("/model",),
+                    {"tokenizer_mode": "auto", "trust_remote_code": False},
+                ),
+            )
+            self.assertEqual(
+                events[3],
+                (
+                    "sample",
+                    {
+                        "prefix_len": 0,
+                        "input_len": 1024,
+                        "output_len": 8192,
+                        "num_prompts": 2,
+                        "range_ratio": 0.8,
+                        "tokenizer": tokenizer,
+                        "use_chat_template": True,
+                        "dsv4": False,
+                        "tokenizer_id": "/model",
+                        "tokenizer_mode": "auto",
+                        "trust_remote_code": False,
+                        "num_workers": 0,
+                    },
+                ),
+            )
+            self.assertEqual(saved["input_lens"], [901, 1007])
+            self.assertEqual(saved["output_lens"], [8192, 6553])
+            self.assertEqual(saved["client_source"], run.digest(Path(client.__file__)))
+            with self.assertRaises(FileExistsError):
+                run.requested_lengths("/model", 2, destination)
+
+    def test_requested_completed_lengths_reject_truncation_and_reordering(self):
+        case = {"measured_requests": 2}
+        planned = {
+            "seed": 0,
+            "nominal_input": 1024,
+            "nominal_output": 8192,
+            "ratio": 0.8,
+            "num_prompts": 2,
+            "model_path": config()["model_path"],
+            "client_source": run.digest(
+                run.REPO / "infx/bench_serving/benchmark_serving.py"
+            ),
+            "input_lens": [901, 1007],
+            "output_lens": [8192, 6553],
+        }
+        result = {k: planned[k] for k in ("input_lens", "output_lens")}
+        run.validate_requested_lengths(planned, result, case, config())
+        for key, value in (
+            ("output_lens", [8191, 6553]),
+            ("output_lens", [6553, 8192]),
+            ("input_lens", [1007, 901]),
+        ):
+            with self.assertRaises(ValueError):
+                run.validate_requested_lengths(
+                    planned, dict(result, **{key: value}), case, config()
+                )
+        for key, value in (("seed", 1), ("nominal_output", 2048), ("num_prompts", 1)):
+            with self.assertRaises(ValueError):
+                run.validate_requested_lengths(
+                    dict(planned, **{key: value}), result, case, config()
+                )
 
     def test_cache_copy_and_case_seal(self):
         with tempfile.TemporaryDirectory() as d:
@@ -281,6 +379,7 @@ class Checks(unittest.TestCase):
 from pathlib import Path
 with open(os.environ['STUB_ARGS'], 'a') as f: f.write(json.dumps(sys.argv[1:])+'\\n')
 if 'capture' in sys.argv: print('{}')
+elif '--request-lengths' in sys.argv: pass
 else: sys.exit(int(os.environ['STUB_EXIT']))
 """
             )
@@ -310,10 +409,23 @@ else: sys.exit(int(os.environ['STUB_EXIT']))
             calls = [
                 json.loads(line) for line in (p / "args.jsonl").read_text().splitlines()
             ]
+            self.assertEqual(
+                calls[-2],
+                [
+                    str(run.HERE / "run.py"),
+                    "--request-lengths",
+                    "--model-path",
+                    "/model",
+                    "--num-prompts",
+                    "40",
+                    "--destination",
+                    str(p / "requested-lengths.json"),
+                ],
+            )
             cmd = calls[-1]
             self.assertEqual(cmd[cmd.index("--num-prompts") + 1], "40")
             self.assertEqual(cmd[cmd.index("--num-warmups") + 1], "8")
-            self.assertEqual(cmd[cmd.index("--random-output-len") + 1], "2048")
+            self.assertEqual(cmd[cmd.index("--random-output-len") + 1], "8192")
             self.assertEqual(cmd[cmd.index("--random-range-ratio") + 1], "0.8")
             self.assertIn("--use-chat-template", cmd)
             self.assertIn("--ignore-eos", cmd)

@@ -12,10 +12,13 @@ source "$REPO_ROOT/benchmarks/benchmark_lib.sh"
 INFERENCEX_SERVER_STATE="$CASE_DIR/server_watch.json"
 python3 -m infx.bench_serving.server_watch capture --pid "$SERVER_PID" > "$INFERENCEX_SERVER_STATE"
 INFERENCEX_SERVER_PID="$SERVER_PID"
+# Save the same seeded request plan without issuing HTTP requests.
+python3 "$RECIPE_DIR/run.py" --request-lengths --model-path "$MODEL_PATH" \
+    --num-prompts "$((10 * CONC))" --destination "$CASE_DIR/requested-lengths.json"
 run_benchmark_serving \
     --model "$SERVED_MODEL" --tokenizer "$MODEL_PATH" \
     --port "$PORT" --backend vllm --server-pid "$SERVER_PID" \
-    --input-len 1024 --output-len 2048 --random-range-ratio 0.8 \
+    --input-len 1024 --output-len 8192 --random-range-ratio 0.8 \
     --num-prompts "$((10 * CONC))" --max-concurrency "$CONC" \
     --result-filename result --result-dir "$CASE_DIR" \
     --bench-serving-dir "$REPO_ROOT" --use-chat-template

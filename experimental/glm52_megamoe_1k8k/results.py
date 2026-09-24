@@ -80,7 +80,7 @@ def verify_case(directory):
         raise ValueError("Topology/case identity differs")
     if (settings["nominal_input"], settings["nominal_output"], settings["ratio"]) != (
         1024,
-        2048,
+        8192,
         0.8,
     ):
         raise ValueError("Wrong sampled workload")
@@ -163,6 +163,31 @@ def verify_case(directory):
         if sum(values) != result[total]:
             raise ValueError(f"Wrong {total}")
         lengths[field] = values
+    planned = read(directory / "requested-lengths.json")
+    client_source = before["recipe"]["infx/bench_serving/benchmark_serving.py"]
+    plan_settings = {
+        "scope": "deterministic request plan, not server output",
+        "seed": 0,
+        "nominal_input": 1024,
+        "nominal_output": 8192,
+        "ratio": 0.8,
+        "num_prompts": 10 * c,
+        "model_path": config["model_path"],
+        "client_source": client_source,
+    }
+    if any(planned.get(k) != v for k, v in plan_settings.items()):
+        raise ValueError("Requested-length plan settings/source differ")
+    for field in ("input_lens", "output_lens"):
+        values = planned.get(field)
+        if (
+            not isinstance(values, list)
+            or len(values) != 10 * c
+            or any(type(x) is not int or x <= 0 for x in values)
+            or values != lengths[field]
+        ):
+            raise ValueError(f"Requested versus completed ordered {field} differ")
+    if any(not 6553 <= x <= 8192 for x in planned["output_lens"]):
+        raise ValueError("Requested output length is outside the sampled range")
     rate = result["total_output_tokens"] / finite(result["duration"], "duration", True)
     if not math.isclose(
         finite(result["output_throughput"], "output_throughput", True),
@@ -301,7 +326,7 @@ def plot(rows, out):
     ax.set(
         xlabel="Interactivity = 1,000 / median TPOT (tokens/s/user)",
         ylabel="Whole-interval output throughput (tokens/s/GPU)",
-        title="GLM-5.2 · nominal 1k input / 2k output · ratio 0.8 · B300",
+        title="GLM-5.2 · nominal 1k input / 8k output · ratio 0.8 · B300",
     )
     ax.grid(alpha=0.2)
     ax.margins(0.14)
@@ -335,18 +360,17 @@ def main():
         writer.writeheader()
         writer.writerows(rows)
     lines = [
-        "# Fresh MegaMoE 1k/2k results / 全新 MegaMoE 1k/2k 结果",
+        "# Fresh MegaMoE 1k/8k results",
         "",
-        f"Verified finalized points / 已校验完成点数: {len(rows)}/24.",
+        f"Verified finalized points: {len(rows)}/24.",
         "",
-        "Nominal lengths 1,024/2,048 with ratio 0.8 sampling; 2C warmup / 10C measured. "
-        "Same-C ordered length arrays match across available arms. / 名义长度采用0.8比例采样，同并发的有序长度一致。",
+        "Nominal lengths 1,024/8,192 with ratio 0.8 sampling; 2C warmup / 10C measured. "
+        "Same-C ordered length arrays match across available arms.",
         "",
         "Throughput covers the complete measured wall interval, not separately timed decode. "
-        "MTP server-state averages include warmup; no global measured acceptance rate is inferred. "
-        "/ 吞吐覆盖完整测量区间；MTP状态包含预热，不推算全局测量接受率。",
+        "MTP server-state averages include warmup; no global measured acceptance rate is inferred.",
         "",
-        "| Precision / 精度 | TP=DP=EP | C | Requests | Duration s | Output tok/s | Output tok/s/GPU | 1000/median TPOT |",
+        "| Precision | TP=DP=EP | C | Requests | Duration s | Output tok/s | Output tok/s/GPU | 1000/median TPOT |",
         "|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for r in rows:
@@ -357,8 +381,7 @@ def main():
     lines += [
         "",
         "Complete saved scalar latency metrics, source pins and raw SHA bindings are in "
-        "[raw-metrics.csv](raw-metrics.csv) and [raw-metrics.json](raw-metrics.json). "
-        "/ 全部已保存延迟统计、提交与原始SHA见上述文件。",
+        "[raw-metrics.csv](raw-metrics.csv) and [raw-metrics.json](raw-metrics.json).",
         "",
     ]
     if not args.partial:
