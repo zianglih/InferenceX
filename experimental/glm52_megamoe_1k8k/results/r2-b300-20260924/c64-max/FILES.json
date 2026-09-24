@@ -1,0 +1,22 @@
+{
+  "RENDER_INPUTS.json": {
+    "bytes": 1169,
+    "sha256": "7367c1244da17566f647e072c22797e3da52182092da7ac755171f232a68b5f9"
+  },
+  "pareto.png": {
+    "bytes": 328036,
+    "sha256": "aa962b6bd68f08f4d09cce87925fcae3b8f52a9b793975f5f9c9d46e2c5fe382"
+  },
+  "pareto.svg": {
+    "bytes": 37809,
+    "sha256": "6f8e3e409647beaaa23174da85e3ef61ce80d98dd2bbbc80cc510a337d82a971"
+  },
+  "plot-points.json": {
+    "bytes": 2473,
+    "sha256": "e8f3069d11391b89736e2311be9a11f1cbc25cb58bc78916e0440fbd416ee9bd"
+  },
+  "selected-metrics.json": {
+    "bytes": 35620,
+    "sha256": "b8d9e7edaac3f84692b2e03f7348e051aa27e8546dacb8633c39a57930ba8c6b"
+  }
+}

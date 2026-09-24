@@ -1,0 +1,45 @@
+{
+  "published_manifest_sha256": "cdc4b6b260a70fe393c1e0c9ff605ff500b76c572e7c679e7840fb2586a54955",
+  "filter": "concurrency <= 64",
+  "displayed_points": 20,
+  "displayed_measured_requests": 4960,
+  "colors": {
+    "w4a4": "#009E73",
+    "w4a16": "#E69F00"
+  },
+  "ep_styles": {
+    "4": "solid/circle",
+    "8": "dashed/triangle"
+  },
+  "frontiers": {
+    "w4a4-tp4": [
+      "w4a4-tp4-ep4-dp4-c64",
+      "w4a4-tp4-ep4-dp4-c32",
+      "w4a4-tp4-ep4-dp4-c16",
+      "w4a4-tp4-ep4-dp4-c8",
+      "w4a4-tp4-ep4-dp4-c4"
+    ],
+    "w4a16-tp4": [
+      "w4a16-tp4-ep4-dp4-c64",
+      "w4a16-tp4-ep4-dp4-c32",
+      "w4a16-tp4-ep4-dp4-c16",
+      "w4a16-tp4-ep4-dp4-c8",
+      "w4a16-tp4-ep4-dp4-c4"
+    ],
+    "w4a4-tp8": [
+      "w4a4-tp8-ep8-dp8-c64",
+      "w4a4-tp8-ep8-dp8-c32",
+      "w4a4-tp8-ep8-dp8-c16",
+      "w4a4-tp8-ep8-dp8-c8",
+      "w4a4-tp8-ep8-dp8-c4"
+    ],
+    "w4a16-tp8": [
+      "w4a16-tp8-ep8-dp8-c64",
+      "w4a16-tp8-ep8-dp8-c32",
+      "w4a16-tp8-ep8-dp8-c16",
+      "w4a16-tp8-ep8-dp8-c8",
+      "w4a16-tp8-ep8-dp8-c4"
+    ]
+  },
+  "scope": "Filtered view of accepted R2 measurements. The full C128 figure and raw results are unchanged."
+}
