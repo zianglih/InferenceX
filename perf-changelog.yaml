@@ -8405,3 +8405,14 @@
     - "Enable required telemetry on seven GB200 aggregate recipes, preserve failed-job artifacts, and reserve CUDA Graph memory in the five TP8/PP2 recipes."
     - "为七个 GB200 Kimi-K3 聚合配方启用必需实测功耗并保留失败产物；五个 TP8/PP2 配方为 CUDA Graph 预留显存。"
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/3045
+
+- config-keys:
+    - experimental/glm52_megamoe_1k2k
+  scenario-type:
+    - fixed-seq-len
+  description:
+    - "Add a standalone GLM-5.2 B300 MegaMoE experiment: 24 fresh W4A4/W4A16 points, TP=EP=DP attention 4/8, C4/8/16/32/64/128, nominal1024/2048 at ratio0.8; unchanged InferenceX client, native BF16 MTP3/1/4 and FP8 KV. No production master-config or prior measurement changes."
+    - "Use one fixed SGLang16c1b863 / FlashInfer19e8aebb installation, explicit single-node NVSHMEM no-proxy settings, shared compilation caches and separate precision/topology tuning namespaces. C128 runs first in each group; retain terminal raw artifacts and exact ordered lengths."
+    - "新增独立 GLM-5.2 B300 MegaMoE 实验：24个全新 W4A4/W4A16 测点，TP=EP=DP attention 为4/8，并发4/8/16/32/64/128，标称1024/2048、ratio0.8；复用原 InferenceX client、原生BF16 MTP3/1/4及FP8 KV，不改生产 master config 或旧测量。"
+    - "固定同一套 SGLang16c1b863 / FlashInfer19e8aebb 安装，显式设置本机 NVSHMEM no-proxy，共享编译缓存并隔离精度/拓扑调优 namespace；每组先跑C128，保存终态原始证据与有序长度。"
+  pr-link: TBD

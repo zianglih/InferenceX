@@ -1,0 +1,26 @@
+{
+  "run_id": "glm52-megamoe-1k2k-20260923-all24",
+  "run_root": "/data/experiments/glm52-megamoe-1k2k-20260923-all24",
+  "python": "/opt/sglang/bin/python3",
+  "sglang_root": "/data/sources/sglang",
+  "sglang_commit": "16c1b8638b462ca1b896e2b76d5c002caf06988b",
+  "flashinfer_root": "/data/sources/flashinfer",
+  "flashinfer_commit": "19e8aebb541684df09e12cc79610338aa429a2cf",
+  "model_path": "/data/checkpoints/GLM-5.2-NVFP4",
+  "model_revision": "53e0691e21895a3863a606dfd12910c69eba94ab",
+  "served_model": "GLM-5.2-NVFP4",
+  "image": "lmsysorg/sglang:nightly-dev-cu13-20260924-ffac53d7@sha256:21d494298cea9592b92903f368f8b34c96e908b2eb64ca84fe195c6d1f0e1cd3",
+  "gpu_ids": ["0", "1", "2", "3", "4", "5", "6", "7"],
+  "port": 30000,
+  "ready_timeout_seconds": 3600,
+  "benchmark_timeout_seconds": 3600,
+  "term_seconds": 30,
+  "kill_seconds": 15,
+  "monitor_interval_seconds": 5,
+  "base_environment": {
+    "PATH": "/opt/sglang/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "HOME": "/root",
+    "LANG": "C.UTF-8",
+    "LD_LIBRARY_PATH": "/usr/local/cuda/lib64"
+  }
+}
