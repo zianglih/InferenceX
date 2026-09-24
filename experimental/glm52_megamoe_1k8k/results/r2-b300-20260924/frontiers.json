@@ -1,0 +1,62 @@
+{
+  "scope": "Four separate precision/topology frontiers; no pooled frontier",
+  "status": "ROOT_RELEASE_ACCEPTED",
+  "groups": [
+    {
+      "precision": "w4a4",
+      "tp": 4,
+      "ep": 4,
+      "dp": 4,
+      "case_ids": [
+        "w4a4-tp4-ep4-dp4-c128",
+        "w4a4-tp4-ep4-dp4-c64",
+        "w4a4-tp4-ep4-dp4-c32",
+        "w4a4-tp4-ep4-dp4-c16",
+        "w4a4-tp4-ep4-dp4-c8",
+        "w4a4-tp4-ep4-dp4-c4"
+      ]
+    },
+    {
+      "precision": "w4a16",
+      "tp": 4,
+      "ep": 4,
+      "dp": 4,
+      "case_ids": [
+        "w4a16-tp4-ep4-dp4-c128",
+        "w4a16-tp4-ep4-dp4-c64",
+        "w4a16-tp4-ep4-dp4-c32",
+        "w4a16-tp4-ep4-dp4-c16",
+        "w4a16-tp4-ep4-dp4-c8",
+        "w4a16-tp4-ep4-dp4-c4"
+      ]
+    },
+    {
+      "precision": "w4a4",
+      "tp": 8,
+      "ep": 8,
+      "dp": 8,
+      "case_ids": [
+        "w4a4-tp8-ep8-dp8-c128",
+        "w4a4-tp8-ep8-dp8-c64",
+        "w4a4-tp8-ep8-dp8-c32",
+        "w4a4-tp8-ep8-dp8-c16",
+        "w4a4-tp8-ep8-dp8-c8",
+        "w4a4-tp8-ep8-dp8-c4"
+      ]
+    },
+    {
+      "precision": "w4a16",
+      "tp": 8,
+      "ep": 8,
+      "dp": 8,
+      "case_ids": [
+        "w4a16-tp8-ep8-dp8-c128",
+        "w4a16-tp8-ep8-dp8-c64",
+        "w4a16-tp8-ep8-dp8-c32",
+        "w4a16-tp8-ep8-dp8-c16",
+        "w4a16-tp8-ep8-dp8-c8",
+        "w4a16-tp8-ep8-dp8-c4"
+      ]
+    }
+  ]
+}

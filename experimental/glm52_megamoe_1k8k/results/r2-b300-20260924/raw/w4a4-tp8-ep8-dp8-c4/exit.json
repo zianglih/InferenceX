@@ -1,0 +1,291 @@
+{
+  "case": {
+    "case_id": "w4a4-tp8-ep8-dp8-c4",
+    "concurrency": 4,
+    "dp": 8,
+    "ep": 8,
+    "measured_requests": 40,
+    "precision": "w4a4",
+    "server_max_running_requests": 8,
+    "tp": 8,
+    "warmup_requests": 8
+  },
+  "cleanup": {
+    "benchmark": {
+      "at": "2026-09-24T12:10:40Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 69897,
+          "pid": 69897,
+          "ppid": 24602,
+          "sid": 69897,
+          "starttime": "343194097",
+          "state": "D"
+        },
+        {
+          "pgid": 69897,
+          "pid": 69911,
+          "ppid": 69897,
+          "sid": 69897,
+          "starttime": "343194125",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70235,
+          "ppid": 69911,
+          "sid": 69897,
+          "starttime": "343195521",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70236,
+          "ppid": 69911,
+          "sid": 69897,
+          "starttime": "343195523",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70237,
+          "ppid": 69911,
+          "sid": 69897,
+          "starttime": "343195524",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70238,
+          "ppid": 69911,
+          "sid": 69897,
+          "starttime": "343195525",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70239,
+          "ppid": 69911,
+          "sid": 69897,
+          "starttime": "343195526",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70240,
+          "ppid": 69911,
+          "sid": 69897,
+          "starttime": "343195527",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70241,
+          "ppid": 69911,
+          "sid": 69897,
+          "starttime": "343195529",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70242,
+          "ppid": 69911,
+          "sid": 69897,
+          "starttime": "343195530",
+          "state": "R"
+        },
+        {
+          "pgid": 69897,
+          "pid": 70256,
+          "ppid": 69897,
+          "sid": 69897,
+          "starttime": "343195895",
+          "state": "S"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70257,
+          "ppid": 70256,
+          "sid": 70257,
+          "starttime": "343195908",
+          "state": "R"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70575,
+          "ppid": 70257,
+          "sid": 70257,
+          "starttime": "343197206",
+          "state": "R"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70576,
+          "ppid": 70257,
+          "sid": 70257,
+          "starttime": "343197207",
+          "state": "R"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70577,
+          "ppid": 70257,
+          "sid": 70257,
+          "starttime": "343197209",
+          "state": "R"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70578,
+          "ppid": 70257,
+          "sid": 70257,
+          "starttime": "343197210",
+          "state": "R"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70579,
+          "ppid": 70257,
+          "sid": 70257,
+          "starttime": "343197211",
+          "state": "R"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70580,
+          "ppid": 70257,
+          "sid": 70257,
+          "starttime": "343197212",
+          "state": "R"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70581,
+          "ppid": 70257,
+          "sid": 70257,
+          "starttime": "343197213",
+          "state": "R"
+        },
+        {
+          "pgid": 70257,
+          "pid": 70582,
+          "ppid": 70257,
+          "sid": 70257,
+          "starttime": "343197215",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": 0
+    },
+    "server": {
+      "at": "2026-09-24T12:10:47Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 65430,
+          "pid": 65430,
+          "ppid": 24602,
+          "sid": 65430,
+          "starttime": "343167076",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 65655,
+          "ppid": 65430,
+          "sid": 65430,
+          "starttime": "343170352",
+          "state": "S"
+        },
+        {
+          "pgid": 65430,
+          "pid": 65656,
+          "ppid": 65430,
+          "sid": 65430,
+          "starttime": "343170352",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 65657,
+          "ppid": 65430,
+          "sid": 65430,
+          "starttime": "343170352",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 66131,
+          "ppid": 65656,
+          "sid": 65430,
+          "starttime": "343173024",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 66182,
+          "ppid": 65656,
+          "sid": 65430,
+          "starttime": "343173096",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 66134,
+          "ppid": 65656,
+          "sid": 65430,
+          "starttime": "343173060",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 66241,
+          "ppid": 65656,
+          "sid": 65430,
+          "starttime": "343173139",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 66309,
+          "ppid": 65656,
+          "sid": 65430,
+          "starttime": "343173182",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 66375,
+          "ppid": 65656,
+          "sid": 65430,
+          "starttime": "343173220",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 66448,
+          "ppid": 65656,
+          "sid": 65430,
+          "starttime": "343173258",
+          "state": "R"
+        },
+        {
+          "pgid": 65430,
+          "pid": 66514,
+          "ppid": 65656,
+          "sid": 65430,
+          "starttime": "343173295",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": -9
+    }
+  },
+  "error": null,
+  "finished_at": "2026-09-24T12:10:50Z",
+  "started_at": "2026-09-24T11:57:52Z",
+  "status": "completed"
+}
