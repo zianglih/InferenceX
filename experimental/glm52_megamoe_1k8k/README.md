@@ -58,6 +58,12 @@ Follow the [one-time installation instructions](INSTALL.md), then validate the i
 two source checkouts, compiled dependencies and revision-pinned local checkpoint once. Do not rebuild or reinstall between arms.
 Copy the config outside the source tree, fill its actual paths/environment, and
 create only the parent of `run_root`. The run root itself must not exist.
+Set `tmp_root` to a new, short direct child of `/tmp`, such as
+`/tmp/infx-g52-1k8k-r2`. Both paths must be exclusive to this run. The runner
+records the temporary directory owner and binds representative Unix-domain
+sockets before model startup. Long Weka run paths can exceed AF_UNIX socket
+limits and disable optional collective paths; do not use `run_root/tmp`.
+Preserve the owned temporary directory with the terminal run artifacts.
 The example sets a 14,400-second benchmark safety timeout; server readiness remains
 3,600 seconds. These are failure bounds, not runtime or performance estimates.
 
@@ -84,8 +90,17 @@ campaign. There is deliberately no overwrite/resume switch.
 
 ## Caches and evidence
 
-`run_root/caches/compile/` is shared by all 24 points. It starts empty, grows through
-normal JIT compilation, and is never cleared or replaced. SGLang JIT, DeepGEMM,
+`run_root/caches/compile/` is shared by all 24 points. It starts empty when
+`compile_cache_seed` is null. An optional preparation-time seed copies only
+regular compiled files from a stopped, idle predecessor, with an exact manifest
+and byte verification; the runner copies and rechecks that independent seed
+into the new run. No hardlinks, old tuning records, or measured results are reused.
+The source cache stays untouched. In this campaign's concrete R2 preparation,
+one exact generated provider-directory link is recorded and excluded, and unknown
+links fail closed. The published runner rejects every link in the prepared seed.
+The four tactic namespaces
+start empty in either mode. The compilation cache grows through normal JIT work
+and is never cleared or replaced during the run. SGLang JIT, DeepGEMM,
 CuTe AOT, FlashInfer, CuTe DSL, CUDA, Torch extensions/Inductor, Triton, TileLang and
 XDG cache locations are explicit. `SGLANG_CACHE_DIR` points instead to
 `caches/tactics/<precision>/tp<TP>/`: four isolated FlashInfer tuning namespaces.
@@ -171,3 +186,15 @@ The client, sampling and metric implementation is the current repository's
 [`benchmarks/benchmark_lib.sh`](../../benchmarks/benchmark_lib.sh) and
 [`infx/bench_serving`](../../infx/bench_serving/), reused without modification.
 Prior result data and recovery adapters are not included in this recipe.
+
+## Original long-path attempt
+
+The first attempt used a 95-byte TMPDIR and logged FlashInfer `AF_UNIX path too
+long`, custom-allreduce socket errors, and multimem all-gather initialization
+fallback. Source and sealed logs establish that the latter is on the main and
+draft token-logits path. The exact cause of every `Invalid argument` message and
+the performance impact are not established. One W4A4/TP4/C128 point completed;
+the following C4 point was intentionally interrupted. Both sealed cases and the
+waited shutdown receipts are preserved. The completed point is supplemental
+only and is excluded from the corrected, fresh 24-point matrix. The short-path
+socket check does not replace actual first-case collective/startup validation.

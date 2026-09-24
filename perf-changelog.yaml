@@ -8414,3 +8414,12 @@
     - "Add a standalone GLM-5.2 B300 MegaMoE experiment: 24 fresh W4A4/W4A16 points, TP=EP=DP attention 4/8, C4/8/16/32/64/128, nominal1024/8192 at ratio0.8; unchanged InferenceX client, native BF16 MTP3/1/4 and FP8 KV. No production master-config or prior measurement changes."
     - "Use one fixed SGLang16c1b863 / FlashInfer19e8aebb installation, explicit single-node NVSHMEM no-proxy settings, shared compilation caches and separate precision/topology tuning namespaces. C128 runs first in each group; retain terminal raw artifacts and exact ordered lengths."
   pr-link: https://github.com/zianglih/InferenceX/pull/2
+
+- config-keys:
+    - experimental/glm52_megamoe_1k8k
+  scenario-type:
+    - fixed-seq-len
+  description:
+    - "Use an exclusive short TMPDIR and preflight real Unix-domain socket binds after a logged FlashInfer AF_UNIX path-too-long error; other collective fallback causes and performance effects remain unproven; retain the original stopped attempt as supplemental evidence outside the corrected fresh24 matrix."
+    - "Reuse the unchanged installation and verified copies of regular compiled artifacts from the idle predecessor, with fresh precision/topology tuning namespaces. Keep all24 workload, MTP, sampling and measurement settings unchanged."
+  pr-link: https://github.com/zianglih/InferenceX/pull/2

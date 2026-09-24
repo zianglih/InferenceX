@@ -15,6 +15,7 @@ import socket
 import stat
 import subprocess
 import sys
+import tempfile
 import time
 import traceback
 from urllib.error import URLError
@@ -28,6 +29,8 @@ CONCURRENCIES = (128, 4, 8, 16, 32, 64)
 CONFIG_KEYS = {
     "run_id",
     "run_root",
+    "tmp_root",
+    "compile_cache_seed",
     "python",
     "sglang_root",
     "sglang_commit",
@@ -97,6 +100,8 @@ def read_config(path: Path) -> dict:
     root = Path(cfg["run_root"])
     if root.name != cfg["run_id"] or root.is_relative_to("/workspace"):
         raise ValueError("run_root must end in run_id and be outside /workspace")
+    validate_tmp_root(cfg)
+    validate_compile_seed(cfg)
     if not re.search(r"@sha256:[0-9a-f]{64}$", cfg["image"]):
         raise ValueError("Pin the image tag and digest")
     if len(cfg["gpu_ids"]) != 8 or len(set(cfg["gpu_ids"])) != 8:
@@ -166,7 +171,7 @@ def environment(cfg: dict, case: dict) -> dict[str, str]:
             "PYTHONDONTWRITEBYTECODE": "1",
             "GIT_OPTIONAL_LOCKS": "0",
             "PYTHONPYCACHEPREFIX": str(root / "pycache"),
-            "TMPDIR": str(root / "tmp"),
+            "TMPDIR": cfg["tmp_root"],
             "HF_HOME": str(root / "hf-home"),
             "HF_HUB_OFFLINE": "1",
             "TRANSFORMERS_OFFLINE": "1",
@@ -950,6 +955,244 @@ def run_case(cfg: dict, case: dict, references: dict, baseline: dict) -> None:
         raise RuntimeError(f"Case failed; preserved at {directory}")
 
 
+def validate_tmp_root(cfg: dict) -> Path:
+    path = canonical_path(cfg["tmp_root"])
+    if (
+        path.parent != Path("/tmp")
+        or not re.fullmatch(r"infx-[A-Za-z0-9._-]+", path.name)
+        or len(os.fsencode(path)) >= 30
+    ):
+        raise ValueError(
+            "tmp_root must be a short (<30 bytes), private /tmp/infx-* child"
+        )
+    return path
+
+
+def socket_path_preflight(path: Path, receipt: dict) -> None:
+    # Exact naming shapes from pinned FlashInfer fd_exchange.py/mixed_comm.py.
+    # This tests OS pathname support only, without invoking CUDA or collectives.
+    receipt["probes"] = []
+    for prefix, leaf, kind in (
+        (f"cuda_fd_xchg_{os.getpid()}_7_", "fd.sock", socket.SOCK_STREAM),
+        (f"cuda_fd_bcast_{os.getpid()}_7_", "fd.sock", socket.SOCK_STREAM),
+        ("flashinfer_mixed_comm_", "rank_7", socket.SOCK_DGRAM),
+    ):
+        directory = Path(tempfile.mkdtemp(prefix=prefix, dir=path))
+        directory_identity = (directory.stat().st_dev, directory.stat().st_ino)
+        target = directory / leaf
+        row = {
+            "path": str(target),
+            "bytes_without_nul": len(os.fsencode(target)),
+            "socket_type": kind,
+            "bound": False,
+            "cleanup_errors": [],
+        }
+        receipt["probes"].append(row)
+        sock = None
+        identity = None
+        try:
+            random_suffix = directory.name[len(prefix) :]
+            worst_prefix = prefix.replace(str(os.getpid()), "2147483647", 1)
+            worst = path / (worst_prefix + random_suffix) / leaf
+            row["max_pid_rank_path_bytes_with_nul"] = len(os.fsencode(worst)) + 1
+            if row["max_pid_rank_path_bytes_with_nul"] > 108:
+                raise ValueError("AF_UNIX sun_path budget exceeded")
+            sock = socket.socket(socket.AF_UNIX, kind)
+            sock.bind(str(target))
+            st = target.lstat()
+            identity = (st.st_dev, st.st_ino)
+            row.update(bound=True, socket_device=st.st_dev, socket_inode=st.st_ino)
+        finally:
+            if sock is not None:
+                sock.close()
+            if identity is not None:
+                try:
+                    st = target.lstat()
+                    if (st.st_dev, st.st_ino) != identity or not stat.S_ISSOCK(
+                        st.st_mode
+                    ):
+                        raise ValueError("Owned probe socket identity changed")
+                    target.unlink()
+                except Exception as exc:
+                    row["cleanup_errors"].append(repr(exc))
+            try:
+                st = directory.lstat()
+                if (st.st_dev, st.st_ino) != directory_identity or not stat.S_ISDIR(
+                    st.st_mode
+                ):
+                    raise ValueError("Owned probe directory identity changed")
+                directory.rmdir()  # No recursion; never remove an unexpected child.
+            except Exception as exc:
+                row["cleanup_errors"].append(repr(exc))
+            if row["cleanup_errors"]:
+                raise RuntimeError("Owned AF_UNIX probe cleanup failed: " + repr(row))
+
+
+def prepare_tmp_scope(cfg: dict, root: Path) -> None:
+    path = validate_tmp_root(cfg)
+    receipt = {
+        "run_id": cfg["run_id"],
+        "run_root": str(root),
+        "tmp_root": str(path),
+        "at": now(),
+        "worker": process_row(os.getpid()),
+        "error": None,
+        "scope_retained_for_postterminal_preservation": True,
+    }
+    try:
+        # Existing TMPDIR is never adopted, emptied, or reused by another run.
+        parent = os.open("/tmp", os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            os.mkdir(path.name, mode=0o700, dir_fd=parent)
+            child = os.open(
+                path.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent
+            )
+            try:
+                st = os.fstat(child)
+                receipt["directory_identity"] = {
+                    "device": st.st_dev,
+                    "inode": st.st_ino,
+                    "uid": st.st_uid,
+                }
+                marker = {
+                    k: receipt[k]
+                    for k in (
+                        "run_id",
+                        "run_root",
+                        "tmp_root",
+                        "worker",
+                        "directory_identity",
+                    )
+                }
+                fd = os.open(
+                    ".inferencex-owner.json",
+                    os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                    0o600,
+                    dir_fd=child,
+                )
+                with os.fdopen(fd, "w") as stream:
+                    json.dump(marker, stream, sort_keys=True)
+                    stream.write("\n")
+                    stream.flush()
+                    os.fsync(stream.fileno())
+            finally:
+                os.close(child)
+        finally:
+            os.close(parent)
+        receipt["owner_marker"] = digest(path / ".inferencex-owner.json")
+        socket_path_preflight(path, receipt)
+        receipt["status"] = "AF_UNIX_PATH_PREFLIGHT_PASSED"
+    except BaseException as exc:
+        receipt.update(status="FAILED", error=repr(exc))
+        raise
+    finally:
+        save(root / "tmp-preflight.json", receipt)
+
+
+def validate_compile_seed(cfg: dict) -> None:
+    seed = cfg["compile_cache_seed"]
+    if seed is None:
+        return
+    if not isinstance(seed, dict) or set(seed) != {
+        "root",
+        "manifest",
+        "manifest_sha256",
+    }:
+        raise ValueError("Invalid compile-only seed configuration")
+    base, manifest = (canonical_path(seed[k]) for k in ("root", "manifest"))
+    if base.is_relative_to(Path(cfg["run_root"])) or manifest.is_relative_to(base):
+        raise ValueError(
+            "Compile seed/manifest must precede and remain outside the fresh run"
+        )
+    if not re.fullmatch(r"[0-9a-f]{64}", seed["manifest_sha256"]):
+        raise ValueError("Exact compile seed manifest SHA required")
+
+
+def compile_seed_inventory(base: Path) -> dict:
+    for p in (base, *base.parents):
+        if p.is_symlink():
+            raise ValueError("Linked compile seed path")
+    if not base.is_dir():
+        raise ValueError("Compile seed/cache root must be an existing directory")
+    files, directories = {}, []
+    total = 0
+    for directory, dirs, names in os.walk(base, followlinks=False):
+        for name in sorted(dirs + names):
+            p = Path(directory) / name
+            rel = p.relative_to(base).as_posix()
+            mode = p.lstat().st_mode
+            if stat.S_ISDIR(mode):
+                directories.append(rel)
+            elif stat.S_ISREG(mode):
+                total += p.stat().st_size
+                if total > 200 * 1024**3:
+                    raise ValueError("Compile seed exceeds 200 GiB")
+                files[rel] = digest(p)
+            else:
+                raise ValueError(
+                    "Compile seed contains a link or special entry: " + str(p)
+                )
+            if len(files) + len(directories) > 250000:
+                raise ValueError("Compile seed entry bound")
+    return {"files": files, "directories": sorted(directories)}
+
+
+def copy_compile_seed(cfg: dict, root: Path) -> None:
+    seed = cfg["compile_cache_seed"]
+    if seed is None:
+        save(
+            root / "compile-cache-seed.json", {"status": "NO_SEED_FRESH_COMPILE_CACHE"}
+        )
+        return
+    source, manifest_path = Path(seed["root"]), Path(seed["manifest"])
+    for p in (manifest_path, *manifest_path.parents):
+        if p.is_symlink():
+            raise ValueError("Linked compile seed manifest")
+    if digest(manifest_path)["sha256"] != seed["manifest_sha256"]:
+        raise ValueError("Compile seed manifest changed")
+    manifest = json.loads(manifest_path.read_text())
+    if (
+        set(manifest) != {"schema", "root", "files", "directories", "source"}
+        or manifest["schema"] != 1
+        or manifest["root"] != str(source)
+    ):
+        raise ValueError("Compile seed manifest schema/root mismatch")
+    before = compile_seed_inventory(source)
+    if before != {k: manifest[k] for k in ("files", "directories")}:
+        raise ValueError("Compile seed bytes differ from manifest")
+    destination = root / "caches" / "compile"
+    empty = compile_seed_inventory(destination)
+    if empty["files"]:
+        raise ValueError("New compile cache is already populated")
+    for name in before["directories"]:
+        (destination / name).mkdir(parents=True, exist_ok=True)
+    for name in before["files"]:
+        shutil.copyfile(
+            source / name, destination / name
+        )  # No hardlinks or source writes.
+    copied = compile_seed_inventory(destination)
+    if copied["files"] != before["files"] or copied["directories"] != sorted(
+        set(empty["directories"]) | set(before["directories"])
+    ):
+        raise ValueError("Copied compile cache differs")
+    if (
+        compile_seed_inventory(source) != before
+        or digest(manifest_path)["sha256"] != seed["manifest_sha256"]
+    ):
+        raise ValueError("Compile seed changed during copy")
+    save(
+        root / "compile-cache-seed.json",
+        {
+            "status": "VERIFIED_COMPILE_ONLY_COPY",
+            "seed": seed,
+            "source": manifest["source"],
+            "copied": copied,
+            "tactics_copied": False,
+            "note": "Artifact reuse does not guarantee that every later kernel avoids compilation",
+        },
+    )
+
+
 def run(cfg: dict) -> None:
     if sys.platform != "linux":
         raise RuntimeError("Execution requires Linux /proc; --plan is portable")
@@ -985,6 +1228,8 @@ def run(cfg: dict) -> None:
     for sig in (signal.SIGINT, signal.SIGTERM):
         signal.signal(sig, stop)
     try:
+        prepare_tmp_scope(cfg, root)
+        copy_compile_seed(cfg, root)
         baseline = source_snapshot(cfg, first_env)
         save(root / "source.initial.json", baseline)
         save(root / "runtime.initial.json", installed_runtime(cfg, first_env))

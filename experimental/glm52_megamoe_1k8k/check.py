@@ -19,6 +19,8 @@ def config() -> dict:
     return {
         "run_id": "trial",
         "run_root": "/tmp/trial",
+        "tmp_root": "/tmp/infx-local-check",
+        "compile_cache_seed": None,
         "python": "/opt/bin/python3",
         "sglang_root": "/src/sg",
         "sglang_commit": "1" * 40,
@@ -368,6 +370,183 @@ class Checks(unittest.TestCase):
                     "failed",
                 )
                 self.assertTrue((directory / "manifest.json").is_file())
+
+    def test_short_tmp_config_and_environment(self):
+        cfg = config()
+        self.assertEqual(
+            run.environment(cfg, run.matrix()[0])["TMPDIR"], cfg["tmp_root"]
+        )
+        for value in (
+            "/tmp/" + "infx-" + "x" * 25,
+            "/var/tmp/infx-case",
+            "/tmp/shared",
+            "/tmp/infx-a/../infx-b",
+        ):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                run.validate_tmp_root(dict(cfg, tmp_root=value))
+
+    def test_real_unix_socket_shapes_and_cleanup(self):
+        # macOS /tmp is a symlink; use its real path for this OS-only primitive.
+        with tempfile.TemporaryDirectory(prefix="ix-", dir=Path("/tmp").resolve()) as d:
+            receipt = {}
+            run.socket_path_preflight(Path(d), receipt)
+            self.assertEqual(len(receipt["probes"]), 3)
+            self.assertTrue(
+                all(p["bound"] and not p["cleanup_errors"] for p in receipt["probes"])
+            )
+            self.assertTrue(
+                all(
+                    p["max_pid_rank_path_bytes_with_nul"] <= 108
+                    for p in receipt["probes"]
+                )
+            )
+            self.assertEqual(list(Path(d).iterdir()), [])
+
+    def test_long_socket_budget_rejected_without_leaking_probe(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d).resolve() / ("long-" + "x" * 100)
+            path.mkdir()
+            receipt = {}
+            with self.assertRaisesRegex(ValueError, "sun_path budget"):
+                run.socket_path_preflight(path, receipt)
+            self.assertFalse(receipt["probes"][0]["bound"])
+            self.assertEqual(list(path.iterdir()), [])
+
+    def test_exclusive_tmp_owner_marker_and_existing_scope_rejection(self):
+        with tempfile.TemporaryDirectory(prefix="ix-", dir=Path("/tmp").resolve()) as d:
+            parent = Path(d)
+            path = parent / "infx-case"
+            first = parent / "first"
+            first.mkdir()
+            second = parent / "second"
+            second.mkdir()
+            actual_open = os.open
+
+            def mapped_open(name, flags, *args, **kwargs):
+                return actual_open(
+                    parent if name == "/tmp" else name, flags, *args, **kwargs
+                )
+
+            with (
+                patch.object(run, "validate_tmp_root", return_value=path),
+                patch.object(run.os, "open", mapped_open),
+            ):
+                run.prepare_tmp_scope(config(), first)
+                marker = (path / ".inferencex-owner.json").read_bytes()
+                proof = json.loads((first / "tmp-preflight.json").read_text())
+                self.assertEqual(proof["status"], "AF_UNIX_PATH_PREFLIGHT_PASSED")
+                self.assertEqual(json.loads(marker)["run_id"], "trial")
+                self.assertEqual(path.stat().st_mode & 0o777, 0o700)
+                with self.assertRaises(FileExistsError):
+                    run.prepare_tmp_scope(config(), second)
+                self.assertEqual((path / ".inferencex-owner.json").read_bytes(), marker)
+                self.assertEqual(
+                    json.loads((second / "tmp-preflight.json").read_text())["status"],
+                    "FAILED",
+                )
+
+    def test_probe_does_not_remove_unexpected_children(self):
+        with tempfile.TemporaryDirectory(prefix="ix-", dir=Path("/tmp").resolve()) as d:
+            actual_mkdtemp = tempfile.mkdtemp
+
+            def extra_child(*args, **kwargs):
+                name = actual_mkdtemp(*args, **kwargs)
+                (Path(name) / "foreign").write_bytes(b"keep")
+                return name
+
+            with patch.object(run.tempfile, "mkdtemp", extra_child):
+                receipt = {}
+                with self.assertRaisesRegex(RuntimeError, "cleanup failed"):
+                    run.socket_path_preflight(Path(d), receipt)
+            self.assertEqual(next(Path(d).glob("*/foreign")).read_bytes(), b"keep")
+            self.assertEqual(list(Path(d).glob("*/fd.sock")), [])
+
+    def test_compile_copy_independent_bytes_and_fresh_tactics(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d).resolve()
+            source = base / "seed"
+            source.mkdir()
+            (source / "torch").mkdir()
+            (source / "empty").mkdir()
+            (source / "torch" / "kernel.so").write_bytes(b"compiled")
+            manifest = base / "seed.json"
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "schema": 1,
+                        "root": str(source),
+                        "files": {
+                            "torch/kernel.so": run.digest(source / "torch/kernel.so")
+                        },
+                        "directories": ["empty", "torch"],
+                        "source": {"terminal": "fixture-only"},
+                    }
+                )
+            )
+            root = base / "run"
+            (root / "caches/compile/cute").mkdir(parents=True)
+            (root / "caches/tactics/w4a4/tp4").mkdir(parents=True)
+            cfg = dict(
+                config(),
+                run_root=str(root),
+                compile_cache_seed={
+                    "root": str(source),
+                    "manifest": str(manifest),
+                    "manifest_sha256": run.digest(manifest)["sha256"],
+                },
+            )
+            run.validate_compile_seed(cfg)
+            run.copy_compile_seed(cfg, root)
+            copied = root / "caches/compile/torch/kernel.so"
+            self.assertEqual(copied.read_bytes(), b"compiled")
+            self.assertNotEqual(
+                copied.stat().st_ino, (source / "torch/kernel.so").stat().st_ino
+            )
+            self.assertEqual(list((root / "caches/tactics/w4a4/tp4").iterdir()), [])
+            self.assertFalse(
+                json.loads((root / "compile-cache-seed.json").read_text())[
+                    "tactics_copied"
+                ]
+            )
+            with self.assertRaisesRegex(ValueError, "already populated"):
+                run.copy_compile_seed(cfg, root)
+            copied.write_bytes(b"new")
+            self.assertEqual((source / "torch/kernel.so").read_bytes(), b"compiled")
+            (source / "torch/kernel.so").write_bytes(b"changed")
+            with self.assertRaisesRegex(ValueError, "differ from manifest"):
+                run.copy_compile_seed(cfg, root)
+
+    def test_compile_seed_rejects_links_missing_roots_and_invalid_manifest(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = Path(d).resolve()
+            source = base / "seed"
+            source.mkdir()
+            with self.assertRaises(ValueError):
+                run.compile_seed_inventory(base / "absent")
+            (source / "provider").symlink_to(base, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "link or special"):
+                run.compile_seed_inventory(source)
+            (source / "provider").unlink()
+            manifest = base / "seed.json"
+            manifest.write_text("{}")
+            cfg = dict(
+                config(),
+                compile_cache_seed={
+                    "root": str(source),
+                    "manifest": str(manifest),
+                    "manifest_sha256": "0" * 64,
+                },
+            )
+            with self.assertRaisesRegex(ValueError, "manifest changed"):
+                run.copy_compile_seed(cfg, base)
+            cfg["compile_cache_seed"]["manifest_sha256"] = run.digest(manifest)[
+                "sha256"
+            ]
+            with self.assertRaisesRegex(ValueError, "schema/root mismatch"):
+                run.copy_compile_seed(cfg, base)
+            cfg["compile_cache_seed"]["root"] = cfg["run_root"]
+            with self.assertRaises(ValueError):
+                run.validate_compile_seed(cfg)
 
     def test_actual_bash_bridge_arguments_and_failure(self):
         with tempfile.TemporaryDirectory() as d:
