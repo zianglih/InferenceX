@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/opt/sglang/bin/python3",
+    "-B",
+    "-c",
+    "import json,pathlib,site,sys\nimport sglang,flashinfer,flashinfer_cubin\nimport flashinfer._build_meta as main,flashinfer_cubin._build_meta as cubin\nfrom flashinfer.jit import env\nassert main.__git_commit__ == cubin.__git_version__ == sys.argv[1]\nassert flashinfer.__version__ == flashinfer_cubin.__version__\nassert pathlib.Path(sglang.__file__).resolve().is_relative_to(pathlib.Path(sys.argv[2]).resolve())\nassert any(pathlib.Path(flashinfer.__file__).resolve().is_relative_to(pathlib.Path(p).resolve()) for p in site.getsitepackages())\nassert not env.FLASHINFER_AOT_PROVIDERS\nprint(json.dumps({'sglang':sglang.__file__,'flashinfer':flashinfer.__file__,'cubin':flashinfer_cubin.__file__,\n 'version':flashinfer.__version__,'git_commit':main.__git_commit__,'cubin_git_commit':cubin.__git_version__,\n 'aot_providers':len(env.FLASHINFER_AOT_PROVIDERS),'python':sys.executable,'prefix':sys.prefix}))\n",
+    "19e8aebb541684df09e12cc79610338aa429a2cf",
+    "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/sglang/python"
+  ],
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "{\"sglang\": \"/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/sglang/python/sglang/__init__.py\", \"flashinfer\": \"/opt/sglang/lib/python3.12/site-packages/flashinfer/__init__.py\", \"cubin\": \"/opt/sglang/lib/python3.12/site-packages/flashinfer_cubin/__init__.py\", \"version\": \"0.7.0+g19e8aebb5416\", \"git_commit\": \"19e8aebb541684df09e12cc79610338aa429a2cf\", \"cubin_git_commit\": \"19e8aebb541684df09e12cc79610338aa429a2cf\", \"aot_providers\": 0, \"python\": \"/opt/sglang/bin/python3\", \"prefix\": \"/opt/sglang\"}\n"
+}

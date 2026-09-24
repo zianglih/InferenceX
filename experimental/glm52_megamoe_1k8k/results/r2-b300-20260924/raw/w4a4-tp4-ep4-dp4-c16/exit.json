@@ -1,0 +1,267 @@
+{
+  "case": {
+    "case_id": "w4a4-tp4-ep4-dp4-c16",
+    "concurrency": 16,
+    "dp": 4,
+    "ep": 4,
+    "measured_requests": 160,
+    "precision": "w4a4",
+    "server_max_running_requests": 16,
+    "tp": 4,
+    "warmup_requests": 32
+  },
+  "cleanup": {
+    "benchmark": {
+      "at": "2026-09-24T10:44:39Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 44955,
+          "pid": 44955,
+          "ppid": 24602,
+          "sid": 44955,
+          "starttime": "342648005",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 44965,
+          "ppid": 44955,
+          "sid": 44955,
+          "starttime": "342648021",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45293,
+          "ppid": 44965,
+          "sid": 44955,
+          "starttime": "342649519",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45294,
+          "ppid": 44965,
+          "sid": 44955,
+          "starttime": "342649520",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45295,
+          "ppid": 44965,
+          "sid": 44955,
+          "starttime": "342649522",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45296,
+          "ppid": 44965,
+          "sid": 44955,
+          "starttime": "342649523",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45297,
+          "ppid": 44965,
+          "sid": 44955,
+          "starttime": "342649524",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45298,
+          "ppid": 44965,
+          "sid": 44955,
+          "starttime": "342649526",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45299,
+          "ppid": 44965,
+          "sid": 44955,
+          "starttime": "342649527",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45300,
+          "ppid": 44965,
+          "sid": 44955,
+          "starttime": "342649528",
+          "state": "R"
+        },
+        {
+          "pgid": 44955,
+          "pid": 45310,
+          "ppid": 44955,
+          "sid": 44955,
+          "starttime": "342649925",
+          "state": "S"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45311,
+          "ppid": 45310,
+          "sid": 45311,
+          "starttime": "342649949",
+          "state": "R"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45639,
+          "ppid": 45311,
+          "sid": 45311,
+          "starttime": "342651436",
+          "state": "R"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45640,
+          "ppid": 45311,
+          "sid": 45311,
+          "starttime": "342651438",
+          "state": "R"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45641,
+          "ppid": 45311,
+          "sid": 45311,
+          "starttime": "342651439",
+          "state": "R"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45642,
+          "ppid": 45311,
+          "sid": 45311,
+          "starttime": "342651440",
+          "state": "R"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45643,
+          "ppid": 45311,
+          "sid": 45311,
+          "starttime": "342651442",
+          "state": "R"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45644,
+          "ppid": 45311,
+          "sid": 45311,
+          "starttime": "342651443",
+          "state": "R"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45645,
+          "ppid": 45311,
+          "sid": 45311,
+          "starttime": "342651444",
+          "state": "R"
+        },
+        {
+          "pgid": 45311,
+          "pid": 45646,
+          "ppid": 45311,
+          "sid": 45311,
+          "starttime": "342651446",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": 0
+    },
+    "server": {
+      "at": "2026-09-24T10:44:45Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 42349,
+          "pid": 42349,
+          "ppid": 24602,
+          "sid": 42349,
+          "starttime": "342616597",
+          "state": "R"
+        },
+        {
+          "pgid": 42349,
+          "pid": 42533,
+          "ppid": 42349,
+          "sid": 42349,
+          "starttime": "342619810",
+          "state": "R"
+        },
+        {
+          "pgid": 42349,
+          "pid": 42546,
+          "ppid": 42349,
+          "sid": 42349,
+          "starttime": "342620389",
+          "state": "S"
+        },
+        {
+          "pgid": 42349,
+          "pid": 42547,
+          "ppid": 42349,
+          "sid": 42349,
+          "starttime": "342620389",
+          "state": "R"
+        },
+        {
+          "pgid": 42349,
+          "pid": 42548,
+          "ppid": 42349,
+          "sid": 42349,
+          "starttime": "342620389",
+          "state": "R"
+        },
+        {
+          "pgid": 42349,
+          "pid": 42866,
+          "ppid": 42547,
+          "sid": 42349,
+          "starttime": "342623460",
+          "state": "R"
+        },
+        {
+          "pgid": 42349,
+          "pid": 42868,
+          "ppid": 42547,
+          "sid": 42349,
+          "starttime": "342623497",
+          "state": "R"
+        },
+        {
+          "pgid": 42349,
+          "pid": 42920,
+          "ppid": 42547,
+          "sid": 42349,
+          "starttime": "342623540",
+          "state": "R"
+        },
+        {
+          "pgid": 42349,
+          "pid": 42968,
+          "ppid": 42547,
+          "sid": 42349,
+          "starttime": "342623576",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": -9
+    }
+  },
+  "error": null,
+  "finished_at": "2026-09-24T10:44:48Z",
+  "started_at": "2026-09-24T10:26:06Z",
+  "status": "completed"
+}

@@ -1,0 +1,41 @@
+{
+  "base_environment": {
+    "HOME": "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/home",
+    "LANG": "C.UTF-8",
+    "LD_LIBRARY_PATH": "/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+    "PATH": "/root/.cargo/bin:/opt/sglang/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/nvidia/bin"
+  },
+  "benchmark_timeout_seconds": 14400,
+  "compile_cache_seed": {
+    "manifest": "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/campaign-prepare-r2/compile-cache-seed.json",
+    "manifest_sha256": "fedb29c2bf81772d4c2cfd4d2dc7c04393282b279845b31d3ac50e72bd552b64",
+    "root": "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/campaign-prepare-r2/compile-cache-seed"
+  },
+  "flashinfer_commit": "19e8aebb541684df09e12cc79610338aa429a2cf",
+  "flashinfer_root": "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/flashinfer",
+  "gpu_ids": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "image": "lmsysorg/sglang:nightly-dev-cu13-20260924-ffac53d7@sha256:21d494298cea9592b92903f368f8b34c96e908b2eb64ca84fe195c6d1f0e1cd3",
+  "kill_seconds": 15,
+  "model_path": "/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4",
+  "model_revision": "53e0691e21895a3863a606dfd12910c69eba94ab",
+  "monitor_interval_seconds": 5,
+  "port": 30000,
+  "python": "/opt/sglang/bin/python3",
+  "ready_timeout_seconds": 3600,
+  "run_id": "glm52-megamoe-1k8k-20260924-r2-all24",
+  "run_root": "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/glm52-megamoe-1k8k-20260924-r2-all24",
+  "served_model": "glm52",
+  "sglang_commit": "16c1b8638b462ca1b896e2b76d5c002caf06988b",
+  "sglang_root": "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/sglang",
+  "term_seconds": 30,
+  "tmp_root": "/tmp/infx-g52-1k8k-r2"
+}

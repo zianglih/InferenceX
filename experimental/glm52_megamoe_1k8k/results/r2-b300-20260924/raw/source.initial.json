@@ -1,0 +1,95 @@
+{
+  "flashinfer": {
+    "diff": {
+      "argv": [
+        "git",
+        "-C",
+        "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/flashinfer",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "head": {
+      "argv": [
+        "git",
+        "-C",
+        "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/flashinfer",
+        "rev-parse",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "19e8aebb541684df09e12cc79610338aa429a2cf\n"
+    },
+    "root": "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/flashinfer"
+  },
+  "freeze": {
+    "argv": [
+      "/opt/sglang/bin/python3",
+      "-B",
+      "-m",
+      "pip",
+      "freeze",
+      "--all"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "absl-py==2.5.0\naccelerate==1.15.0\naddict==2.4.0\nai-dynamo==1.6.0.dev20260923\nai-dynamo-runtime==1.6.0.dev20260923\naiohappyeyeballs==2.7.1\naiohttp==3.14.3\naiosignal==1.4.0\nairportsdata==20260905\naisimulate==0.12.0\nannotated-doc==0.0.5\nannotated-types==0.8.0\nanthropic==1.8.0\nantlr4-python3-runtime==4.9.3\nanyio==4.15.1\napache-tvm-ffi==0.1.11\nargcomplete==3.7.2\nasttokens==3.0.2\nattrs==26.1.0\nav==16.1.0\nazure-core==1.41.0\nazure-identity==1.25.3\nazure-storage-blob==12.30.3\nbetter-profanity==0.7.0\nblack==26.5.1\nblake3==1.0.9\nblobfile==3.0.0\nbokeh==4.0.0.dev4\nboto3==1.43.101\nbotocore==1.43.101\nbuild==1.6.1\ncache_dit==1.5.1\ncertifi==2026.7.22\ncffi==2.1.1\ncfgv==3.5.0\ncharset-normalizer==3.5.1\nchex==0.1.87\nclick==8.5.0\ncloudpickle==3.1.2\ncompressed-tensors==0.18.0\ncontourpy==1.4.0\ncosmos-guardrail==0.3.1\ncryptography==50.0.1\ncubloaty==0.1.0b3\ncuda-bindings==13.4.3\ncuda-core==1.2.1\ncuda-pathfinder==1.8.2\ncuda-python==13.4.1\ncuda-tile==1.6.0rc5\ncuda-toolkit==13.0.3.0\ncupy-cuda13x==14.2.0\ncycler==0.12.1\nCython==3.3.0\ndatamodel-code-generator==0.82.0\ndatasets==5.0.1\ndecorator==5.3.1\ndiffusers==0.37.0\ndill==0.4.1\ndiskcache==5.6.3\ndistlib==0.4.3\ndistro==1.9.0\ndm-tree==0.1.10\ndocstring_parser==0.18.0\ndurationpy==0.11\neasydict==1.13\neinops==0.8.2\nequinox==0.11.7\netils==1.14.0\nexecuting==2.2.1\nfastapi==0.141.1\nfilelock==4.0.3\nflash-attn-4==4.0.0b19\nflashinfer-cubin @ file:///data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/wheels/flashinfer_cubin-0.7.0%2Bg19e8aebb5416-py3-none-any.whl#sha256=19b7194bd7c9cbb7f7598d6d2da87f4118385edac7b82c28408433efc5fc4857\nflashinfer-python @ file:///data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/wheels/flashinfer_python-0.7.0%2Bg19e8aebb5416-py3-none-any.whl#sha256=fe1bfb89a0a0e0e0a584b778a980d4919b1be5c74a02f533c60309d0202e98f7\nflax==0.10.0\nfonttools==4.66.0\nfrozenlist==1.8.0\nfsspec==2026.6.0\ngast==0.7.0\ngenson==1.4.0\ngguf==0.19.0\ngoogle-api-core==2.38.0\ngoogle-auth==2.58.0\ngoogle-cloud-core==2.7.0\ngoogle-cloud-storage==3.14.1\ngoogle-crc32c==1.8.0\ngoogle-resumable-media==2.10.2\ngoogle-vizier==0.1.21\ngoogleapis-common-protos==1.75.3\ngranian==2.8.3\ngrpcio==1.84.0\ngrpcio-health-checking==1.81.1\ngrpcio-reflection==1.81.1\ngrpcio-tools==1.84.0\nh11==0.16.0\nhf-xet==1.6.0\nhpc-ops @ file:///tmp/wheels/hpc-ops/hpc_ops-0.0.1.dev0%2Bgab1a402-cp39-abi3-linux_x86_64.whl#sha256=5519819be9b208e0c273c74bbb4db43b127e2ae109acfe03905b5e5a6cb760e5\nhtml5lib==1.1\nhttpcore==1.0.9\nhttpcore2==2.13.1\nhttpx==0.28.1\nhttpx2==2.13.1\nhuggingface_hub==1.32.0\nhumanize==4.16.0\nhumming-kernels==0.1.12\nicdiff==2.0.10\nidentify==2.6.19\nidna==3.20\nimageio==2.36.0\nimageio-ffmpeg==0.5.1\nimportlib_metadata==9.0.1\ninflect==7.5.0\niniconfig==2.3.0\ninteregular==0.3.3\nipython==9.17.1\nipython_pygments_lexers==1.1.1\nisodate==0.7.2\nisort==8.0.1\njax==0.4.38\njaxlib==0.4.38\njaxopt==0.8.5\njaxtyping==0.3.11\njedi==0.20.0\nJinja2==3.1.6\njiter==0.17.0\njmespath==1.1.0\njoblib==1.6.0\njsonschema==4.26.0\njsonschema-specifications==2025.9.1\nkernels==0.14.1\nkernels-data==0.16.2\nkiwisolver==1.5.1\nkubernetes==32.0.1\nlark==1.3.1\nlazy-loader==0.6\nllguidance==1.8.0\nllvmlite==0.47.0\nloguru==0.7.3\nlxml==6.1.3\nmarkdown-it-py==4.2.0\nMarkupSafe==3.0.3\nmatplotlib==3.11.2\nmatplotlib-inline==0.2.2\nmdurl==0.1.2\nmistral_common==1.12.0\nml_dtypes==0.6.0\nmodelscope==1.40.1\nmodelscope-hub==0.4.5\nmooncake-transfer-engine-cuda13==0.3.13\nmore-itertools==11.1.0\nmoviepy==2.2.1\nmpmath==1.3.0\nmsal==1.39.0\nmsal-extensions==1.3.1\nmscclpp @ file:///tmp/mscclpp\nmsgpack==1.2.2\nmsgspec==0.21.1\nmultidict==6.9.1\nmultiprocess==0.70.19\nmunch==4.0.0\nmypy_extensions==1.1.0\nnarwhals==2.26.0\nnccl-extensions @ file:///data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/wheels/nccl_extensions-0.1.0-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl#sha256=54d46bee108f0bc18cdc35dbe17bba6452d6a38a270fa5e8ccde03267460fa87\nnccl4py==0.6.0\nnest-asyncio==1.6.0\nnetworkx==3.7\nninja==1.13.2\nnixl==1.4.1\nnixl-cu13==1.4.1\nnltk==3.9.1\nnodeenv==1.10.0\nnumba==0.65.1\nnumpy==2.3.5\nnvidia-cublas==13.1.1.3\nnvidia-cuda-cccl==13.3.4.3.1\nnvidia-cuda-crt==13.4.92\nnvidia-cuda-cupti==13.0.85\nnvidia-cuda-nvcc==13.4.92\nnvidia-cuda-nvdisasm==13.4.92\nnvidia-cuda-nvrtc==13.0.88\nnvidia-cuda-runtime==13.0.96\nnvidia-cudnn-cu13==9.20.0.48\nnvidia-cudnn-frontend==1.30.0\nnvidia-cufft==12.0.0.61\nnvidia-cufile==1.15.1.6\nnvidia-curand==10.4.0.35\nnvidia-cusolver==12.0.4.66\nnvidia-cusparse==12.6.3.3\nnvidia-cusparselt-cu13==0.8.1\nnvidia-cutlass-dsl==4.6.2\nnvidia-cutlass-dsl-libs-base==4.6.2\nnvidia-cutlass-dsl-libs-core==4.6.2\nnvidia-cutlass-dsl-libs-cu12==4.6.2\nnvidia-cutlass-dsl-libs-cu13==4.6.2\nnvidia-mathdx==25.6.0\nnvidia-ml-py==13.610.43\nnvidia-modelopt==0.47.0\nnvidia-nccl-cu13==2.30.7\nnvidia-nvjitlink==13.4.92\nnvidia-nvshmem-cu13==3.4.5\nnvidia-nvtx==13.0.85\nnvidia-nvvm==13.4.92\nnvshmem4py-cu13==0.4.0\noauthlib==3.3.1\nomegaconf==2.3.1\nopenai==2.6.1\nopenai-harmony==0.0.4\nopencv-python-headless==4.10.0.84\nopentelemetry-api==1.44.0\nopentelemetry-exporter-otlp==1.44.0\nopentelemetry-exporter-otlp-proto-common==1.44.0\nopentelemetry-exporter-otlp-proto-grpc==1.44.0\nopentelemetry-exporter-otlp-proto-http==1.44.0\nopentelemetry-proto==1.44.0\nopentelemetry-sdk==1.44.0\nopentelemetry-semantic-conventions==0.65b0\nopt_einsum==3.4.0\noptax==0.2.4\norbax-checkpoint==0.11.5\norjson==3.12.0\noutlines==0.1.11\noutlines_core==0.1.26\npackaging==26.3\npandas==3.0.6\nparso==0.8.7\npartial-json-parser==0.2.1.1.post7\npathspec==1.1.1\npeft==0.18.1\npexpect==4.9.0\npillow==12.3.0\npip==26.2.1\nplatformdirs==4.11.12\nplotext==5.3.2\nplotly==7.1.0\npluggy==1.6.0\nportpicker==1.6.0\npre_commit==4.6.2\nprettytable==3.18.0\nproglog==0.1.12\nprometheus_client==0.26.0\nprompt_toolkit==3.0.53\npropcache==0.5.4\nproto-plus==1.28.4\nprotobuf==7.36.2\npsutil==7.2.2\nptyprocess==0.7.0\nPuLP==3.3.2\npure_eval==0.2.4\npy-spy==0.4.2\npyarrow==25.0.1\npyasn1==0.6.4\npyasn1_modules==0.4.2\npybase64==1.5.0\npybind11==3.1.0\npycountry==26.2.16\npycparser==3.0\npycryptodomex==3.23.0\npydantic==2.13.5\npydantic-extra-types==2.11.1\npydantic_core==2.46.5\nPygments==2.21.0\nPyJWT==2.15.0\npyparsing==3.3.3\npyproject_hooks==1.3.3\npytest==9.1.1\npython-dateutil==2.9.0.post0\npython-discovery==1.6.1\npython-dotenv==1.2.3\npython-multipart==0.0.32\npytokens==0.4.1\nPyYAML==6.0.1\npyzmq==27.2.0\nquack-kernels==0.6.4\nreferencing==0.37.0\nregex==2026.9.10\nremote-pdb==2.1.0\nrequests==2.34.2\nrequests-oauthlib==2.0.0\nretinaface-py==0.0.2\nrich==15.0.0\nrpds-py==2026.6.3\nrunai-model-streamer==0.16.1\nrunai-model-streamer-azure==0.16.1\nrunai-model-streamer-gcs==0.16.1\nrunai-model-streamer-s3==0.16.1\ns3transfer==0.19.2\nsafetensors==0.8.0\nscikit-image==0.25.2\nscikit_build_core==1.0.3\nscipy==1.18.1\nsentencepiece==0.2.2\nsetproctitle==1.3.7\nsetuptools==84.0.0\nsgl-deep-ep==0.1.2\nsgl-deep-gemm==0.2.0\n-e git+https://github.com/sgl-project/sglang@ffac53d779c08dcdab2d07e5e2a41dba83f0e65c#egg=sglang&subdirectory=python\nsglang-kernel==0.4.7\nsglang-router @ file:///tmp/gateway_wheels/sglang_router-0.3.2-cp38-abi3-manylinux_2_39_x86_64.whl#sha256=809ff4b68a86ac21aa1485610b1df8cccf7d36abd07e8f8a78c1303bb577ec36\nshellingham==1.5.4\nsimplejson==4.1.2\nsix==1.17.0\nsmg-grpc-proto==0.4.21\nsmg-grpc-servicer==0.12.0\nsniffio==1.3.1\nsortedcontainers==2.4.0\nsoundfile==0.13.1\nSQLAlchemy==2.1.0rc2\nst_attn==0.0.7\nstack-data==0.6.3\nstarlette==1.7.0\nsympy==1.14.0\ntabulate==0.10.0\ntensorstore==0.1.85\ntermplotlib==0.3.9\ntfp-nightly==0.26.0.dev20260626\ntifffile==2026.9.20\ntiktoken==0.14.0\ntilelang==0.1.12\ntimm==1.0.16\ntokenizers==0.22.2\ntokenspeed-mla==0.1.8\ntokenspeed-triton==3.8.10.post20260920\ntomlkit==0.15.1\ntoolz==1.1.0\ntorch==2.13.0+cu130\ntorch_c_dlpack_ext==0.1.5\ntorch_memory_saver==0.0.10\ntorchaudio==2.11.0+cu130\ntorchcodec==0.15.0+cu130\ntorchvision==0.28.0+cu130\ntornado==6.6a1\ntqdm==4.70.1\ntraitlets==5.16.1\ntransformers==5.12.1\ntrimesh==5.1.0\ntriton==3.7.1\ntruststore==0.10.4\ntypeguard==2.13.3\ntyper==0.27.2\ntyping-inspection==0.4.4\ntyping_extensions==4.16.0\nurllib3==2.8.0\nuv==0.12.18\nuvicorn==0.53.0\nuvloop==0.22.1\nvirtualenv==21.11.1\nvsa==0.0.4\nwadler_lindig==0.1.7\nwatchfiles==1.3.0\nwcwidth==0.9.1\nwebencodings==0.6.1\nwebsocket-client==1.9.2\nwebsockets==17.1\nwheel==0.48.0\nwrapt==2.4.2rc1\nxatlas==0.0.11\nxgrammar==0.2.7\nxxhash==4.0.1\nxyzservices==2026.9.1\nyarl==1.25.1\nz3-solver==4.15.4.0\nzipp==4.1.0\nzstandard==0.25.0\n"
+  },
+  "recipe": {
+    "benchmarks/benchmark_lib.sh": {
+      "bytes": 131664,
+      "sha256": "305a5cc1f29e17b18e43cbdbb21761bd72497e08720159397b7daafddbf0cea4"
+    },
+    "experimental/glm52_megamoe_1k8k/benchmark_mtp.sh": {
+      "bytes": 1387,
+      "sha256": "9960f8b35c693dbf5617faf36187a73babd454c90ba106cdd3380fcc30908d21"
+    },
+    "experimental/glm52_megamoe_1k8k/run.py": {
+      "bytes": 49802,
+      "sha256": "54959a6bf29ea45f2c7dd4cbc820e15e5f917d787f778d4a2085ed197fe79306"
+    },
+    "infx/bench_serving/backend_request_func.py": {
+      "bytes": 22243,
+      "sha256": "1012c55b19de33140b3b916b231773f1a422b835ab46a870bbf9c299d3049b43"
+    },
+    "infx/bench_serving/benchmark_serving.py": {
+      "bytes": 50158,
+      "sha256": "aece4e0fbe94e10714d9dc79bb7a2ddd015702a044b937b3ae88c36e0f21c0b8"
+    }
+  },
+  "sglang": {
+    "diff": {
+      "argv": [
+        "git",
+        "-C",
+        "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/sglang",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "head": {
+      "argv": [
+        "git",
+        "-C",
+        "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/sglang",
+        "rev-parse",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "16c1b8638b462ca1b896e2b76d5c002caf06988b\n"
+    },
+    "root": "/data/home/ziangli/inferencex-glm52-megamoe-1k2k-20260924/sources/sglang"
+  }
+}
