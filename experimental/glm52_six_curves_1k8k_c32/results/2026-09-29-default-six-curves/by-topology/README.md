@@ -12,7 +12,7 @@ Each figure contains three independent backend frontiers and all 12 points at C4
 - MegaMoE W4A4: green `#009E73`.
 - MegaMoE W4A16: orange `#E69F00`.
 - TRTLLM NVFP4 W4A4: blue `#0072B2`.
-- EP4: solid lines and circles. EP8: dashed lines and triangles. TP=EP=DP attention throughout.
+- Both standalone views use solid lines and circles. TP=EP=DP attention throughout. The combined six-curve plot retains dashed lines and triangles for EP8 to distinguish topologies.
 
 The inherited reader computes **x = 1,000 / saved median TPOT in milliseconds** and **y = completed output tokens / the complete measured interval / GPU count**. Every coordinate and frontier member in these views exactly matches its corresponding original release entry. The axes auto-scale independently for readability; use their tick values when comparing the two images.
 
@@ -26,6 +26,6 @@ Use Python 3.11+ with Matplotlib. From this directory, select a new output direc
 python3 -B render.py --published-root .. --output ../regenerated-by-topology
 ```
 
-The helper first verifies all 2,520 original payloads against the pinned original manifest. It loads and validates the complete sealed raw campaign through the published reader, checks equality with the published raw metric rows, and reuses its frontier and figure functions. Only the selected topology, empty legend artists, title and view-count text change. It requires exact coordinate/frontier equality and rehashes the original release again after rendering. It writes EP4/EP8 PNG, SVG, coordinates, frontiers and relative input provenance into the new output directory. No network, remote filesystem, private evidence path or new benchmark is required.
+The helper first verifies all 2,520 original payloads against the pinned original manifest. It loads and validates the complete sealed raw campaign through the published reader, checks equality with the published raw metric rows, and reuses its frontier and figure functions. Only the selected topology, empty legend artists, standalone solid/circle styling, title and view-count text change. It requires exact coordinate/frontier equality and rehashes the original release again after rendering. It writes EP4/EP8 PNG, SVG, coordinates, frontiers and relative input provenance into the new output directory. No network, remote filesystem, private evidence path or new benchmark is required.
 
 Rendering used Python 3.14.6, Matplotlib 3.10.6, NumPy 2.5.3 and DejaVu Sans. Plot byte identity may depend on Python, Matplotlib and fonts; the numeric JSON and frontier membership are the reproducibility targets. `INPUTS.json` binds the unchanged public inputs. `FILES.json` covers this additive folder only, excluding itself; it does not replace the original release manifest.

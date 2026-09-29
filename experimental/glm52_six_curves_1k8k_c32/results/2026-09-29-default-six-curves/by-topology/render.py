@@ -62,6 +62,17 @@ def render(root: Path, output: Path) -> None:
         for collection in list(ax.collections):
             if len(collection.get_offsets()) == 0:
                 collection.remove()
+        # A single-topology view uses the same solid/circle style as EP4.
+        if topology == 8:
+            from matplotlib.markers import MarkerStyle
+
+            circle = MarkerStyle("o")
+            circle_path = circle.get_path().transformed(circle.get_transform())
+            for line in ax.lines:
+                line.set_linestyle("-")
+                line.set_marker("o")
+            for collection in ax.collections:
+                collection.set_paths([circle_path])
         ax.legend(loc="best", fontsize=10, framealpha=0.96)
         fig._suptitle.set_text(
             f"GLM-5.2 | TP=EP=DP={topology} | Three backends | B300 | Concurrency 4-32"
