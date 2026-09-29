@@ -239,7 +239,7 @@ def validate_request(r):
         "Separate Kimi source path required",
     )
     need(
-        r["run_root"] == PROJECT + "/kimi-k3-ep8-three-curves-c32-20260929-all12"
+        r["run_root"] == PROJECT + "/kimi-k3-ep8-three-curves-c32-20260929-all12-r2"
         and r["tmp_root"] == "/tmp/infx-k3-preflight",
         "Run/preflight scope differs",
     )
@@ -391,7 +391,7 @@ def environment(arm, r):
         "TMP inode owner differs",
     )
     need(
-        not os.path.lexists(r["run_root"]) and not os.path.lexists("/tmp/infx-k3-3c"),
+        not os.path.lexists(r["run_root"]) and not os.path.lexists("/tmp/infx-k3-3c-r2"),
         "Actual run/TMP must remain absent",
     )
     return {

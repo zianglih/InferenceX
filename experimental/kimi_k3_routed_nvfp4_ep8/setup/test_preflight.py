@@ -211,7 +211,7 @@ class PreflightTests(unittest.TestCase):
             "remote_project": p.PROJECT,
             "sglang_root": p.PROJECT + "/sources/sglang",
             "flashinfer_source_root": "/data/synthetic-flashinfer",
-            "run_root": p.PROJECT + "/kimi-k3-ep8-three-curves-c32-20260929-all12",
+            "run_root": p.PROJECT + "/kimi-k3-ep8-three-curves-c32-20260929-all12-r2",
             "tmp_root": "/tmp/infx-k3-preflight",
             "port": 30000,
             "node": dict.fromkeys(
@@ -257,7 +257,7 @@ class PreflightTests(unittest.TestCase):
             p.validate_request(r)
         for key, val in [
             ("run_root", p.PROJECT + "/other"),
-            ("tmp_root", "/tmp/infx-k3-3c"),
+            ("tmp_root", "/tmp/infx-k3-3c-r2"),
             ("gpus", r["gpus"][:-1]),
             ("protected_runtime_files", {}),
         ]:

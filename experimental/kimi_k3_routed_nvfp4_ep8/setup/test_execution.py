@@ -111,6 +111,95 @@ class ExecutionTests(unittest.TestCase):
         }
         return cfg, pp, marker
 
+    def source_fixture(self):
+        cfg = copy.deepcopy(plan.read_json(plan.ROOT / "campaign.json"))
+        submodules = " initialized-parent 3rdparty/cutlass\n-b20f4d0adb95f53c4a1272915ef8d86cec304584 3rdparty/nixl"
+        snapshots = {
+            cfg["runtime"]["sglang_root"]: {
+                "commit": cfg["pins"]["sglang"],
+                "submodules": "",
+            },
+            cfg["runtime"]["flashinfer_root"]: {
+                "commit": cfg["pins"]["flashinfer"],
+                "submodules": submodules.strip(),
+            },
+        }
+        receipts = {}
+        for arm in plan.ARM_CONTRACT:
+            receipts[arm] = self.put(
+                "source-" + arm + ".json",
+                {
+                    "status": "KIMI_RUNTIME_PREFLIGHT_PASSED_PENDING_ROOT_REVIEW",
+                    "arm": arm,
+                    "error": None,
+                    "sources": snapshots,
+                },
+            )
+        observed = copy.deepcopy(snapshots)
+
+        def capture(argv, _env, **_kwargs):
+            if argv[0] == "git":
+                row = observed[argv[2]]
+                value = (
+                    row["commit"]
+                    if argv[3] == "rev-parse"
+                    else row.get("dirty", "")
+                    if argv[3] == "diff"
+                    else row["submodules"]
+                )
+            else:
+                value = "pinned-package==1\n"
+            return {"returncode": 0, "stdout": value, "stderr": ""}
+
+        return cfg, {"preflight_receipts": receipts}, observed, capture
+
+    def test_runtime_snapshot_accepts_only_exact_preflight_submodules(self):
+        cfg, marker, observed, capture = self.source_fixture()
+        root = cfg["runtime"]["flashinfer_root"]
+        with mock.patch.object(e, "capture", side_effect=capture):
+            result = e.runtime_snapshot(cfg, {}, marker)
+            self.assertEqual(
+                result["sources"][root]["submodules"], observed[root]["submodules"]
+            )
+            self.assertEqual(result["pip_freeze"], ["pinned-package==1"])
+            original = observed[root]["submodules"]
+            for changed in (
+                original.replace("-b20f", " b20f"),
+                original.replace("-b20f", "+b20f"),
+                original.replace("b20f", "a20f"),
+                original + "\n unexpected-module",
+            ):
+                with self.subTest(changed=changed):
+                    observed[root]["submodules"] = changed
+                    with self.assertRaisesRegex(ValueError, "Source submodule state"):
+                        e.runtime_snapshot(cfg, {}, marker)
+            observed[root]["submodules"] = original
+            observed[root]["dirty"] = "changed.py"
+            with self.assertRaisesRegex(ValueError, "Source HEAD/working tree"):
+                e.runtime_snapshot(cfg, {}, marker)
+
+    def test_runtime_snapshot_requires_three_matching_bound_source_proofs(self):
+        cfg, marker, observed, capture = self.source_fixture()
+        with mock.patch.object(e, "capture", side_effect=capture):
+            missing = copy.deepcopy(marker)
+            del missing["preflight_receipts"]["trtllm-w4a4"]
+            with self.assertRaisesRegex(ValueError, "Three source proofs"):
+                e.runtime_snapshot(cfg, {}, missing)
+            item = marker["preflight_receipts"]["trtllm-w4a4"]
+            receipt = e.read_json(item["path"])
+            receipt["sources"][cfg["runtime"]["flashinfer_root"]]["submodules"] += (
+                " changed"
+            )
+            marker["preflight_receipts"]["trtllm-w4a4"] = self.put(
+                "source-conflict.json", receipt
+            )
+            with self.assertRaisesRegex(ValueError, "snapshots disagree"):
+                e.runtime_snapshot(cfg, {}, marker)
+            marker["preflight_receipts"]["trtllm-w4a4"] = item
+            Path(item["path"]).write_bytes(b"{}\n")
+            with self.assertRaisesRegex(ValueError, "Changed bound file"):
+                e.runtime_snapshot(cfg, {}, marker)
+
     def gate(self, cfg, pp, marker):
         md = self.put(
             "marker-" + str(len(list(self.root.glob("marker-*")))) + ".json", marker

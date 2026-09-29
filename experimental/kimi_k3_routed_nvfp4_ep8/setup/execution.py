@@ -394,7 +394,30 @@ def checkpoint_snapshot(request):
     return checkpoint(request)
 
 
-def runtime_snapshot(cfg, env):
+def runtime_snapshot(cfg, env, marker):
+    # Match the source state actually accepted by all three preflight probes.
+    # Preserve optional uninitialized submodules only in that exact accepted state.
+    expected = None
+    roots = {cfg["runtime"][key] for key in ("sglang_root", "flashinfer_root")}
+    require(
+        set(marker["preflight_receipts"]) == set(ARM_CONTRACT),
+        "Three source proofs required",
+    )
+    for arm, item in marker["preflight_receipts"].items():
+        receipt = read_json(bound(item))
+        require(
+            receipt["status"] == "KIMI_RUNTIME_PREFLIGHT_PASSED_PENDING_ROOT_REVIEW"
+            and receipt["arm"] == arm
+            and receipt.get("error") is None,
+            "Source preflight proof failed",
+        )
+        observed = receipt["sources"]
+        require(set(observed) == roots, "Preflight source roots differ")
+        require(
+            expected is None or observed == expected,
+            "Preflight source snapshots disagree",
+        )
+        expected = observed
     sources = {}
     for key, pin in (("sglang_root", "sglang"), ("flashinfer_root", "flashinfer")):
         root = cfg["runtime"][key]
@@ -412,11 +435,9 @@ def runtime_snapshot(cfg, env):
             "Source HEAD/working tree changed",
         )
         require(
-            all(
-                not line.startswith(("-", "+", "U"))
-                for line in rows["submodules"].splitlines()
-            ),
-            "Uninitialized/changed submodule",
+            expected[root]["commit"] == cfg["pins"][pin]
+            and rows["submodules"] == expected[root]["submodules"],
+            "Source submodule state differs from accepted preflight",
         )
         sources[root] = rows
     packages = capture(
@@ -905,7 +926,7 @@ def run_case(case, cfg, marker, request, references, baseline):
     try:
         before = fresh_guard(marker, request, env)
         require(
-            runtime_snapshot(cfg, env) == baseline,
+            runtime_snapshot(cfg, env, marker) == baseline,
             "Installed/source state changed before case",
         )
         save(directory / "source.before.json", before)
@@ -1031,7 +1052,7 @@ def run_case(case, cfg, marker, request, references, baseline):
                     time.sleep(1)
                 after = fresh_guard(marker, request, env)
                 require(
-                    runtime_snapshot(cfg, env) == baseline,
+                    runtime_snapshot(cfg, env, marker) == baseline,
                     "Installed/source state changed after case",
                 )
                 save(directory / "source.after.json", after)
@@ -1110,7 +1131,7 @@ def execute(campaign_path, planned, marker_path, marker_sha256):
             root / "compile-cache-seed.json",
             {"seed": None, "copied_files": 0, "scope": "fresh empty owned caches"},
         )
-        baseline = runtime_snapshot(cfg, env)
+        baseline = runtime_snapshot(cfg, env, marker)
         save(root / "runtime.initial.json", baseline)
         references = {}
         for case in planned["cases"]:
@@ -1118,7 +1139,7 @@ def execute(campaign_path, planned, marker_path, marker_sha256):
             status["completed_case_ids"].append(case["case_id"])
             save(root / "progress.json", status, replace=True)
         save(root / "source.final.json", fresh_guard(marker, request, env))
-        final_runtime = runtime_snapshot(cfg, env)
+        final_runtime = runtime_snapshot(cfg, env, marker)
         require(final_runtime == baseline, "Final runtime/source state changed")
         save(root / "runtime.final.json", final_runtime)
     except BaseException as exc:
