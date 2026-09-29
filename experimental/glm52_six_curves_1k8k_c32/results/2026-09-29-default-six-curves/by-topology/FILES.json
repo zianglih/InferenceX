@@ -1,0 +1,55 @@
+{
+  "file_count": 12,
+  "files": {
+    "INPUTS.json": {
+      "bytes": 847,
+      "sha256": "1dc58308f6255fa11d7e8f343497b7ad94d99f3ed896be50065af3eb90be63cf"
+    },
+    "README.md": {
+      "bytes": 3504,
+      "sha256": "47d3d9ebc12fda6423691244bbd11904cce1497622b1c28c6e5a7295ddfb416e"
+    },
+    "figures/PROVENANCE.json": {
+      "bytes": 925,
+      "sha256": "06149ffa0ff67377dcbabb8a9f16ffe2cd13a8cd9941aa67b00403fdf33b41ad"
+    },
+    "figures/ep4/frontiers.json": {
+      "bytes": 756,
+      "sha256": "db78e755f65473883c044c3065d23c36a1ddbea77acbe80a8e96e1912230fdde"
+    },
+    "figures/ep4/pareto.png": {
+      "bytes": 296303,
+      "sha256": "0572dd1e07350d8e7978f7d9150915ce7313b2fb0dea4c5f44b61f8b5601858f"
+    },
+    "figures/ep4/pareto.svg": {
+      "bytes": 28597,
+      "sha256": "a3077f42b43a1fb64687a914af0fffcc42c28e70e5d4e5bc5acb14af8aab8921"
+    },
+    "figures/ep4/plot-points.json": {
+      "bytes": 2441,
+      "sha256": "500016e0dc71436a3050e029e8f07c88fcef618eb65438204e86fac8d4544236"
+    },
+    "figures/ep8/frontiers.json": {
+      "bytes": 756,
+      "sha256": "59a9b9178ff58056ae7542be8740d2e361c211856573b858e1d627cb8b737d8d"
+    },
+    "figures/ep8/pareto.png": {
+      "bytes": 294491,
+      "sha256": "c99b9eb5acfb305e3ed0b2f774ca99877ca54968f76dce1080b0a81e9f0e2292"
+    },
+    "figures/ep8/pareto.svg": {
+      "bytes": 26898,
+      "sha256": "0e999dd2b43fd6549a70a140a3655498924058fced4dffbfe7ebfe2cae655746"
+    },
+    "figures/ep8/plot-points.json": {
+      "bytes": 2437,
+      "sha256": "dad9eb441f99b95775ff68cbf0ef1b86d3cdae38671afda535c75ace2b97649d"
+    },
+    "render.py": {
+      "bytes": 5343,
+      "sha256": "eeade5a6dc71e268cb1540f1f9a2addf7c4c57ac84430aad92e174d98fddef60"
+    }
+  },
+  "schema_version": 1,
+  "scope": "Additive by-topology views only; original release FILES unchanged"
+}

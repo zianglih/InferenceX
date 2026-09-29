@@ -1,0 +1,39 @@
+{
+  "source": "Existing accepted measurements; no new benchmark runs",
+  "manifest": {
+    "relative_path": "FILES.json",
+    "bytes": 671328,
+    "sha256": "0158a59b724969ec8bde4edb3a073abf79fbc7d4ede64cdbedc2200e017856a8"
+  },
+  "reader": {
+    "relative_path": "source/experimental/glm52_six_curves_1k8k_c32/results.py",
+    "bytes": 28428,
+    "sha256": "c5baf679db7aa3faeb66380d1cd4ebeafe4c358748a60ae852748e214e8dab79"
+  },
+  "published_payloads_rehashed_before_and_after": 2520,
+  "views": [
+    {
+      "tp": 4,
+      "ep": 4,
+      "dp": 4,
+      "points": 12,
+      "frontiers": 3,
+      "measured_requests": 1800,
+      "warmup_requests": 360
+    },
+    {
+      "tp": 8,
+      "ep": 8,
+      "dp": 8,
+      "points": 12,
+      "frontiers": 3,
+      "measured_requests": 1800,
+      "warmup_requests": 360
+    }
+  ],
+  "campaign": {
+    "points": 24,
+    "measured_requests": 3600,
+    "warmup_requests": 720
+  }
+}
