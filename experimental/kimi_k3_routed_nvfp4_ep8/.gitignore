@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.package-check*
+PACKAGE.json
+campaign.local.json
+runs/
+results/

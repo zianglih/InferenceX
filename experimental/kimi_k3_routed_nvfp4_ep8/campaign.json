@@ -1,0 +1,171 @@
+{
+  "arms": [
+    {
+      "color": "#009E73",
+      "environment": {},
+      "id": "megamoe-w4a4",
+      "label": "MegaMoE W4A4",
+      "server_args": {
+        "--moe-a2a-backend": "flashinfer_megamoe",
+        "--moe-runner-backend": "flashinfer_megamoe"
+      }
+    },
+    {
+      "color": "#E69F00",
+      "environment": {
+        "SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16": "1"
+      },
+      "id": "megamoe-w4a16",
+      "label": "MegaMoE W4A16",
+      "server_args": {
+        "--moe-a2a-backend": "flashinfer_megamoe",
+        "--moe-runner-backend": "flashinfer_megamoe"
+      }
+    },
+    {
+      "color": "#0072B2",
+      "environment": {},
+      "id": "trtllm-w4a4",
+      "label": "TRTLLM per-tensor NVFP4 W4A4",
+      "server_args": {
+        "--moe-a2a-backend": "none",
+        "--moe-runner-backend": "flashinfer_trtllm"
+      }
+    }
+  ],
+  "authorization": "PREPARE_ONLY",
+  "blockers": [
+    {
+      "detail": "Supply reviewed local runtime paths and the exact checkpoint acceptance, then obtain a fresh owned-node preflight receipt before explicit execution.",
+      "id": "local_runtime_preflight"
+    }
+  ],
+  "checkpoint": {
+    "acceptance": {
+      "bytes": 8366,
+      "path": "/REVIEW_REQUIRED/CUSTOM_CHECKPOINT_ACCEPTED.json",
+      "sha256": "373400422d8a3a92e18b392b47095c07df92cbd166be8fd10fb92ae0126c7bf7"
+    },
+    "conversion_stages": [
+      "mxfp4_to_bf16",
+      "main_routed_experts_to_nvfp4"
+    ],
+    "group_size": 16,
+    "kind": "custom_main_routed_nvfp4",
+    "local_tensor_verification": true,
+    "miles_commit": "9e4260de047a704208535c0e90c531929879ab40",
+    "non_routed_preservation": "original_tensor_dtype_shape_bytes_at_both_stages",
+    "num_nextn_predict_layers": 0,
+    "output_path": "/data/home/ziangli/kimik3-routed-nvfp4-conversion-20260929/checkpoints/main-routed-nvfp4-attempt2",
+    "output_quant_algo": "NVFP4",
+    "output_quantization": "modelopt_fp4",
+    "scope": "main_language_routed_experts_only",
+    "source_quantization": "mxfp4",
+    "source_repo": "moonshotai/Kimi-K3",
+    "source_revision": "f831ab66814297da540d832a5235f8e904f29d06"
+  },
+  "common_server_args": {
+    "--chunked-prefill-size": 32768,
+    "--context-length": 16384,
+    "--cuda-graph-backend-prefill": "disabled",
+    "--data-parallel-size": 8,
+    "--dcp-size": 1,
+    "--disable-radix-cache": true,
+    "--dtype": "bfloat16",
+    "--enable-dp-attention": true,
+    "--expert-parallel-size": 8,
+    "--host": "127.0.0.1",
+    "--kv-cache-dtype": "fp8_e4m3",
+    "--mamba-ssm-dtype": "float32",
+    "--max-prefill-tokens": 32768,
+    "--mem-fraction-static": 0.85,
+    "--port": 30000,
+    "--pp-size": 1,
+    "--quantization": "modelopt_fp4",
+    "--reasoning-parser": "kimi_k3",
+    "--served-model-name": "Kimi-K3-NVFP4",
+    "--stream-interval": 30,
+    "--tensor-parallel-size": 8,
+    "--tool-call-parser": "kimi_k3",
+    "--trust-remote-code": true
+  },
+  "hardware": {
+    "dcp": 1,
+    "dp_attention": 8,
+    "ep": 8,
+    "gpu_model": "B300",
+    "gpus": 8,
+    "nodes": 1,
+    "pp": 1,
+    "tp": 8
+  },
+  "name": "kimi-k3-ep8-three-curves-c32",
+  "pins": {
+    "client_inferencex": "652ac186d88ebcd6ff995afbe7c3094751f0f4a2",
+    "flashinfer": "a03f2205263d4e691d68e485bff287e37a19b6c3",
+    "image": "lmsysorg/sglang:nightly-dev-cu13-20260929-79cafec0@sha256:0f075735a6bf913a7cc1cd7ece4f526ae8af70fc5b88fdc02d9efe92a61cf3ae",
+    "reference_inferencex": "f437f7bfd164422036b0de7e3818f8afb5bc70d7",
+    "sglang": "561ad447c74bb757a40677ee9ce038f9ca429d2c",
+    "sglang_pr": "https://github.com/sgl-project/sglang/pull/39210"
+  },
+  "plot": {
+    "concurrency_labels": true,
+    "curves": 3,
+    "english_only": true,
+    "gpu_divisor": 8,
+    "note": "Whole measured interval, not timed decode. ITL saved as stream_interval30 chunk spacing. No acceptance simulation.",
+    "output": [
+      "png",
+      "svg"
+    ],
+    "x": "1000 / median_tpot_ms",
+    "y": "total_output_tokens / duration / 8"
+  },
+  "runtime": {
+    "benchmark_timeout_seconds": 14400,
+    "flashinfer_root": "/REVIEW_REQUIRED/flashinfer",
+    "kill_seconds": 15,
+    "model_path": "/data/home/ziangli/kimik3-routed-nvfp4-conversion-20260929/checkpoints/main-routed-nvfp4-attempt2",
+    "python": "/REVIEW_REQUIRED/runtime/bin/python3",
+    "ready_timeout_seconds": 3600,
+    "run_root": "/REVIEW_REQUIRED/kimi-k3-three-curves-run",
+    "sglang_root": "/REVIEW_REQUIRED/sglang",
+    "term_seconds": 30,
+    "tmp_root": "/tmp/infx-k3-3c"
+  },
+  "schema_version": 1,
+  "status": "PUBLIC_RECIPE_REQUIRES_LOCAL_PREFLIGHT",
+  "user_decisions": {
+    "checkpoint": "The fixed model path and exact conversion identity belong to this reviewed recipe. A different checkpoint or relocated acceptance requires a separately reviewed binding; no tensor or metadata evidence is fabricated here.",
+    "scope": "All three arms use no MTP or external draft model.",
+    "speculation": "none"
+  },
+  "workload": {
+    "concurrencies": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "ignore_eos": true,
+    "input_length": 1024,
+    "intended_cases": 12,
+    "measure_multiplier": 10,
+    "measured_requests": 1800,
+    "order": [
+      32,
+      4,
+      8,
+      16
+    ],
+    "output_length": 8192,
+    "prefix_length": 0,
+    "range_ratio": 0.8,
+    "seed": 0,
+    "speculation": "none",
+    "stream_interval": 30,
+    "use_chat_template": true,
+    "warmup_multiplier": 2,
+    "warmup_requests": 360
+  }
+}

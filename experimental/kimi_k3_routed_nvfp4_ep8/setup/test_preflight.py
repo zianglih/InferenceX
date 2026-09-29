@@ -1,0 +1,374 @@
+"""CPU-only guards for the explicit runtime probe; no ML imports or device calls."""
+
+import ast
+import copy
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import unittest
+from types import ModuleType, SimpleNamespace
+from unittest.mock import patch
+
+spec = importlib.util.spec_from_file_location(
+    "preflight", Path(__file__).with_name("preflight.py")
+)
+p = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(p)
+
+
+class PreflightTests(unittest.TestCase):
+    def test_import_is_gpu_free(self):
+        self.assertNotIn("torch", sys.modules)
+        self.assertNotIn("sglang", sys.modules)
+
+    def test_json_and_optimization_fail_closed(self):
+        for raw in ['{"x":1,"x":2}', '{"x":NaN}']:
+            with self.assertRaises((RuntimeError, ValueError)):
+                p.parse(raw)
+        r = subprocess.run(
+            [sys.executable, "-B", "-O", str(Path(p.__file__)), "--help"],
+            capture_output=True,
+        )
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn(b"Optimized Python prohibited", r.stderr)
+
+    def test_digest_rejects_changed_links_and_cap(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d).resolve()
+            f = root / "data"
+            f.write_bytes(b"abc")
+            expected = {"bytes": 3, "sha256": hashlib.sha256(b"abc").hexdigest()}
+            self.assertEqual(p.digest(f, expected), expected)
+            (root / "link").symlink_to(f)
+            for target, desc, cap in [
+                (root / "link", expected, 9),
+                (f, expected, 2),
+                (f, {**expected, "bytes": 4}, 9),
+            ]:
+                with self.assertRaises(RuntimeError):
+                    p.digest(target, desc, cap)
+
+    def test_native_file_cap_is_separate(self):
+        expected = {"bytes": 438000000, "sha256": "a" * 64}
+        with patch.object(p, "digest", return_value=expected) as spy:
+            self.assertEqual(
+                p.protected_runtime({"protected_runtime_files": {"/native": expected}}),
+                {"/native": expected},
+            )
+            spy.assert_called_once_with("/native", expected, limit=1 << 30)
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d).resolve() / "sparse"
+            with f.open("wb") as out:
+                out.truncate((1 << 30) + 1)
+            with (
+                patch.object(
+                    p.os,
+                    "open",
+                    side_effect=AssertionError("must refuse before opening"),
+                ),
+                self.assertRaises(RuntimeError),
+            ):
+                p.protected_runtime({"protected_runtime_files": {str(f): expected}})
+
+    def test_gpu_exact_idle_and_context(self):
+        expected = [
+            {"index": i, "uuid": f"GPU-{i}", "name": "NVIDIA B300 SXM6 AC"}
+            for i in range(8)
+        ]
+        rows = "\n".join(f"{i}, GPU-{i}, NVIDIA B300 SXM6 AC, 0, 0" for i in range(8))
+        with patch.object(p, "command", side_effect=[rows, ""]):
+            self.assertEqual(len(p.gpu_query(expected)["gpus"]), 8)
+        for bad in [
+            rows.replace("GPU-0", "GPU-other"),
+            rows.replace("AC, 0, 0", "AC, 1, 0", 1),
+            rows.replace("AC, 0, 0", "AC, 0, 101", 1),
+        ]:
+            with (
+                patch.object(p, "command", side_effect=[bad, ""]),
+                self.assertRaises(RuntimeError),
+            ):
+                p.gpu_query(expected)
+        with (
+            patch.object(p, "command", side_effect=[rows, "999999, GPU-0"]),
+            self.assertRaises(RuntimeError),
+        ):
+            p.gpu_query(expected)
+        with patch.object(p, "command", side_effect=[rows, f"{os.getpid()}, GPU-0"]):
+            p.gpu_query(expected, True)
+
+    def fixture(self, d):
+        root = Path(d).resolve() / "model"
+        root.mkdir()
+        sidecars = {}
+        config = {
+            "quantization_config": {
+                "quant_method": "modelopt",
+                "quant_algo": "NVFP4",
+                "group_size": 16,
+                "ignore": ["dense"],
+            },
+            "text_config": {},
+        }
+        for n in (
+            *p.METADATA,
+            *(f"meta-{i}.json" for i in range(10)),
+            *(f".eval_results/e{i}.yaml" for i in range(5)),
+            "assets/logo.png",
+        ):
+            f = root / n
+            f.parent.mkdir(exist_ok=True)
+            f.write_bytes(json.dumps(config).encode() if n == "config.json" else b"{}")
+            sidecars[n] = p.digest(f)
+        shards = {}
+        for i in range(96):
+            n = f"model-{i:05}-of-000096.safetensors"
+            f = root / n
+            f.write_bytes(b"not-a-real-tensor")
+            shards[n] = {**p.digest(f), "stat": p.identity(f.stat())}
+        accepted = {
+            "status": "ACCEPTED_CUSTOM_ROUTED_NVFP4",
+            "data_kind": "actual",
+            "output_path": str(root),
+            "scope": "main_language_routed_experts_only",
+            "checks": dict.fromkeys(
+                [
+                    "original_published_file_hashes",
+                    "bf16_non_routed_tensor_bytes",
+                    "nvfp4_non_routed_tensor_bytes",
+                    "routed_scope_shapes_dtypes_scales",
+                    "numerical_conversion_checks",
+                    "non_routed_linear_exclusions",
+                    "metadata_tokenizer_preservation",
+                ],
+                True,
+            ),
+            "metadata": {n: sidecars[n] for n in p.METADATA},
+        }
+        a = root.parent / "accepted.json"
+        a.write_text(json.dumps(accepted))
+        ad = p.digest(a)
+        r = {
+            "checkpoint": {
+                "path": str(root),
+                "acceptance_path": str(a),
+                "acceptance_sha256": ad["sha256"],
+                "shards": shards,
+                "sidecars": sidecars,
+            },
+            "bound_files": {str(a): ad},
+        }
+        return root, r, ad
+
+    def test_checkpoint_scope_no_tensor_hash(self):
+        with tempfile.TemporaryDirectory() as d:
+            root, r, ad = self.fixture(d)
+            seen = []
+            original = p.digest
+
+            def spy(name, *args, **kwargs):
+                seen.append(str(name))
+                return original(name, *args, **kwargs)
+
+            with (
+                patch.object(p, "MODEL", str(root)),
+                patch.object(p, "digest", side_effect=spy),
+            ):
+                answer = p.checkpoint(r)
+            self.assertEqual(answer["acceptance"], ad)
+            self.assertEqual(answer["files"], 120)
+            self.assertFalse(answer["tensor_hashes_recomputed"])
+            self.assertFalse(any(x.endswith(".safetensors") for x in seen))
+
+    def test_checkpoint_mutations(self):
+        for mode in ["unknown", "nested", "sidecar", "shard", "acceptance"]:
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as d:
+                root, r, _ = self.fixture(d)
+                if mode == "unknown":
+                    (root / "unexpected").write_bytes(b"x")
+                if mode == "nested":
+                    (root / "assets/extra").write_bytes(b"x")
+                if mode == "sidecar":
+                    (root / "README").write_bytes(b"x")
+                if mode == "shard":
+                    (root / next(iter(r["checkpoint"]["shards"]))).write_bytes(b"x")
+                if mode == "acceptance":
+                    r["checkpoint"]["acceptance_sha256"] = "0" * 64
+                with (
+                    patch.object(p, "MODEL", str(root)),
+                    self.assertRaises(RuntimeError),
+                ):
+                    p.checkpoint(r)
+
+    def test_request_checks_selectors_and_baseline(self):
+        # Request validation does not read checkpoints or import packages.
+        r = {
+            "schema_version": 1,
+            "remote_project": p.PROJECT,
+            "sglang_root": p.PROJECT + "/sources/sglang",
+            "flashinfer_source_root": "/data/synthetic-flashinfer",
+            "run_root": p.PROJECT + "/kimi-k3-ep8-three-curves-c32-20260929-all12",
+            "tmp_root": "/tmp/infx-k3-preflight",
+            "port": 30000,
+            "node": dict.fromkeys(
+                ("hostname", "pod_uid", "sts_uid", "image_id"), "synthetic"
+            ),
+            "gpus": [
+                {"index": i, "uuid": f"GPU-synthetic-{i}", "name": "NVIDIA B300"}
+                for i in range(8)
+            ],
+            "bound_files": {},
+            "protected_runtime_files": {},
+            "provider_versions": {},
+            "checkpoint": {
+                "path": p.MODEL,
+                "acceptance_path": "/synthetic/accepted.json",
+                "acceptance_sha256": "0" * 64,
+                "shards": {
+                    f"model-{i:05}-of-000096.safetensors": {} for i in range(96)
+                },
+                "sidecars": {
+                    n: {} for n in (*p.METADATA, *(f"metadata-{i}" for i in range(16)))
+                },
+            },
+            "server_args": {
+                arm: [
+                    "--model-path",
+                    p.MODEL,
+                    "--quantization",
+                    "modelopt_fp4",
+                    "--moe-runner-backend",
+                    "flashinfer_trtllm"
+                    if arm == "trtllm-w4a4"
+                    else "flashinfer_megamoe",
+                    "--moe-a2a-backend",
+                    "none" if arm == "trtllm-w4a4" else "flashinfer_megamoe",
+                ]
+                for arm in p.ARMS
+            },
+        }
+        r["provider_versions"] = {"torch": "test"}
+        r["protected_runtime_files"] = {"/not/read": {"bytes": 1, "sha256": "0" * 64}}
+        with patch.object(p, "path", side_effect=Path):
+            p.validate_request(r)
+        for key, val in [
+            ("run_root", p.PROJECT + "/other"),
+            ("tmp_root", "/tmp/infx-k3-3c"),
+            ("gpus", r["gpus"][:-1]),
+            ("protected_runtime_files", {}),
+        ]:
+            x = copy.deepcopy(r)
+            x[key] = val
+            with self.assertRaises(RuntimeError):
+                p.validate_request(x)
+        for replacement in (
+            [],
+            ["--quantization", "fp8"],
+            ["--quantization=modelopt_fp4"],
+            ["--quantization", "modelopt_fp4", "--quantization", "modelopt_fp4"],
+            ["--quantization", "modelopt_fp4", "--speculative-algorithm", "EAGLE"],
+        ):
+            x = copy.deepcopy(r)
+            args = x["server_args"]["trtllm-w4a4"]
+            index = args.index("--quantization")
+            args[index : index + 2] = replacement
+            with self.assertRaises(RuntimeError):
+                p.validate_request(x)
+
+    def test_provider_resolves_before_checking_configuration(self):
+        # Execute the actual provider's config block without importing GPU packages.
+        fn = next(
+            n
+            for n in ast.parse(Path(p.__file__).read_text()).body
+            if isinstance(n, ast.FunctionDef) and n.name == "providers"
+        )
+        start = next(
+            i
+            for i, n in enumerate(fn.body)
+            if isinstance(n, ast.ImportFrom) and n.module == "sglang.srt.server_args"
+        )
+        end = next(
+            i
+            for i in range(start, len(fn.body))
+            if isinstance(fn.body[i], ast.Assign)
+            and any(
+                isinstance(t, ast.Name) and t.id == "versions"
+                for t in fn.body[i].targets
+            )
+        )
+        block = ast.Module(body=fn.body[start:end], type_ignores=[])
+        events = []
+        values = dict(
+            quantization=None,
+            tp_size=8,
+            ep_size=8,
+            dp_size=8,
+            pp_size=1,
+            enable_dp_attention=True,
+            speculative_algorithm=None,
+            disable_radix_cache=True,
+            chunked_prefill_size=32768,
+            max_running_requests=32,
+        )
+        args = SimpleNamespace(**values)
+
+        def resolve():
+            events.append("resolve_once")
+            args.quantization = "modelopt_fp4"
+            args.chunked_prefill_size = 4096
+
+        args.resolve_once = resolve
+        server = ModuleType("sglang.srt.server_args")
+
+        def prepare(argv):
+            events.append("prepare")
+            self.assertEqual(argv, ["--quantization", "modelopt_fp4"])
+            return args
+
+        server.prepare_server_args = prepare
+        overrides = ModuleType("sglang.srt.arg_groups.overrides")
+
+        def view(value):
+            events.append("resolved_view")
+            self.assertIs(value, args)
+            return value
+
+        overrides.resolved_view = view
+        context = {
+            "r": {"server_args": {"megamoe-w4a4": ["--quantization", "modelopt_fp4"]}},
+            "arm": "megamoe-w4a4",
+            "need": p.need,
+        }
+        with patch.dict(
+            sys.modules, {server.__name__: server, overrides.__name__: overrides}
+        ):
+            exec(compile(ast.fix_missing_locations(block), p.__file__, "exec"), context)
+        self.assertEqual(events, ["prepare", "resolve_once", "resolved_view"])
+        self.assertEqual(context["resolved"], context["expected"])
+
+    def test_environment_rejects_optional_controls_early(self):
+        for arm, selector in [
+            ("megamoe-w4a4", "1"),
+            ("megamoe-w4a16", None),
+            ("trtllm-w4a4", "1"),
+        ]:
+            env = {} if selector is None else {p.SELECTOR: selector}
+            with (
+                patch.dict(os.environ, env, clear=True),
+                self.assertRaises(RuntimeError),
+            ):
+                p.environment(arm, {})
+        for key in p.FORBIDDEN:
+            with (
+                patch.dict(os.environ, {key: "1"}, clear=True),
+                self.assertRaises(RuntimeError),
+            ):
+                p.environment("megamoe-w4a4", {})
+
+
+if __name__ == "__main__":
+    unittest.main()
