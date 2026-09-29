@@ -1,0 +1,128 @@
+{
+  "at": "2026-09-29T11:31:39Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 85828,
+      "pid": 85828,
+      "ppid": 8938,
+      "sid": 85828,
+      "starttime": "377923701",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86011,
+      "ppid": 85828,
+      "sid": 85828,
+      "starttime": "377926533",
+      "state": "S"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86012,
+      "ppid": 85828,
+      "sid": 85828,
+      "starttime": "377926533",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86013,
+      "ppid": 85828,
+      "sid": 85828,
+      "starttime": "377926533",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86339,
+      "ppid": 86012,
+      "sid": 85828,
+      "starttime": "377929759",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86341,
+      "ppid": 86012,
+      "sid": 85828,
+      "starttime": "377929797",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86437,
+      "ppid": 86012,
+      "sid": 85828,
+      "starttime": "377929872",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86509,
+      "ppid": 86012,
+      "sid": 85828,
+      "starttime": "377929908",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86389,
+      "ppid": 86012,
+      "sid": 85828,
+      "starttime": "377929833",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86574,
+      "ppid": 86012,
+      "sid": 85828,
+      "starttime": "377929945",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86639,
+      "ppid": 86012,
+      "sid": 85828,
+      "starttime": "377929981",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 86643,
+      "ppid": 86012,
+      "sid": 85828,
+      "starttime": "377930017",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 87667,
+      "ppid": 86341,
+      "sid": 85828,
+      "starttime": "377933859",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 87668,
+      "ppid": 86389,
+      "sid": 85828,
+      "starttime": "377933859",
+      "state": "R"
+    },
+    {
+      "pgid": 85828,
+      "pid": 87669,
+      "ppid": 86339,
+      "sid": 85828,
+      "starttime": "377933859",
+      "state": "Z"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

@@ -2,7 +2,9 @@
 
 [English](README.md) | [简体中文](README_zh.md)
 
-本手动实验在一台配备八张 B300 GPU 的节点上，对比三种当前后端选择，每种分别使用 TP=EP=DP attention 4 和 8。它不属于 InferenceX 定时调度矩阵。实验脚本不会安装软件、申请节点、发布结果或删除存储；当前配方不附带实测结果。
+本手动实验在一台配备八张 B300 GPU 的节点上，对比三种当前后端选择，每种分别使用 TP=EP=DP attention 4 和 8。它不属于 InferenceX 定时调度矩阵。实验脚本不会安装软件、申请节点、发布结果或删除存储。[2026-09-29 实测结果](results/2026-09-29-default-six-curves/results/RESULTS.md) 包含 **24 个已接受测量点、3,600 个成功测量请求、零失败及 720 个预热请求**，并绘制 **六条 Pareto 前沿**。可查看 [PNG](results/2026-09-29-default-six-curves/results/pareto.png)、[SVG](results/2026-09-29-default-six-curves/results/pareto.svg)、[全部已保存 scalar](results/2026-09-29-default-six-curves/results/raw-saved-scalars.csv)、[全部 36 组匹配对比](results/2026-09-29-default-six-curves/results/paired-comparisons.csv)，以及[所选原始证据包与复现命令](results/2026-09-29-default-six-curves/REPRODUCE.md)。
+
+所选发布包与完整 source/cache/wheel 归档及 checkpoint retention 验证分别处理，后两项仍待完成。因待定 Kimi 复用，节点清理保持暂停；benchmark 完成不代表节点已删除。
 
 ## 实验矩阵与固定工作负载
 

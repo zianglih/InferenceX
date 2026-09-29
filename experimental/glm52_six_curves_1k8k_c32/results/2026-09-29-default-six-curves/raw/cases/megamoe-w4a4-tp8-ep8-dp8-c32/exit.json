@@ -1,0 +1,310 @@
+{
+  "case": {
+    "arm_id": "megamoe-w4a4",
+    "case_id": "megamoe-w4a4-tp8-ep8-dp8-c32",
+    "concurrency": 32,
+    "dp": 8,
+    "ep": 8,
+    "measured_requests": 320,
+    "moe_a2a_backend": "flashinfer_megamoe",
+    "moe_runner_backend": "flashinfer_megamoe",
+    "precision": "w4a4",
+    "server_max_running_requests": 32,
+    "tp": 8,
+    "warmup_requests": 64
+  },
+  "cleanup": {
+    "benchmark": {
+      "at": "2026-09-29T08:53:39Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 36647,
+          "pid": 36647,
+          "ppid": 8938,
+          "sid": 36647,
+          "starttime": "376986781",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36657,
+          "ppid": 36647,
+          "sid": 36647,
+          "starttime": "376986809",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36992,
+          "ppid": 36657,
+          "sid": 36647,
+          "starttime": "376988413",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36993,
+          "ppid": 36657,
+          "sid": 36647,
+          "starttime": "376988414",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36994,
+          "ppid": 36657,
+          "sid": 36647,
+          "starttime": "376988415",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36995,
+          "ppid": 36657,
+          "sid": 36647,
+          "starttime": "376988417",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36996,
+          "ppid": 36657,
+          "sid": 36647,
+          "starttime": "376988418",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36997,
+          "ppid": 36657,
+          "sid": 36647,
+          "starttime": "376988419",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36998,
+          "ppid": 36657,
+          "sid": 36647,
+          "starttime": "376988420",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 36999,
+          "ppid": 36657,
+          "sid": 36647,
+          "starttime": "376988421",
+          "state": "R"
+        },
+        {
+          "pgid": 36647,
+          "pid": 37013,
+          "ppid": 36647,
+          "sid": 36647,
+          "starttime": "376988857",
+          "state": "S"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37014,
+          "ppid": 37013,
+          "sid": 37014,
+          "starttime": "376988881",
+          "state": "R"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37342,
+          "ppid": 37014,
+          "sid": 37014,
+          "starttime": "376990533",
+          "state": "R"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37343,
+          "ppid": 37014,
+          "sid": 37014,
+          "starttime": "376990535",
+          "state": "R"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37344,
+          "ppid": 37014,
+          "sid": 37014,
+          "starttime": "376990537",
+          "state": "R"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37345,
+          "ppid": 37014,
+          "sid": 37014,
+          "starttime": "376990538",
+          "state": "R"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37346,
+          "ppid": 37014,
+          "sid": 37014,
+          "starttime": "376990539",
+          "state": "R"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37347,
+          "ppid": 37014,
+          "sid": 37014,
+          "starttime": "376990540",
+          "state": "R"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37348,
+          "ppid": 37014,
+          "sid": 37014,
+          "starttime": "376990542",
+          "state": "R"
+        },
+        {
+          "pgid": 37014,
+          "pid": 37349,
+          "ppid": 37014,
+          "sid": 37014,
+          "starttime": "376990543",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": 0
+    },
+    "server": {
+      "at": "2026-09-29T08:53:46Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 31684,
+          "pid": 31684,
+          "ppid": 8938,
+          "sid": 31684,
+          "starttime": "376924790",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 31893,
+          "ppid": 31684,
+          "sid": 31684,
+          "starttime": "376928909",
+          "state": "S"
+        },
+        {
+          "pgid": 31684,
+          "pid": 31894,
+          "ppid": 31684,
+          "sid": 31684,
+          "starttime": "376928909",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 31895,
+          "ppid": 31684,
+          "sid": 31684,
+          "starttime": "376928909",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 32262,
+          "ppid": 31894,
+          "sid": 31684,
+          "starttime": "376931607",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 32212,
+          "ppid": 31894,
+          "sid": 31684,
+          "starttime": "376931534",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 32214,
+          "ppid": 31894,
+          "sid": 31684,
+          "starttime": "376931571",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 32375,
+          "ppid": 31894,
+          "sid": 31684,
+          "starttime": "376931682",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 32310,
+          "ppid": 31894,
+          "sid": 31684,
+          "starttime": "376931646",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 32441,
+          "ppid": 31894,
+          "sid": 31684,
+          "starttime": "376931717",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 32506,
+          "ppid": 31894,
+          "sid": 31684,
+          "starttime": "376931754",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 32573,
+          "ppid": 31894,
+          "sid": 31684,
+          "starttime": "376931790",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 34342,
+          "ppid": 32441,
+          "sid": 31684,
+          "starttime": "376937291",
+          "state": "R"
+        },
+        {
+          "pgid": 31684,
+          "pid": 34358,
+          "ppid": 32375,
+          "sid": 31684,
+          "starttime": "376937391",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": -9
+    }
+  },
+  "error": null,
+  "finished_at": "2026-09-29T08:53:47Z",
+  "started_at": "2026-09-29T08:31:12Z",
+  "status": "completed"
+}

@@ -1,0 +1,104 @@
+{
+  "at": "2026-09-29T09:21:17Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 44718,
+      "pid": 44718,
+      "ppid": 8938,
+      "sid": 44718,
+      "starttime": "377139527",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 44912,
+      "ppid": 44718,
+      "sid": 44718,
+      "starttime": "377143051",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 44913,
+      "ppid": 44718,
+      "sid": 44718,
+      "starttime": "377143051",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 44911,
+      "ppid": 44718,
+      "sid": 44718,
+      "starttime": "377143050",
+      "state": "S"
+    },
+    {
+      "pgid": 44718,
+      "pid": 45235,
+      "ppid": 44912,
+      "sid": 44718,
+      "starttime": "377145910",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 45287,
+      "ppid": 44912,
+      "sid": 44718,
+      "starttime": "377145953",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 45289,
+      "ppid": 44912,
+      "sid": 44718,
+      "starttime": "377145990",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 45291,
+      "ppid": 44912,
+      "sid": 44718,
+      "starttime": "377146028",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 45403,
+      "ppid": 44912,
+      "sid": 44718,
+      "starttime": "377146066",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 45468,
+      "ppid": 44912,
+      "sid": 44718,
+      "starttime": "377146104",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 45535,
+      "ppid": 44912,
+      "sid": 44718,
+      "starttime": "377146141",
+      "state": "R"
+    },
+    {
+      "pgid": 44718,
+      "pid": 45600,
+      "ppid": 44912,
+      "sid": 44718,
+      "starttime": "377146176",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

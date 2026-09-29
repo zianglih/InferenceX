@@ -1,0 +1,168 @@
+{
+  "at": "2026-09-29T10:19:42Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 66151,
+      "pid": 66151,
+      "ppid": 8938,
+      "sid": 66151,
+      "starttime": "377519654",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66161,
+      "ppid": 66151,
+      "sid": 66151,
+      "starttime": "377519681",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66496,
+      "ppid": 66161,
+      "sid": 66151,
+      "starttime": "377521175",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66489,
+      "ppid": 66161,
+      "sid": 66151,
+      "starttime": "377521167",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66490,
+      "ppid": 66161,
+      "sid": 66151,
+      "starttime": "377521169",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66491,
+      "ppid": 66161,
+      "sid": 66151,
+      "starttime": "377521170",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66492,
+      "ppid": 66161,
+      "sid": 66151,
+      "starttime": "377521171",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66493,
+      "ppid": 66161,
+      "sid": 66151,
+      "starttime": "377521172",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66494,
+      "ppid": 66161,
+      "sid": 66151,
+      "starttime": "377521173",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66495,
+      "ppid": 66161,
+      "sid": 66151,
+      "starttime": "377521174",
+      "state": "R"
+    },
+    {
+      "pgid": 66151,
+      "pid": 66500,
+      "ppid": 66151,
+      "sid": 66151,
+      "starttime": "377521500",
+      "state": "S"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66501,
+      "ppid": 66500,
+      "sid": 66501,
+      "starttime": "377521524",
+      "state": "R"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66835,
+      "ppid": 66501,
+      "sid": 66501,
+      "starttime": "377523067",
+      "state": "R"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66836,
+      "ppid": 66501,
+      "sid": 66501,
+      "starttime": "377523069",
+      "state": "R"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66837,
+      "ppid": 66501,
+      "sid": 66501,
+      "starttime": "377523071",
+      "state": "R"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66838,
+      "ppid": 66501,
+      "sid": 66501,
+      "starttime": "377523072",
+      "state": "R"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66839,
+      "ppid": 66501,
+      "sid": 66501,
+      "starttime": "377523073",
+      "state": "R"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66840,
+      "ppid": 66501,
+      "sid": 66501,
+      "starttime": "377523075",
+      "state": "R"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66841,
+      "ppid": 66501,
+      "sid": 66501,
+      "starttime": "377523076",
+      "state": "R"
+    },
+    {
+      "pgid": 66501,
+      "pid": 66842,
+      "ppid": 66501,
+      "sid": 66501,
+      "starttime": "377523078",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": 0
+}

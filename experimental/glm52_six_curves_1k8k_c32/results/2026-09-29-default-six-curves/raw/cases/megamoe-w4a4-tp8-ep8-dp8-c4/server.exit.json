@@ -1,0 +1,104 @@
+{
+  "at": "2026-09-29T09:06:56Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 38631,
+      "pid": 38631,
+      "ppid": 8938,
+      "sid": 38631,
+      "starttime": "377060293",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 38824,
+      "ppid": 38631,
+      "sid": 38631,
+      "starttime": "377063625",
+      "state": "S"
+    },
+    {
+      "pgid": 38631,
+      "pid": 38825,
+      "ppid": 38631,
+      "sid": 38631,
+      "starttime": "377063625",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 38826,
+      "ppid": 38631,
+      "sid": 38631,
+      "starttime": "377063625",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 39200,
+      "ppid": 38825,
+      "sid": 38631,
+      "starttime": "377066459",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 39144,
+      "ppid": 38825,
+      "sid": 38631,
+      "starttime": "377066374",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 39192,
+      "ppid": 38825,
+      "sid": 38631,
+      "starttime": "377066420",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 39311,
+      "ppid": 38825,
+      "sid": 38631,
+      "starttime": "377066506",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 39314,
+      "ppid": 38825,
+      "sid": 38631,
+      "starttime": "377066544",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 39379,
+      "ppid": 38825,
+      "sid": 38631,
+      "starttime": "377066580",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 39445,
+      "ppid": 38825,
+      "sid": 38631,
+      "starttime": "377066619",
+      "state": "R"
+    },
+    {
+      "pgid": 38631,
+      "pid": 39511,
+      "ppid": 38825,
+      "sid": 38631,
+      "starttime": "377066657",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

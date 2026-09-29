@@ -1,0 +1,72 @@
+{
+  "at": "2026-09-29T10:55:44Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 73411,
+      "pid": 73411,
+      "ppid": 8938,
+      "sid": 73411,
+      "starttime": "377677749",
+      "state": "R"
+    },
+    {
+      "pgid": 73411,
+      "pid": 73616,
+      "ppid": 73411,
+      "sid": 73411,
+      "starttime": "377681581",
+      "state": "R"
+    },
+    {
+      "pgid": 73411,
+      "pid": 73614,
+      "ppid": 73411,
+      "sid": 73411,
+      "starttime": "377681580",
+      "state": "R"
+    },
+    {
+      "pgid": 73411,
+      "pid": 73615,
+      "ppid": 73411,
+      "sid": 73411,
+      "starttime": "377681580",
+      "state": "R"
+    },
+    {
+      "pgid": 73411,
+      "pid": 73946,
+      "ppid": 73615,
+      "sid": 73411,
+      "starttime": "377684929",
+      "state": "R"
+    },
+    {
+      "pgid": 73411,
+      "pid": 73996,
+      "ppid": 73615,
+      "sid": 73411,
+      "starttime": "377685002",
+      "state": "R"
+    },
+    {
+      "pgid": 73411,
+      "pid": 73948,
+      "ppid": 73615,
+      "sid": 73411,
+      "starttime": "377684966",
+      "state": "R"
+    },
+    {
+      "pgid": 73411,
+      "pid": 74044,
+      "ppid": 73615,
+      "sid": 73411,
+      "starttime": "377685037",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": 0
+}

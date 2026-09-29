@@ -1,0 +1,384 @@
+{
+  "at": "2026-09-29T10:05:30Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 57445,
+      "pid": 57445,
+      "ppid": 8938,
+      "sid": 57445,
+      "starttime": "377320526",
+      "state": "R"
+    },
+    {
+      "pgid": 57445,
+      "pid": 57627,
+      "ppid": 57445,
+      "sid": 57445,
+      "starttime": "377323848",
+      "state": "R"
+    },
+    {
+      "pgid": 57445,
+      "pid": 57642,
+      "ppid": 57445,
+      "sid": 57445,
+      "starttime": "377324347",
+      "state": "S"
+    },
+    {
+      "pgid": 57445,
+      "pid": 57643,
+      "ppid": 57445,
+      "sid": 57445,
+      "starttime": "377324348",
+      "state": "R"
+    },
+    {
+      "pgid": 57445,
+      "pid": 57644,
+      "ppid": 57445,
+      "sid": 57445,
+      "starttime": "377324348",
+      "state": "R"
+    },
+    {
+      "pgid": 57445,
+      "pid": 57957,
+      "ppid": 57643,
+      "sid": 57445,
+      "starttime": "377327008",
+      "state": "R"
+    },
+    {
+      "pgid": 57445,
+      "pid": 57959,
+      "ppid": 57643,
+      "sid": 57445,
+      "starttime": "377327042",
+      "state": "R"
+    },
+    {
+      "pgid": 57445,
+      "pid": 58055,
+      "ppid": 57643,
+      "sid": 57445,
+      "starttime": "377327109",
+      "state": "R"
+    },
+    {
+      "pgid": 57445,
+      "pid": 58007,
+      "ppid": 57643,
+      "sid": 57445,
+      "starttime": "377327074",
+      "state": "R"
+    },
+    {
+      "pgid": 57445,
+      "pid": 59276,
+      "ppid": 57959,
+      "sid": 57445,
+      "starttime": "377338412",
+      "state": "S"
+    },
+    {
+      "pgid": 59277,
+      "pid": 59277,
+      "ppid": 59276,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59278,
+      "pid": 59278,
+      "ppid": 59276,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59277,
+      "pid": 59279,
+      "ppid": 59277,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59280,
+      "ppid": 59276,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59278,
+      "pid": 59281,
+      "ppid": 59278,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59282,
+      "pid": 59282,
+      "ppid": 59276,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59283,
+      "ppid": 59280,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59277,
+      "pid": 59284,
+      "ppid": 59279,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "R"
+    },
+    {
+      "pgid": 59285,
+      "pid": 59285,
+      "ppid": 59276,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59282,
+      "pid": 59286,
+      "ppid": 59282,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59278,
+      "pid": 59287,
+      "ppid": 59281,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "R"
+    },
+    {
+      "pgid": 59288,
+      "pid": 59288,
+      "ppid": 59276,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59285,
+      "pid": 59290,
+      "ppid": 59285,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59291,
+      "pid": 59291,
+      "ppid": 59276,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59288,
+      "pid": 59292,
+      "ppid": 59288,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59282,
+      "pid": 59293,
+      "ppid": 59286,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "R"
+    },
+    {
+      "pgid": 59285,
+      "pid": 59294,
+      "ppid": 59290,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "R"
+    },
+    {
+      "pgid": 59291,
+      "pid": 59295,
+      "ppid": 59291,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "S"
+    },
+    {
+      "pgid": 59288,
+      "pid": 59297,
+      "ppid": 59292,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "R"
+    },
+    {
+      "pgid": 59291,
+      "pid": 59298,
+      "ppid": 59295,
+      "sid": 57445,
+      "starttime": "377338413",
+      "state": "R"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59299,
+      "ppid": 59283,
+      "sid": 57445,
+      "starttime": "377338414",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59300,
+      "ppid": 59299,
+      "sid": 57445,
+      "starttime": "377338414",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59301,
+      "ppid": 59300,
+      "sid": 57445,
+      "starttime": "377338414",
+      "state": "R"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59310,
+      "ppid": 59283,
+      "sid": 57445,
+      "starttime": "377338588",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59311,
+      "ppid": 59310,
+      "sid": 57445,
+      "starttime": "377338588",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59312,
+      "ppid": 59311,
+      "sid": 57445,
+      "starttime": "377338588",
+      "state": "R"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59314,
+      "ppid": 59283,
+      "sid": 57445,
+      "starttime": "377338760",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59315,
+      "ppid": 59314,
+      "sid": 57445,
+      "starttime": "377338761",
+      "state": "R"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59330,
+      "ppid": 59283,
+      "sid": 57445,
+      "starttime": "377339188",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59331,
+      "ppid": 59330,
+      "sid": 57445,
+      "starttime": "377339188",
+      "state": "R"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59400,
+      "ppid": 59283,
+      "sid": 57445,
+      "starttime": "377343356",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59401,
+      "ppid": 59400,
+      "sid": 57445,
+      "starttime": "377343356",
+      "state": "R"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59460,
+      "ppid": 59283,
+      "sid": 57445,
+      "starttime": "377346913",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59461,
+      "ppid": 59460,
+      "sid": 57445,
+      "starttime": "377346913",
+      "state": "R"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59462,
+      "ppid": 59283,
+      "sid": 57445,
+      "starttime": "377347322",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59463,
+      "ppid": 59462,
+      "sid": 57445,
+      "starttime": "377347322",
+      "state": "S"
+    },
+    {
+      "pgid": 59280,
+      "pid": 59464,
+      "ppid": 59463,
+      "sid": 57445,
+      "starttime": "377347322",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

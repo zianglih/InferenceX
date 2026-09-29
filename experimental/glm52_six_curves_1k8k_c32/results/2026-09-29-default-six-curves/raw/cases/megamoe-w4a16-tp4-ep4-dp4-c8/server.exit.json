@@ -1,0 +1,72 @@
+{
+  "at": "2026-09-29T10:36:38Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 67846,
+      "pid": 67846,
+      "ppid": 8938,
+      "sid": 67846,
+      "starttime": "377576700",
+      "state": "R"
+    },
+    {
+      "pgid": 67846,
+      "pid": 68043,
+      "ppid": 67846,
+      "sid": 67846,
+      "starttime": "377580526",
+      "state": "S"
+    },
+    {
+      "pgid": 67846,
+      "pid": 68044,
+      "ppid": 67846,
+      "sid": 67846,
+      "starttime": "377580526",
+      "state": "R"
+    },
+    {
+      "pgid": 67846,
+      "pid": 68045,
+      "ppid": 67846,
+      "sid": 67846,
+      "starttime": "377580526",
+      "state": "R"
+    },
+    {
+      "pgid": 67846,
+      "pid": 68363,
+      "ppid": 68044,
+      "sid": 67846,
+      "starttime": "377583398",
+      "state": "R"
+    },
+    {
+      "pgid": 67846,
+      "pid": 68365,
+      "ppid": 68044,
+      "sid": 67846,
+      "starttime": "377583432",
+      "state": "R"
+    },
+    {
+      "pgid": 67846,
+      "pid": 68461,
+      "ppid": 68044,
+      "sid": 67846,
+      "starttime": "377583505",
+      "state": "R"
+    },
+    {
+      "pgid": 67846,
+      "pid": 68413,
+      "ppid": 68044,
+      "sid": 67846,
+      "starttime": "377583468",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

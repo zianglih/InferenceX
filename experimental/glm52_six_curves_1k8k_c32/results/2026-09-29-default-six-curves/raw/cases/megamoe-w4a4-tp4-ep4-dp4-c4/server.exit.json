@@ -1,0 +1,80 @@
+{
+  "at": "2026-09-29T07:57:01Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 17627,
+      "pid": 17627,
+      "ppid": 8938,
+      "sid": 17627,
+      "starttime": "376637532",
+      "state": "R"
+    },
+    {
+      "pgid": 17627,
+      "pid": 17856,
+      "ppid": 17627,
+      "sid": 17627,
+      "starttime": "376641048",
+      "state": "R"
+    },
+    {
+      "pgid": 17627,
+      "pid": 17857,
+      "ppid": 17627,
+      "sid": 17627,
+      "starttime": "376641048",
+      "state": "R"
+    },
+    {
+      "pgid": 17627,
+      "pid": 17858,
+      "ppid": 17627,
+      "sid": 17627,
+      "starttime": "376641048",
+      "state": "R"
+    },
+    {
+      "pgid": 17627,
+      "pid": 18300,
+      "ppid": 17857,
+      "sid": 17627,
+      "starttime": "376643364",
+      "state": "R"
+    },
+    {
+      "pgid": 17627,
+      "pid": 18368,
+      "ppid": 17857,
+      "sid": 17627,
+      "starttime": "376643481",
+      "state": "R"
+    },
+    {
+      "pgid": 17627,
+      "pid": 18352,
+      "ppid": 17857,
+      "sid": 17627,
+      "starttime": "376643406",
+      "state": "R"
+    },
+    {
+      "pgid": 17627,
+      "pid": 18366,
+      "ppid": 17857,
+      "sid": 17627,
+      "starttime": "376643443",
+      "state": "R"
+    },
+    {
+      "pgid": 17627,
+      "pid": 20085,
+      "ppid": 18300,
+      "sid": 17627,
+      "starttime": "376661051",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

@@ -2,7 +2,9 @@
 
 [English](README.md) | [简体中文](README_zh.md)
 
-This manual experiment compares three current backend selections at TP=EP=DP attention 4 and 8 on one eight-GPU B300 node. It is outside the scheduled InferenceX matrix. The recipe does not install packages, allocate a node, publish results, or delete storage. No measured result is bundled with the recipe.
+This manual experiment compares three current backend selections at TP=EP=DP attention 4 and 8 on one eight-GPU B300 node. It is outside the scheduled InferenceX matrix. The recipe does not install packages, allocate a node, publish results, or delete storage. The [2026-09-29 measured results](results/2026-09-29-default-six-curves/results/RESULTS.md) contain **24 accepted points, 3,600 successful measured requests, zero failures and 720 warmups**, with **six Pareto frontiers**. [View the PNG](results/2026-09-29-default-six-curves/results/pareto.png) or [SVG](results/2026-09-29-default-six-curves/results/pareto.svg), [all saved scalars](results/2026-09-29-default-six-curves/results/raw-saved-scalars.csv), [all 36 matched comparisons](results/2026-09-29-default-six-curves/results/paired-comparisons.csv), and the [selected raw-data bundle and reproduction command](results/2026-09-29-default-six-curves/REPRODUCE.md).
+
+The selected publication bundle is separate from full source/cache/wheel archival and checkpoint-retention verification, which remain pending. Node cleanup is on hold while Kimi reuse is considered; the completed benchmark does not imply node deletion.
 
 ## Matrix and fixed workload
 

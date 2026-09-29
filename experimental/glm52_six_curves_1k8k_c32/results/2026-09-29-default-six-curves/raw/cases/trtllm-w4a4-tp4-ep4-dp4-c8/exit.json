@@ -1,0 +1,262 @@
+{
+  "case": {
+    "arm_id": "trtllm-w4a4",
+    "case_id": "trtllm-w4a4-tp4-ep4-dp4-c8",
+    "concurrency": 8,
+    "dp": 4,
+    "ep": 4,
+    "measured_requests": 80,
+    "moe_a2a_backend": "none",
+    "moe_runner_backend": "flashinfer_trtllm",
+    "precision": "w4a4",
+    "server_max_running_requests": 8,
+    "tp": 4,
+    "warmup_requests": 16
+  },
+  "cleanup": {
+    "benchmark": {
+      "at": "2026-09-29T12:54:07Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 118814,
+          "pid": 118814,
+          "ppid": 8938,
+          "sid": 118814,
+          "starttime": "378436518",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 118824,
+          "ppid": 118814,
+          "sid": 118814,
+          "starttime": "378436546",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119158,
+          "ppid": 118824,
+          "sid": 118814,
+          "starttime": "378438195",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119159,
+          "ppid": 118824,
+          "sid": 118814,
+          "starttime": "378438197",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119160,
+          "ppid": 118824,
+          "sid": 118814,
+          "starttime": "378438199",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119161,
+          "ppid": 118824,
+          "sid": 118814,
+          "starttime": "378438200",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119162,
+          "ppid": 118824,
+          "sid": 118814,
+          "starttime": "378438202",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119163,
+          "ppid": 118824,
+          "sid": 118814,
+          "starttime": "378438203",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119164,
+          "ppid": 118824,
+          "sid": 118814,
+          "starttime": "378438205",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119165,
+          "ppid": 118824,
+          "sid": 118814,
+          "starttime": "378438206",
+          "state": "R"
+        },
+        {
+          "pgid": 118814,
+          "pid": 119173,
+          "ppid": 118814,
+          "sid": 118814,
+          "starttime": "378438559",
+          "state": "S"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119174,
+          "ppid": 119173,
+          "sid": 119174,
+          "starttime": "378438572",
+          "state": "R"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119502,
+          "ppid": 119174,
+          "sid": 119174,
+          "starttime": "378440048",
+          "state": "R"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119503,
+          "ppid": 119174,
+          "sid": 119174,
+          "starttime": "378440050",
+          "state": "R"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119504,
+          "ppid": 119174,
+          "sid": 119174,
+          "starttime": "378440051",
+          "state": "R"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119505,
+          "ppid": 119174,
+          "sid": 119174,
+          "starttime": "378440053",
+          "state": "R"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119506,
+          "ppid": 119174,
+          "sid": 119174,
+          "starttime": "378440054",
+          "state": "R"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119507,
+          "ppid": 119174,
+          "sid": 119174,
+          "starttime": "378440056",
+          "state": "R"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119508,
+          "ppid": 119174,
+          "sid": 119174,
+          "starttime": "378440057",
+          "state": "R"
+        },
+        {
+          "pgid": 119174,
+          "pid": 119509,
+          "ppid": 119174,
+          "sid": 119174,
+          "starttime": "378440058",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": 0
+    },
+    "server": {
+      "at": "2026-09-29T12:54:14Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 116311,
+          "pid": 116311,
+          "ppid": 8938,
+          "sid": 116311,
+          "starttime": "378406374",
+          "state": "R"
+        },
+        {
+          "pgid": 116311,
+          "pid": 116504,
+          "ppid": 116311,
+          "sid": 116311,
+          "starttime": "378410129",
+          "state": "S"
+        },
+        {
+          "pgid": 116311,
+          "pid": 116505,
+          "ppid": 116311,
+          "sid": 116311,
+          "starttime": "378410129",
+          "state": "R"
+        },
+        {
+          "pgid": 116311,
+          "pid": 116506,
+          "ppid": 116311,
+          "sid": 116311,
+          "starttime": "378410129",
+          "state": "R"
+        },
+        {
+          "pgid": 116311,
+          "pid": 116838,
+          "ppid": 116505,
+          "sid": 116311,
+          "starttime": "378413624",
+          "state": "R"
+        },
+        {
+          "pgid": 116311,
+          "pid": 116840,
+          "ppid": 116505,
+          "sid": 116311,
+          "starttime": "378413662",
+          "state": "R"
+        },
+        {
+          "pgid": 116311,
+          "pid": 116936,
+          "ppid": 116505,
+          "sid": 116311,
+          "starttime": "378413734",
+          "state": "R"
+        },
+        {
+          "pgid": 116311,
+          "pid": 116888,
+          "ppid": 116505,
+          "sid": 116311,
+          "starttime": "378413698",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": -9
+    }
+  },
+  "error": null,
+  "finished_at": "2026-09-29T12:54:16Z",
+  "started_at": "2026-09-29T12:38:08Z",
+  "status": "completed"
+}

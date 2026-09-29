@@ -1,0 +1,8 @@
+{
+  "definition": "all measured output tokens / complete measured wall interval / actual TP",
+  "duration_seconds": 749.139596617315,
+  "gpu_count": 4,
+  "output_tokens": 2373563,
+  "output_tokens_per_second": 3168.3854527482595,
+  "output_tokens_per_second_per_gpu": 792.0963631870649
+}

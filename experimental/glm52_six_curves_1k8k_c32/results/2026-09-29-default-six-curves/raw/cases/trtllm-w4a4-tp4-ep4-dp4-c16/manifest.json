@@ -1,0 +1,558 @@
+{
+  "files": {
+    "benchmark.exit.json": {
+      "bytes": 3112,
+      "sha256": "a655bd30b4e30bbc4c32f8120f70bbfcf090c1da081de70aa0f1b3693803f817"
+    },
+    "benchmark.launch.json": {
+      "bytes": 3835,
+      "sha256": "cc6b84078c9e21449729f85932ddb5c00c44ad455d007601443afd8be5c95348"
+    },
+    "benchmark.log": {
+      "bytes": 17466,
+      "sha256": "80db48910af045a7707737ef51f5d2381516ac67fc74e13c1f1e7d87ab2c181d"
+    },
+    "benchmark.owners.jsonl": {
+      "bytes": 2336,
+      "sha256": "f94ea82e8ce010074bbacd32812f3449f0a41091e7eb1b8c0f0fff5aeec9ea4e"
+    },
+    "benchmark_command.json": {
+      "bytes": 3645,
+      "sha256": "6dbf1cc0411908ecd02e3687d428610167b6001dd9a5c71b42ecd372a6b6f630"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp0_pp0_dp0.json": {
+      "bytes": 28349,
+      "sha256": "95780b5a5b00181bc01c11bb9a0a0185b49b5168dc5fedc3aa27a3fad35376d1"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp1_pp0_dp1.json": {
+      "bytes": 28349,
+      "sha256": "95780b5a5b00181bc01c11bb9a0a0185b49b5168dc5fedc3aa27a3fad35376d1"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp2_pp0_dp2.json": {
+      "bytes": 28349,
+      "sha256": "95780b5a5b00181bc01c11bb9a0a0185b49b5168dc5fedc3aa27a3fad35376d1"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp3_pp0_dp3.json": {
+      "bytes": 28349,
+      "sha256": "95780b5a5b00181bc01c11bb9a0a0185b49b5168dc5fedc3aa27a3fad35376d1"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp0_pp0_dp0_gpu1dfe4f8c-9c96-9737-1e3f-3a2fc271a845.json": {
+      "bytes": 19188,
+      "sha256": "aaf1eab4b760230e60ce55b0c8fd4daa78de6ced39f6bd5fe7581948695b292a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp1_pp0_dp1_gpu3c9706e1-8284-e5b3-154d-513e5e3aa73d.json": {
+      "bytes": 19188,
+      "sha256": "aaf1eab4b760230e60ce55b0c8fd4daa78de6ced39f6bd5fe7581948695b292a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp2_pp0_dp2_gpua26d5888-47f9-c143-f3a9-021e6e93c559.json": {
+      "bytes": 19188,
+      "sha256": "aaf1eab4b760230e60ce55b0c8fd4daa78de6ced39f6bd5fe7581948695b292a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp3_pp0_dp3_gpu479db6c6-873a-fbad-74b1-e8f8aa9be394.json": {
+      "bytes": 19188,
+      "sha256": "aaf1eab4b760230e60ce55b0c8fd4daa78de6ced39f6bd5fe7581948695b292a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp0_pp0_dp0.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp1_pp0_dp1.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp2_pp0_dp2.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp3_pp0_dp3.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp4_pp0_dp4.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp5_pp0_dp5.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp6_pp0_dp6.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp7_pp0_dp7.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp0_pp0_dp0_gpu1dfe4f8c-9c96-9737-1e3f-3a2fc271a845.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp1_pp0_dp1_gpu3c9706e1-8284-e5b3-154d-513e5e3aa73d.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp2_pp0_dp2_gpua26d5888-47f9-c143-f3a9-021e6e93c559.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp3_pp0_dp3_gpu479db6c6-873a-fbad-74b1-e8f8aa9be394.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp4_pp0_dp4_gpu5b7127a9-4f04-54ab-5744-aee0f31dc80f.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp5_pp0_dp5_gpu25da13e8-1a72-7270-4613-c741cb6ee5e1.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp6_pp0_dp6_gpub1059d06-1aba-55e3-084a-8dfecb974607.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.after-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp7_pp0_dp7_gpuab4b356f-7061-aa0f-e3e2-5a8afae994a2.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp0_pp0_dp0.json": {
+      "bytes": 28049,
+      "sha256": "a8210a64d97bfb8744cabc53f27651b9b0c1f992324b996b6bfd4e08a697ea16"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp1_pp0_dp1.json": {
+      "bytes": 28049,
+      "sha256": "a8210a64d97bfb8744cabc53f27651b9b0c1f992324b996b6bfd4e08a697ea16"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp2_pp0_dp2.json": {
+      "bytes": 28049,
+      "sha256": "a8210a64d97bfb8744cabc53f27651b9b0c1f992324b996b6bfd4e08a697ea16"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp3_pp0_dp3.json": {
+      "bytes": 28049,
+      "sha256": "a8210a64d97bfb8744cabc53f27651b9b0c1f992324b996b6bfd4e08a697ea16"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp0_pp0_dp0_gpu1dfe4f8c-9c96-9737-1e3f-3a2fc271a845.json": {
+      "bytes": 18885,
+      "sha256": "b3799e06dad0a07bd6a49f5ed21ca6c83af15bc34b7c5313df3829a000999ace"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp1_pp0_dp1_gpu3c9706e1-8284-e5b3-154d-513e5e3aa73d.json": {
+      "bytes": 18885,
+      "sha256": "b3799e06dad0a07bd6a49f5ed21ca6c83af15bc34b7c5313df3829a000999ace"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp2_pp0_dp2_gpua26d5888-47f9-c143-f3a9-021e6e93c559.json": {
+      "bytes": 18885,
+      "sha256": "b3799e06dad0a07bd6a49f5ed21ca6c83af15bc34b7c5313df3829a000999ace"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp3_pp0_dp3_gpu479db6c6-873a-fbad-74b1-e8f8aa9be394.json": {
+      "bytes": 18885,
+      "sha256": "b3799e06dad0a07bd6a49f5ed21ca6c83af15bc34b7c5313df3829a000999ace"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp0_pp0_dp0.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp1_pp0_dp1.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp2_pp0_dp2.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp3_pp0_dp3.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp4_pp0_dp4.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp5_pp0_dp5.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp6_pp0_dp6.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp7_pp0_dp7.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp0_pp0_dp0_gpu1dfe4f8c-9c96-9737-1e3f-3a2fc271a845.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp1_pp0_dp1_gpu3c9706e1-8284-e5b3-154d-513e5e3aa73d.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp2_pp0_dp2_gpua26d5888-47f9-c143-f3a9-021e6e93c559.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp3_pp0_dp3_gpu479db6c6-873a-fbad-74b1-e8f8aa9be394.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp4_pp0_dp4_gpu5b7127a9-4f04-54ab-5744-aee0f31dc80f.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp5_pp0_dp5_gpu25da13e8-1a72-7270-4613-c741cb6ee5e1.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp6_pp0_dp6_gpub1059d06-1aba-55e3-084a-8dfecb974607.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp7_pp0_dp7_gpuab4b356f-7061-aa0f-e3e2-5a8afae994a2.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.after-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/4c306eba2d420034/rank_tp0_pp0_dp0.json": {
+      "bytes": 18895,
+      "sha256": "b527923dfa1819315b4d37dabf40fe6c05470cf1ad213f67f0cab1fd7cd0c9be"
+    },
+    "cache.after-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/4c306eba2d420034/rank_tp1_pp0_dp1.json": {
+      "bytes": 18895,
+      "sha256": "b527923dfa1819315b4d37dabf40fe6c05470cf1ad213f67f0cab1fd7cd0c9be"
+    },
+    "cache.after-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/4c306eba2d420034/rank_tp2_pp0_dp2.json": {
+      "bytes": 18895,
+      "sha256": "b527923dfa1819315b4d37dabf40fe6c05470cf1ad213f67f0cab1fd7cd0c9be"
+    },
+    "cache.after-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/4c306eba2d420034/rank_tp3_pp0_dp3.json": {
+      "bytes": 18895,
+      "sha256": "b527923dfa1819315b4d37dabf40fe6c05470cf1ad213f67f0cab1fd7cd0c9be"
+    },
+    "cache.after-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/bf613131587af593/rank_tp0_pp0_dp0.json": {
+      "bytes": 9731,
+      "sha256": "82c5936498fe45eb6ccac70683e39c7e693adc6c62c659c99da69b52d8364b28"
+    },
+    "cache.after-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/bf613131587af593/rank_tp1_pp0_dp1.json": {
+      "bytes": 9731,
+      "sha256": "82c5936498fe45eb6ccac70683e39c7e693adc6c62c659c99da69b52d8364b28"
+    },
+    "cache.after-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/bf613131587af593/rank_tp2_pp0_dp2.json": {
+      "bytes": 9731,
+      "sha256": "82c5936498fe45eb6ccac70683e39c7e693adc6c62c659c99da69b52d8364b28"
+    },
+    "cache.after-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/bf613131587af593/rank_tp3_pp0_dp3.json": {
+      "bytes": 9731,
+      "sha256": "82c5936498fe45eb6ccac70683e39c7e693adc6c62c659c99da69b52d8364b28"
+    },
+    "cache.after.json": {
+      "bytes": 357753,
+      "sha256": "3d0e08488b1db6ed08222e951d8e0e305c5964a8a397908517606aacb0bdd48f"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp0_pp0_dp0.json": {
+      "bytes": 28349,
+      "sha256": "95780b5a5b00181bc01c11bb9a0a0185b49b5168dc5fedc3aa27a3fad35376d1"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp1_pp0_dp1.json": {
+      "bytes": 28349,
+      "sha256": "95780b5a5b00181bc01c11bb9a0a0185b49b5168dc5fedc3aa27a3fad35376d1"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp2_pp0_dp2.json": {
+      "bytes": 28349,
+      "sha256": "95780b5a5b00181bc01c11bb9a0a0185b49b5168dc5fedc3aa27a3fad35376d1"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp3_pp0_dp3.json": {
+      "bytes": 28349,
+      "sha256": "95780b5a5b00181bc01c11bb9a0a0185b49b5168dc5fedc3aa27a3fad35376d1"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp0_pp0_dp0_gpu1dfe4f8c-9c96-9737-1e3f-3a2fc271a845.json": {
+      "bytes": 19188,
+      "sha256": "aaf1eab4b760230e60ce55b0c8fd4daa78de6ced39f6bd5fe7581948695b292a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp1_pp0_dp1_gpu3c9706e1-8284-e5b3-154d-513e5e3aa73d.json": {
+      "bytes": 19188,
+      "sha256": "aaf1eab4b760230e60ce55b0c8fd4daa78de6ced39f6bd5fe7581948695b292a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp2_pp0_dp2_gpua26d5888-47f9-c143-f3a9-021e6e93c559.json": {
+      "bytes": 19188,
+      "sha256": "aaf1eab4b760230e60ce55b0c8fd4daa78de6ced39f6bd5fe7581948695b292a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp3_pp0_dp3_gpu479db6c6-873a-fbad-74b1-e8f8aa9be394.json": {
+      "bytes": 19188,
+      "sha256": "aaf1eab4b760230e60ce55b0c8fd4daa78de6ced39f6bd5fe7581948695b292a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp0_pp0_dp0.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp1_pp0_dp1.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp2_pp0_dp2.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp3_pp0_dp3.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp4_pp0_dp4.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp5_pp0_dp5.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp6_pp0_dp6.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp7_pp0_dp7.json": {
+      "bytes": 26687,
+      "sha256": "6cfc9249b515c5a54b96935e349a5296b4a1c206095e80260e26790ec07e739e"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp0_pp0_dp0_gpu1dfe4f8c-9c96-9737-1e3f-3a2fc271a845.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp1_pp0_dp1_gpu3c9706e1-8284-e5b3-154d-513e5e3aa73d.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp2_pp0_dp2_gpua26d5888-47f9-c143-f3a9-021e6e93c559.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp3_pp0_dp3_gpu479db6c6-873a-fbad-74b1-e8f8aa9be394.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp4_pp0_dp4_gpu5b7127a9-4f04-54ab-5744-aee0f31dc80f.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp5_pp0_dp5_gpu25da13e8-1a72-7270-4613-c741cb6ee5e1.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp6_pp0_dp6_gpub1059d06-1aba-55e3-084a-8dfecb974607.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.before-tactics/megamoe-w4a16/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp7_pp0_dp7_gpuab4b356f-7061-aa0f-e3e2-5a8afae994a2.json": {
+      "bytes": 17524,
+      "sha256": "648b473712c781b91f9254b9aedf60fb27c4a5b2632c993a2504ab623226ae1a"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp0_pp0_dp0.json": {
+      "bytes": 28049,
+      "sha256": "a8210a64d97bfb8744cabc53f27651b9b0c1f992324b996b6bfd4e08a697ea16"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp1_pp0_dp1.json": {
+      "bytes": 28049,
+      "sha256": "a8210a64d97bfb8744cabc53f27651b9b0c1f992324b996b6bfd4e08a697ea16"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp2_pp0_dp2.json": {
+      "bytes": 28049,
+      "sha256": "a8210a64d97bfb8744cabc53f27651b9b0c1f992324b996b6bfd4e08a697ea16"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp3_pp0_dp3.json": {
+      "bytes": 28049,
+      "sha256": "a8210a64d97bfb8744cabc53f27651b9b0c1f992324b996b6bfd4e08a697ea16"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp0_pp0_dp0_gpu1dfe4f8c-9c96-9737-1e3f-3a2fc271a845.json": {
+      "bytes": 18885,
+      "sha256": "b3799e06dad0a07bd6a49f5ed21ca6c83af15bc34b7c5313df3829a000999ace"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp1_pp0_dp1_gpu3c9706e1-8284-e5b3-154d-513e5e3aa73d.json": {
+      "bytes": 18885,
+      "sha256": "b3799e06dad0a07bd6a49f5ed21ca6c83af15bc34b7c5313df3829a000999ace"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp2_pp0_dp2_gpua26d5888-47f9-c143-f3a9-021e6e93c559.json": {
+      "bytes": 18885,
+      "sha256": "b3799e06dad0a07bd6a49f5ed21ca6c83af15bc34b7c5313df3829a000999ace"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp3_pp0_dp3_gpu479db6c6-873a-fbad-74b1-e8f8aa9be394.json": {
+      "bytes": 18885,
+      "sha256": "b3799e06dad0a07bd6a49f5ed21ca6c83af15bc34b7c5313df3829a000999ace"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp0_pp0_dp0.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp1_pp0_dp1.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp2_pp0_dp2.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp3_pp0_dp3.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp4_pp0_dp4.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp5_pp0_dp5.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp6_pp0_dp6.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp7_pp0_dp7.json": {
+      "bytes": 26418,
+      "sha256": "abc1e00abc450fa063123a192af0a4081b88a10e8eb76db19d6333889ac0cae0"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp0_pp0_dp0_gpu1dfe4f8c-9c96-9737-1e3f-3a2fc271a845.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp1_pp0_dp1_gpu3c9706e1-8284-e5b3-154d-513e5e3aa73d.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp2_pp0_dp2_gpua26d5888-47f9-c143-f3a9-021e6e93c559.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp3_pp0_dp3_gpu479db6c6-873a-fbad-74b1-e8f8aa9be394.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp4_pp0_dp4_gpu5b7127a9-4f04-54ab-5744-aee0f31dc80f.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp5_pp0_dp5_gpu25da13e8-1a72-7270-4613-c741cb6ee5e1.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp6_pp0_dp6_gpub1059d06-1aba-55e3-084a-8dfecb974607.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp7_pp0_dp7_gpuab4b356f-7061-aa0f-e3e2-5a8afae994a2.json": {
+      "bytes": 17260,
+      "sha256": "955b4e54d1f760be1eb302281f8824541b9488b42545ba800a7f86e9b080f6ba"
+    },
+    "cache.before-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/4c306eba2d420034/rank_tp0_pp0_dp0.json": {
+      "bytes": 18895,
+      "sha256": "c7ae5e9e47ae584713658ba5ea5d702b3ce8442aab4a99231ebc73af98c418ef"
+    },
+    "cache.before-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/4c306eba2d420034/rank_tp1_pp0_dp1.json": {
+      "bytes": 18895,
+      "sha256": "c7ae5e9e47ae584713658ba5ea5d702b3ce8442aab4a99231ebc73af98c418ef"
+    },
+    "cache.before-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/4c306eba2d420034/rank_tp2_pp0_dp2.json": {
+      "bytes": 18895,
+      "sha256": "c7ae5e9e47ae584713658ba5ea5d702b3ce8442aab4a99231ebc73af98c418ef"
+    },
+    "cache.before-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/4c306eba2d420034/rank_tp3_pp0_dp3.json": {
+      "bytes": 18895,
+      "sha256": "c7ae5e9e47ae584713658ba5ea5d702b3ce8442aab4a99231ebc73af98c418ef"
+    },
+    "cache.before-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/bf613131587af593/rank_tp0_pp0_dp0.json": {
+      "bytes": 9732,
+      "sha256": "765cbd7eb6a476c6054ad67fd8c959cfaf7f59ffa2ecfc17d744d655f9732119"
+    },
+    "cache.before-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/bf613131587af593/rank_tp1_pp0_dp1.json": {
+      "bytes": 9732,
+      "sha256": "765cbd7eb6a476c6054ad67fd8c959cfaf7f59ffa2ecfc17d744d655f9732119"
+    },
+    "cache.before-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/bf613131587af593/rank_tp2_pp0_dp2.json": {
+      "bytes": 9732,
+      "sha256": "765cbd7eb6a476c6054ad67fd8c959cfaf7f59ffa2ecfc17d744d655f9732119"
+    },
+    "cache.before-tactics/trtllm-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/bf613131587af593/rank_tp3_pp0_dp3.json": {
+      "bytes": 9732,
+      "sha256": "765cbd7eb6a476c6054ad67fd8c959cfaf7f59ffa2ecfc17d744d655f9732119"
+    },
+    "cache.before.json": {
+      "bytes": 357753,
+      "sha256": "ce7517924b5efa3a10248ad3fa5ae4c7db72c45efa02e15928c18fe492e87e70"
+    },
+    "exit.json": {
+      "bytes": 6635,
+      "sha256": "a04eda5bf991dc5e8d546c481c8d6ae5300b3db7fa702dcdfc7e3dfa4960aa1c"
+    },
+    "gpu.after.json": {
+      "bytes": 1297,
+      "sha256": "e2440fbd6bc5e0d724aa6bb3b5fc88b57ea2db3e3387c041755f8aec44ef1e58"
+    },
+    "gpu.before.json": {
+      "bytes": 1297,
+      "sha256": "67d694291bf37004a018f13cd13429f30f3cda859d5ef4b84c14c5ab4bfc024d"
+    },
+    "gpu.cleanup.jsonl": {
+      "bytes": 1201,
+      "sha256": "ccf3fd3cfa54de1daa348ea8853860b042ed88d36989d35ec484b480e5cf40aa"
+    },
+    "gpu.jsonl": {
+      "bytes": 290506,
+      "sha256": "24042fc5cee25fe1f81415289367e985e9196c0b9ac8952939775092238e5250"
+    },
+    "metrics.json": {
+      "bytes": 289,
+      "sha256": "781f2b02076b7fc4ebb5893fed6c6f0facbda502ae6656e28573745cb79c94a6"
+    },
+    "requested-lengths.json": {
+      "bytes": 3485,
+      "sha256": "0bedf1c887f6a3a04ee4ef716994537a1d5d49dce136c17c31a6ab301775340e"
+    },
+    "result.json": {
+      "bytes": 3391,
+      "sha256": "2527e02628199ec40511bf2ea2ff3f28ec0f111a868505ea6c3f87842379abe2"
+    },
+    "server.exit.json": {
+      "bytes": 1913,
+      "sha256": "ae19132bf6b476d94903b4c8395713ecb84cb98d120e8e0c882cb101ad4f197e"
+    },
+    "server.launch.json": {
+      "bytes": 4879,
+      "sha256": "593cd13a8bd189ad0a56e6c85634d1c4bcd879ef0dbadfa43a173b1213f0a95f"
+    },
+    "server.log": {
+      "bytes": 652693,
+      "sha256": "afc95151b1bdc0cd774ce6309955d4c47ff66a2c73c0e0bbe753b7b1d094748c"
+    },
+    "server.owners.jsonl": {
+      "bytes": 1461,
+      "sha256": "335cabaf8fa39e7e0002b3cbac5896371a56f2e7912ef7c7358ba4eb27736765"
+    },
+    "server_command.json": {
+      "bytes": 1453,
+      "sha256": "20adf0570b505473c2a1dbe783ec65ed9e8c92e22838acdcb2d5a3b1c5c71208"
+    },
+    "server_info.after.json": {
+      "bytes": 114710,
+      "sha256": "f24fe8019656ecbc8be4a7ddd373931c49a21ad1855c891d8c964b4bd74a5606"
+    },
+    "server_info.before.json": {
+      "bytes": 114445,
+      "sha256": "7342a38be17a67e16cd93b3f5d4e553bcb04d703ddd37253f8a913708abcd031"
+    },
+    "server_watch.json": {
+      "bytes": 116,
+      "sha256": "243f40027755398f69f0bd5a8b7b6694c1e52289894f266a7423ae11b00a1ef2"
+    },
+    "settings.json": {
+      "bytes": 5357,
+      "sha256": "d25e7b6a9579a914056f27786454f04e55e39da5d04dbc0957981dede8a4fdf4"
+    },
+    "source.after.json": {
+      "bytes": 11143,
+      "sha256": "3a68a149fc2208476ea76dbedebdb3e4414781605a4f54f11147871e08dbcc20"
+    },
+    "source.before.json": {
+      "bytes": 11143,
+      "sha256": "3a68a149fc2208476ea76dbedebdb3e4414781605a4f54f11147871e08dbcc20"
+    }
+  },
+  "scope": "terminal case evidence; cache payloads limited to tactics",
+  "sealed_at": "2026-09-29T13:12:25Z"
+}

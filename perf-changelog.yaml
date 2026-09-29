@@ -8420,3 +8420,12 @@
     - "Make the manual six-curve result reader portable to a relocated checkout by joining sealed producer commands and launch environments with exact recipe/client source digests. Runtime benchmark settings and runner bytes are unchanged."
     - "Add successful relocation and malformed path, launch, environment and source-binding rejection checks. The manual experimental key remains unregistered in the scheduled matrix."
   pr-link: https://github.com/zianglih/InferenceX/pull/3
+
+- config-keys:
+    - experimental/glm52_six_curves_1k8k_c32
+  description:
+    - "Publish the completed manual GLM-5.2 1k/8k B300 comparison: MegaMoE W4A4/W4A16 and default per-tensor TRTLLM NVFP4 W4A4 at TP=EP=DP4/8 and concurrency 4/8/16/32, with 24 accepted points, 3,600 successful measured requests and 720 warmups."
+    - "Include selected sealed raw evidence, every saved scalar, 36 matched comparisons covering 1,008 metric rows, and six reproducible English Pareto frontiers: x is 1,000 / median TPOT milliseconds and y is output tokens / the complete measured interval / GPU count. Preserve backend-default, dense-selector, streamed-chunk ITL and sequential-run limitations."
+    - "This result publication does not change serving settings or claim scheduled-matrix, sweep/eval, numerical-equivalence, full-archive or node-cleanup acceptance. The experimental key remains unregistered and its matrix validation failure is disclosed."
+    - "发布手动 GLM-5.2 1k/8k B300 六曲线实测：24 点、3,600 个测量请求全部成功、720 个预热；保留所选原始证据、全部已保存 scalar、36 组共1,008项匹配对比，以及可复现的英文 Pareto 图。保留默认后端、dense selector、chunk ITL 和串行实验限制；不改服务配置，不声明 scheduled matrix、sweep/eval、数值等价、完整归档或节点清理通过。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/3
