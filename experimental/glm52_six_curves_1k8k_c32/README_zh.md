@@ -80,6 +80,8 @@ python3 -B experimental/glm52_six_curves_1k8k_c32/results.py \
 
 运行期间可加 `--partial`，仅验证已完成 case 并输出部分表格，不生成最终图。完整 reader 会拒绝不完整或错误标识的矩阵、失败客户端、不完整所属进程清理、缺失启动探测、封存证据变化、解析后 backend 不符，以及同并发请求有序数组不一致。
 
+Reader 可以在不同路径的 checkout 中运行。它从封存的 benchmark command 重建生成端的 `PYTHONPATH`，交叉核对两个 launch 环境与实际 client argv，并逐项精确比较其余环境字段。记录的五个配方/客户端源码摘要必须与当前 checkout 匹配。公开复现包应包含这些源码文件；不得重写原始远端路径，也不推断未记录的 launch 工作目录。
+
 输出包括：
 
 - `raw-metrics.json` / `.csv`：已保存 latency 字段、派生速率、源码版本及 result/manifest SHA 绑定。

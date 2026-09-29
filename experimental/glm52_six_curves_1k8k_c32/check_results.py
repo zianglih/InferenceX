@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import check
 import results
@@ -15,7 +16,7 @@ def save(path, value):
     path.write_text(json.dumps(value, indent=2) + "\n")
 
 
-def campaign(root, cases):
+def campaign(root, cases, producer=None):
     cfg = check.config()
     cfg.update(run_id=root.name, run_root=str(root))
     root.mkdir()
@@ -45,25 +46,56 @@ def campaign(root, cases):
     source.update(
         freeze={"returncode": 0, "stdout": "synthetic-fixture==1\n"},
         recipe={
-            "infx/bench_serving/benchmark_serving.py": {"bytes": 17, "sha256": "a" * 64}
+            name: run.digest(run.REPO / name)
+            for name in (
+                "experimental/glm52_six_curves_1k8k_c32/run.py",
+                "experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh",
+                "benchmarks/benchmark_lib.sh",
+                "infx/bench_serving/benchmark_serving.py",
+                "infx/bench_serving/backend_request_func.py",
+            )
         },
     )
+    producer = producer or run.REPO
     for case in cases:
         directory = root / "cases" / case["case_id"]
         directory.mkdir()
         c, tp, count = case["concurrency"], case["tp"], case["measured_requests"]
+        with patch.object(run, "REPO", producer):
+            env = run.environment(cfg, case)
         save(
             directory / "settings.json",
             {
                 "case": case,
                 "config": cfg,
-                "environment": run.environment(cfg, case),
+                "environment": env,
                 "nominal_input": 1024,
                 "nominal_output": 8192,
                 "ratio": 0.8,
             },
         )
         save(directory / "server_command.json", run.server_command(cfg, case))
+        save(
+            directory / "server.launch.json",
+            {"pid": 123, "argv": run.server_command(cfg, case), "environment": env},
+        )
+        client_env = dict(
+            env,
+            CASE_DIR=str(directory),
+            MODEL_PATH=cfg["model_path"],
+            SERVED_MODEL=cfg["served_model"],
+            PORT=str(cfg["port"]),
+            CONC=str(c),
+            SERVER_PID="123",
+            EVAL_ONLY="false",
+            PROFILE="0",
+        )
+        client_argv = [
+            "bash",
+            str(producer / "experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh"),
+        ]
+        for name in ("benchmark_command.json", "benchmark.launch.json"):
+            save(directory / name, {"argv": client_argv, "environment": client_env})
         save(
             directory / "exit.json",
             {
@@ -170,6 +202,87 @@ def change(directory, name, edit, reseal=True):
 
 
 class ReaderChecks(unittest.TestCase):
+    def test_relocated_producer_checkout_is_replayed_from_sealed_launches(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "trial"
+            producer = Path("/data/owned-campaign/sources/inferencex")
+            self.assertNotEqual(producer, run.REPO)
+            campaign(root, run.matrix(), producer=producer)
+            rows = results.load(root, False)
+            self.assertEqual((len(rows), sum(r["completed"] for r in rows)), (24, 3600))
+
+    def test_producer_paths_launches_and_source_bindings_reject_mismatches(self):
+        mutations = (
+            (
+                "settings.json",
+                lambda d: d["environment"].update(
+                    PYTHONPATH="/extra:" + d["environment"]["PYTHONPATH"]
+                ),
+                "environment",
+            ),
+            (
+                "settings.json",
+                lambda d: d["environment"].update(
+                    PYTHONPATH=d["environment"]["PYTHONPATH"] + ":/extra"
+                ),
+                "environment",
+            ),
+            (
+                "benchmark_command.json",
+                lambda d: d["argv"].__setitem__(
+                    1,
+                    "/data/../inferencex/experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh",
+                ),
+                "producer checkout",
+            ),
+            (
+                "benchmark_command.json",
+                lambda d: d["argv"].__setitem__(
+                    1,
+                    "/data//inferencex/experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh",
+                ),
+                "producer checkout",
+            ),
+            (
+                "benchmark.launch.json",
+                lambda d: d["argv"].__setitem__(
+                    1,
+                    "/different/experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh",
+                ),
+                "benchmark launch",
+            ),
+            (
+                "benchmark_command.json",
+                lambda d: d["environment"].update(SERVER_PID="999"),
+                "benchmark launch",
+            ),
+            (
+                "server.launch.json",
+                lambda d: d["environment"].update(UNREQUESTED="1"),
+                "server launch",
+            ),
+            (
+                "source.before.json",
+                lambda d: d["recipe"]["infx/bench_serving/benchmark_serving.py"].update(
+                    sha256="0" * 64
+                ),
+                "recipe/client source",
+            ),
+        )
+        for name, edit, error in mutations:
+            with (
+                self.subTest(name=name, error=error),
+                tempfile.TemporaryDirectory() as temp,
+            ):
+                root = Path(temp) / "trial"
+                campaign(
+                    root, run.matrix()[:1], producer=Path("/data/producer/inferencex")
+                )
+                directory = next((root / "cases").iterdir())
+                change(directory, name, edit)
+                with self.assertRaisesRegex(ValueError, error):
+                    results.load(root, True)
+
     def test_complete_six_arms_rates_saved_values_and_pairing(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp) / "trial"

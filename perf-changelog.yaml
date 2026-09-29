@@ -8413,3 +8413,10 @@
     - "Pin SGLang PR39210 head 9d38e0530a1e35d1756a7fabf044bc39b77209b8, merged FlashInfer W4A16 commit a03f2205263d4e691d68e485bff287e37a19b6c3 and nightly-dev-cu13-20260929-79cafec0; reuse one FI installation."
     - "Keep EAGLE 3/1/4 and the 1k/8k ratio-0.8 workload; do not inject optional per-token, fast-math-disable or other quantization tuning overrides. This manual experiment is not registered in the scheduled matrix."
   pr-link: https://github.com/zianglih/InferenceX/pull/3
+
+- config-keys:
+    - experimental/glm52_six_curves_1k8k_c32
+  description:
+    - "Make the manual six-curve result reader portable to a relocated checkout by joining sealed producer commands and launch environments with exact recipe/client source digests. Runtime benchmark settings and runner bytes are unchanged."
+    - "Add successful relocation and malformed path, launch, environment and source-binding rejection checks. The manual experimental key remains unregistered in the scheduled matrix."
+  pr-link: https://github.com/zianglih/InferenceX/pull/3

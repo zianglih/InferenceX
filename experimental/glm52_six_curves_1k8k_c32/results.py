@@ -50,6 +50,81 @@ def finite(value, name, positive=False):
     return value
 
 
+def verify_environment(directory, config, case, env, source):
+    """Replay the producer checkout path from sealed command evidence."""
+    client = read(directory / "benchmark_command.json")
+    argv = client.get("argv")
+    if (
+        not isinstance(argv, list)
+        or len(argv) != 2
+        or argv[0] != "bash"
+        or not isinstance(argv[1], str)
+    ):
+        raise ValueError("Invalid recorded benchmark command")
+    script = Path(argv[1])
+    relative = Path("experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh")
+    if (
+        not script.is_absolute()
+        or ".." in script.parts
+        or str(script) != argv[1]
+        or ":" in argv[1]
+        or tuple(script.parts[-3:]) != relative.parts
+    ):
+        raise ValueError("Invalid producer checkout path")
+    producer = script.parents[2]
+    if producer == Path("/"):
+        raise ValueError("Invalid producer checkout root")
+    expected = recipe.environment(config, case)
+    expected["PYTHONPATH"] = config["sglang_root"] + "/python:" + str(producer)
+    if env != expected:
+        raise ValueError("Recorded environment differs from the backend-default recipe")
+    server = read(directory / "server.launch.json")
+    pid = server.get("pid")
+    if (
+        type(pid) is not int
+        or pid <= 0
+        or server.get("argv") != recipe.server_command(config, case)
+        or server.get("environment") != env
+    ):
+        raise ValueError("Recorded server launch differs")
+    client_env = dict(
+        env,
+        CASE_DIR=str(Path(config["run_root"]) / "cases" / case["case_id"]),
+        MODEL_PATH=config["model_path"],
+        SERVED_MODEL=config["served_model"],
+        PORT=str(config["port"]),
+        CONC=str(case["concurrency"]),
+        SERVER_PID=str(pid),
+        EVAL_ONLY="false",
+        PROFILE="0",
+    )
+    launch = read(directory / "benchmark.launch.json")
+    if (
+        client.get("environment") != client_env
+        or launch.get("argv") != argv
+        or launch.get("environment") != client_env
+    ):
+        raise ValueError("Recorded benchmark launch differs from producer command")
+    source_files = (
+        "experimental/glm52_six_curves_1k8k_c32/run.py",
+        str(relative),
+        "benchmarks/benchmark_lib.sh",
+        "infx/bench_serving/benchmark_serving.py",
+        "infx/bench_serving/backend_request_func.py",
+    )
+    digests = {
+        name: {
+            "bytes": (recipe.REPO / name).stat().st_size,
+            "sha256": sha(recipe.REPO / name),
+        }
+        for name in source_files
+    }
+    if source.get("recipe") != digests:
+        raise ValueError(
+            "Recorded recipe/client source digests differ from this reader"
+        )
+
+
 def verify_case(directory):
     if directory.is_symlink():
         raise ValueError("Linked case directory")
@@ -98,8 +173,8 @@ def verify_case(directory):
         raise ValueError("Unexpected backend/precision/topology/concurrency identity")
     if terminal.get("case") != case:
         raise ValueError("Terminal case identity differs from settings")
-    if env != recipe.environment(config, case):
-        raise ValueError("Recorded environment differs from the backend-default recipe")
+    before = read(directory / "source.before.json")
+    verify_environment(directory, config, case, env, before)
     if read(directory / "server_command.json") != recipe.server_command(config, case):
         raise ValueError("Actual server command differs from the recipe")
     if (settings["nominal_input"], settings["nominal_output"], settings["ratio"]) != (
@@ -137,10 +212,7 @@ def verify_case(directory):
         mismatch = {k: info.get(k) for k, v in expected.items() if info.get(k) != v}
         if mismatch:
             raise ValueError(f"Resolved settings differ: {mismatch}")
-    before, after = (
-        read(directory / "source.before.json"),
-        read(directory / "source.after.json"),
-    )
+    after = read(directory / "source.after.json")
     if before != after:
         raise ValueError("Sources/packages changed within a point")
     for name in ("sglang", "flashinfer"):

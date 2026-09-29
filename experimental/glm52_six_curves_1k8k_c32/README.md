@@ -80,6 +80,8 @@ python3 -B experimental/glm52_six_curves_1k8k_c32/results.py \
 
 While the campaign runs, add `--partial` to validate only finalized cases and write partial tables without a final plot. The full reader rejects an incomplete or misidentified grid, any failed client or incomplete owned cleanup, missing startup probes, modified sealed evidence, differing resolved backend settings, or mismatched same-concurrency ordered request arrays.
 
+The reader can run from a different checkout path. It reconstructs the producer's `PYTHONPATH` from the sealed benchmark command, cross-checks both launch environments and the actual client argv, and compares every other environment field exactly. The five recorded recipe/client source digests must match this checkout. Keep those source files with any public reproduction bundle; do not rewrite the raw remote paths or infer an unrecorded launch working directory.
+
 Outputs include:
 
 - `raw-metrics.json` / `.csv`: saved latency fields, derived rates, source pins and result/manifest SHA bindings.
