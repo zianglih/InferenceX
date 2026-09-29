@@ -350,6 +350,60 @@ class PreflightTests(unittest.TestCase):
         self.assertEqual(events, ["prepare", "resolve_once", "resolved_view"])
         self.assertEqual(context["resolved"], context["expected"])
 
+    def test_exact_opencv_loader_environment_transform(self):
+        loader = Path("/opt/sglang/lib/python3.12/site-packages/cv2")
+        files = {
+            str(loader / n): {"bytes": 1, "sha256": "a" * 64}
+            for n in ("__init__.py", "config.py", "config-3.py", "load_config_py3.py")
+        }
+        before = {"LD_LIBRARY_PATH": "/original/lib", "PATH": "/original/bin"}
+        prefix = str(loader) + "/../../lib64:"
+
+        def run(after, bound=None, origin=None, override=False):
+            with (
+                patch.dict(os.environ, after, clear=True),
+                patch.dict(
+                    sys.modules,
+                    {
+                        "cv2": SimpleNamespace(
+                            __file__=origin or str(loader / "__init__.py")
+                        )
+                    },
+                ),
+                patch.object(sys, "version_info", (3, 12, 0)),
+                patch.object(p.os.path, "lexists", return_value=override),
+                patch.object(p, "digest", side_effect=lambda path, expected: expected),
+            ):
+                return p.source_environment_changes(
+                    before, {"bound_files": files if bound is None else bound}
+                )
+
+        self.assertEqual(run(before), {})
+        valid = {**before, "LD_LIBRARY_PATH": prefix + before["LD_LIBRARY_PATH"]}
+        actual = run(valid)
+        self.assertEqual(actual["LD_LIBRARY_PATH"]["before"], before["LD_LIBRARY_PATH"])
+        self.assertEqual(actual["LD_LIBRARY_PATH"]["after"], valid["LD_LIBRARY_PATH"])
+        self.assertEqual(actual["LD_LIBRARY_PATH"]["source_files"], files)
+        for wrong in (
+            prefix + valid["LD_LIBRARY_PATH"],
+            prefix + "/changed",
+            "/wrong:" + before["LD_LIBRARY_PATH"],
+            None,
+        ):
+            with self.subTest(wrong=wrong), self.assertRaises(RuntimeError):
+                run(
+                    {
+                        k: v
+                        for k, v in {**before, "LD_LIBRARY_PATH": wrong}.items()
+                        if v is not None
+                    }
+                )
+        for kwargs in ({"bound": {}}, {"origin": "/wrong/cv2.py"}, {"override": True}):
+            with self.subTest(kwargs=kwargs), self.assertRaises(RuntimeError):
+                run(valid, **kwargs)
+        with self.assertRaises(RuntimeError):
+            run({**valid, "PATH": "/changed/bin"})
+
     def test_environment_rejects_optional_controls_early(self):
         for arm, selector in [
             ("megamoe-w4a4", "1"),

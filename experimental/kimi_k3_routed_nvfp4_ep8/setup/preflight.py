@@ -775,6 +775,50 @@ def providers(r, arm):
     }
 
 
+def source_environment_changes(before, r):
+    """Allow only the pinned OpenCV loader's observed Linux path prepend."""
+    changes = {
+        k: {"before": v, "after": os.environ.get(k)}
+        for k, v in before.items()
+        if os.environ.get(k) != v
+    }
+    if not changes:
+        return {}
+    need(
+        set(changes) == {"LD_LIBRARY_PATH"},
+        "Unexpected changed supplied keys: " + repr(sorted(changes)),
+    )
+    loader = Path("/opt/sglang/lib/python3.12/site-packages/cv2")
+    module = sys.modules.get("cv2")
+    need(
+        sys.version_info[:2] == (3, 12)
+        and module is not None
+        and Path(module.__file__).resolve() == loader / "__init__.py",
+        "OpenCV loader origin differs",
+    )
+    need(
+        not os.path.lexists(loader / "config-3.12.py"),
+        "Unexpected OpenCV version-specific config",
+    )
+    sources = {}
+    for name in ("__init__.py", "config.py", "config-3.py", "load_config_py3.py"):
+        p = str(loader / name)
+        need(p in r["bound_files"], "OpenCV loader source unbound: " + name)
+        sources[p] = digest(p, r["bound_files"][p])
+    # Keep the lexical ../.. spelling used by the exact observed OpenCV source.
+    # The resolved directory was absent; this does not attest to bundled library bytes.
+    prefix = os.path.join(os.path.join(str(loader), "../../"), "lib64")
+    need(
+        changes["LD_LIBRARY_PATH"]["after"] == prefix + ":" + before["LD_LIBRARY_PATH"],
+        "Unexpected OpenCV loader path transform",
+    )
+    changes["LD_LIBRARY_PATH"]["source_files"] = sources
+    changes["LD_LIBRARY_PATH"]["scope"] = (
+        "Observed import side effect only; supplied launch environment unchanged; no library-directory or library-byte acceptance"
+    )
+    return changes
+
+
 def run(r, arm):
     validate_request(r)
     need(
@@ -835,10 +879,7 @@ def run(r, arm):
         for k, v in os.environ.items()
         if k.startswith(("SGLANG_", "FLASHINFER_", "NVSHMEM_", "NCCL_")) or k in env
     }
-    need(
-        all(os.environ.get(k) == v for k, v in env.items()),
-        "Probe changed supplied environment",
-    )
+    changes = source_environment_changes(env, r)
     expected_nv = (
         {
             "NVSHMEM_REMOTE_TRANSPORT": "none",
@@ -882,6 +923,7 @@ def run(r, arm):
         "python_base_prefix": sys.base_prefix,
         "environment": env,
         "source_environment_after": environment_after,
+        "source_environment_changes": changes,
         "source_environment_additions": {
             k: v for k, v in environment_after.items() if k not in env
         },
