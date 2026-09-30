@@ -13,6 +13,7 @@ import shlex
 
 import checkpoint_contract
 import source_contract
+import continuation
 
 ROOT = Path(__file__).resolve().parents[1]
 PINS = {
@@ -216,6 +217,7 @@ def validate_campaign(cfg):
             "plot",
             "user_decisions",
             "local_changes",
+            "continuation",
         },
         "Unexpected campaign keys",
     )
@@ -302,6 +304,7 @@ def validate_campaign(cfg):
         "TMP must be a private short /tmp/infx-* path",
     )
     checkpoint_contract.validate_checkpoint(cfg["checkpoint"], rt["model_path"])
+    continuation.validate_spec(cfg["continuation"])
 
 
 def verify_client(project, pin):
@@ -530,6 +533,10 @@ def execution_blockers(cfg, runtime_project):
     }.items():
         if isinstance(value, str) and "REVIEW_REQUIRED" in value:
             issues.append("Unresolved " + key + ": " + value)
+    for key in ("prior_acceptance", "cache_seed_acceptance"):
+        row = cfg["continuation"][key]
+        if row["bytes"] <= 0 or "REVIEW_REQUIRED" in row["path"]:
+            issues.append("Actual continuation input absent: " + key)
     return issues
 
 
@@ -559,10 +566,12 @@ def build_plan(
         "results.py",
         "checkpoint_contract.py",
         "source_contract.py",
+        "continuation.py",
+        "cache_seed.py",
     ]:
         p = project / "setup" / name
-        if p.is_file():
-            bindings[str(p)] = descriptor(p)
+        require(p.is_file(), "Missing required execution source: " + name)
+        bindings[str(p)] = descriptor(p)
     cases = []
     rt = cfg["runtime"]
     w = cfg["workload"]
@@ -715,6 +724,8 @@ def build_plan(
         "client_source": client,
         "tokenizer_source": tokenizer,
         "cases": cases,
+        "continuation": cfg["continuation"],
+        "execution_totals": cfg["continuation"]["execution_totals"],
         "totals": {"cases": 12, "warmup_requests": 360, "measured_requests": 1800},
         "environment_policy": "Planned explicit child environment; no host inheritance or HOME reassignment. No tuning/per-token/fast-math/INFO overrides. Only MegaMoE W4A16 has its required precision selector. Future preflight must capture actual image PATH/loader/library/HOME and any verified Rust policy before execution.",
         "execution_blockers": execution_blockers(cfg, runtime_project),
@@ -735,7 +746,7 @@ def commands_markdown(plan):
         "",
         "**PLAN ONLY:** these command renderings do not execute. Use run_campaign.py --execute with the exact accepted runtime marker and SHA256 after campaign blockers are resolved. Checkpoint acceptance alone is insufficient.",
         "",
-        "12 serial cases, 360 warmups, 1,800 measured requests. No MTP. Commands use a clean explicit environment; do not run them before the source/preflight/execution gates are accepted.",
+        "Canonical 12 cases/360 warmups/1,800 measured; this continuation executes only 11 cases/296 warmups/1,480 measured and inherits one independently accepted C32. No MTP. Commands use a clean explicit environment; do not run them before the source/preflight/execution gates are accepted.",
         "",
         "The files below are plain text, mode0600, with no shebang. Each example is an argument-vector rendering for review, not a launcher.",
         "",
@@ -785,7 +796,11 @@ def emit_plan(plan, output):
     for c in plan["cases"]:
         env = ["env", "-i"] + [k + "=" + v for k, v in sorted(c["environment"].items())]
         text = (
-            "# REVIEW ONLY. Not an execution implementation.\n"
+            (
+                "# INHERITED ACCEPTED C32: do not execute again.\n"
+                if c["case_id"] == continuation.PRIOR_ID
+                else "# REVIEW ONLY: selected continuation case.\n"
+            )
             + shlex.join(env + c["server_argv"])
             + "\n"
             + shlex.join(env + c["client_argv"])

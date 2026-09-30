@@ -23,7 +23,7 @@ import source_contract
 
 SG = "561ad447c74bb757a40677ee9ce038f9ca429d2c"
 FI = "a03f2205263d4e691d68e485bff287e37a19b6c3"
-PROJECT = "/data/home/ziangli/inferencex-kimik3-three-curves-c32-20260929/r4"
+PROJECT = "/data/home/ziangli/inferencex-kimik3-three-curves-c32-20260929/r5"
 MODEL = "/data/home/ziangli/kimik3-routed-nvfp4-conversion-20260929/checkpoints/main-routed-nvfp4-attempt2"
 ARMS = ("megamoe-w4a4", "megamoe-w4a16", "trtllm-w4a4")
 SELECTOR = "SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16"
@@ -247,8 +247,8 @@ def validate_request(r):
     )
     need(
         r["run_root"]
-        == str(Path(PROJECT).parent / "kimi-k3-ep8-three-curves-c32-20260929-all12-r4")
-        and r["tmp_root"] == "/tmp/infx-k3-preflight-r4",
+        == str(Path(PROJECT).parent / "kimi-k3-ep8-three-curves-c32-20260929-remaining11-r5")
+        and r["tmp_root"] == "/tmp/infx-k3-preflight-r5",
         "Run/preflight scope differs",
     )
     need(
@@ -400,7 +400,7 @@ def environment(arm, r):
     )
     need(
         not os.path.lexists(r["run_root"])
-        and not os.path.lexists("/tmp/infx-k3-3c-r4"),
+        and not os.path.lexists("/tmp/infx-k3-3c-r5"),
         "Actual run/TMP must remain absent",
     )
     return {

@@ -16,6 +16,8 @@ import math
 
 import checkpoint_contract
 import source_contract
+import continuation
+import cache_seed
 from decimal import Decimal, localcontext
 from pathlib import Path, PurePosixPath
 
@@ -413,7 +415,8 @@ def load(root, acceptance="ACCEPTANCE.json", *, allow_synthetic=False):
     accepted = read_json(p)
     require(
         accepted["schema_version"] == 1
-        and accepted["status"] == "ACCEPTED_COMPLETE_CAMPAIGN",
+        and accepted["status"]
+        in {"ACCEPTED_COMPLETE_CAMPAIGN", "ACCEPTED_COMPOSITE_CAMPAIGN"},
         "Complete acceptance required",
     )
     kind = accepted["data_kind"]
@@ -451,25 +454,118 @@ def load(root, acceptance="ACCEPTANCE.json", *, allow_synthetic=False):
         evidence.bound({"path": str(vendor / rel), **metadata})
     terminal = evidence.document(accepted["terminal"])
     case_ids = [c["case_id"] for c in cases]
-    require(
-        terminal
-        == {
-            "status": "completed",
-            "waited_returncode": 0,
-            "error": None,
-            "cleanup_errors": [],
-            "remaining_owners": [],
-            "completed_case_ids": case_ids,
-        },
-        "Terminal must record complete ordered cases and actual clean waited exit",
-    )
-    verify_review(
-        evidence,
-        accepted["terminal_review"],
-        "PASS_ACTUAL_TERMINAL_REVIEW",
-        target_key="terminal_sha256",
-        target_sha=accepted["terminal"]["sha256"],
-    )
+    if accepted["status"] == "ACCEPTED_COMPOSITE_CAMPAIGN":
+        require(kind == "actual" or allow_synthetic, "Actual composite required")
+        continuation.verify_execution_terminal(terminal, plan)
+        require(
+            terminal["prior_acceptance"]
+            == campaign["continuation"]["prior_acceptance"],
+            "Execution prior parent differs",
+        )
+        require(
+            terminal["cache_seed_acceptance"]
+            == campaign["continuation"]["cache_seed_acceptance"],
+            "Execution seed parent differs",
+        )
+        # The sealed parent is never rewritten: explicit aliases relocate the same bound bytes.
+        aliases = accepted["prior_binding_map"]
+
+        def prior_read(desc):
+            if PurePosixPath(desc["path"]).is_absolute():
+                relocated = aliases[desc["path"]]
+                require(
+                    all(relocated[k] == desc[k] for k in ("bytes", "sha256")),
+                    "Prior alias changes bytes",
+                )
+                return evidence.document(relocated)
+            return evidence.document(desc)
+
+        parent = continuation.verify_prior(
+            campaign, plan, prior_read, prior_descriptor=accepted["prior_acceptance"]
+        )
+        require(
+            accepted["cases"][0]["manifest"]["sha256"]
+            == parent["prior"]["manifest"]["sha256"],
+            "Composite first case is not accepted prior",
+        )
+        segment_review = verify_review(
+            evidence,
+            accepted["terminal_review"],
+            "PASS_ACTUAL_CONTINUATION_TERMINAL_REVIEW",
+            target_key="terminal_sha256",
+            target_sha=accepted["terminal"]["sha256"],
+        )
+        require(
+            segment_review["waited_returncode"] == 0
+            and segment_review["completed_case_ids"] == continuation.EXECUTION_IDS,
+            "Waited eleven-case segment review required",
+        )
+        verify_review(
+            evidence,
+            accepted["composite_review"],
+            "PASS_ACTUAL_COMPOSITE_CAMPAIGN_REVIEW",
+            target_key="terminal_sha256",
+            target_sha=accepted["terminal"]["sha256"],
+        )
+        seed = prior_read(campaign["continuation"]["cache_seed_acceptance"])
+        require(
+            seed["status"] == "ACCEPTED_KIMI_QUIESCENT_CACHE_SEED"
+            and seed["data_kind"] == "actual"
+            and seed["prior_case_acceptance"]
+            == campaign["continuation"]["prior_acceptance"],
+            "Composite seed acceptance required",
+        )
+        installed = evidence.document(accepted["cache_seed_installation"])
+        cache_seed.validate_install_receipt(
+            installed,
+            campaign["runtime"]["run_root"],
+            campaign["continuation"]["prior_acceptance"],
+            campaign["continuation"]["cache_seed_acceptance"],
+        )
+        installed_inventory = prior_read(installed["installed_inventory"])
+        require(
+            installed_inventory["roots"]
+            == {
+                "caches": campaign["runtime"]["run_root"] + "/caches",
+                "hf-home": campaign["runtime"]["run_root"] + "/hf-home",
+                "tmp": campaign["runtime"]["tmp_root"],
+            },
+            "Installed cache namespace differs",
+        )
+        installed_files = dict(installed_inventory["files"])
+        marker = installed_files.pop("tmp/.inferencex-owner.json")
+        require(marker["kind"] == "file", "Fresh TMP owner inventory missing")
+        require(
+            sum(x["kind"] == "file" for x in installed_files.values())
+            == installed["copied_files"]
+            and sum(x.get("bytes", 0) for x in installed_files.values())
+            == installed["copied_bytes"],
+            "Compact installed receipt coverage differs",
+        )
+    else:
+        require(
+            "continuation" not in campaign,
+            "Continuation cannot masquerade as one successful twelve-case run",
+        )
+        require(
+            terminal
+            == {
+                "status": "completed",
+                "waited_returncode": 0,
+                "error": None,
+                "cleanup_errors": [],
+                "remaining_owners": [],
+                "completed_case_ids": case_ids,
+            },
+            "Terminal must record complete ordered cases and actual clean waited exit",
+        )
+        verify_review(
+            evidence,
+            accepted["terminal_review"],
+            "PASS_ACTUAL_TERMINAL_REVIEW",
+            target_key="terminal_sha256",
+            target_sha=accepted["terminal"]["sha256"],
+        )
     records = accepted["cases"]
     require(
         len(records) == 12 and [r["case_id"] for r in records] == case_ids,
@@ -586,6 +682,9 @@ def load(root, acceptance="ACCEPTANCE.json", *, allow_synthetic=False):
         "bindings": list(evidence.bindings.values()),
         "campaign": campaign,
         "plan": plan,
+        "execution_segments": 2
+        if accepted["status"] == "ACCEPTED_COMPOSITE_CAMPAIGN"
+        else 1,
     }
 
 
@@ -652,7 +751,7 @@ def comparisons(data):
     return pairs
 
 
-def plot(rows, output):
+def plot(rows, output, *, execution_segments=1):
     import matplotlib
 
     matplotlib.use("Agg")
@@ -710,7 +809,15 @@ def plot(rows, output):
     fig.text(
         0.5,
         -0.025,
-        "8 B300 GPUs · 12 accepted points · 1,800 measured requests · whole interval is not timed decode",
+        (
+            "8 B300 GPUs · 12 accepted points · 1,800 measured requests\n"
+            + (
+                "Composite: prior C32 + 11-case continuation · "
+                if execution_segments == 2
+                else ""
+            )
+            + "whole interval is not timed decode"
+        ),
         ha="center",
         fontsize=9,
     )
@@ -772,10 +879,15 @@ def publish(data, output):
             for arm in ARMS
         },
     )
-    plot(data["rows"], output)
+    plot(data["rows"], output, execution_segments=data["execution_segments"])
     (output / "METHODS.md").write_text(
         "# Kimi K3 three-curve results\n\n"
-        "All 12 case acceptances and the complete campaign terminal are bound in RESULTS.json. "
+        + (
+            "Composite evidence: one accepted R4 C32 point and eleven accepted R5 continuation points. R4 ended failed after that point; its failed terminal is preserved. R5 records eleven cases, 296 warmups and 1,480 measured requests. The composite total is twelve cases, 360 warmups and 1,800 measured requests. Accepted cache inheritance does not guarantee path-dependent cache hits.\n\n"
+            if data["execution_segments"] == 2
+            else ""
+        )
+        + "All 12 case acceptances and their actual execution-segment terminals are bound in RESULTS.json. "
         "Each arm uses TP8/EP8/DP1 (attention TP8) and concurrency 4/8/16/32; 2C warmups precede 10C measured requests. "
         "All same-C requested and completed token-length arrays match exactly across arms. "
         "RAW_METRICS.csv preserves every saved scalar; RESULTS.json retains the complete original result objects.\n\n"

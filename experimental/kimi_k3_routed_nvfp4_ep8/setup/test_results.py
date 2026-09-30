@@ -96,6 +96,8 @@ def synthetic_checkpoint(root, campaign):
 
 def fixture(root):
     campaign = json.loads((PROJECT / "campaign.json").read_text())
+    # This inherited fixture explicitly models one complete synthetic execution.
+    campaign.pop("continuation", None)
     checkpoint = synthetic_checkpoint(root, campaign)
     campaign_desc = put(root, "campaign.json", campaign)
     shutil.copytree(PROJECT / "vendor", root / "vendor")

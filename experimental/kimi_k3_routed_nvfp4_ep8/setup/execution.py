@@ -8,6 +8,7 @@ this module performs no subprocess, network, GPU, filesystem write or ML import.
 from __future__ import annotations
 
 import json
+import errno
 import os
 from pathlib import Path
 import re
@@ -25,6 +26,8 @@ from urllib.error import URLError
 from urllib.request import ProxyHandler, build_opener
 
 import source_contract
+import continuation
+import cache_seed
 
 from plan import (
     ARM_CONTRACT,
@@ -582,6 +585,19 @@ def validate_marker(campaign_path, planned, marker_path, marker_sha256):
     )
     for key, value in extra.items():
         require(os.environ.get(key) == value, "Image environment changed: " + key)
+    require(
+        marker["continuation"] == cfg["continuation"], "Approval continuation differs"
+    )
+    for desc in (
+        cfg["continuation"]["prior_acceptance"],
+        cfg["continuation"]["cache_seed_acceptance"],
+    ):
+        bound(desc)
+        require(
+            marker["bindings"].get(desc["path"])
+            == {k: desc[k] for k in ("bytes", "sha256")},
+            "Approval parent/seed binding missing",
+        )
     bindings = marker["bindings"]
     rehash_bindings(bindings)
     required = {
@@ -596,7 +612,14 @@ def validate_marker(campaign_path, planned, marker_path, marker_sha256):
     required |= set(planned["bindings"])
     required |= {
         str(ROOT / "setup" / n)
-        for n in ("execution.py", "results.py", "preflight.py", "source_contract.py")
+        for n in (
+            "execution.py",
+            "results.py",
+            "preflight.py",
+            "source_contract.py",
+            "continuation.py",
+            "cache_seed.py",
+        )
     }
     required |= {d["path"] for d in marker["preflight_receipts"].values()}
     require(required <= bindings.keys(), "Approval binding closure incomplete")
@@ -911,6 +934,51 @@ def seal_case(directory, root, case_id):
     )
 
 
+def wait_plain_bind(log_path, *, port=30000, timeout=120.0, interval=1.0):
+    """Bounded plain bind checks only; never sets SO_REUSEADDR or ignores other errors."""
+    require(0 < timeout <= 120 and 0 < interval <= 1, "Port wait bounds")
+    started = time.monotonic()
+    deadline = started + timeout
+    attempts = 0
+    while True:
+        attempts += 1
+        try:
+            with socket.socket() as sock:
+                sock.bind(("127.0.0.1", port))
+        except OSError as exc:
+            append(
+                log_path,
+                {
+                    "at": now(),
+                    "attempt": attempts,
+                    "status": "bind-error",
+                    "elapsed_seconds": time.monotonic() - started,
+                    "errno": exc.errno,
+                    "error": repr(exc),
+                },
+            )
+            if exc.errno != errno.EADDRINUSE:
+                raise
+            remaining = deadline - time.monotonic()
+            if remaining <= 0 or attempts >= 121:
+                raise TimeoutError(
+                    "Plain bind remained occupied after bounded EADDRINUSE wait"
+                ) from exc
+            time.sleep(min(interval, remaining))
+        else:
+            append(
+                log_path,
+                {
+                    "at": now(),
+                    "attempt": attempts,
+                    "status": "bind-available",
+                    "elapsed_seconds": time.monotonic() - started,
+                    "errno": None,
+                },
+            )
+            return
+
+
 def run_case(case, cfg, marker, request, references, baseline):
     from results import verify_result
 
@@ -956,8 +1024,13 @@ def run_case(case, cfg, marker, request, references, baseline):
         )
         save(directory / "source.before.json", before)
         save(directory / "gpu.before.json", before["gpu"])
-        with socket.socket() as sock:
-            sock.bind(("127.0.0.1", 30000))
+        wait_plain_bind(directory / "port-preflight.jsonl")
+        after_port = fresh_guard(marker, request, env)
+        require(
+            runtime_snapshot(cfg, env, marker) == baseline,
+            "Installed/source state changed during port wait",
+        )
+        save(directory / "source.after-port.json", after_port)
         cache_snapshot(root / "caches", directory / "cache.before.json")
         command = [
             cfg["runtime"]["python"],
@@ -1107,7 +1180,19 @@ def execute(campaign_path, planned, marker_path, marker_sha256):
     marker, request, cfg = validate_marker(
         campaign_path, planned, marker_path, marker_sha256
     )
-    env = child_environment(planned["cases"][0], marker)
+    execution_cases = continuation.selected_cases(planned)
+    require(
+        marker["continuation"] == cfg["continuation"], "Approved continuation differs"
+    )
+    prior_data = continuation.verify_prior(
+        cfg, planned, lambda item: read_json(bound(item))
+    )
+    seed = cache_seed.validate_seed(
+        cfg,
+        cfg["continuation"]["prior_acceptance"],
+        cfg["continuation"]["cache_seed_acceptance"],
+    )
+    env = child_environment(execution_cases[0], marker)
     marker["bindings"] = {
         **marker["bindings"],
         str(Path(marker_path)): descriptor(marker_path),
@@ -1115,14 +1200,17 @@ def execute(campaign_path, planned, marker_path, marker_sha256):
     initial = fresh_guard(marker, request, env)
     root = plain_path(cfg["runtime"]["run_root"], absent=True)
     plain_path(cfg["runtime"]["tmp_root"], absent=True)
-    with socket.socket() as sock:
-        sock.bind(("127.0.0.1", 30000))
     os.umask(0o077)
     root.mkdir(mode=0o700)
     status = {
         "started_at": now(),
         "worker": process_row(os.getpid()),
         "completed_case_ids": [],
+        "execution_case_ids": cfg["continuation"]["execution_case_ids"],
+        "execution_totals": cfg["continuation"]["execution_totals"],
+        "prior_case_id": cfg["continuation"]["prior_case_id"],
+        "prior_acceptance": cfg["continuation"]["prior_acceptance"],
+        "cache_seed_acceptance": cfg["continuation"]["cache_seed_acceptance"],
         "error": None,
         "cleanup_errors": [],
         "remaining_owners": [],
@@ -1137,6 +1225,8 @@ def execute(campaign_path, planned, marker_path, marker_sha256):
         save_bytes(root / name, Path(path).read_bytes())
     save(root / "source.initial.json", initial)
     save(root / "matrix.json", planned["cases"])
+    save(root / "execution-matrix.json", execution_cases)
+    save(root / "prior-c32.json", prior_data)
     prior = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)}
 
     def stop(sig, _frame):
@@ -1145,21 +1235,31 @@ def execute(campaign_path, planned, marker_path, marker_sha256):
     for sig in prior:
         signal.signal(sig, stop)
     try:
+        wait_plain_bind(root / "port-preflight.jsonl")
+        save(root / "port-ready.guard.json", fresh_guard(marker, request, env))
+        port_ready_runtime = runtime_snapshot(cfg, env, marker)
         for name in ("cases", "caches", "hf-home"):
             (root / name).mkdir(mode=0o700)
+        tmp_scope(cfg["runtime"]["tmp_root"], root)
+        cache_receipt = cache_seed.install_seed(
+            seed, root, Path(cfg["runtime"]["tmp_root"])
+        )
+        save(root / "compile-cache-seed.json", cache_receipt)
         for case in planned["cases"]:
             for value in case["environment"].values():
                 if value.startswith(str(root / "caches") + "/"):
-                    plain_path(value).mkdir(parents=True, exist_ok=True)
-        tmp_scope(cfg["runtime"]["tmp_root"], root)
-        save(
-            root / "compile-cache-seed.json",
-            {"seed": None, "copied_files": 0, "scope": "fresh empty owned caches"},
-        )
+                    require(
+                        plain_path(value).is_dir(),
+                        "Seed omitted planned cache namespace",
+                    )
         baseline = runtime_snapshot(cfg, env, marker)
+        require(
+            baseline == port_ready_runtime,
+            "Installed/source state changed during seed restoration",
+        )
         save(root / "runtime.initial.json", baseline)
-        references = {}
-        for case in planned["cases"]:
+        references = {32: prior_data["reference_arrays"]}
+        for case in execution_cases:
             run_case(case, cfg, marker, request, references, baseline)
             status["completed_case_ids"].append(case["case_id"])
             save(root / "progress.json", status, replace=True)
@@ -1178,7 +1278,8 @@ def execute(campaign_path, planned, marker_path, marker_sha256):
             finished_at=now(),
             status="completed"
             if status["error"] is None
-            and status["completed_case_ids"] == [c["case_id"] for c in planned["cases"]]
+            and status["completed_case_ids"]
+            == cfg["continuation"]["execution_case_ids"]
             else "failed",
         )
         status["exit_code"] = 0 if status["status"] == "completed" else 1

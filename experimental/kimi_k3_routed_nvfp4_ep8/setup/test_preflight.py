@@ -213,9 +213,9 @@ class PreflightTests(unittest.TestCase):
             "flashinfer_source_root": "/data/synthetic-flashinfer",
             "run_root": str(
                 Path(p.PROJECT).parent
-                / "kimi-k3-ep8-three-curves-c32-20260929-all12-r4"
+                / "kimi-k3-ep8-three-curves-c32-20260929-remaining11-r5"
             ),
-            "tmp_root": "/tmp/infx-k3-preflight-r4",
+            "tmp_root": "/tmp/infx-k3-preflight-r5",
             "port": 30000,
             "node": dict.fromkeys(
                 ("hostname", "pod_uid", "sts_uid", "image_id"), "synthetic"
@@ -260,7 +260,7 @@ class PreflightTests(unittest.TestCase):
             p.validate_request(r)
         for key, val in [
             ("run_root", p.PROJECT + "/other"),
-            ("tmp_root", "/tmp/infx-k3-3c-r4"),
+            ("tmp_root", "/tmp/infx-k3-3c-r5"),
             ("gpus", r["gpus"][:-1]),
             ("protected_runtime_files", {}),
         ]:

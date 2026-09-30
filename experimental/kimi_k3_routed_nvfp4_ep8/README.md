@@ -2,7 +2,7 @@
 
 **English** | [中文](README_zh.md)
 
-This experimental recipe compares MegaMoE W4A4, MegaMoE W4A16 and TRTLLM per-tensor NVFP4 W4A4 on one eight-B300 node. It is separate from the GLM experiment and is not an official InferenceX leaderboard submission. This scripts-only package contains no measured Kimi results. The scripts match the separately staged R4 experiment; its model startup is in progress, with no completed case or memory-fit claim. Earlier R1 source-guard failure, R2 constructor OOM and the held R3 package remain preserved.
+This experimental recipe compares MegaMoE W4A4, MegaMoE W4A16 and TRTLLM per-tensor NVFP4 W4A4 on one eight-B300 node. It is separate from the GLM experiment and is not an official InferenceX leaderboard submission. This scripts-only successor follows the frozen R5 continuation package and contains no measured Kimi results. One prior R4 C32 point is accepted (1/12); R4 then failed at the C4 port bind. R5 has been launched for the remaining eleven cases, whose results remain pending. Startup evidence does not establish readiness, memory fit or performance for the continuation. Earlier failures remain preserved.
 
 **Unpublished integration prerequisite:** SGLang base `561ad447` alone does not implement this recipe's reviewed DP1/SP MegaMoE path. The exact three-file integration is local, unstaged and unpublished. This package includes only `setup/source_contract.py` and the expected file/diff descriptors; it includes neither the patch nor SGLang source. Consequently, public-only dry planning intentionally fails until those separately reviewed bytes are supplied locally. This draft is not self-contained and must not be presented as a runnable upstream-only recipe.
 
@@ -46,7 +46,7 @@ python3 -B setup/run_campaign.py --dry-run --campaign campaign.json \
   --output /absolute/new/kimi-plan
 ```
 
-`campaign.json` retains status `PUBLIC_RECIPE_REQUIRES_LOCAL_PREFLIGHT`, authorization `PREPARE_ONLY`, and explicit `/REVIEW_REQUIRED/` locations. These public placeholders are separate from the immutable active R4 configuration. It does not embed a developer workstation receipt path. Copy it to a local runtime configuration and supply these values deliberately:
+`campaign.json` retains status `PUBLIC_RECIPE_REQUIRES_LOCAL_PREFLIGHT`, authorization `PREPARE_ONLY`, and explicit `/REVIEW_REQUIRED/` locations. These public placeholders are separate from the immutable active R5 configuration. It does not embed a developer workstation receipt path. Copy it to a local runtime configuration and supply these values deliberately:
 
 | Field | Local value required |
 |---|---|
@@ -60,9 +60,21 @@ python3 -B setup/run_campaign.py --dry-run --campaign campaign.json \
 
 The template retains the accepted checkpoint receipt's content digest but does not ship private conversion evidence. Execution must receive and validate that evidence separately. A dry plan is not evidence that the acceptance file, weights, runtime, GPU ownership or free memory has been validated.
 
+## Continue from one accepted point
+
+The canonical matrix remains twelve cases with 360 warmups and 1,800 measured requests. `continuation.execution_case_ids` selects exactly the remaining eleven: W4A4 C4/C8/C16, then W4A16 C32/C4/C8/C16, then TRTLLM C32/C4/C8/C16. This execution performs 296 warmups and 1,480 measurements. Preflight still checks the canonical C32 configuration for each arm; the worker and outer terminal must report only the eleven actually executed cases.
+
+Two separately reviewed actual inputs are mandatory: `continuation.prior_acceptance` must bind `ACCEPTED_KIMI_PRIOR_C32_FOR_CONTINUATION`, and `continuation.cache_seed_acceptance` must bind `ACCEPTED_KIMI_QUIESCENT_CACHE_SEED`. The public descriptors are pending placeholders, not approvals. The prior receipt binds fourteen immutable JSON inputs, including the accepted native/settings/workload review, original C32 ordered arrays, source/cache lineage and failed R4 terminal. It accepts that point, not the original sweep. The runner seeds its C32 length reference from those exact arrays.
+
+The reviewed seed copies compilation, HF and TMP payloads without hardlinks into new owned roots, preserving the source caches. A fresh TMP owner is retained; only explicitly reviewed historical marker/IPC exclusions are permitted. The full installed inventory is saved separately and bound by a compact receipt. There is no fresh-cache fallback, and preserved bytes do not guarantee path-dependent cache hits. `cache_seed.py` deliberately fixes the original R4, R5 and seed namespaces for this recipe; arbitrary path relocation needs a separately reviewed contract. Public path placeholders must be resolved consistently with these guards, not merely replaced with any available directory.
+
+Plain port binding retries only `EADDRINUSE`, for at most 120 seconds, and logs wall-clock and monotonic elapsed time. No `SO_REUSEADDR` is used. Other errors and persistent occupation fail; source/runtime/checkpoint/GPU guards repeat after a successful wait. This does not establish the cause of R4's original port occupation.
+
+Complete results require `ACCEPTED_COMPOSITE_CAMPAIGN`, one accepted R4 point plus eleven accepted R5 points, an actual successful eleven-case terminal and independent composite review. `prior_binding_map` relocates immutable parent evidence and the full installed inventory by identical bytes/SHA. The reader rejects a fabricated single twelve-case terminal or an ordinary complete-sweep receipt for a continuation campaign. Figures and reports identify both execution segments. No raw result or acceptance receipt is bundled here.
+
 ## Execute and review
 
-R4 uses one `internal_states` entry for DP1, not eight entries merely because there are eight GPUs. The runner still checks every state's capacity/speculation and the owned endpoint before and after readback. Physical GPU identity and throughput normalization remain eight-GPU checks.
+The runner uses one `internal_states` entry for DP1, not eight entries merely because there are eight GPUs. The runner still checks every state's capacity/speculation and the owned endpoint before and after readback. Physical GPU identity and throughput normalization remain eight-GPU checks.
 
 Use the finalized `setup/preflight.py` and `setup/run_campaign.py --execute` interfaces on the owned node. Supply their exact current preflight/approval receipt rather than reusing a stale source-only report. The local campaign must explicitly authorize execution and have no unresolved blockers. `--help` documents the final receipt arguments; the default remains dry planning. The serial driver owns its server/client processes, preserves source/argv/environment, raw logs, GPU/ownership receipts and sealed results, and tears down only the processes it launched.
 
@@ -82,18 +94,19 @@ python3 -B setup/preflight.py --request /absolute/preflight-request.json \
 
 The request and approval hashes name exact reviewed bytes. The runner also validates their campaign, plan, checkpoint, source and runtime bindings. These commands are opt-in interfaces, not evidence that a run succeeded.
 
-Keep the immutable campaign, plan, installed-source and checkpoint proofs with the raw output. `setup/results.py` consumes a separately accepted complete collection, not a directory of arbitrary result JSONs. It requires all 12 cases, 1,800 successful measured requests, zero failed requests, matched ordered lengths, actual native/backend reviews and waited terminal/cleanup evidence before producing English-only tables and three Pareto frontiers.
+Keep the immutable campaign, plan, installed-source and checkpoint proofs with the raw output. `setup/results.py` consumes a separately accepted complete collection, not a directory of arbitrary result JSONs. It requires a separately accepted composite of all 12 cases, 1,800 successful measured requests, zero failed measured requests, matched ordered lengths, actual native/backend reviews and waited terminal/cleanup evidence before producing English-only tables and three Pareto frontiers. The original failed sweep is retained as failed.
 
 X is `1000 / saved median TPOT_ms`; Y is `total output tokens / complete measured duration / 8`. Whole-interval throughput is not timed decode. Preserve all saved percentiles and compare every same-C pair. No synthetic fixture or source-only validation counts as a measured result, and these data do not prove numerical equivalence or statistical significance.
 
 ## Local validation boundaries
 
-The public-only preflight CPU tests use synthetic inputs and can run without the omitted integration:
+The public-only preflight and continuation CPU tests use synthetic inputs and can run without the omitted integration:
 
 ```sh
 python3 -B -m unittest discover -s setup -p test_preflight.py -v
+python3 -B -m unittest discover -s setup -p test_continuation.py -v
 ```
 
-Plan-dependent tests, the reader provenance fixtures and the full runner suite require the exact local integration files; run them only in a private working copy after supplying that prerequisite. The publication validation separately checks that an incomplete public dry run fails before producing a plan, and tests DP1/DP8 endpoint cardinality, wrong cardinalities, local capacity, speculation and owner failure paths against the exact R4 implementation. No synthetic fixture is a benchmark result.
+Plan-dependent tests, the reader provenance fixtures and the full runner suite require the exact local integration files; run them only in a private working copy after supplying that prerequisite. The publication validation separately checks that an incomplete public dry run fails before producing a plan, and tests DP1/DP8 endpoint cardinality, wrong cardinalities, local capacity, speculation and owner failure paths against the exact R5 implementation. No synthetic fixture is a benchmark result.
 
-The public preflight test file omits one inherited AST-extraction test to comply with repository test policy; the production preflight and all other runtime scripts remain exact R4 bytes. Its historical private validation is preserved.
+The public preflight test file omits one inherited AST-extraction test to comply with repository test policy; the production preflight and all other runtime scripts remain exact R5 bytes. Its historical private validation is preserved. The continuation pending-parent test explicitly constructs a pending fixture. Composite reader fixtures are synthetic and cannot be published as measurements.

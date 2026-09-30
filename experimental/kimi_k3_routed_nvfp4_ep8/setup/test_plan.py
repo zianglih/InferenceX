@@ -348,9 +348,11 @@ class ReviewPlanTests(unittest.TestCase):
                     str(plan.ROOT),
                 ]
             )
-        self.assertEqual(rc, 1)
-        self.assertEqual(
-            json.loads(err.getvalue())["status"], "EXECUTION_REJECTED_OR_FAILED"
+        self.assertEqual(rc, 2)
+        value = json.loads(err.getvalue())
+        self.assertEqual(value["status"], "EXECUTION_BLOCKED")
+        self.assertTrue(
+            any("Actual continuation input absent" in x for x in value["reasons"])
         )
 
     def test_exclusive_emission_and_nonexecutable_commands(self):

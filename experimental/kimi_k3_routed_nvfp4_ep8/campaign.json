@@ -42,6 +42,10 @@
     {
       "detail": "Supply reviewed local runtime paths and the exact checkpoint acceptance, then obtain a fresh owned-node preflight receipt before explicit execution.",
       "id": "local_runtime_preflight"
+    },
+    {
+      "detail": "Supply the exact separately accepted prior C32 lineage and quiescent cache seed, then obtain a fresh source-bound R5 runtime approval. No fresh-cache fallback or complete-sweep acceptance is implied.",
+      "id": "accepted_continuation_inputs"
     }
   ],
   "checkpoint": {
@@ -91,6 +95,38 @@
     "--tensor-parallel-size": 8,
     "--tool-call-parser": "kimi_k3",
     "--trust-remote-code": true
+  },
+  "continuation": {
+    "cache_seed_acceptance": {
+      "bytes": 0,
+      "path": "/REVIEW_REQUIRED/CACHE_SEED_ACCEPTANCE.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "execution_case_ids": [
+      "megamoe-w4a4-tp8-ep8-dp1-c4",
+      "megamoe-w4a4-tp8-ep8-dp1-c8",
+      "megamoe-w4a4-tp8-ep8-dp1-c16",
+      "megamoe-w4a16-tp8-ep8-dp1-c32",
+      "megamoe-w4a16-tp8-ep8-dp1-c4",
+      "megamoe-w4a16-tp8-ep8-dp1-c8",
+      "megamoe-w4a16-tp8-ep8-dp1-c16",
+      "trtllm-w4a4-tp8-ep8-dp1-c32",
+      "trtllm-w4a4-tp8-ep8-dp1-c4",
+      "trtllm-w4a4-tp8-ep8-dp1-c8",
+      "trtllm-w4a4-tp8-ep8-dp1-c16"
+    ],
+    "execution_totals": {
+      "cases": 11,
+      "measured_requests": 1480,
+      "warmup_requests": 296
+    },
+    "prior_acceptance": {
+      "bytes": 0,
+      "path": "/REVIEW_REQUIRED/PRIOR_ACCEPTANCE.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "prior_case_id": "megamoe-w4a4-tp8-ep8-dp1-c32",
+    "schema_version": 1
   },
   "hardware": {
     "dcp": 1,
@@ -156,10 +192,10 @@
     "model_path": "/data/home/ziangli/kimik3-routed-nvfp4-conversion-20260929/checkpoints/main-routed-nvfp4-attempt2",
     "python": "/REVIEW_REQUIRED/runtime/bin/python3",
     "ready_timeout_seconds": 3600,
-    "run_root": "/REVIEW_REQUIRED/kimi-k3-three-curves-run",
+    "run_root": "/REVIEW_REQUIRED/kimi-k3-remaining11-r5",
     "sglang_root": "/REVIEW_REQUIRED/sglang",
     "term_seconds": 30,
-    "tmp_root": "/tmp/infx-k3-3c"
+    "tmp_root": "/tmp/infx-k3-3c-r5"
   },
   "schema_version": 1,
   "status": "PUBLIC_RECIPE_REQUIRES_LOCAL_PREFLIGHT",

@@ -77,6 +77,7 @@ def main(argv=None):
                     "executed": False,
                     "output": str(args.output),
                     "totals": planned["totals"],
+                    "execution_totals": planned["execution_totals"],
                 }
             )
         )
