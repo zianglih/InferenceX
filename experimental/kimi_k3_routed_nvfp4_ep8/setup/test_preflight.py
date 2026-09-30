@@ -1,6 +1,5 @@
 """CPU-only guards for the explicit runtime probe; no ML imports or device calls."""
 
-import ast
 import copy
 import hashlib
 import importlib.util
@@ -11,7 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from types import ModuleType, SimpleNamespace
+from types import SimpleNamespace
 from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location(
@@ -208,11 +207,15 @@ class PreflightTests(unittest.TestCase):
         # Request validation does not read checkpoints or import packages.
         r = {
             "schema_version": 1,
+            "source_patch": p.source_contract.PATCH,
             "remote_project": p.PROJECT,
-            "sglang_root": p.PROJECT + "/sources/sglang",
+            "sglang_root": str(Path(p.PROJECT).parent / "sources/sglang-r3"),
             "flashinfer_source_root": "/data/synthetic-flashinfer",
-            "run_root": p.PROJECT + "/kimi-k3-ep8-three-curves-c32-20260929-all12-r2",
-            "tmp_root": "/tmp/infx-k3-preflight",
+            "run_root": str(
+                Path(p.PROJECT).parent
+                / "kimi-k3-ep8-three-curves-c32-20260929-all12-r4"
+            ),
+            "tmp_root": "/tmp/infx-k3-preflight-r4",
             "port": 30000,
             "node": dict.fromkeys(
                 ("hostname", "pod_uid", "sts_uid", "image_id"), "synthetic"
@@ -257,7 +260,7 @@ class PreflightTests(unittest.TestCase):
             p.validate_request(r)
         for key, val in [
             ("run_root", p.PROJECT + "/other"),
-            ("tmp_root", "/tmp/infx-k3-3c-r2"),
+            ("tmp_root", "/tmp/infx-k3-3c-r4"),
             ("gpus", r["gpus"][:-1]),
             ("protected_runtime_files", {}),
         ]:
@@ -278,77 +281,6 @@ class PreflightTests(unittest.TestCase):
             args[index : index + 2] = replacement
             with self.assertRaises(RuntimeError):
                 p.validate_request(x)
-
-    def test_provider_resolves_before_checking_configuration(self):
-        # Execute the actual provider's config block without importing GPU packages.
-        fn = next(
-            n
-            for n in ast.parse(Path(p.__file__).read_text()).body
-            if isinstance(n, ast.FunctionDef) and n.name == "providers"
-        )
-        start = next(
-            i
-            for i, n in enumerate(fn.body)
-            if isinstance(n, ast.ImportFrom) and n.module == "sglang.srt.server_args"
-        )
-        end = next(
-            i
-            for i in range(start, len(fn.body))
-            if isinstance(fn.body[i], ast.Assign)
-            and any(
-                isinstance(t, ast.Name) and t.id == "versions"
-                for t in fn.body[i].targets
-            )
-        )
-        block = ast.Module(body=fn.body[start:end], type_ignores=[])
-        events = []
-        values = dict(
-            quantization=None,
-            tp_size=8,
-            ep_size=8,
-            dp_size=8,
-            pp_size=1,
-            enable_dp_attention=True,
-            speculative_algorithm=None,
-            disable_radix_cache=True,
-            chunked_prefill_size=32768,
-            max_running_requests=32,
-        )
-        args = SimpleNamespace(**values)
-
-        def resolve():
-            events.append("resolve_once")
-            args.quantization = "modelopt_fp4"
-            args.chunked_prefill_size = 4096
-
-        args.resolve_once = resolve
-        server = ModuleType("sglang.srt.server_args")
-
-        def prepare(argv):
-            events.append("prepare")
-            self.assertEqual(argv, ["--quantization", "modelopt_fp4"])
-            return args
-
-        server.prepare_server_args = prepare
-        overrides = ModuleType("sglang.srt.arg_groups.overrides")
-
-        def view(value):
-            events.append("resolved_view")
-            self.assertIs(value, args)
-            return value
-
-        overrides.resolved_view = view
-        context = {
-            "r": {"server_args": {"megamoe-w4a4": ["--quantization", "modelopt_fp4"]}},
-            "arm": "megamoe-w4a4",
-            "need": p.need,
-        }
-        with patch.dict(
-            sys.modules, {server.__name__: server, overrides.__name__: overrides}
-        ):
-            exec(compile(ast.fix_missing_locations(block), p.__file__, "exec"), context)
-        self.assertEqual(events, ["prepare", "resolve_once", "resolved_view"])
-        self.assertEqual(context["resolved"], context["expected"])
 
     def test_exact_opencv_loader_environment_transform(self):
         loader = Path("/opt/sglang/lib/python3.12/site-packages/cv2")

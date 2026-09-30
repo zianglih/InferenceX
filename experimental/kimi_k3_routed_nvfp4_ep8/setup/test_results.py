@@ -102,7 +102,7 @@ def fixture(root):
     cases, records, ids = [], [], []
     for arm in results.ARMS:
         for c in (32, 4, 8, 16):
-            cid = f"{arm}-tp8-ep8-dp8-c{c}"
+            cid = f"{arm}-tp8-ep8-dp1-c{c}"
             ids.append(cid)
             flags = {
                 "--backend": "sglang-oai",
@@ -132,12 +132,12 @@ def fixture(root):
                 "arm_id": arm,
                 "tp": 8,
                 "ep": 8,
-                "dp": 8,
+                "dp": 1,
                 "concurrency": c,
                 "warmup_requests": 2 * c,
                 "measured_requests": 10 * c,
-                "server_max_running_requests": max(c, 8),
-                "decode_graph_max_bs": c,
+                "server_max_running_requests": c,
+                "decode_graph_max_bs": max(c, 8),
                 "server_argv": ["python", "-m", "sglang.launch_server"],
                 "client_argv": argv,
                 "environment": {},
@@ -442,24 +442,22 @@ class ResultsTests(unittest.TestCase):
     def test_local_patch_bytes_and_plan_coupling(self):
         root = self.folder / "synthetic-patch"
         root.mkdir()
-        patch = put(root, "artifacts/test.patch", "SYNTHETIC TEST PATCH ONLY\n")
-        source = put(root, "sglang/test.py", "# SYNTHETIC TEST SOURCE ONLY\n")
         campaign = copy.deepcopy(self.data["campaign"])
-        campaign["pins"]["sglang_local_patch"] = patch["sha256"]
-        campaign["local_changes"] = {
-            "sglang": {
-                "base_commit": campaign["pins"]["sglang"],
-                "patch": patch,
-                "files": {source["path"]: {k: source[k] for k in ("bytes", "sha256")}},
-            }
-        }
+        for relative in [
+            campaign["local_changes"]["sglang"]["patch"]["path"],
+            *campaign["local_changes"]["sglang"]["files"],
+        ]:
+            (root / relative).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(PROJECT / relative, root / relative)
         results.verify_local_changes(results.Evidence(root), campaign)
-        (root / source["path"]).write_text("changed\n")
+        relative = next(iter(campaign["local_changes"]["sglang"]["files"]))
+        (root / relative).write_text("changed\n")
         with self.assertRaisesRegex(ValueError, "Changed bytes"):
             results.verify_local_changes(results.Evidence(root), campaign)
-        plan = copy.deepcopy(self.data["plan"])
+        changed = copy.deepcopy(campaign)
+        changed["pins"]["sglang_local_patch"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "source pins differ"):
-            results.validate_plan(campaign, plan)
+            results.validate_plan(changed, self.data["plan"])
 
     def test_resealed_cross_arm_length_difference_rejected(self):
         root = self.folder / "cross-arm-mutation"

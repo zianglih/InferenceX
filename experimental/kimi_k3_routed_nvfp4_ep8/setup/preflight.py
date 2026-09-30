@@ -19,9 +19,11 @@ from types import SimpleNamespace
 
 if not __debug__:
     raise RuntimeError("Optimized Python prohibited")
+import source_contract
+
 SG = "561ad447c74bb757a40677ee9ce038f9ca429d2c"
 FI = "a03f2205263d4e691d68e485bff287e37a19b6c3"
-PROJECT = "/data/home/ziangli/inferencex-kimik3-three-curves-c32-20260929"
+PROJECT = "/data/home/ziangli/inferencex-kimik3-three-curves-c32-20260929/r4"
 MODEL = "/data/home/ziangli/kimik3-routed-nvfp4-conversion-20260929/checkpoints/main-routed-nvfp4-attempt2"
 ARMS = ("megamoe-w4a4", "megamoe-w4a16", "trtllm-w4a4")
 SELECTOR = "SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16"
@@ -231,16 +233,22 @@ def validate_request(r):
         "protected_runtime_files",
         "provider_versions",
         "server_args",
+        "source_patch",
     }
     need(set(r) == required and r["schema_version"] == 1, "Request schema differs")
     need(
+        r["source_patch"] == source_contract.PATCH,
+        "Exact source patch contract differs",
+    )
+    need(
         r["remote_project"] == PROJECT
-        and r["sglang_root"] == PROJECT + "/sources/sglang",
+        and r["sglang_root"] == str(Path(PROJECT).parent / "sources/sglang-r3"),
         "Separate Kimi source path required",
     )
     need(
-        r["run_root"] == PROJECT + "/kimi-k3-ep8-three-curves-c32-20260929-all12-r2"
-        and r["tmp_root"] == "/tmp/infx-k3-preflight",
+        r["run_root"]
+        == str(Path(PROJECT).parent / "kimi-k3-ep8-three-curves-c32-20260929-all12-r4")
+        and r["tmp_root"] == "/tmp/infx-k3-preflight-r4",
         "Run/preflight scope differs",
     )
     need(
@@ -391,7 +399,8 @@ def environment(arm, r):
         "TMP inode owner differs",
     )
     need(
-        not os.path.lexists(r["run_root"]) and not os.path.lexists("/tmp/infx-k3-3c-r2"),
+        not os.path.lexists(r["run_root"])
+        and not os.path.lexists("/tmp/infx-k3-3c-r4"),
         "Actual run/TMP must remain absent",
     )
     return {
@@ -691,13 +700,14 @@ def providers(r, arm):
         "quantization": "modelopt_fp4",
         "tp_size": 8,
         "ep_size": 8,
-        "dp_size": 8,
+        "dp_size": 1,
         "pp_size": 1,
-        "enable_dp_attention": True,
+        "enable_dp_attention": False,
         "speculative_algorithm": None,
         "disable_radix_cache": True,
-        "chunked_prefill_size": 4096,
+        "chunked_prefill_size": 32768,
         "max_running_requests": 32,
+        "cuda_graph_max_bs_decode": 32,
     }
     resolved = {k: getattr(view, k) for k in expected}
     need(
@@ -819,24 +829,16 @@ def source_environment_changes(before, r):
     return changes
 
 
-def run(r, arm):
-    validate_request(r)
-    need(
-        sys.platform == "linux" and socket.gethostname() == r["node"]["hostname"],
-        "Wrong runtime host",
-    )
-    need(
-        sys.executable == "/opt/sglang/bin/python3" and sys.prefix == "/opt/sglang",
-        "Wrong lexical interpreter",
-    )
-    env = environment(arm, r)
-    controls = {p: digest(p, d) for p, d in r["bound_files"].items()}
-    port_free(r["port"])
-    before = gpu_query(r["gpus"])
-    mount = command(["findmnt", "-T", "/data", "-n", "-o", "TARGET,SOURCE,FSTYPE"])
-    need(mount.split() == ["/data", "c2-data", "wekafs"], "Weka mount differs")
+def source_snapshot(r):
     source = {}
     for root, pin in [(r["sglang_root"], SG), (r["flashinfer_source_root"], FI)]:
+        if pin == SG:
+            source[root] = source_contract.patched_source(root)
+            continue
+        need(
+            command(["git", "-C", root, "diff", "--cached", "--name-only"]) == "",
+            "Staged FI changes prohibited",
+        )
         need(
             command(["git", "-C", root, "rev-parse", "HEAD"]) == pin,
             "Source HEAD differs",
@@ -870,8 +872,29 @@ def run(r, arm):
             "untracked": untracked,
             "generated_files": generated,
         }
+    return source
+
+
+def run(r, arm):
+    validate_request(r)
+    need(
+        sys.platform == "linux" and socket.gethostname() == r["node"]["hostname"],
+        "Wrong runtime host",
+    )
+    need(
+        sys.executable == "/opt/sglang/bin/python3" and sys.prefix == "/opt/sglang",
+        "Wrong lexical interpreter",
+    )
+    env = environment(arm, r)
+    controls = {p: digest(p, d) for p, d in r["bound_files"].items()}
+    port_free(r["port"])
+    before = gpu_query(r["gpus"])
+    mount = command(["findmnt", "-T", "/data", "-n", "-o", "TARGET,SOURCE,FSTYPE"])
+    need(mount.split() == ["/data", "c2-data", "wekafs"], "Weka mount differs")
+    source = source_snapshot(r)
     ck = checkpoint(r)
     proof = providers(r, arm)
+    need(source_snapshot(r) == source, "Source changed during provider probe")
     port_free(r["port"])
     after = gpu_query(r["gpus"], allow_own=True)
     environment_after = {

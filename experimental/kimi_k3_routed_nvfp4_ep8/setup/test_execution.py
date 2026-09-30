@@ -57,6 +57,7 @@ class ExecutionTests(unittest.TestCase):
         pp = plan.build_plan(cd["path"], runtime_project=str(plan.ROOT))
         pd = self.put("PLAN.json", pp)
         request = {
+            "source_patch": e.source_contract.PATCH,
             "remote_project": str(plan.ROOT),
             "run_root": cfg["runtime"]["run_root"],
             "sglang_root": cfg["runtime"]["sglang_root"],
@@ -94,7 +95,12 @@ class ExecutionTests(unittest.TestCase):
         bindings = {**pp["bindings"]}
         for desc in (cd, pd, rd, ck, *receipts.values()):
             bindings[desc["path"]] = {k: desc[k] for k in ("bytes", "sha256")}
-        for name in ("execution.py", "results.py", "preflight.py"):
+        for name in (
+            "execution.py",
+            "results.py",
+            "preflight.py",
+            "source_contract.py",
+        ):
             p = plan.ROOT / "setup" / name
             bindings[str(p)] = plan.descriptor(p)
         marker = {
@@ -118,10 +124,14 @@ class ExecutionTests(unittest.TestCase):
             cfg["runtime"]["sglang_root"]: {
                 "commit": cfg["pins"]["sglang"],
                 "submodules": "",
+                "untracked": [],
+                "generated_files": {},
             },
             cfg["runtime"]["flashinfer_root"]: {
                 "commit": cfg["pins"]["flashinfer"],
                 "submodules": submodules.strip(),
+                "untracked": [],
+                "generated_files": {},
             },
         }
         receipts = {}
@@ -136,17 +146,24 @@ class ExecutionTests(unittest.TestCase):
                 },
             )
         observed = copy.deepcopy(snapshots)
+        original_source = snapshots[cfg["runtime"]["sglang_root"]]
+        mocked = mock.patch.object(
+            e.source_contract, "patched_source", return_value=original_source
+        )
+        mocked.start()
+        self.addCleanup(mocked.stop)
 
         def capture(argv, _env, **_kwargs):
             if argv[0] == "git":
                 row = observed[argv[2]]
-                value = (
-                    row["commit"]
-                    if argv[3] == "rev-parse"
-                    else row.get("dirty", "")
-                    if argv[3] == "diff"
-                    else row["submodules"]
-                )
+                if argv[3] == "rev-parse":
+                    value = row["commit"]
+                elif argv[3] == "diff":
+                    value = "" if "--cached" in argv else row.get("dirty", "")
+                elif argv[3] == "ls-files":
+                    value = "\n".join(row["untracked"])
+                else:
+                    value = row["submodules"]
             else:
                 value = "pinned-package==1\n"
             return {"returncode": 0, "stdout": value, "stderr": ""}
@@ -221,6 +238,76 @@ class ExecutionTests(unittest.TestCase):
             return e.validate_marker(
                 marker["campaign"]["path"], pp, md["path"], md["sha256"]
             )
+
+    def endpoint_readback(self, case, states, *, running=True):
+        """Exercise the real HTTP readback validator with only I/O replaced."""
+        import json
+
+        response = io.BytesIO(
+            json.dumps(
+                {**case["expected_server_info"], "internal_states": states}
+            ).encode()
+        )
+        owner = mock.Mock()
+        owner.running.return_value = running
+        with (
+            mock.patch.object(
+                e, "endpoint_owned", return_value=[{"SYNTHETIC": True}]
+            ) as endpoint,
+            mock.patch.object(e, "http_open", return_value=response),
+        ):
+            result = e.server_info(case, owner)
+        self.assertEqual(endpoint.call_count, 2)
+        return result
+
+    def test_server_info_state_count_follows_dp_not_eight_gpus(self):
+        case = copy.deepcopy(plan.build_plan()["cases"][0])
+        state = {
+            "effective_max_running_requests_per_dp": case[
+                "effective_per_dp_request_capacity"
+            ],
+            "speculative_algorithm": None,
+        }
+        self.assertEqual(case["expected_server_info"]["dp_size"], 1)
+        observed, _ = self.endpoint_readback(case, [state])
+        self.assertEqual(observed["internal_states"], [state])
+        old_topology = copy.deepcopy(case)
+        old_topology["expected_server_info"].update(dp_size=8, enable_dp_attention=True)
+        old_topology["effective_per_dp_request_capacity"] = 4
+        old_state = {**state, "effective_max_running_requests_per_dp": 4}
+        observed, _ = self.endpoint_readback(old_topology, [old_state] * 8)
+        self.assertEqual(len(observed["internal_states"]), 8)
+
+    def test_server_info_wrong_state_counts_fail_closed(self):
+        case = copy.deepcopy(plan.build_plan()["cases"][0])
+        state = {
+            "effective_max_running_requests_per_dp": case[
+                "effective_per_dp_request_capacity"
+            ],
+            "speculative_algorithm": None,
+        }
+        for dp, states in [(1, []), (1, [state] * 8), (8, [state]), (1, None)]:
+            with self.subTest(dp=dp, states=states):
+                case["expected_server_info"]["dp_size"] = dp
+                with self.assertRaisesRegex(ValueError, "per expected DP rank"):
+                    self.endpoint_readback(case, states)
+
+    def test_server_info_retains_local_capacity_speculation_and_owner_checks(self):
+        case = copy.deepcopy(plan.build_plan()["cases"][1])
+        state = {
+            "effective_max_running_requests_per_dp": case[
+                "effective_per_dp_request_capacity"
+            ],
+            "speculative_algorithm": None,
+        }
+        for wrong in [
+            {**state, "effective_max_running_requests_per_dp": 1},
+            {**state, "speculative_algorithm": "EAGLE"},
+        ]:
+            with self.assertRaises(ValueError):
+                self.endpoint_readback(case, [wrong])
+        with self.assertRaisesRegex(ValueError, "Owned server exited"):
+            self.endpoint_readback(case, [state], running=False)
 
     def test_exact_gate_and_mutated_plan(self):
         cfg, pp, marker = self.fixture()

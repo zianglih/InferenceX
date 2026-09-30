@@ -24,6 +24,8 @@ from datetime import datetime, timezone
 from urllib.error import URLError
 from urllib.request import ProxyHandler, build_opener
 
+import source_contract
+
 from plan import (
     ARM_CONTRACT,
     ROOT,
@@ -421,17 +423,30 @@ def runtime_snapshot(cfg, env, marker):
     sources = {}
     for key, pin in (("sglang_root", "sglang"), ("flashinfer_root", "flashinfer")):
         root = cfg["runtime"][key]
+        if pin == "sglang":
+            source_contract.check_campaign(cfg)
+            observed = source_contract.patched_source(root, env)
+            require(
+                observed == expected[root],
+                "Patched source differs from accepted preflight",
+            )
+            sources[root] = observed
+            continue
         rows = {}
         for label, command in (
             ("head", ["rev-parse", "HEAD"]),
             ("dirty", ["diff", "--name-only", "HEAD"]),
             ("submodules", ["submodule", "status"]),
+            ("index", ["diff", "--cached", "--name-only"]),
+            ("untracked", ["ls-files", "--others", "--exclude-standard"]),
         ):
             observed = capture(["git", "-C", root, *command], env)
             require(observed["returncode"] == 0, "Source query failed: " + root)
             rows[label] = observed["stdout"].strip()
         require(
-            rows["head"] == cfg["pins"][pin] and not rows["dirty"],
+            rows["head"] == cfg["pins"][pin]
+            and not rows["dirty"]
+            and not rows["index"],
             "Source HEAD/working tree changed",
         )
         require(
@@ -439,6 +454,12 @@ def runtime_snapshot(cfg, env, marker):
             and rows["submodules"] == expected[root]["submodules"],
             "Source submodule state differs from accepted preflight",
         )
+        require(
+            rows["untracked"].splitlines() == expected[root]["untracked"],
+            "FI untracked closure changed",
+        )
+        for path, desc in expected[root]["generated_files"].items():
+            require(descriptor(path) == desc, "FI generated license changed")
         sources[root] = rows
     packages = capture(
         [cfg["runtime"]["python"], "-B", "-m", "pip", "freeze", "--all"],
@@ -498,6 +519,8 @@ def validate_marker(campaign_path, planned, marker_path, marker_sha256):
         "Checkpoint acceptance identity",
     )
     request = read_json(bound(marker["preflight_request"]))
+    source_contract.check_campaign(cfg)
+    require(request["source_patch"] == source_contract.PATCH, "Preflight patch differs")
     require(
         request["remote_project"] == str(ROOT)
         and request["run_root"] == cfg["runtime"]["run_root"],
@@ -572,7 +595,8 @@ def validate_marker(campaign_path, planned, marker_path, marker_sha256):
     }
     required |= set(planned["bindings"])
     required |= {
-        str(ROOT / "setup" / n) for n in ("execution.py", "results.py", "preflight.py")
+        str(ROOT / "setup" / n)
+        for n in ("execution.py", "results.py", "preflight.py", "source_contract.py")
     }
     required |= {d["path"] for d in marker["preflight_receipts"].values()}
     require(required <= bindings.keys(), "Approval binding closure incomplete")
@@ -839,8 +863,9 @@ def server_info(case, owner):
         )
     states = info.get("internal_states")
     require(
-        isinstance(states, list) and len(states) == 8,
-        "Eight DP internal states required",
+        isinstance(states, list)
+        and len(states) == case["expected_server_info"]["dp_size"],
+        "One internal state per expected DP rank required",
     )
     for item in states:
         require(

@@ -36,6 +36,10 @@
   "authorization": "PREPARE_ONLY",
   "blockers": [
     {
+      "detail": "Supply the exact separately reviewed three-file DP1/SP integration and patch bytes described by local_changes. These unpublished SGLang files are intentionally absent; even dry planning must reject their absence.",
+      "id": "local_sglang_integration"
+    },
+    {
       "detail": "Supply reviewed local runtime paths and the exact checkpoint acceptance, then obtain a fresh owned-node preflight receipt before explicit execution.",
       "id": "local_runtime_preflight"
     }
@@ -68,11 +72,10 @@
     "--chunked-prefill-size": 32768,
     "--context-length": 16384,
     "--cuda-graph-backend-prefill": "disabled",
-    "--data-parallel-size": 8,
+    "--data-parallel-size": 1,
     "--dcp-size": 1,
     "--disable-radix-cache": true,
     "--dtype": "bfloat16",
-    "--enable-dp-attention": true,
     "--expert-parallel-size": 8,
     "--host": "127.0.0.1",
     "--kv-cache-dtype": "fp8_e4m3",
@@ -91,13 +94,37 @@
   },
   "hardware": {
     "dcp": 1,
-    "dp_attention": 8,
+    "dp_attention": 1,
     "ep": 8,
     "gpu_model": "B300",
     "gpus": 8,
     "nodes": 1,
     "pp": 1,
     "tp": 8
+  },
+  "local_changes": {
+    "sglang": {
+      "base_commit": "561ad447c74bb757a40677ee9ce038f9ca429d2c",
+      "files": {
+        "sglang/python/sglang/srt/arg_groups/moe_hook.py": {
+          "bytes": 32213,
+          "sha256": "a5b87ffb25e35d43cf793d2944a4ae179b58173620a7450c571152557455d41d"
+        },
+        "sglang/python/sglang/srt/layers/moe/flashinfer_megamoe.py": {
+          "bytes": 27778,
+          "sha256": "3dc69aea4056fcd08b85f93490dc0dc61ae0674dcfa3a7a4980bb1c32ad1a84b"
+        },
+        "sglang/python/sglang/srt/layers/moe/flashinfer_megamoe_autotune.py": {
+          "bytes": 14585,
+          "sha256": "97f3724fea8181cc795e5dd571a7ef084d394d043b2bb4fcd0cfcf4b4e2c84c2"
+        }
+      },
+      "patch": {
+        "bytes": 6993,
+        "path": "artifacts/sglang-dp1.patch",
+        "sha256": "d4bdb5246dbeaca7bf23472cbae617b434bcb3b77c248d0e40e46b8405786ef1"
+      }
+    }
   },
   "name": "kimi-k3-ep8-three-curves-c32",
   "pins": {
@@ -106,6 +133,7 @@
     "image": "lmsysorg/sglang:nightly-dev-cu13-20260929-79cafec0@sha256:0f075735a6bf913a7cc1cd7ece4f526ae8af70fc5b88fdc02d9efe92a61cf3ae",
     "reference_inferencex": "f437f7bfd164422036b0de7e3818f8afb5bc70d7",
     "sglang": "561ad447c74bb757a40677ee9ce038f9ca429d2c",
+    "sglang_local_patch": "d4bdb5246dbeaca7bf23472cbae617b434bcb3b77c248d0e40e46b8405786ef1",
     "sglang_pr": "https://github.com/sgl-project/sglang/pull/39210"
   },
   "plot": {
@@ -137,6 +165,7 @@
   "status": "PUBLIC_RECIPE_REQUIRES_LOCAL_PREFLIGHT",
   "user_decisions": {
     "checkpoint": "The fixed model path and exact conversion identity belong to this reviewed recipe. A different checkpoint or relocated acceptance requires a separately reviewed binding; no tensor or metadata evidence is fabricated here.",
+    "integration_fixes": "DP1/SP requires the exact independently reviewed local SGLang integration. This public package contains only its descriptors and guard, not its patch/source bytes. No SG commit or publication is included.",
     "scope": "All three arms use no MTP or external draft model.",
     "speculation": "none"
   },

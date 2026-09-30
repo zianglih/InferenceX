@@ -15,6 +15,7 @@ import json
 import math
 
 import checkpoint_contract
+import source_contract
 from decimal import Decimal, localcontext
 from pathlib import Path, PurePosixPath
 
@@ -202,16 +203,16 @@ def validate_plan(campaign, plan):
     for case in cases:
         c = case["concurrency"]
         require(
-            case["case_id"] == f"{case['arm_id']}-tp8-ep8-dp8-c{c}", "Case identity"
+            case["case_id"] == f"{case['arm_id']}-tp8-ep8-dp1-c{c}", "Case identity"
         )
-        require([case[k] for k in ("tp", "ep", "dp")] == [8, 8, 8], "Wrong topology")
+        require([case[k] for k in ("tp", "ep", "dp")] == [8, 8, 1], "Wrong topology")
         require(
             case["warmup_requests"] == 2 * c and case["measured_requests"] == 10 * c,
             "Wrong request count",
         )
         require(
-            case["server_max_running_requests"] == max(c, 8)
-            and case["decode_graph_max_bs"] == c,
+            case["server_max_running_requests"] == c
+            and case["decode_graph_max_bs"] == max(c, 8),
             "Capacity/graph rule changed",
         )
         args = options(case["client_argv"])
@@ -256,6 +257,7 @@ def verify_review(evidence, desc, status, *, target_key, target_sha):
 
 
 def verify_local_changes(evidence, campaign):
+    source_contract.check_campaign(campaign)
     changes = campaign.get("local_changes", {})
     require(
         isinstance(changes, dict) and set(changes) <= {"sglang"}, "Local change scope"
@@ -537,7 +539,16 @@ def load(root, acceptance="ACCEPTANCE.json", *, allow_synthetic=False):
                 "concurrency": case["concurrency"],
                 "tp": 8,
                 "ep": 8,
-                "dp": 8,
+                "dp": 1,
+                "attention_tp": 8,
+                "server_max_running_requests": case["server_max_running_requests"],
+                "decode_graph_max_bs": case["decode_graph_max_bs"],
+                "mega_local_decode_bound": (case["concurrency"] + 7) // 8
+                if case["arm_id"].startswith("megamoe")
+                else None,
+                "mega_local_prefill_bound": 4096
+                if case["arm_id"].startswith("megamoe")
+                else None,
                 "warmup_requests": case["warmup_requests"],
                 "measured_requests": case["measured_requests"],
                 "derived": axes,
@@ -662,16 +673,16 @@ def plot(rows, output):
             [x(r) for r in points],
             [y(r) for r in points],
             color=color,
-            marker="^",
+            marker="o",
             s=50,
         )
         ax.plot(
             [x(r) for r in edge],
             [y(r) for r in edge],
             color=color,
-            marker="^",
-            linestyle="--",
-            label=f"{label}; TP=EP=DP8",
+            marker="o",
+            linestyle="-",
+            label=f"{label}; TP8/EP8/DP1",
         )
         offset = {
             "megamoe-w4a4": (6, 8),
@@ -680,7 +691,7 @@ def plot(rows, output):
         }[arm]
         for row in points:
             ax.annotate(
-                f"C{row['concurrency']} · TP8/EP8/DP8",
+                f"C{row['concurrency']} · TP8/EP8/DP1",
                 (x(row), y(row)),
                 xytext=offset,
                 textcoords="offset points",
@@ -765,7 +776,7 @@ def publish(data, output):
     (output / "METHODS.md").write_text(
         "# Kimi K3 three-curve results\n\n"
         "All 12 case acceptances and the complete campaign terminal are bound in RESULTS.json. "
-        "Each arm uses TP=EP=DP8 and concurrency 4/8/16/32; 2C warmups precede 10C measured requests. "
+        "Each arm uses TP8/EP8/DP1 (attention TP8) and concurrency 4/8/16/32; 2C warmups precede 10C measured requests. "
         "All same-C requested and completed token-length arrays match exactly across arms. "
         "RAW_METRICS.csv preserves every saved scalar; RESULTS.json retains the complete original result objects.\n\n"
         "Throughput uses output tokens divided by the client's monotonic perf_counter duration and eight GPUs. "

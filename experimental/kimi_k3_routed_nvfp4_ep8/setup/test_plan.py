@@ -48,14 +48,12 @@ class ReviewPlanTests(unittest.TestCase):
 
     def test_c4_floor_and_graphmax(self):
         for c in self.p["cases"]:
-            self.assertEqual(c["server_max_running_requests"], max(c["concurrency"], 8))
-            self.assertEqual(c["decode_graph_max_bs"], c["concurrency"])
-            self.assertEqual(
-                c["effective_per_dp_request_capacity"], max(c["concurrency"], 8) // 8
-            )
+            self.assertEqual(c["server_max_running_requests"], c["concurrency"])
+            self.assertEqual(c["decode_graph_max_bs"], max(c["concurrency"], 8))
+            self.assertEqual(c["effective_per_dp_request_capacity"], c["concurrency"])
             self.assertEqual(c["tp"], c["ep"])
-            self.assertEqual(c["ep"], c["dp"])
-            self.assertEqual(c["dp"], 8)
+            self.assertEqual(c["ep"], 8)
+            self.assertEqual(c["dp"], 1)
 
     def test_exact_client_workload_flags(self):
         for c in self.p["cases"]:
@@ -261,24 +259,16 @@ class ReviewPlanTests(unittest.TestCase):
 
     def test_local_patch_separate_binding_and_corruption(self):
         q = copy.deepcopy(self.cfg)
+        shutil.copytree(plan.ROOT / "sglang", self.base / "sglang")
         (self.base / "artifacts").mkdir()
-        (self.base / "sglang").mkdir()
-        patch = self.base / "artifacts/local.patch"
-        patch.write_text("review patch")
-        source = self.base / "sglang/file.py"
-        source.write_text("review source")
-        q["local_changes"] = {
-            "sglang": {
-                "base_commit": q["pins"]["sglang"],
-                "patch": {"path": "artifacts/local.patch", **plan.descriptor(patch)},
-                "files": {"sglang/file.py": plan.descriptor(source)},
-            }
-        }
-        q["pins"]["sglang_local_patch"] = plan.descriptor(patch)["sha256"]
+        shutil.copy2(
+            plan.ROOT / "artifacts/sglang-dp1.patch",
+            self.base / "artifacts/sglang-dp1.patch",
+        )
         changes, bindings = plan.verify_local_changes(q, self.base)
-        self.assertEqual(len(bindings), 2)
-        self.assertEqual(changes["sglang"]["base_commit"], plan.PINS["sglang"])
-        source.write_text("changed after acceptance")
+        self.assertEqual(len(bindings), 4)
+        relative = next(iter(changes["sglang"]["files"]))
+        (self.base / relative).write_text("changed after acceptance")
         with self.assertRaisesRegex(ValueError, "bytes changed"):
             plan.verify_local_changes(q, self.base)
 
@@ -286,7 +276,7 @@ class ReviewPlanTests(unittest.TestCase):
         q = copy.deepcopy(self.cfg)
         q["pins"]["sglang_local_patch"] = "a" * 64
         q.pop("local_changes", None)
-        with self.assertRaisesRegex(ValueError, "requires exact local_changes"):
+        with self.assertRaisesRegex(ValueError, "Exact reviewed source patch"):
             plan.verify_local_changes(q, self.base)
 
     def test_unknown_key_and_bool_capacity_rejected(self):

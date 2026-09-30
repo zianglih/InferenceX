@@ -12,6 +12,7 @@ import re
 import shlex
 
 import checkpoint_contract
+import source_contract
 
 ROOT = Path(__file__).resolve().parents[1]
 PINS = {
@@ -46,8 +47,7 @@ COMMON = {
     "--quantization": "modelopt_fp4",
     "--tensor-parallel-size": 8,
     "--expert-parallel-size": 8,
-    "--data-parallel-size": 8,
-    "--enable-dp-attention": True,
+    "--data-parallel-size": 1,
     "--context-length": 16384,
     "--mem-fraction-static": 0.85,
     "--kv-cache-dtype": "fp8_e4m3",
@@ -88,7 +88,7 @@ HARDWARE = {
     "gpu_model": "B300",
     "tp": 8,
     "ep": 8,
-    "dp_attention": 8,
+    "dp_attention": 1,
     "pp": 1,
     "dcp": 1,
 }
@@ -248,7 +248,7 @@ def validate_campaign(cfg):
     require(
         json.dumps(cfg["hardware"], sort_keys=True)
         == json.dumps(HARDWARE, sort_keys=True),
-        "Hardware/topology differs from reviewed TP=EP=DP8 contract",
+        "Hardware/topology differs from reviewed TP8/EP8/DP1 contract",
     )
     require(
         json.dumps(cfg["workload"], sort_keys=True)
@@ -409,6 +409,7 @@ def verify_tokenizer(project, cfg):
 
 
 def verify_local_changes(cfg, project):
+    source_contract.check_campaign(cfg)
     changes = cfg.get("local_changes", {})
     require(
         type(changes) is dict and set(changes) <= {"sglang"},
@@ -557,6 +558,7 @@ def build_plan(
         "execution.py",
         "results.py",
         "checkpoint_contract.py",
+        "source_contract.py",
     ]:
         p = project / "setup" / name
         if p.is_file():
@@ -566,14 +568,14 @@ def build_plan(
     w = cfg["workload"]
     for arm in cfg["arms"]:
         for c in w["order"]:
-            case_id = f"{arm['id']}-tp8-ep8-dp8-c{c}"
+            case_id = f"{arm['id']}-tp8-ep8-dp1-c{c}"
             case_dir = str(Path(rt["run_root"]) / "cases" / case_id)
             args = {
                 "--model-path": rt["model_path"],
                 **cfg["common_server_args"],
                 **arm["server_args"],
-                "--max-running-requests": max(c, 8),
-                "--cuda-graph-max-bs-decode": c,
+                "--max-running-requests": c,
+                "--cuda-graph-max-bs-decode": max(c, 8),
             }
             server = [
                 rt["python"],
@@ -635,13 +637,13 @@ def build_plan(
                 "model_path": rt["model_path"],
                 "tp_size": 8,
                 "ep_size": 8,
-                "dp_size": 8,
-                "enable_dp_attention": True,
+                "dp_size": 1,
+                "enable_dp_attention": False,
                 "pp_size": 1,
                 "dcp_size": 1,
-                "max_running_requests": max(c, 8),
-                "cuda_graph_max_bs_decode": c,
-                "chunked_prefill_size": 4096,
+                "max_running_requests": c,
+                "cuda_graph_max_bs_decode": max(c, 8),
+                "chunked_prefill_size": 32768,
                 "max_prefill_tokens": 32768,
                 "speculative_algorithm": None,
                 "quantization": "modelopt_fp4",
@@ -663,13 +665,21 @@ def build_plan(
                     "backend": arm["server_args"]["--moe-runner-backend"],
                     "tp": 8,
                     "ep": 8,
-                    "dp": 8,
+                    "dp": 1,
+                    "attention_tp": 8,
+                    "moe_tp": 1,
+                    "mega_local_decode_bound": (c + 7) // 8
+                    if arm["id"].startswith("megamoe")
+                    else None,
+                    "mega_local_prefill_bound": 4096
+                    if arm["id"].startswith("megamoe")
+                    else None,
                     "concurrency": c,
                     "warmup_requests": 2 * c,
                     "measured_requests": 10 * c,
-                    "server_max_running_requests": max(c, 8),
-                    "decode_graph_max_bs": c,
-                    "effective_per_dp_request_capacity": max(c, 8) // 8,
+                    "server_max_running_requests": c,
+                    "decode_graph_max_bs": max(c, 8),
+                    "effective_per_dp_request_capacity": c,
                     "case_dir": case_dir,
                     "server_argv": server,
                     "client_argv": bench,
@@ -710,7 +720,7 @@ def build_plan(
         "execution_blockers": execution_blockers(cfg, runtime_project),
         "bindings": bindings,
         "limitations": [
-            "Commands are reviewed intentions, not runtime evidence. All arms explicitly declare the accepted modelopt_fp4 checkpoint format because this pinned Kimi resolution path does not propagate ModelConfig autodetection into ServerArgs before the Mega gate. No bespoke SGLang patch or quantization tuning override is used. Custom output, exclusions, non-routed tensor preservation and numerical checks are governed by the exact normalized conversion acceptance; this planner does not independently validate that receipt.",
+            "Commands are reviewed intentions, not runtime evidence. All arms explicitly declare the accepted modelopt_fp4 checkpoint format because this pinned Kimi resolution path does not propagate ModelConfig autodetection into ServerArgs before the Mega gate. Exactly the reviewed three-file SG561ad Kimi SP-MoE admission/local-capacity patch is required; no quantization tuning override is used. Custom output, exclusions, non-routed tensor preservation and numerical checks are governed by the exact normalized conversion acceptance; this planner does not independently validate that receipt.",
             "No speculation/MTP on any arm; no target/draft tensor or installed-kernel claims.",
             "Runtime paths, tensor presence, installed origins, native defaults, image loader/library/HOME/Rust policy and GPU UUID ownership require later accepted preflight. This is not a hermetic execution environment acceptance.",
             "Execution requires the separate root-accepted runtime marker and exact SHA256. The plan alone never starts work; execution.py records owned PID/birth cleanup, endpoint ownership, ordered lengths and terminal seals.",
