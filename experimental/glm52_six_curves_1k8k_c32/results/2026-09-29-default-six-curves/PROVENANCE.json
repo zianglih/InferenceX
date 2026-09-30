@@ -1,184 +1,15 @@
 {
-  "backend_pairs": 24,
-  "frontiers": 6,
-  "measured_requests": 3600,
-  "pair_metric_rows": 1008,
+  "status": "PUBLIC_COMPACT_SUMMARY_AND_PLOTS",
+  "scope": "Saved aggregate tables, plots, compact settings and plotting/reducer sources. Full raw logs, per-request traces and runtime evidence are retained locally, not included in this current public bundle.",
   "points": 24,
-  "release_evidence": {
-    "bytes": 14130,
-    "sha256": "c7fec144bf777aeac9ea7a2554ed93f808524cb022bb582f0bf19061a522263b"
+  "measured_requests": 3600,
+  "warmup_requests_scheduled": 720,
+  "full_evidence_replay_requires_local_bundle": true,
+  "public_reproduction": "Render from results/raw-metrics.json; this does not revalidate raw request/native/runtime evidence.",
+  "previous_full_bundle_manifest": {
+    "bytes": 671328,
+    "sha256": "0158a59b724969ec8bde4edb3a073abf79fbc7d4ede64cdbedc2200e017856a8"
   },
-  "render_environment": {
-    "matplotlib": "3.10.6",
-    "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 21.0.0 (clang-2100.0.123.102)]"
-  },
-  "review_receipts": [
-    {
-      "bytes": 2452501,
-      "sha256": "2043ac7be3cadda38625626cb0f6ee476011c4cd08223ca271e134bc8a767a6a"
-    },
-    {
-      "bytes": 2880659,
-      "sha256": "f4ed6d3468dad95f09e409c97bfac61d7ed42b808adbc52dea2bfacd955b1804"
-    },
-    {
-      "bytes": 4330333,
-      "sha256": "89e32afe257d525ed189ca83cd74ea5b60a5911e730f4d882899c4574493a062"
-    },
-    {
-      "bytes": 6093116,
-      "sha256": "5cc5510985d8949e15fb486e4589026299f65a58d7862294259b95e4f0877873"
-    },
-    {
-      "bytes": 8636454,
-      "sha256": "96db99588cc875cec895115c1f0865caffb2bd2ff984a3044d1e84a6bc796fed"
-    },
-    {
-      "bytes": 11872745,
-      "sha256": "6d04bb565ce4a42ccdc8218628bf27d0d4dde8b81ad80ec980dd33e16e4b113f"
-    },
-    {
-      "bytes": 37458,
-      "sha256": "bf1201e40ba041343bdd7d2fc973f879ea9f52a305accf8a710110d6a34119dd"
-    },
-    {
-      "bytes": 48951,
-      "sha256": "857d91acb7a616121fb535afac4b8f6fb711ccdb251c942e0fbc3634900fbe14"
-    },
-    {
-      "bytes": 858708,
-      "sha256": "a1ab9aec00807cbd8bdfd17ffe9936b68585185ea0b393d112d5c14925031980"
-    },
-    {
-      "bytes": 868547,
-      "sha256": "1124b3c354b1ff48d825248b636bd6166d83d58d9ffc1723dc5c6cc460c59dd6"
-    },
-    {
-      "bytes": 1373000,
-      "sha256": "2bce65aaa4b8c3d28c545ca6816f655dc1f670cd371a7b18501d434f78124323"
-    },
-    {
-      "bytes": 1809155,
-      "sha256": "73085b1a51da15985189db05766f0e5a3adfd6dde3a4768f6a336940abad615a"
-    },
-    {
-      "bytes": 3090655,
-      "sha256": "2bcbbcec5ee7ba2ae1e390dbacb9fa4d23e24073428deeb57d0341c7b736dca1"
-    },
-    {
-      "bytes": 3671807,
-      "sha256": "cec406d5d5503962c3f166c84fa55f0b61eebc462e38a9cc5e9083a217c57c3a"
-    },
-    {
-      "bytes": 4300079,
-      "sha256": "5beb422a1655f76542ceb72addcd17397e984b01d413ab951c24991775cb878e"
-    },
-    {
-      "bytes": 4978750,
-      "sha256": "9b3a28a83bb2711700f1de1dca2d4b970122e89a103e1ce90403c6a415dd39f2"
-    },
-    {
-      "bytes": 5729882,
-      "sha256": "1fd40cf90d1ecd9ab04d2fc6b7c67563cfd3a50b253b80a5a8035dc64f288df7"
-    },
-    {
-      "bytes": 6538528,
-      "sha256": "8194652a9cf70ce91c0e04044d8f9c3570fc2126ce631bf4886bb5d5343a07a8"
-    },
-    {
-      "bytes": 7402178,
-      "sha256": "9d71ad8da0a12b0d7c9451776c2fbe1843cc9550d77747d3ca10b9d4edd44d95"
-    },
-    {
-      "bytes": 8317550,
-      "sha256": "fe5657d07445be289d922f4e003ade5b0fd733a60267e2ba4352e765c773367e"
-    },
-    {
-      "bytes": 9366595,
-      "sha256": "5bfacfc8c452a3a88729a0a9a8b321abc646d7319c2b44fb0d4c7845dd10ac37"
-    },
-    {
-      "bytes": 10463994,
-      "sha256": "fd96dbf553a9ae94c9c587250a4a2f6e045698b81fa4d7015726f8774930dad9"
-    },
-    {
-      "bytes": 11638723,
-      "sha256": "65e8b7d60734da2482cf93c283f23a6389e890152ea1a660219f4f880bfffb18"
-    },
-    {
-      "bytes": 12895507,
-      "sha256": "f6a85b7ba3f687b6304f718d425ba4d5f8e0c3c5b3d70bbb452042e7d8d8824c"
-    },
-    {
-      "bytes": 7549,
-      "sha256": "5e08192d0e9689cc4bdf33c7d1807debb7835057104e1bde5f8cecddaee1b8cf"
-    },
-    {
-      "bytes": 9366,
-      "sha256": "75ccd7f0785d1e1fb69ea6b07ac7eca7e00c8effe2100193355df0bf2a6c2ec3"
-    },
-    {
-      "bytes": 63444,
-      "sha256": "fed24bb8f095a3a12feeef59412025c9b809e26a863ed78b8269bb7a7b289900"
-    },
-    {
-      "bytes": 14645,
-      "sha256": "7f5f8a3e82270926f9e09e7fa0cd07532efed32005508f4e0f355770d28d3a3e"
-    },
-    {
-      "bytes": 15489,
-      "sha256": "4c2a0085ba5d28e886f40793ff2321f50dd2c7a17176c9c6a829e33087d2b259"
-    },
-    {
-      "bytes": 12050,
-      "sha256": "9ebadd2cf4b789922517dc6752239576249eca38dcb69390d44b413cf90e33df"
-    },
-    {
-      "bytes": 3615,
-      "sha256": "56382bbf09be9821984e198c85aa70d0d84664a54ab542cd25053aa7a7846c51"
-    },
-    {
-      "bytes": 1509,
-      "sha256": "cefc26db5fd952acd0e0cc56ab9eda9731913db9a818fc667b0732d5523e75f1"
-    },
-    {
-      "bytes": 264171,
-      "sha256": "ecf3602a6e64916b6dd6f9241a9ece0175193c34451960780de7ad2996244ae7"
-    },
-    {
-      "bytes": 475740,
-      "sha256": "4d7ddd0103c57f6e05d1a41ae1fdcde9c8da96d62ca8ac7734e00c23cffe36c7"
-    },
-    {
-      "bytes": 360360,
-      "sha256": "8eef2196286b84e0a78cbf0782cbe1435fcd2d90fbb00237bc87e71c6c67aa16"
-    },
-    {
-      "bytes": 41843,
-      "sha256": "c555e4ffec51160bbb02090e7eca172d8be13ccaa4c8897df99da472b5baf42e"
-    },
-    {
-      "bytes": 4875,
-      "sha256": "4ea8b7da88822ae747cef1967b6d8cb10bd9aae2d0f148792e1284ccd362cdd4"
-    },
-    {
-      "bytes": 23469,
-      "sha256": "bc4be4843296ec186bc12201cea56b8d72559795ae64fc6c6a2933f9fb3c607b"
-    },
-    {
-      "bytes": 45708,
-      "sha256": "0acd06ac53492698897b6a51aca4a290cc27061eef8140c8bf27412d7ee5a74d"
-    },
-    {
-      "bytes": 18445,
-      "sha256": "2575705e3aa9aaf05849e354560b488b64ee80b4733ab25c30f0ade7731f1723"
-    },
-    {
-      "bytes": 45360,
-      "sha256": "dc616c1053e9d1576a1d1e2ad3554a282e4e181d324e96d3af14bf37273245c8"
-    }
-  ],
-  "scope": "Selected raw sealed evidence and reader reproduction; no full archive, installed-byte, preservation or deletion claim",
   "source_files": {
     "benchmarks/benchmark_lib.sh": {
       "bytes": 131664,
@@ -205,7 +36,16 @@
       "sha256": "aece4e0fbe94e10714d9dc79bb7a2ddd015702a044b937b3ae88c36e0f21c0b8"
     }
   },
-  "status": "LOCAL_DRAFT_PENDING_VISUAL_AND_PUBLICATION_REVIEW",
-  "topology_pairs": 12,
-  "warmup_requests": 720
+  "metric_scope": "Measured-only MTP acceptance length unavailable; no approximation.",
+  "settings_summary": {
+    "bytes": 15762,
+    "sha256": "f9fb6b3f3f20f2f957e5fc62806d5273191ee836fac54b188775269e1cac995c"
+  },
+  "preserved_outputs": "All original PNG/SVG, numeric JSON/CSV and source/ bytes are unchanged.",
+  "qualifications": [
+    "The newer September 30 image/Torch 2.13 runtime differs from the September 29 baseline.",
+    "TRT quantization uses the selected CUDA-default path; CuTeDSL-only math flags do not establish its low-level math.",
+    "Warmup counts are scheduled/awaited, not individually audited success counts.",
+    "Sequential history, retained latency summaries and plot replay do not establish causality, numerical equivalence, or runtime/preservation acceptance."
+  ]
 }

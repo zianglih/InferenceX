@@ -46,5 +46,6 @@
     "points": 24,
     "measured_requests": 3600,
     "warmup_requests": 720
-  }
+  },
+  "public_availability": "Raw source descriptors below refer to the immutable locally retained full bundle; current public replay uses summary tables only."
 }

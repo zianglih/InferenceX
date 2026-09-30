@@ -4,11 +4,11 @@
 
 本手动配方在单台八卡 B300 节点上，比较三种后端，并分别使用 TP=EP=DP attention 4 和 8。[2026-09-30 测量阶段 MTP 结果](results/2026-09-30-measured-mtp-six-curves/results/RESULTS.md)包含 **36 个已接受点、3,780 条成功测量请求，测量失败数为零**。756 条计划预热请求不计入 MTP 统计；每个点均保存全部测量请求的原生推测解码计数。实验不在 InferenceX 定时矩阵中；脚本不会安装依赖、申请节点、发布结果或删除存储。
 
-查看[六曲线总图](results/2026-09-30-measured-mtp-six-curves/results/pareto.png)、[EP4](results/2026-09-30-measured-mtp-six-curves/results/figures/ep4/pareto.png) 或 [EP8](results/2026-09-30-measured-mtp-six-curves/results/figures/ep8/pareto.png)。每个点标注并发和仅测量阶段的 acceptance length，按 completion tokens 总和除以验证步数总和计算，包含 bonus tokens。[复现指南](results/2026-09-30-measured-mtp-six-curves/REPRODUCE.md)先复算原始表格，再通过独立的标签排版步骤生成最终图表。
+查看[六曲线总图](results/2026-09-30-measured-mtp-six-curves/results/pareto.png)、[EP4](results/2026-09-30-measured-mtp-six-curves/results/figures/ep4/pareto.png) 或 [EP8](results/2026-09-30-measured-mtp-six-curves/results/figures/ep8/pareto.png)。每个点标注并发和仅测量阶段的 acceptance length，按 completion tokens 总和除以验证步数总和计算，包含 bonus tokens。[复现指南](results/2026-09-30-measured-mtp-six-curves/REPRODUCE.md)从已保存的汇总表重绘全范围及 C2–32 图表。完整日志和逐请求证据保留在本地，不包含在当前公开目录中。
 
 另提供 **C2–32** 视图，仅展示 C2/4/8/16/32：[总图](results/2026-09-30-measured-mtp-six-curves/results/c2-32/pareto.png)、[EP4](results/2026-09-30-measured-mtp-six-curves/results/c2-32/figures/ep4/pareto.png) 和 [EP8](results/2026-09-30-measured-mtp-six-curves/results/c2-32/figures/ep8/pareto.png)。这些图使用同一批已接受的实测数据，并在所选范围内重新计算各前沿。
 
-不可变的 [2026-09-29 结果包](results/2026-09-29-default-six-curves/REPRODUCE.md)仍包含 **24 个已接受点、3,600 条成功测量请求、720 条预热请求和六条 Pareto 前沿**。当时的客户端没有保存测量阶段的推测解码计数，因此该历史实验的 measured-only MTP acceptance length **不可用**。现有 N/A 图和原始数据不会被本次重跑改写。
+历史 [2026-09-29 汇总包](results/2026-09-29-default-six-curves/REPRODUCE.md)仍包含 **24 个已接受点、3,600 条成功测量请求、720 条预热请求和六条 Pareto 前沿**。当时的客户端没有保存测量阶段的推测解码计数，因此该历史实验的 measured-only MTP acceptance length **不可用**。现有 N/A 图和数值表不变；原完整数据包和清单保留在本地项目 artifacts，公开目录现仅保留精简汇总。
 
 ## 矩阵与固定负载
 
@@ -88,7 +88,7 @@ python3 -B experimental/glm52_six_curves_1k8k_c32/results.py \
 
 运行期间可加 `--partial`，只验证已封存点并生成部分表，不生成最终图。完整 reader 拒绝不完整矩阵、失败客户端、未清理进程、缺少启动探针、改变的证据、不符的后端设置或同 C 的有序请求数组差异。
 
-支持移动 checkout：reader 从封存 command 重建 producer `PYTHONPATH`，校验两种 launch environment 和 argv，其余环境严格相等。六个 recipe/client 源码摘要（包括纯 speculative-metrics reducer）必须与当前 reader 相符。复现包需携带这些源码，不改写原始远端路径，不猜测未记录的工作目录。
+支持移动 checkout：reader 从封存 command 重建 producer `PYTHONPATH`，校验两种 launch environment 和 argv，其余环境严格相等。六个 recipe/client 源码摘要（包括纯 speculative-metrics reducer）必须与当前 reader 相符。本地完整证据包需携带这些源码，不改写原始远端路径，不猜测未记录的工作目录。
 
 输出包括：
 
@@ -112,17 +112,11 @@ Wrapper 显式传递 `--capture-speculative-metrics`。共享 Bash bridge 对其
 - 覆盖不足时客户端仍保存原始计数和 coverage，但返回非零。Runner/reader 必须验证完整覆盖、正分母、纯 reducer 的精确重放，以及每条 completion token 与有序输出长度一致。缺失、非法、自相矛盾或部分计数不能成为接受点；不以 rank 均值、日志窗口、输出 token 加权估计或合成 AL 替代。
 - CSV/JSON 显示 measured AL/rate 和 coverage；AL/rate 的匹配对比从整数计数用 Decimal50 重算。每条详情保留在封存 `result.json`。
 
-## 复现历史 24 点结果
+## 复现公开图表
 
-使用结果包冻结的 reader，不使用新的 36 点 reader：
+公开包有意省略完整日志、逐请求轨迹和运行时证据。在各日期目录内按 `REPRODUCE.md` 从 `results/raw-metrics.json` 重绘图表。9 月 30 日包提供全 C1–32 和 C2–32 视图；9 月 29 日历史图保持 `AL=N/A`。
 
-```bash
-cd experimental/glm52_six_curves_1k8k_c32/results/2026-09-29-default-six-curves
-python3 -B source/experimental/glm52_six_curves_1k8k_c32/results.py \
-  --run-root raw --output /absolute/path/to/new-historical-reproduction
-```
-
-该命令保持原 24 点合约，不伪造 measured MTP。已审核的 36 点重跑结果独立保存在 `results/2026-09-30-measured-mtp-six-curves`，历史发布包保持不变。
+完整证据重放使用本地原完整包中的冻结 reader 和 `raw/`。公开汇总表绘图不能重复验证原生计数、设置、进程清理或完整证据。所有既有图像和精简数值表逐字节不变。
 
 ## 本地行为验证
 

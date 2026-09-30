@@ -1,25 +1,27 @@
-## Publication annotation layout / 发表图表标注排版
+# Publication plotting from saved tables
 
-The seven immutable measured source files reproduce the original numeric tables,
-points, frontiers and initial images. The final published images use the separate
-annotation-only wrapper below. It calls the unchanged `results.figure()` and only
-moves point labels, retaining the actual Cn + measured-only AL text and coordinates.
-Run both steps from this bundle; each output directory must be absent:
+The seven immutable measured source files and two package initializers are retained.
+The public wrappers reuse the original reader's plotting functions with saved
+`results/raw-metrics.json`; full raw evidence is retained locally.
+
+From the bundle root, using new output directories:
 
 ```sh
-python3 -B source/experimental/glm52_six_curves_1k8k_c32/results.py --run-root raw --output ../regenerated-six-curves
-python3 -B publication-layout/render_publication.py --source-root source --metrics ../regenerated-six-curves/raw-metrics.json --output ../regenerated-publication-layout
+python3 -B publication-layout/render_publication.py --source-root source --metrics results/raw-metrics.json --output /absolute/path/to/new-full-plots
+python3 -B publication-layout/render_concurrency_subset.py --source-root source --metrics results/raw-metrics.json --min-concurrency 2 --output /absolute/path/to/new-c2-32-plots
 ```
 
-The second output contains the combined PNG/SVG and `figures/ep4`, `figures/ep8`
-views. Compare its six `plot-points.json` / `frontiers.json` files byte-for-byte with
-the first output and the saved `results/` files. Numeric equality is mandatory.
-SVG text is outlined by the separate wrapper to avoid dependence on viewer fonts.
-Exact image bytes can depend on Python, Matplotlib and fonts. Inspect all three
-PNGs and SVGs; bounding-box checks do not prove that every leader line is optimal.
-The bundled `publication-layout/LAYOUT.json` records the original layout operation.
-This step adds no benchmark, numerical, retention or deletion acceptance.
+The full view has 36 points; C2/4/8/16/32 has 30. Each command makes combined,
+EP4 and EP8 views, recomputes frontiers, and preserves measured AL/rate and point
+coordinates. SVG text uses outlines. Existing published figures are byte-unchanged.
+Table-based plotting does not replay omitted raw request, native or runtime evidence.
+Full evidence replay requires the unchanged local bundle; see ../REPRODUCE.md.
 
-七份原始测量源码保持不变。先复算全部原始结果，再运行独立的标注排版脚本；
-第二步只移动标签，不改变测量值、点坐标或前沿。三个视图均需核对 PNG/SVG，
-六份点坐标和前沿 JSON 必须逐字节一致。旧的合格报告包及其清单仍单独保留。
+<details><summary>中文</summary>
+
+七份测量源码和两份 package initializer 均保持不变。以上公开绘图命令读取保存的
+汇总表，分别生成全36点和 C2/4/8/16/32 的30点视图，不重复验证已移至本地的原始证据。
+各自生成总图、EP4 和 EP8，重新计算前沿，保留 measured AL/rate 和坐标；SVG 使用轮廓文字。
+完整证据重放需要未修改的本地原完整包。
+
+</details>

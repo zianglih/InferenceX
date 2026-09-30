@@ -4,11 +4,11 @@
 
 This manual recipe runs three backend selections at TP=EP=DP attention 4 and 8 on one eight-GPU B300 node. The [2026-09-30 measured-MTP results](results/2026-09-30-measured-mtp-six-curves/results/RESULTS.md) contain **36 accepted points and 3,780 successful measured requests, with zero measured failures**. The 756 scheduled warmups are excluded from MTP accounting. Each point saves native speculative counters for every measured request. The experiment is outside the scheduled InferenceX matrix; scripts do not install packages, allocate nodes, publish results, or delete storage.
 
-View the [combined six curves](results/2026-09-30-measured-mtp-six-curves/results/pareto.png), [EP4](results/2026-09-30-measured-mtp-six-curves/results/figures/ep4/pareto.png), or [EP8](results/2026-09-30-measured-mtp-six-curves/results/figures/ep8/pareto.png). Every point shows its concurrency and measured-only acceptance length, computed as total completion tokens divided by total verification steps, including bonus tokens. The [reproduction guide](results/2026-09-30-measured-mtp-six-curves/REPRODUCE.md) reproduces the raw tables first, then applies a separate label-placement step to the final figures.
+View the [combined six curves](results/2026-09-30-measured-mtp-six-curves/results/pareto.png), [EP4](results/2026-09-30-measured-mtp-six-curves/results/figures/ep4/pareto.png), or [EP8](results/2026-09-30-measured-mtp-six-curves/results/figures/ep8/pareto.png). Every point shows its concurrency and measured-only acceptance length, computed as total completion tokens divided by total verification steps, including bonus tokens. The [reproduction guide](results/2026-09-30-measured-mtp-six-curves/REPRODUCE.md) renders the saved aggregate tables with separate full-range and C2–32 plotting commands. Full logs and per-request evidence are retained locally; they are not part of the current public tree.
 
 Additional **C2–32** views show only C2/4/8/16/32: [combined](results/2026-09-30-measured-mtp-six-curves/results/c2-32/pareto.png), [EP4](results/2026-09-30-measured-mtp-six-curves/results/c2-32/figures/ep4/pareto.png), and [EP8](results/2026-09-30-measured-mtp-six-curves/results/c2-32/figures/ep8/pareto.png). These filter the same accepted measurements and recompute each frontier within that range.
 
-The immutable [2026-09-29 bundle](results/2026-09-29-default-six-curves/REPRODUCE.md) remains **24 accepted points, 3,600 successful measured requests and 720 warmups**, with six frontiers. Its client did not save measured speculative counters, so its measured-only MTP acceptance length is **unavailable**. The existing N/A plots and original raw payloads are historical evidence and are not rewritten by this rerun.
+The historical [2026-09-29 summary bundle](results/2026-09-29-default-six-curves/REPRODUCE.md) remains **24 accepted points, 3,600 successful measured requests and 720 warmups**, with six frontiers. Its client did not save measured speculative counters, so its measured-only MTP acceptance length is **unavailable**. The existing N/A plots and numeric tables are unchanged. Original full raw bundles and manifests remain immutable in local project artifacts; the public tree now contains compact summaries.
 
 ## Matrix and fixed workload
 
@@ -88,7 +88,7 @@ python3 -B experimental/glm52_six_curves_1k8k_c32/results.py \
 
 While the campaign runs, add `--partial` to validate only finalized cases and write partial tables without a final plot. The full reader rejects an incomplete or misidentified grid, any failed client or incomplete owned cleanup, missing startup probes, modified sealed evidence, differing resolved backend settings, or mismatched same-concurrency ordered request arrays.
 
-The reader can run from a different checkout path. It reconstructs the producer's `PYTHONPATH` from the sealed benchmark command, cross-checks both launch environments and the actual client argv, and compares every other environment field exactly. The six recorded recipe/client source digests (including the pure speculative-metrics reducer) must match this checkout. Keep those source files with any public reproduction bundle; do not rewrite the raw remote paths or infer an unrecorded launch working directory.
+The reader can run from a different checkout path. It reconstructs the producer's `PYTHONPATH` from the sealed benchmark command, cross-checks both launch environments and the actual client argv, and compares every other environment field exactly. The six recorded recipe/client source digests (including the pure speculative-metrics reducer) must match this checkout. Keep those source files with any local full-evidence bundle; do not rewrite the raw remote paths or infer an unrecorded launch working directory.
 
 Outputs include:
 
@@ -112,17 +112,11 @@ The wrapper explicitly passes `--capture-speculative-metrics` through the shared
 - The client saves coverage and raw counters even when unavailable, then exits nonzero. The runner and reader require complete coverage, a positive denominator, exact pure-reducer replay, and completion-token equality with every ordered output length. Partial, missing, malformed or internally inconsistent counters cannot produce an accepted point. No rank-mean, log-window, output-token-weighted estimate, or synthetic AL is substituted.
 - CSV/JSON summaries expose measured AL/rate and coverage. Paired AL/rate comparisons recompute ratios from integer counters with Decimal precision 50. Exact per-request details remain in sealed `result.json`.
 
-## Reproduce the historical 24-point bundle
+## Reproduce the published plots
 
-Use its frozen source reader, not the new 36-point reader. From this checkout:
+Public bundles intentionally omit full logs, request traces and runtime evidence. From each dated bundle directory, follow its `REPRODUCE.md` to render from `results/raw-metrics.json`. The September 30 bundle provides both full C1–32 and C2–32 views; the historical September 29 renderer preserves `AL=N/A`.
 
-```bash
-cd experimental/glm52_six_curves_1k8k_c32/results/2026-09-29-default-six-curves
-python3 -B source/experimental/glm52_six_curves_1k8k_c32/results.py \
-  --run-root raw --output /absolute/path/to/new-historical-reproduction
-```
-
-That command retains the old 24-point contract and never invents measured MTP values. The reviewed 36-point rerun is saved separately in `results/2026-09-30-measured-mtp-six-curves`; this historical release remains unchanged.
+Full evidence replay uses the frozen reader in the unchanged locally retained full bundle, which still includes `raw/`. Public table plotting does not repeat native-counter, settings, process-cleanup or full-evidence validation. All existing plots and compact numerical tables remain byte-identical.
 
 ## Local behavioral validation
 

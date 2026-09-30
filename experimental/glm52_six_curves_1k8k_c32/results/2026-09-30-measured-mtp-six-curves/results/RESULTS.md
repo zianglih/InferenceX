@@ -1,5 +1,9 @@
 # Fresh six-arm GLM-5.2 1k/8k results
 
+Public scope: compact tables and plots. Full logs, request records and runtime evidence are retained locally; public plot replay uses saved metrics and does not repeat raw-evidence validation. See [reproduction guide](../REPRODUCE.md).
+
+公开范围：汇总表与图表。完整日志、逐请求及运行时证据保留本地；公开绘图不重复原始证据验收。
+
 Verified finalized points: 36/36.
 
 Nominal lengths 1,024/8,192 with ratio 0.8 sampling; 2C warmup / 10C measured. Same-C ordered length arrays match across available arms.

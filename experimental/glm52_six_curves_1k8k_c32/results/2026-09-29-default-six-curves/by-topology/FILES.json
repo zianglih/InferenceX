@@ -1,21 +1,21 @@
 {
-  "file_count": 18,
+  "file_count": 19,
   "files": {
     "INPUTS.json": {
-      "bytes": 14038,
-      "sha256": "5f39b2e77e32eb2ad9e76797b9e6d62584fae2c6196fe3d0abbb48e8055cd81d"
+      "bytes": 1017,
+      "sha256": "9d39a39c7d17386808d9c592f0414f79dfade87a8122638dbebfe195812238e2"
     },
     "README.md": {
-      "bytes": 5439,
-      "sha256": "b4f35a74133dbb292428b2c76e8a02a2c6ac74a6175c5af7b98434dea2a56687"
+      "bytes": 809,
+      "sha256": "3d01fd15b5eb183f678fce8cf02c3cb8e985b20a756fa8f8c2ee004861b7c8fb"
     },
     "README_zh.md": {
-      "bytes": 5048,
-      "sha256": "50197828a1419753d1e3a1711b7a78715e2ff3422d018860cf83ccd9d190ee8e"
+      "bytes": 692,
+      "sha256": "a36d729e4710eb3a728dada40da41451ef6c92367efd3632aec26ccde13ad026"
     },
     "figures/PROVENANCE.json": {
-      "bytes": 1292,
-      "sha256": "7aa8df49cced8ba78679ffc605401df7776fdb1906cb8f069c816b9ff2c083aa"
+      "bytes": 1450,
+      "sha256": "ff7ff70e21ea3f25fda9aad2c966ed9e31ea1fdfd77a7e3fd6bce6c52bc0ab7c"
     },
     "figures/acceptance-length.json": {
       "bytes": 26301,
@@ -72,8 +72,12 @@
     "render.py": {
       "bytes": 12299,
       "sha256": "8ffbea1cab78c5488e99b9d6fcdd149ffa6b6614495d775b27dc6a5b2c785e6d"
+    },
+    "render_compact.py": {
+      "bytes": 11203,
+      "sha256": "ed41400a5c57627d2e33cc16d6de7c04fa658a4bf7075d450fce22dc4c912436"
     }
   },
-  "schema_version": 1,
-  "scope": "Measured-only AL availability labels for by-topology and combined views; original release FILES unchanged"
+  "self_excluded": "FILES.json",
+  "total_bytes": 1306262
 }
