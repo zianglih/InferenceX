@@ -8439,3 +8439,11 @@
     - "显式采集每条请求的原生推测计数，要求测量阶段完整覆盖；以 sum(completion_tokens)/sum(spec_verify_ct) 计算包含 bonus token 的 AL，保留有序原始记录，拒绝不可用指标。历史24点数据与冻结 reader 不变。该 experimental key 仍未注册到 scheduled matrix，验证限制继续披露。"
     - "Discover owned same-session descendants before polling/reaping a leader, with a focused late-child cleanup check; no arbitrary detached-descendant guarantee. 在回收 leader 前发现已拥有 session 的后代，增加晚到子进程清理检查；不保证任意 detached 后代不存在。"
   pr-link: https://github.com/zianglih/InferenceX/pull/3
+
+- config-keys:
+    - experimental/glm52_six_curves_1k8k_c32
+  description:
+    - "Publish the separately reviewed September 30 manual GLM-5.2 results: 36 points at C1/2/4/8/16/32, 3,780 successful measured requests, 756 scheduled warmups excluded from measured MTP, and 54 matched comparisons covering 1,620 metric rows."
+    - "Retain exact native measured counters, ratio-of-sums acceptance length/rate and full C1-32 and additional C2-32 views; keep the old 24-point bundle unchanged. Preserve the newer-image, failed installer/validation continuation, 14 pip conflicts, CUDA quantizer, dense-selector and residual-GPU-memory qualifications. No serving-setting, scheduled-matrix/eval, quality, full-archive or node-cleanup acceptance is implied."
+    - "发布单独审核的9月30日 GLM-5.2 手动实测：36点、3,780个成功测量请求，756个计划预热不计入测量MTP；54组共1,620项匹配指标、精确原生计数和完整 C1-32 及新增 C2-32 视图。旧24点不改写，保留新镜像、安装失败与续检、14项依赖冲突、CUDA quantizer、dense selector及残留显存限制；不修改服务设置，不声明scheduled matrix/eval、质量、完整归档或节点清理通过。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/3

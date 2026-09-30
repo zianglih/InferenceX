@@ -1,0 +1,302 @@
+{
+  "files": {
+    "benchmark.exit.json": {
+      "bytes": 2741,
+      "sha256": "b2371ce837bc1e19680c91e74e26e3dad9286e2d54210dac5671f61889f97237"
+    },
+    "benchmark.launch.json": {
+      "bytes": 3863,
+      "sha256": "07b6825d1d3b31fcf440ec734bc4110b5ba32f70a1a56e57bf4e94dff33766f3"
+    },
+    "benchmark.log": {
+      "bytes": 7943,
+      "sha256": "70e2148613885fe828d227bb96309cdf9c048a5fac8ef19aca264a31656a7162"
+    },
+    "benchmark.owners.jsonl": {
+      "bytes": 2014,
+      "sha256": "8b33566127044c583e5f05f123ad4ae7fb5c8630b7d32ef9304817d12280a022"
+    },
+    "benchmark_command.json": {
+      "bytes": 3677,
+      "sha256": "54d704b6dc089941e9de653446caa7d1fd22e4d6800af0698c9a049147b55cfb"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp0_pp0_dp0.json": {
+      "bytes": 28049,
+      "sha256": "2622af266e1f0342d44bcf733a2921a022f45e8079bd9588e31d08cf9cc4d4be"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp1_pp0_dp1.json": {
+      "bytes": 28049,
+      "sha256": "2622af266e1f0342d44bcf733a2921a022f45e8079bd9588e31d08cf9cc4d4be"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp2_pp0_dp2.json": {
+      "bytes": 28049,
+      "sha256": "2622af266e1f0342d44bcf733a2921a022f45e8079bd9588e31d08cf9cc4d4be"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp3_pp0_dp3.json": {
+      "bytes": 28049,
+      "sha256": "2622af266e1f0342d44bcf733a2921a022f45e8079bd9588e31d08cf9cc4d4be"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp0_pp0_dp0_gpu5e7afa1b-a02b-7f92-5f41-73eb8e6e80af.json": {
+      "bytes": 18885,
+      "sha256": "eee52dd9fbc8ab3702f8e2d2bfcb8206449e02f946b67e144c426be4a225182f"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp1_pp0_dp1_gpuad6c32ba-168d-f1bd-fe38-29ce354717cf.json": {
+      "bytes": 18885,
+      "sha256": "eee52dd9fbc8ab3702f8e2d2bfcb8206449e02f946b67e144c426be4a225182f"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp2_pp0_dp2_gpuce1c6aa0-77cc-0758-0c27-b83356dbb28c.json": {
+      "bytes": 18885,
+      "sha256": "eee52dd9fbc8ab3702f8e2d2bfcb8206449e02f946b67e144c426be4a225182f"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp3_pp0_dp3_gpu69207469-47f0-c63d-694d-22c2498e6dbe.json": {
+      "bytes": 18885,
+      "sha256": "eee52dd9fbc8ab3702f8e2d2bfcb8206449e02f946b67e144c426be4a225182f"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp0_pp0_dp0.json": {
+      "bytes": 26427,
+      "sha256": "ece5ee9355891997d1718e1a8034eb01c855db294d7b46e6d26c8b1325e21128"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp1_pp0_dp1.json": {
+      "bytes": 26427,
+      "sha256": "ece5ee9355891997d1718e1a8034eb01c855db294d7b46e6d26c8b1325e21128"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp2_pp0_dp2.json": {
+      "bytes": 26427,
+      "sha256": "ece5ee9355891997d1718e1a8034eb01c855db294d7b46e6d26c8b1325e21128"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp3_pp0_dp3.json": {
+      "bytes": 26427,
+      "sha256": "ece5ee9355891997d1718e1a8034eb01c855db294d7b46e6d26c8b1325e21128"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp4_pp0_dp4.json": {
+      "bytes": 26427,
+      "sha256": "ece5ee9355891997d1718e1a8034eb01c855db294d7b46e6d26c8b1325e21128"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp5_pp0_dp5.json": {
+      "bytes": 26427,
+      "sha256": "ece5ee9355891997d1718e1a8034eb01c855db294d7b46e6d26c8b1325e21128"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp6_pp0_dp6.json": {
+      "bytes": 26427,
+      "sha256": "ece5ee9355891997d1718e1a8034eb01c855db294d7b46e6d26c8b1325e21128"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp7_pp0_dp7.json": {
+      "bytes": 26427,
+      "sha256": "ece5ee9355891997d1718e1a8034eb01c855db294d7b46e6d26c8b1325e21128"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp0_pp0_dp0_gpu5e7afa1b-a02b-7f92-5f41-73eb8e6e80af.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp1_pp0_dp1_gpuad6c32ba-168d-f1bd-fe38-29ce354717cf.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp2_pp0_dp2_gpuce1c6aa0-77cc-0758-0c27-b83356dbb28c.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp3_pp0_dp3_gpu69207469-47f0-c63d-694d-22c2498e6dbe.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp4_pp0_dp4_gpua8a6eb62-5413-51d5-eabd-32c884283574.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp5_pp0_dp5_gpu9e75b561-c445-40e8-a8e3-49cebb8f1139.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp6_pp0_dp6_gpu66f707e4-2e04-2ddc-c770-ee6d71c953d1.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.after-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp7_pp0_dp7_gpucae22b1d-820c-0ef9-4da4-2df744f6aaa4.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.after.json": {
+      "bytes": 312282,
+      "sha256": "d1a5f57745ec3aac5adfbbc7677652cf8beef9ddf710a5c89cb9ea9d881059e3"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp0_pp0_dp0.json": {
+      "bytes": 28049,
+      "sha256": "2622af266e1f0342d44bcf733a2921a022f45e8079bd9588e31d08cf9cc4d4be"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp1_pp0_dp1.json": {
+      "bytes": 28049,
+      "sha256": "2622af266e1f0342d44bcf733a2921a022f45e8079bd9588e31d08cf9cc4d4be"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp2_pp0_dp2.json": {
+      "bytes": 28049,
+      "sha256": "2622af266e1f0342d44bcf733a2921a022f45e8079bd9588e31d08cf9cc4d4be"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/cac584bf762b1b5b/rank_tp3_pp0_dp3.json": {
+      "bytes": 28049,
+      "sha256": "2622af266e1f0342d44bcf733a2921a022f45e8079bd9588e31d08cf9cc4d4be"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp0_pp0_dp0_gpu5e7afa1b-a02b-7f92-5f41-73eb8e6e80af.json": {
+      "bytes": 18885,
+      "sha256": "eee52dd9fbc8ab3702f8e2d2bfcb8206449e02f946b67e144c426be4a225182f"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp1_pp0_dp1_gpuad6c32ba-168d-f1bd-fe38-29ce354717cf.json": {
+      "bytes": 18885,
+      "sha256": "eee52dd9fbc8ab3702f8e2d2bfcb8206449e02f946b67e144c426be4a225182f"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp2_pp0_dp2_gpuce1c6aa0-77cc-0758-0c27-b83356dbb28c.json": {
+      "bytes": 18885,
+      "sha256": "eee52dd9fbc8ab3702f8e2d2bfcb8206449e02f946b67e144c426be4a225182f"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp4/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/decca998aa8fb4de/rank_tp3_pp0_dp3_gpu69207469-47f0-c63d-694d-22c2498e6dbe.json": {
+      "bytes": 18885,
+      "sha256": "eee52dd9fbc8ab3702f8e2d2bfcb8206449e02f946b67e144c426be4a225182f"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp0_pp0_dp0.json": {
+      "bytes": 26426,
+      "sha256": "f1a30336bbd6c36de831da1846ea38fec40a745ebb5a44f88f8e0838955bb7ab"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp1_pp0_dp1.json": {
+      "bytes": 26426,
+      "sha256": "f1a30336bbd6c36de831da1846ea38fec40a745ebb5a44f88f8e0838955bb7ab"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp2_pp0_dp2.json": {
+      "bytes": 26426,
+      "sha256": "f1a30336bbd6c36de831da1846ea38fec40a745ebb5a44f88f8e0838955bb7ab"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp3_pp0_dp3.json": {
+      "bytes": 26426,
+      "sha256": "f1a30336bbd6c36de831da1846ea38fec40a745ebb5a44f88f8e0838955bb7ab"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp4_pp0_dp4.json": {
+      "bytes": 26426,
+      "sha256": "f1a30336bbd6c36de831da1846ea38fec40a745ebb5a44f88f8e0838955bb7ab"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp5_pp0_dp5.json": {
+      "bytes": 26426,
+      "sha256": "f1a30336bbd6c36de831da1846ea38fec40a745ebb5a44f88f8e0838955bb7ab"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp6_pp0_dp6.json": {
+      "bytes": 26426,
+      "sha256": "f1a30336bbd6c36de831da1846ea38fec40a745ebb5a44f88f8e0838955bb7ab"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/238bc3222715013a/rank_tp7_pp0_dp7.json": {
+      "bytes": 26426,
+      "sha256": "f1a30336bbd6c36de831da1846ea38fec40a745ebb5a44f88f8e0838955bb7ab"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp0_pp0_dp0_gpu5e7afa1b-a02b-7f92-5f41-73eb8e6e80af.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp1_pp0_dp1_gpuad6c32ba-168d-f1bd-fe38-29ce354717cf.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp2_pp0_dp2_gpuce1c6aa0-77cc-0758-0c27-b83356dbb28c.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp3_pp0_dp3_gpu69207469-47f0-c63d-694d-22c2498e6dbe.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp4_pp0_dp4_gpua8a6eb62-5413-51d5-eabd-32c884283574.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp5_pp0_dp5_gpu9e75b561-c445-40e8-a8e3-49cebb8f1139.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp6_pp0_dp6_gpu66f707e4-2e04-2ddc-c770-ee6d71c953d1.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.before-tactics/megamoe-w4a4/tp8/flashinfer/autotune/0.7.0+ga03f2205263d/sm103/e1a8635d9a76a22b/rank_tp7_pp0_dp7_gpucae22b1d-820c-0ef9-4da4-2df744f6aaa4.json": {
+      "bytes": 17266,
+      "sha256": "2a4b7c01384465e1b7683bc0a945f9667e3ae41cbf6d88e2c862c54c991f5e5d"
+    },
+    "cache.before.json": {
+      "bytes": 312280,
+      "sha256": "4a4a854a39d80ed0f703ed0b36b8a0735cfec8224fd63c7fd2863499461370b3"
+    },
+    "exit.json": {
+      "bytes": 6343,
+      "sha256": "fc7b2928f94d7cddfb43ff9583c10415556dee3a5cebb2e11d37283ce7b38e48"
+    },
+    "gpu.after.json": {
+      "bytes": 1297,
+      "sha256": "8d46d4bba0a504bcc7fc6e6f3ebda845eeaf691284e21c22d8acefa2c3a44c75"
+    },
+    "gpu.before.json": {
+      "bytes": 1297,
+      "sha256": "b91033333bafab1e908d64e66442b685db1f75e7714dd4010e4991fe80141cad"
+    },
+    "gpu.cleanup.jsonl": {
+      "bytes": 1201,
+      "sha256": "15bf8f8ac6b1de230c9599af14ccd361c659bb80d8243c2de7a85cc602c1254a"
+    },
+    "gpu.jsonl": {
+      "bytes": 235680,
+      "sha256": "5bb52a710e432b59a4b3891d5ea7aee7671e4353c76a2da795f92bb02926fa10"
+    },
+    "metrics.json": {
+      "bytes": 287,
+      "sha256": "45f797b7545337e14217b60415674b7a0dfe414dddc6659bac469d9aec62884e"
+    },
+    "requested-lengths.json": {
+      "bytes": 805,
+      "sha256": "2ac2f0288ca3b6e1f25c32b7cef4181f0686007a51b11275fa2c1ae45474c101"
+    },
+    "result.json": {
+      "bytes": 10431,
+      "sha256": "19e4068e471165b3e3f1405c249dcb9900cf3d27c4cb9f66e39a0cd506ccf981"
+    },
+    "server.exit.json": {
+      "bytes": 2012,
+      "sha256": "f9b7b40d7b06b2a043b2eb709c655b7e50ce3bc8809f56396971ee32b90f48c5"
+    },
+    "server.launch.json": {
+      "bytes": 4922,
+      "sha256": "5e456cece925ceb19458f1dd28b710df14fe7d569fc00b4d2cc71536ea16b4d8"
+    },
+    "server.log": {
+      "bytes": 356606,
+      "sha256": "8d682b0e3cfd30c007f96d622767095aeb9dab056dbb1f0c84ebc624bdcdd3a6"
+    },
+    "server.owners.jsonl": {
+      "bytes": 1600,
+      "sha256": "350e84482da0668a5feaae6907dcff6106dadd629566aae2df14cea9a2c654bc"
+    },
+    "server_command.json": {
+      "bytes": 1466,
+      "sha256": "8772e55aa282d5e580b5ff677f029f379ae5a6d9b4cf87d2cc0f63777bb180d8"
+    },
+    "server_info.after.json": {
+      "bytes": 206637,
+      "sha256": "81d24092e3e838f55a48c788632d1a51253d4c00fa3f8366b0f3795bc96fcd00"
+    },
+    "server_info.before.json": {
+      "bytes": 206131,
+      "sha256": "173f45f00e64e87474c35c374e9aa2c76e6d5b2eebaa1426d782cc9ad4ca5965"
+    },
+    "server_watch.json": {
+      "bytes": 199,
+      "sha256": "884327ec7cc965aa60b11c02bff6a00dce24f85c97f937528cc5e9d8ae788c0a"
+    },
+    "settings.json": {
+      "bytes": 5469,
+      "sha256": "a21f7725aa1d008e1783354656d85e50eac7ec3a24ca9cb6c7174defc99fd0ab"
+    },
+    "source.after.json": {
+      "bytes": 11306,
+      "sha256": "b791e0488a21c53f9808f3be903b323716c86fd84d1583cd89bb32eccc325590"
+    },
+    "source.before.json": {
+      "bytes": 11306,
+      "sha256": "b791e0488a21c53f9808f3be903b323716c86fd84d1583cd89bb32eccc325590"
+    }
+  },
+  "scope": "terminal case evidence; cache payloads limited to tactics",
+  "sealed_at": "2026-09-30T14:07:40Z"
+}

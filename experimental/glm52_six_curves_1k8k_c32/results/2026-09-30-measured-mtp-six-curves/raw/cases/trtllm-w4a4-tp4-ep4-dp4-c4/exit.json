@@ -1,0 +1,270 @@
+{
+  "case": {
+    "arm_id": "trtllm-w4a4",
+    "case_id": "trtllm-w4a4-tp4-ep4-dp4-c4",
+    "concurrency": 4,
+    "dp": 4,
+    "ep": 4,
+    "measured_requests": 40,
+    "moe_a2a_backend": "none",
+    "moe_runner_backend": "flashinfer_trtllm",
+    "precision": "w4a4",
+    "server_max_running_requests": 4,
+    "tp": 4,
+    "warmup_requests": 8
+  },
+  "cleanup": {
+    "benchmark": {
+      "at": "2026-09-30T19:11:06Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 166107,
+          "pid": 166107,
+          "ppid": 6716,
+          "sid": 166107,
+          "starttime": "343224112",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166117,
+          "ppid": 166107,
+          "sid": 166107,
+          "starttime": "343224140",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166435,
+          "ppid": 166117,
+          "sid": 166107,
+          "starttime": "343225474",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166436,
+          "ppid": 166117,
+          "sid": 166107,
+          "starttime": "343225476",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166437,
+          "ppid": 166117,
+          "sid": 166107,
+          "starttime": "343225477",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166438,
+          "ppid": 166117,
+          "sid": 166107,
+          "starttime": "343225479",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166439,
+          "ppid": 166117,
+          "sid": 166107,
+          "starttime": "343225480",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166440,
+          "ppid": 166117,
+          "sid": 166107,
+          "starttime": "343225482",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166441,
+          "ppid": 166117,
+          "sid": 166107,
+          "starttime": "343225483",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166442,
+          "ppid": 166117,
+          "sid": 166107,
+          "starttime": "343225484",
+          "state": "R"
+        },
+        {
+          "pgid": 166107,
+          "pid": 166456,
+          "ppid": 166107,
+          "sid": 166107,
+          "starttime": "343225914",
+          "state": "S"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166457,
+          "ppid": 166456,
+          "sid": 166457,
+          "starttime": "343225938",
+          "state": "R"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166785,
+          "ppid": 166457,
+          "sid": 166457,
+          "starttime": "343227467",
+          "state": "R"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166786,
+          "ppid": 166457,
+          "sid": 166457,
+          "starttime": "343227469",
+          "state": "R"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166787,
+          "ppid": 166457,
+          "sid": 166457,
+          "starttime": "343227471",
+          "state": "R"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166788,
+          "ppid": 166457,
+          "sid": 166457,
+          "starttime": "343227472",
+          "state": "R"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166789,
+          "ppid": 166457,
+          "sid": 166457,
+          "starttime": "343227474",
+          "state": "R"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166790,
+          "ppid": 166457,
+          "sid": 166457,
+          "starttime": "343227475",
+          "state": "R"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166791,
+          "ppid": 166457,
+          "sid": 166457,
+          "starttime": "343227476",
+          "state": "R"
+        },
+        {
+          "pgid": 166457,
+          "pid": 166792,
+          "ppid": 166457,
+          "sid": 166457,
+          "starttime": "343227478",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": 0
+    },
+    "server": {
+      "at": "2026-09-30T19:11:12Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 162808,
+          "pid": 162808,
+          "ppid": 6716,
+          "sid": 162808,
+          "starttime": "343198023",
+          "state": "R"
+        },
+        {
+          "pgid": 162808,
+          "pid": 163002,
+          "ppid": 162808,
+          "sid": 162808,
+          "starttime": "343201692",
+          "state": "S"
+        },
+        {
+          "pgid": 162808,
+          "pid": 163003,
+          "ppid": 162808,
+          "sid": 162808,
+          "starttime": "343201692",
+          "state": "R"
+        },
+        {
+          "pgid": 162808,
+          "pid": 163004,
+          "ppid": 162808,
+          "sid": 162808,
+          "starttime": "343201692",
+          "state": "R"
+        },
+        {
+          "pgid": 162808,
+          "pid": 163368,
+          "ppid": 163003,
+          "sid": 162808,
+          "starttime": "343204564",
+          "state": "R"
+        },
+        {
+          "pgid": 162808,
+          "pid": 163376,
+          "ppid": 163003,
+          "sid": 162808,
+          "starttime": "343204600",
+          "state": "R"
+        },
+        {
+          "pgid": 162808,
+          "pid": 163424,
+          "ppid": 163003,
+          "sid": 162808,
+          "starttime": "343204637",
+          "state": "R"
+        },
+        {
+          "pgid": 162808,
+          "pid": 163472,
+          "ppid": 163003,
+          "sid": 162808,
+          "starttime": "343204671",
+          "state": "R"
+        },
+        {
+          "pgid": 162808,
+          "pid": 165326,
+          "ppid": 163472,
+          "sid": 162808,
+          "starttime": "343215716",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": -9
+    }
+  },
+  "error": null,
+  "finished_at": "2026-09-30T19:11:15Z",
+  "started_at": "2026-09-30T18:57:41Z",
+  "status": "completed"
+}

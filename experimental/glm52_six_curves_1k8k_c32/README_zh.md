@@ -2,7 +2,11 @@
 
 [English](README.md) | [简体中文](README_zh.md)
 
-本手动配方准备一次**新的 36 点实验**：在单台八卡 B300 节点上，比较三种后端，并分别使用 TP=EP=DP attention 4 和 8。每个成功点必须保存每条测量请求的原生推测解码计数。本次脚本变更**不包含新的实测结果**。实验不在 InferenceX 定时矩阵中；脚本不会安装依赖、申请节点、发布结果或删除存储。
+本手动配方在单台八卡 B300 节点上，比较三种后端，并分别使用 TP=EP=DP attention 4 和 8。[2026-09-30 测量阶段 MTP 结果](results/2026-09-30-measured-mtp-six-curves/results/RESULTS.md)包含 **36 个已接受点、3,780 条成功测量请求，测量失败数为零**。756 条计划预热请求不计入 MTP 统计；每个点均保存全部测量请求的原生推测解码计数。实验不在 InferenceX 定时矩阵中；脚本不会安装依赖、申请节点、发布结果或删除存储。
+
+查看[六曲线总图](results/2026-09-30-measured-mtp-six-curves/results/pareto.png)、[EP4](results/2026-09-30-measured-mtp-six-curves/results/figures/ep4/pareto.png) 或 [EP8](results/2026-09-30-measured-mtp-six-curves/results/figures/ep8/pareto.png)。每个点标注并发和仅测量阶段的 acceptance length，按 completion tokens 总和除以验证步数总和计算，包含 bonus tokens。[复现指南](results/2026-09-30-measured-mtp-six-curves/REPRODUCE.md)先复算原始表格，再通过独立的标签排版步骤生成最终图表。
+
+另提供 **C2–32** 视图，仅展示 C2/4/8/16/32：[总图](results/2026-09-30-measured-mtp-six-curves/results/c2-32/pareto.png)、[EP4](results/2026-09-30-measured-mtp-six-curves/results/c2-32/figures/ep4/pareto.png) 和 [EP8](results/2026-09-30-measured-mtp-six-curves/results/c2-32/figures/ep8/pareto.png)。这些图使用同一批已接受的实测数据，并在所选范围内重新计算各前沿。
 
 不可变的 [2026-09-29 结果包](results/2026-09-29-default-six-curves/REPRODUCE.md)仍包含 **24 个已接受点、3,600 条成功测量请求、720 条预热请求和六条 Pareto 前沿**。当时的客户端没有保存测量阶段的推测解码计数，因此该历史实验的 measured-only MTP acceptance length **不可用**。现有 N/A 图和原始数据不会被本次重跑改写。
 
@@ -118,7 +122,7 @@ python3 -B source/experimental/glm52_six_curves_1k8k_c32/results.py \
   --run-root raw --output /absolute/path/to/new-historical-reproduction
 ```
 
-该命令保持原 24 点合约，不伪造 measured MTP。新的 36 点结果必须在实际审核后保存到独立目录，不覆盖历史发布包。
+该命令保持原 24 点合约，不伪造 measured MTP。已审核的 36 点重跑结果独立保存在 `results/2026-09-30-measured-mtp-six-curves`，历史发布包保持不变。
 
 ## 本地行为验证
 

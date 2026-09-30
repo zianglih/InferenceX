@@ -1,0 +1,152 @@
+{
+  "_metadata": {
+    "flashinfer_version": "0.7.0+ga03f2205263d",
+    "cuda_version": "13.0",
+    "cublas_version": "13.1.1",
+    "cudnn_version": "92000",
+    "cudnn_frontend_version": "1.30.0",
+    "cutlass_dsl_version": "nvidia-cutlass-dsl-libs-base==4.6.2;nvidia-cutlass-dsl-libs-core==4.6.2;nvidia-cutlass-dsl-libs-cu12==4.6.2;nvidia-cutlass-dsl-libs-cu13==4.6.2;nvidia-cutlass-dsl==4.6.2",
+    "gpu": "NVIDIA B300 SXM6 AC"
+  },
+  "('flashinfer::trtllm_fp4_block_scale_moe', 'MoERunner', ((1, 6144), (1, 256), (1, 8), (1, 8), (1, 3072), (1, 384), (0,), (0,)), ('Module', 8, 64, 256, 0, 17826818, 17826818, 0, 6144, 6144, 2048, 3, True, 0, False, False))": [
+    "MoERunner",
+    [
+      8,
+      217
+    ]
+  ],
+  "('flashinfer::trtllm_fp4_block_scale_moe', 'MoERunner', ((128, 6144), (128, 256), (128, 8), (128, 8), (128, 3072), (128, 384), (0,), (0,)), ('Module', 8, 64, 256, 0, 17826818, 17826818, 0, 6144, 6144, 2048, 3, True, 0, False, False))": [
+    "MoERunner",
+    [
+      16,
+      88
+    ]
+  ],
+  "('flashinfer::trtllm_fp4_block_scale_moe', 'MoERunner', ((16, 6144), (16, 256), (16, 8), (16, 8), (16, 3072), (16, 384), (0,), (0,)), ('Module', 8, 64, 256, 0, 17826818, 17826818, 0, 6144, 6144, 2048, 3, True, 0, False, False))": [
+    "MoERunner",
+    [
+      8,
+      76
+    ]
+  ],
+  "('flashinfer::trtllm_fp4_block_scale_moe', 'MoERunner', ((2, 6144), (2, 256), (2, 8), (2, 8), (2, 3072), (2, 384), (0,), (0,)), ('Module', 8, 64, 256, 0, 17826818, 17826818, 0, 6144, 6144, 2048, 3, True, 0, False, False))": [
+    "MoERunner",
+    [
+      8,
+      77
+    ]
+  ],
+  "('flashinfer::trtllm_fp4_block_scale_moe', 'MoERunner', ((32, 6144), (32, 256), (32, 8), (32, 8), (32, 3072), (32, 384), (0,), (0,)), ('Module', 8, 64, 256, 0, 17826818, 17826818, 0, 6144, 6144, 2048, 3, True, 0, False, False))": [
+    "MoERunner",
+    [
+      16,
+      82
+    ]
+  ],
+  "('flashinfer::trtllm_fp4_block_scale_moe', 'MoERunner', ((4, 6144), (4, 256), (4, 8), (4, 8), (4, 3072), (4, 384), (0,), (0,)), ('Module', 8, 64, 256, 0, 17826818, 17826818, 0, 6144, 6144, 2048, 3, True, 0, False, False))": [
+    "MoERunner",
+    [
+      8,
+      107
+    ]
+  ],
+  "('flashinfer::trtllm_fp4_block_scale_moe', 'MoERunner', ((64, 6144), (64, 256), (64, 8), (64, 8), (64, 3072), (64, 384), (0,), (0,)), ('Module', 8, 64, 256, 0, 17826818, 17826818, 0, 6144, 6144, 2048, 3, True, 0, False, False))": [
+    "MoERunner",
+    [
+      8,
+      316
+    ]
+  ],
+  "('flashinfer::trtllm_fp4_block_scale_moe', 'MoERunner', ((8, 6144), (8, 256), (8, 8), (8, 8), (8, 3072), (8, 384), (0,), (0,)), ('Module', 8, 64, 256, 0, 17826818, 17826818, 0, 6144, 6144, 2048, 3, True, 0, False, False))": [
+    "MoERunner",
+    [
+      8,
+      67
+    ]
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1, 1, 64, 576), (1, 1, 2048), (1,), (1, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1024, 1, 64, 576), (1024, 1, 2048), (1024,), (1024, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((128, 1, 64, 576), (128, 1, 2048), (128,), (128, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1280, 1, 64, 576), (1280, 1, 2048), (1280,), (1280, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1536, 1, 64, 576), (1536, 1, 2048), (1536,), (1536, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((16, 1, 64, 576), (16, 1, 2048), (16,), (16, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1792, 1, 64, 576), (1792, 1, 2048), (1792,), (1792, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2, 1, 64, 576), (2, 1, 2048), (2,), (2, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2048, 1, 64, 576), (2048, 1, 2048), (2048,), (2048, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((256, 1, 64, 576), (256, 1, 2048), (256,), (256, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2560, 1, 64, 576), (2560, 1, 2048), (2560,), (2560, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((3072, 1, 64, 576), (3072, 1, 2048), (3072,), (3072, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((32, 1, 64, 576), (32, 1, 2048), (32,), (32, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((3584, 1, 64, 576), (3584, 1, 2048), (3584,), (3584, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((4, 1, 64, 576), (4, 1, 2048), (4,), (4, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((4096, 1, 64, 576), (4096, 1, 2048), (4096,), (4096, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((512, 1, 64, 576), (512, 1, 2048), (512,), (512, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((64, 1, 64, 576), (64, 1, 2048), (64,), (64, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((768, 1, 64, 576), (768, 1, 2048), (768,), (768, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((8, 1, 64, 576), (8, 1, 2048), (8,), (8, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((8192, 1, 64, 576), (8192, 1, 2048), (8192,), (8192, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "_generation": "5918ab743b0f2ae05679c5e157ecd1389c340f9cba927595cbb14522562d8dd0"
+}

@@ -1,0 +1,72 @@
+{
+  "at": "2026-09-30T15:45:32Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 87228,
+      "pid": 87228,
+      "ppid": 6716,
+      "sid": 87228,
+      "starttime": "341967284",
+      "state": "R"
+    },
+    {
+      "pgid": 87228,
+      "pid": 87421,
+      "ppid": 87228,
+      "sid": 87228,
+      "starttime": "341970557",
+      "state": "S"
+    },
+    {
+      "pgid": 87228,
+      "pid": 87422,
+      "ppid": 87228,
+      "sid": 87228,
+      "starttime": "341970557",
+      "state": "R"
+    },
+    {
+      "pgid": 87228,
+      "pid": 87423,
+      "ppid": 87228,
+      "sid": 87228,
+      "starttime": "341970557",
+      "state": "R"
+    },
+    {
+      "pgid": 87228,
+      "pid": 87780,
+      "ppid": 87422,
+      "sid": 87228,
+      "starttime": "341973348",
+      "state": "R"
+    },
+    {
+      "pgid": 87228,
+      "pid": 87730,
+      "ppid": 87422,
+      "sid": 87228,
+      "starttime": "341973281",
+      "state": "R"
+    },
+    {
+      "pgid": 87228,
+      "pid": 87732,
+      "ppid": 87422,
+      "sid": 87228,
+      "starttime": "341973314",
+      "state": "R"
+    },
+    {
+      "pgid": 87228,
+      "pid": 87828,
+      "ppid": 87422,
+      "sid": 87228,
+      "starttime": "341973383",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

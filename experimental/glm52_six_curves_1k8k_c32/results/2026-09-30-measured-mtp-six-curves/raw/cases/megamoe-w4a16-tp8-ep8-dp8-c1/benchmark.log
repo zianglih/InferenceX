@@ -1,0 +1,62 @@
+Generating 10 prompts using 5 worker processes...
+Prompt generation completed in 2.2s
+-------------------  Input/Output Length Statistics  -------------------
+ input_lens : min=830   max=1016  mean=916.90   avg_token_mismatch=12.00 
+ output_lens: min=6640  max=8063  mean=7390.60 
+------------------------------------------------------------------------ 
+
++ run_server_client env PYTHONPATH=/data/home/ziangli/inferencex-glm52-measured-mtp-20260930/sources/inferencex:/data/home/ziangli/inferencex-glm52-six-curves-c32-20260929/sources/sglang/python:/data/home/ziangli/inferencex-glm52-measured-mtp-20260930/sources/inferencex python3 -m infx.bench_serving.benchmark_serving --model GLM-5.2-NVFP4 --backend vllm --base-url http://0.0.0.0:30000 --dataset-name random --random-input-len 1024 --random-output-len 8192 --random-range-ratio 0.8 --num-prompts 10 --max-concurrency 1 --request-rate inf --ignore-eos --save-result --num-warmups 2 --percentile-metrics ttft,tpot,itl,e2el --result-dir /data/home/ziangli/inferencex-glm52-measured-mtp-20260930/glm52-six-curves-measured-mtp-20260930-all36/cases/megamoe-w4a16-tp8-ep8-dp8-c1 --result-filename result.json --capture-speculative-metrics --use-chat-template --tokenizer /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4
++ [[ -n /data/home/ziangli/inferencex-glm52-measured-mtp-20260930/glm52-six-curves-measured-mtp-20260930-all36/cases/megamoe-w4a16-tp8-ep8-dp8-c1/server_watch.json ]]
++ PYTHONPATH=/data/home/ziangli/inferencex-glm52-measured-mtp-20260930/sources/inferencex:/data/home/ziangli/inferencex-glm52-six-curves-c32-20260929/sources/sglang/python:/data/home/ziangli/inferencex-glm52-measured-mtp-20260930/sources/inferencex
++ python3 -m infx.bench_serving.server_watch run --state /data/home/ziangli/inferencex-glm52-measured-mtp-20260930/glm52-six-curves-measured-mtp-20260930-all36/cases/megamoe-w4a16-tp8-ep8-dp8-c1/server_watch.json -- env PYTHONPATH=/data/home/ziangli/inferencex-glm52-measured-mtp-20260930/sources/inferencex:/data/home/ziangli/inferencex-glm52-six-curves-c32-20260929/sources/sglang/python:/data/home/ziangli/inferencex-glm52-measured-mtp-20260930/sources/inferencex python3 -m infx.bench_serving.benchmark_serving --model GLM-5.2-NVFP4 --backend vllm --base-url http://0.0.0.0:30000 --dataset-name random --random-input-len 1024 --random-output-len 8192 --random-range-ratio 0.8 --num-prompts 10 --max-concurrency 1 --request-rate inf --ignore-eos --save-result --num-warmups 2 --percentile-metrics ttft,tpot,itl,e2el --result-dir /data/home/ziangli/inferencex-glm52-measured-mtp-20260930/glm52-six-curves-measured-mtp-20260930-all36/cases/megamoe-w4a16-tp8-ep8-dp8-c1 --result-filename result.json --capture-speculative-metrics --use-chat-template --tokenizer /data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4
+Namespace(backend='vllm', base_url='http://0.0.0.0:30000', host='127.0.0.1', port=8000, endpoint='/v1/completions', dataset_name='random', dataset_path=None, max_concurrency=1, model='GLM-5.2-NVFP4', tokenizer='/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4', best_of=1, use_beam_search=False, num_prompts=10, logprobs=None, request_rate=inf, burstiness=1.0, seed=0, trust_remote_code=False, disable_tqdm=False, profile=False, save_result=True, capture_speculative_metrics=True, save_detailed=False, metadata=None, result_dir='/data/home/ziangli/inferencex-glm52-measured-mtp-20260930/glm52-six-curves-measured-mtp-20260930-all36/cases/megamoe-w4a16-tp8-ep8-dp8-c1', result_filename='result.json', ignore_eos=True, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='90,99,99.9', goodput=None, sonnet_input_len=550, sonnet_output_len=150, sonnet_prefix_len=200, sharegpt_output_len=None, random_input_len=1024, random_output_len=8192, random_range_ratio=0.8, random_prefix_len=0, use_chat_template=True, random_num_workers=0, dsv4=False, hf_subset=None, hf_split=None, hf_output_len=None, tokenizer_mode='auto', served_model_name=None, lora_modules=None, num_warmups=2)
+Generating 10 prompts using 5 worker processes...
+Prompt generation completed in 3.0s
+-------------------  Input/Output Length Statistics  -------------------
+ input_lens : min=830   max=1016  mean=916.90   avg_token_mismatch=12.00 
+ output_lens: min=6640  max=8063  mean=7390.60 
+------------------------------------------------------------------------ 
+
+Starting initial single prompt test run...
+Warming up with 2 requests...
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:31<00:31, 31.73s/it]100%|██████████| 2/2 [01:02<00:00, 31.34s/it]100%|██████████| 2/2 [01:02<00:00, 31.40s/it]
+Warmup completed.
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+  0%|          | 0/10 [00:00<?, ?it/s]Starting main benchmark run...
+ 10%|█         | 1/10 [00:30<04:35, 30.59s/it] 20%|██        | 2/10 [01:06<04:28, 33.58s/it] 30%|███       | 3/10 [01:40<03:56, 33.79s/it] 40%|████      | 4/10 [02:13<03:21, 33.63s/it] 50%|█████     | 5/10 [02:49<02:51, 34.39s/it] 60%|██████    | 6/10 [03:22<02:16, 34.10s/it] 70%|███████   | 7/10 [03:58<01:43, 34.41s/it] 80%|████████  | 8/10 [04:34<01:10, 35.17s/it] 90%|█████████ | 9/10 [05:05<00:33, 33.76s/it]100%|██████████| 10/10 [05:42<00:00, 34.67s/it]100%|██████████| 10/10 [05:42<00:00, 34.22s/it]
+============ Serving Benchmark Result ============
+Successful requests:                     10        
+Benchmark duration (s):                  342.16    
+Total input tokens:                      9169      
+Total generated tokens:                  73906     
+Request throughput (req/s):              0.03      
+Output token throughput (tok/s):         216.00    
+Total Token throughput (tok/s):          242.80    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          281.81    
+Median TTFT (ms):                        289.95    
+P90 TTFT (ms):                           301.53    
+P99 TTFT (ms):                           303.80    
+P99.9 TTFT (ms):                         304.02    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          4.61      
+Median TPOT (ms):                        4.58      
+P90 TPOT (ms):                           4.90      
+P99 TPOT (ms):                           5.43      
+P99.9 TPOT (ms):                         5.48      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           448.86    
+Median ITL (ms):                         266.51    
+P90 ITL (ms):                            915.17    
+P99 ITL (ms):                            2287.08   
+P99.9 ITL (ms):                          4400.15   
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          34215.25  
+Median E2EL (ms):                        34557.86  
+P90 E2EL (ms):                           36704.49  
+P99 E2EL (ms):                           36780.36  
+P99.9 E2EL (ms):                         36787.95  
+==================================================
++ set +x

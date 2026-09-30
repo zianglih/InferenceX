@@ -1,0 +1,80 @@
+{
+  "at": "2026-09-30T12:18:36Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 15424,
+      "pid": 15424,
+      "ppid": 6716,
+      "sid": 15424,
+      "starttime": "340729200",
+      "state": "R"
+    },
+    {
+      "pgid": 15424,
+      "pid": 15602,
+      "ppid": 15424,
+      "sid": 15424,
+      "starttime": "340732084",
+      "state": "R"
+    },
+    {
+      "pgid": 15424,
+      "pid": 15617,
+      "ppid": 15424,
+      "sid": 15424,
+      "starttime": "340732601",
+      "state": "D"
+    },
+    {
+      "pgid": 15424,
+      "pid": 15618,
+      "ppid": 15424,
+      "sid": 15424,
+      "starttime": "340732601",
+      "state": "R"
+    },
+    {
+      "pgid": 15424,
+      "pid": 15619,
+      "ppid": 15424,
+      "sid": 15424,
+      "starttime": "340732601",
+      "state": "R"
+    },
+    {
+      "pgid": 15424,
+      "pid": 15931,
+      "ppid": 15618,
+      "sid": 15424,
+      "starttime": "340735431",
+      "state": "R"
+    },
+    {
+      "pgid": 15424,
+      "pid": 15933,
+      "ppid": 15618,
+      "sid": 15424,
+      "starttime": "340735468",
+      "state": "R"
+    },
+    {
+      "pgid": 15424,
+      "pid": 15981,
+      "ppid": 15618,
+      "sid": 15424,
+      "starttime": "340735505",
+      "state": "R"
+    },
+    {
+      "pgid": 15424,
+      "pid": 15989,
+      "ppid": 15618,
+      "sid": 15424,
+      "starttime": "340735540",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

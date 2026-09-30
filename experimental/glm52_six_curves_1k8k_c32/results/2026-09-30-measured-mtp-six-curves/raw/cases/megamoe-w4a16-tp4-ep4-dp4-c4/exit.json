@@ -1,0 +1,270 @@
+{
+  "case": {
+    "arm_id": "megamoe-w4a16",
+    "case_id": "megamoe-w4a16-tp4-ep4-dp4-c4",
+    "concurrency": 4,
+    "dp": 4,
+    "ep": 4,
+    "measured_requests": 40,
+    "moe_a2a_backend": "flashinfer_megamoe",
+    "moe_runner_backend": "flashinfer_megamoe",
+    "precision": "w4a16",
+    "server_max_running_requests": 4,
+    "tp": 4,
+    "warmup_requests": 8
+  },
+  "cleanup": {
+    "benchmark": {
+      "at": "2026-09-30T15:59:45Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 95068,
+          "pid": 95068,
+          "ppid": 6716,
+          "sid": 95068,
+          "starttime": "342073795",
+          "state": "D"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95072,
+          "ppid": 95068,
+          "sid": 95068,
+          "starttime": "342073796",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95084,
+          "ppid": 95068,
+          "sid": 95068,
+          "starttime": "342073822",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95412,
+          "ppid": 95084,
+          "sid": 95068,
+          "starttime": "342075140",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95413,
+          "ppid": 95084,
+          "sid": 95068,
+          "starttime": "342075142",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95414,
+          "ppid": 95084,
+          "sid": 95068,
+          "starttime": "342075144",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95415,
+          "ppid": 95084,
+          "sid": 95068,
+          "starttime": "342075145",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95416,
+          "ppid": 95084,
+          "sid": 95068,
+          "starttime": "342075147",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95417,
+          "ppid": 95084,
+          "sid": 95068,
+          "starttime": "342075148",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95418,
+          "ppid": 95084,
+          "sid": 95068,
+          "starttime": "342075150",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95419,
+          "ppid": 95084,
+          "sid": 95068,
+          "starttime": "342075151",
+          "state": "R"
+        },
+        {
+          "pgid": 95068,
+          "pid": 95423,
+          "ppid": 95068,
+          "sid": 95068,
+          "starttime": "342075484",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95428,
+          "ppid": 95423,
+          "sid": 95428,
+          "starttime": "342075508",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95752,
+          "ppid": 95428,
+          "sid": 95428,
+          "starttime": "342076795",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95753,
+          "ppid": 95428,
+          "sid": 95428,
+          "starttime": "342076797",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95754,
+          "ppid": 95428,
+          "sid": 95428,
+          "starttime": "342076798",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95755,
+          "ppid": 95428,
+          "sid": 95428,
+          "starttime": "342076800",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95756,
+          "ppid": 95428,
+          "sid": 95428,
+          "starttime": "342076801",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95757,
+          "ppid": 95428,
+          "sid": 95428,
+          "starttime": "342076802",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95758,
+          "ppid": 95428,
+          "sid": 95428,
+          "starttime": "342076804",
+          "state": "R"
+        },
+        {
+          "pgid": 95428,
+          "pid": 95759,
+          "ppid": 95428,
+          "sid": 95428,
+          "starttime": "342076805",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": 0
+    },
+    "server": {
+      "at": "2026-09-30T15:59:51Z",
+      "errors": [],
+      "owners": [
+        {
+          "pgid": 91943,
+          "pid": 91943,
+          "ppid": 6716,
+          "sid": 91943,
+          "starttime": "342045291",
+          "state": "R"
+        },
+        {
+          "pgid": 91943,
+          "pid": 92136,
+          "ppid": 91943,
+          "sid": 91943,
+          "starttime": "342048756",
+          "state": "S"
+        },
+        {
+          "pgid": 91943,
+          "pid": 92137,
+          "ppid": 91943,
+          "sid": 91943,
+          "starttime": "342048756",
+          "state": "R"
+        },
+        {
+          "pgid": 91943,
+          "pid": 92138,
+          "ppid": 91943,
+          "sid": 91943,
+          "starttime": "342048756",
+          "state": "R"
+        },
+        {
+          "pgid": 91943,
+          "pid": 92450,
+          "ppid": 92137,
+          "sid": 91943,
+          "starttime": "342051349",
+          "state": "D"
+        },
+        {
+          "pgid": 91943,
+          "pid": 92452,
+          "ppid": 92137,
+          "sid": 91943,
+          "starttime": "342051385",
+          "state": "R"
+        },
+        {
+          "pgid": 91943,
+          "pid": 92548,
+          "ppid": 92137,
+          "sid": 91943,
+          "starttime": "342051460",
+          "state": "R"
+        },
+        {
+          "pgid": 91943,
+          "pid": 92500,
+          "ppid": 92137,
+          "sid": 91943,
+          "starttime": "342051422",
+          "state": "R"
+        }
+      ],
+      "remaining": [],
+      "waited_returncode": -9
+    }
+  },
+  "error": null,
+  "finished_at": "2026-09-30T15:59:54Z",
+  "started_at": "2026-09-30T15:45:34Z",
+  "status": "completed"
+}

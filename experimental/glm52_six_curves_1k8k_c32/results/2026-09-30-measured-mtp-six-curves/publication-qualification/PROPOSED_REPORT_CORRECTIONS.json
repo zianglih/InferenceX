@@ -1,0 +1,41 @@
+{
+  "changes": [
+    {
+      "new": "The TRTLLM NVFP4 arm supplies no custom per-token-scaling or quantizer-math override. Its selected SGLang helper omits the backend argument; pinned FlashInfer fp4_quantize defaults to CUDA and calls fp4_quantize_sm100 through the SM103 module. CuTeDSL-only math flags do not establish the selected CUDA path\u2019s reciprocal or approximation behavior; no such low-level math claim is made. Fixed checkpoint global scale and runtime vector16 E4M3 block scales are established separately. The W4A16 opt-in also affects eligible dense NVFP4 linears under current defaults; it is not an isolated MoE-only precision change. Draft BF16 describes its MoE path, not every tensor. This reader checks sealed settings and accounting; actual native kernel/tactics/calibration, full terminal and preservation acceptance remain separate reviews.",
+      "old": "The traditional arm uses backend defaults for per-tensor activation and quantization fast math; the W4A16 opt-in also affects eligible dense NVFP4 linears under current defaults; it is not an isolated MoE-only precision change. Draft BF16 describes its MoE path, not every tensor. This reader checks sealed settings and accounting; actual native kernel/tactics/calibration, full terminal and preservation acceptance remain separate reviews.",
+      "operation": "replace_exact_once",
+      "target": "results/RESULTS.md"
+    },
+    {
+      "operation": "append_paragraph_once",
+      "target": "results/RESULTS.md",
+      "text": "Case C17 (MegaMoE W4A16, TP=EP=DP4, C8) retained post-case GPU memory [4231, 236413, 4426, 2170, 0, 0, 0, 0] MiB at 2026-09-30T16:16:37Z, with zero utilization and an empty subsequent application query. The producer checks eight GPU rows and no reported applications; the GPU and application queries are sequential. Acceptance under that predicate does not establish zero-memory, atomic or continuous idle, current idle, a causal explanation, or eventual reclamation. Leader exit 0 also does not establish every child exited gracefully."
+    },
+    {
+      "new": "- Runtime uses lmsysorg/sglang:nightly-dev-cu13-20260930-cae69be5@sha256:0412c5b792cb35706de0359de4a1af52c160d4bdef6ff7530baf9df4e2a7b0b4 and Torch 2.13.0+cu130, distinct from the September 29 baseline. Both installation pip commands exited 0; the original installer terminal remains failed after the namespace postcheck, followed by a separately accepted validation-only continuation with no reinstall. Preserve the reviewed shared FlashInfer/TorchC helper exception. pip check exited 1 with 14 conflict/missing-dependency lines (13 pre-existing plus the custom FlashInfer version against image SGLang metadata); neither a clean dependency check nor old/new runtime equality is claimed.",
+      "old": "- Runtime is the September 30 cae69be5 image with Torch 2.13, distinct from the September 29 baseline. Successful pip commands, the failed namespace postcheck, and separate validation-only continuation remain preserved in prerequisite evidence; pip check reported 14 dependency conflicts. This is not environment equality with the old run.",
+      "operation": "replace_exact_once",
+      "target": "REPRODUCE.md"
+    },
+    {
+      "operation": "append_qualified_methods_paragraphs_once",
+      "target": "REPRODUCE.md",
+      "text": "The TRTLLM NVFP4 arm supplies no custom per-token-scaling or quantizer-math override. Its selected SGLang helper omits the backend argument; pinned FlashInfer fp4_quantize defaults to CUDA and calls fp4_quantize_sm100 through the SM103 module. CuTeDSL-only math flags do not establish the selected CUDA path\u2019s reciprocal or approximation behavior; no such low-level math claim is made. Fixed checkpoint global scale and runtime vector16 E4M3 block scales are established separately. The W4A16 opt-in also affects eligible dense NVFP4 linears under current defaults; it is not an isolated MoE-only precision change. Draft BF16 describes its MoE path, not every tensor. This reader checks sealed settings and accounting; actual native kernel/tactics/calibration, full terminal and preservation acceptance remain separate reviews.\n\nCase C17 (MegaMoE W4A16, TP=EP=DP4, C8) retained post-case GPU memory [4231, 236413, 4426, 2170, 0, 0, 0, 0] MiB at 2026-09-30T16:16:37Z, with zero utilization and an empty subsequent application query. The producer checks eight GPU rows and no reported applications; the GPU and application queries are sequential. Acceptance under that predicate does not establish zero-memory, atomic or continuous idle, current idle, a causal explanation, or eventual reclamation. Leader exit 0 also does not establish every child exited gracefully.\n\nWarmup counts are scheduled counts: the warmup phase was awaited and its outputs discarded before measurement. Per-warmup success records were not retained. Measured AL is sum(final completion_tokens)/sum(spec_verify_ct), including the native bonus convention, and rate is sum(correct drafts)/sum(proposed drafts), over all measured requests only. Neither statistic is an average of per-request or DP-rank ratios, and no completion_tokens = correct_drafts + spec_verify_ct identity is assumed."
+    },
+    {
+      "new": "This selected raw-data bundle contains 36 points, 3,780 measured requests and 756 scheduled warmup requests.",
+      "old": "This selected raw-data bundle contains 36 points, 3,780 measured requests and 756 warmups.",
+      "operation": "replace_exact_once",
+      "target": "REPRODUCE.md"
+    }
+  ],
+  "integration": [
+    "Do not run packaging/rendering until all 36 independently accepted cases, complete 3,780 measured coverage, 54 pairs, exact full collection, and waited inner/outer terminals and owner closure exist.",
+    "Preserve the seven pinned source files and the initial prepared payload, PREPARED.json, PROVENANCE.json and FILES.json exactly as first emitted.",
+    "If approved later, use a separate exclusive publication copy. A narrow separately reviewed postprocessor must verify the initial manifest, apply only the specified generated-document edits, and save the exact transformation source/note and before/after document descriptors. Never modify the original package in place.",
+    "Regenerate FILES.json and publication-copy provenance/descriptors in the new namespace, bind the original prepared manifest and qualification audit, and disclose that report prose was clarified after generation. Retain the initial exact reader output as evidence.",
+    "Independently reproduce the seven exact source files; all raw files, numeric tables, counters, coordinates, frontiers and plots must remain unchanged by this report-only step. The unmodified reader naturally regenerates historical prose, so compare numeric/figure outputs and apply/disclose the separate documented prose transformation instead of claiming report-byte identity.",
+    "Keep old24 and historical AL=N/A namespaces immutable. Root alone handles eventual publication/preservation/cleanup; this proposal authorizes none."
+  ],
+  "status": "PROPOSED_TEXT_ONLY_NOT_APPLIED"
+}

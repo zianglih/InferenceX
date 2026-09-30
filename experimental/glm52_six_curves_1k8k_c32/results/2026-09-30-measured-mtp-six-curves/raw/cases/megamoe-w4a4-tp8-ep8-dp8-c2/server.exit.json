@@ -1,0 +1,112 @@
+{
+  "at": "2026-09-30T14:07:37Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 51274,
+      "pid": 51274,
+      "ppid": 6716,
+      "sid": 51274,
+      "starttime": "341379131",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51472,
+      "ppid": 51274,
+      "sid": 51274,
+      "starttime": "341383256",
+      "state": "S"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51473,
+      "ppid": 51274,
+      "sid": 51274,
+      "starttime": "341383256",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51474,
+      "ppid": 51274,
+      "sid": 51274,
+      "starttime": "341383256",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51847,
+      "ppid": 51473,
+      "sid": 51274,
+      "starttime": "341386040",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51797,
+      "ppid": 51473,
+      "sid": 51274,
+      "starttime": "341385966",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51799,
+      "ppid": 51473,
+      "sid": 51274,
+      "starttime": "341386004",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51962,
+      "ppid": 51473,
+      "sid": 51274,
+      "starttime": "341386082",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51965,
+      "ppid": 51473,
+      "sid": 51274,
+      "starttime": "341386119",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 51967,
+      "ppid": 51473,
+      "sid": 51274,
+      "starttime": "341386155",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 52097,
+      "ppid": 51473,
+      "sid": 51274,
+      "starttime": "341386192",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 52164,
+      "ppid": 51473,
+      "sid": 51274,
+      "starttime": "341386229",
+      "state": "R"
+    },
+    {
+      "pgid": 51274,
+      "pid": 55254,
+      "ppid": 51962,
+      "sid": 51274,
+      "starttime": "341400278",
+      "state": "D"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

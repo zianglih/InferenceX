@@ -1,0 +1,120 @@
+{
+  "at": "2026-09-30T15:32:26Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 85719,
+      "pid": 85719,
+      "ppid": 6716,
+      "sid": 85719,
+      "starttime": "341921623",
+      "state": "D"
+    },
+    {
+      "pgid": 85719,
+      "pid": 85729,
+      "ppid": 85719,
+      "sid": 85719,
+      "starttime": "341921650",
+      "state": "R"
+    },
+    {
+      "pgid": 85719,
+      "pid": 86051,
+      "ppid": 85729,
+      "sid": 85719,
+      "starttime": "341923065",
+      "state": "R"
+    },
+    {
+      "pgid": 85719,
+      "pid": 86052,
+      "ppid": 85729,
+      "sid": 85719,
+      "starttime": "341923066",
+      "state": "R"
+    },
+    {
+      "pgid": 85719,
+      "pid": 86053,
+      "ppid": 85729,
+      "sid": 85719,
+      "starttime": "341923067",
+      "state": "R"
+    },
+    {
+      "pgid": 85719,
+      "pid": 86054,
+      "ppid": 85729,
+      "sid": 85719,
+      "starttime": "341923068",
+      "state": "R"
+    },
+    {
+      "pgid": 85719,
+      "pid": 86055,
+      "ppid": 85729,
+      "sid": 85719,
+      "starttime": "341923069",
+      "state": "R"
+    },
+    {
+      "pgid": 86064,
+      "pid": 86064,
+      "ppid": 86063,
+      "sid": 86064,
+      "starttime": "341923388",
+      "state": "R"
+    },
+    {
+      "pgid": 85719,
+      "pid": 86063,
+      "ppid": 85719,
+      "sid": 85719,
+      "starttime": "341923364",
+      "state": "S"
+    },
+    {
+      "pgid": 86064,
+      "pid": 86400,
+      "ppid": 86064,
+      "sid": 86064,
+      "starttime": "341924981",
+      "state": "R"
+    },
+    {
+      "pgid": 86064,
+      "pid": 86401,
+      "ppid": 86064,
+      "sid": 86064,
+      "starttime": "341924982",
+      "state": "R"
+    },
+    {
+      "pgid": 86064,
+      "pid": 86402,
+      "ppid": 86064,
+      "sid": 86064,
+      "starttime": "341924984",
+      "state": "R"
+    },
+    {
+      "pgid": 86064,
+      "pid": 86398,
+      "ppid": 86064,
+      "sid": 86064,
+      "starttime": "341924977",
+      "state": "R"
+    },
+    {
+      "pgid": 86064,
+      "pid": 86399,
+      "ppid": 86064,
+      "sid": 86064,
+      "starttime": "341924979",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": 0
+}

@@ -2,7 +2,11 @@
 
 [English](README.md) | [简体中文](README_zh.md)
 
-This manual recipe prepares a **new 36-point run** of three backend selections at TP=EP=DP attention 4 and 8 on one eight-GPU B300 node. Each successful point must save native speculative counters for every measured request. No new benchmark result is included by this script change. The experiment is outside the scheduled InferenceX matrix; scripts do not install packages, allocate nodes, publish results, or delete storage.
+This manual recipe runs three backend selections at TP=EP=DP attention 4 and 8 on one eight-GPU B300 node. The [2026-09-30 measured-MTP results](results/2026-09-30-measured-mtp-six-curves/results/RESULTS.md) contain **36 accepted points and 3,780 successful measured requests, with zero measured failures**. The 756 scheduled warmups are excluded from MTP accounting. Each point saves native speculative counters for every measured request. The experiment is outside the scheduled InferenceX matrix; scripts do not install packages, allocate nodes, publish results, or delete storage.
+
+View the [combined six curves](results/2026-09-30-measured-mtp-six-curves/results/pareto.png), [EP4](results/2026-09-30-measured-mtp-six-curves/results/figures/ep4/pareto.png), or [EP8](results/2026-09-30-measured-mtp-six-curves/results/figures/ep8/pareto.png). Every point shows its concurrency and measured-only acceptance length, computed as total completion tokens divided by total verification steps, including bonus tokens. The [reproduction guide](results/2026-09-30-measured-mtp-six-curves/REPRODUCE.md) reproduces the raw tables first, then applies a separate label-placement step to the final figures.
+
+Additional **C2–32** views show only C2/4/8/16/32: [combined](results/2026-09-30-measured-mtp-six-curves/results/c2-32/pareto.png), [EP4](results/2026-09-30-measured-mtp-six-curves/results/c2-32/figures/ep4/pareto.png), and [EP8](results/2026-09-30-measured-mtp-six-curves/results/c2-32/figures/ep8/pareto.png). These filter the same accepted measurements and recompute each frontier within that range.
 
 The immutable [2026-09-29 bundle](results/2026-09-29-default-six-curves/REPRODUCE.md) remains **24 accepted points, 3,600 successful measured requests and 720 warmups**, with six frontiers. Its client did not save measured speculative counters, so its measured-only MTP acceptance length is **unavailable**. The existing N/A plots and original raw payloads are historical evidence and are not rewritten by this rerun.
 
@@ -118,7 +122,7 @@ python3 -B source/experimental/glm52_six_curves_1k8k_c32/results.py \
   --run-root raw --output /absolute/path/to/new-historical-reproduction
 ```
 
-That command retains the old 24-point contract and never invents measured MTP values. New 36-point results must be saved in a separate result directory after full actual review; do not overwrite this historical release.
+That command retains the old 24-point contract and never invents measured MTP values. The reviewed 36-point rerun is saved separately in `results/2026-09-30-measured-mtp-six-curves`; this historical release remains unchanged.
 
 ## Local behavioral validation
 

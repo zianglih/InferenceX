@@ -1,0 +1,541 @@
+{
+  "_metadata": {
+    "flashinfer_version": "0.7.0+ga03f2205263d",
+    "cuda_version": "13.0",
+    "cublas_version": "13.1.1",
+    "cudnn_version": "92000",
+    "cudnn_frontend_version": "1.30.0",
+    "cutlass_dsl_version": "nvidia-cutlass-dsl-libs-base==4.6.2;nvidia-cutlass-dsl-libs-core==4.6.2;nvidia-cutlass-dsl-libs-cu12==4.6.2;nvidia-cutlass-dsl-libs-cu13==4.6.2;nvidia-cutlass-dsl==4.6.2",
+    "gpu": "NVIDIA B300 SXM6 AC"
+  },
+  "_records": {
+    "sglang_flashinfer_megamoe": {
+      "{\"config\": {\"activation\": \"swiglu\", \"activation_clamp\": null, \"apply_topk_in_fc1\": false, \"enable_in_kernel_fc2_reduce\": false, \"gate_up_clamp\": null, \"intermediate_size\": 2048, \"kernel_name\": \"sm100_bf16_nvfp4_bf16_cutedsl\", \"situ_beta\": null, \"situ_linear_beta\": null, \"swiglu_alpha\": null, \"swiglu_beta\": null, \"top_k\": 8}, \"hidden\": 6144, \"mega_use_ncu\": \"0\", \"num_experts\": 256, \"torch\": \"2.13.0+cu130\", \"world_size\": 4}:1": {
+        "version": 1,
+        "entries": [
+          {
+            "device": "NVIDIA B300 SXM6 AC",
+            "dtype": "bf16_nvfp4",
+            "world_size": 4,
+            "hidden": 6144,
+            "intermediate": 2048,
+            "num_experts": 256,
+            "topk": 8,
+            "combine_dtype": "bf16",
+            "max_tokens": 1,
+            "apply_topk_in_fc1": false,
+            "knobs": {
+              "cluster_shape_mnk": [
+                2,
+                1,
+                1
+              ],
+              "group_hint": 512,
+              "epi_flag_batch": [
+                2,
+                4
+              ],
+              "load_balance_mode": "atomic_counter",
+              "mma_tiler_mnk": [
+                256,
+                64,
+                256
+              ],
+              "use_2cta_instrs": true,
+              "flag_batch": 4,
+              "token_back_mode": "epi_warps",
+              "in_kernel_fc2_reduce": false,
+              "num_sched_stages": 2
+            },
+            "p50_us": 60.7680007815361,
+            "source": "autotune_graph_events",
+            "tuned_at": "2026-09-30T14:56:50"
+          }
+        ]
+      },
+      "{\"config\": {\"activation\": \"swiglu\", \"activation_clamp\": null, \"apply_topk_in_fc1\": false, \"enable_in_kernel_fc2_reduce\": false, \"gate_up_clamp\": null, \"intermediate_size\": 2048, \"kernel_name\": \"sm100_bf16_nvfp4_bf16_cutedsl\", \"situ_beta\": null, \"situ_linear_beta\": null, \"swiglu_alpha\": null, \"swiglu_beta\": null, \"top_k\": 8}, \"hidden\": 6144, \"mega_use_ncu\": \"0\", \"num_experts\": 256, \"torch\": \"2.13.0+cu130\", \"world_size\": 4}:2": {
+        "version": 1,
+        "entries": [
+          {
+            "device": "NVIDIA B300 SXM6 AC",
+            "dtype": "bf16_nvfp4",
+            "world_size": 4,
+            "hidden": 6144,
+            "intermediate": 2048,
+            "num_experts": 256,
+            "topk": 8,
+            "combine_dtype": "bf16",
+            "max_tokens": 2,
+            "apply_topk_in_fc1": false,
+            "knobs": {
+              "cluster_shape_mnk": [
+                2,
+                1,
+                1
+              ],
+              "group_hint": 1024,
+              "epi_flag_batch": [
+                2,
+                4
+              ],
+              "load_balance_mode": "atomic_counter",
+              "mma_tiler_mnk": [
+                256,
+                64,
+                256
+              ],
+              "use_2cta_instrs": true,
+              "flag_batch": 4,
+              "token_back_mode": "epi_warps",
+              "in_kernel_fc2_reduce": false,
+              "num_sched_stages": 2
+            },
+            "p50_us": 60.736000537872314,
+            "source": "autotune_graph_events",
+            "tuned_at": "2026-09-30T14:57:37"
+          }
+        ]
+      },
+      "{\"config\": {\"activation\": \"swiglu\", \"activation_clamp\": null, \"apply_topk_in_fc1\": false, \"enable_in_kernel_fc2_reduce\": false, \"gate_up_clamp\": null, \"intermediate_size\": 2048, \"kernel_name\": \"sm100_bf16_nvfp4_bf16_cutedsl\", \"situ_beta\": null, \"situ_linear_beta\": null, \"swiglu_alpha\": null, \"swiglu_beta\": null, \"top_k\": 8}, \"hidden\": 6144, \"mega_use_ncu\": \"0\", \"num_experts\": 256, \"torch\": \"2.13.0+cu130\", \"world_size\": 4}:4": {
+        "version": 1,
+        "entries": [
+          {
+            "device": "NVIDIA B300 SXM6 AC",
+            "dtype": "bf16_nvfp4",
+            "world_size": 4,
+            "hidden": 6144,
+            "intermediate": 2048,
+            "num_experts": 256,
+            "topk": 8,
+            "combine_dtype": "bf16",
+            "max_tokens": 4,
+            "apply_topk_in_fc1": false,
+            "knobs": {
+              "cluster_shape_mnk": [
+                2,
+                1,
+                1
+              ],
+              "group_hint": 512,
+              "epi_flag_batch": [
+                2,
+                4
+              ],
+              "load_balance_mode": "atomic_counter",
+              "mma_tiler_mnk": [
+                256,
+                64,
+                256
+              ],
+              "use_2cta_instrs": true,
+              "flag_batch": 4,
+              "token_back_mode": "epi_warps",
+              "in_kernel_fc2_reduce": false,
+              "num_sched_stages": 2
+            },
+            "p50_us": 60.46400032937527,
+            "source": "autotune_graph_events",
+            "tuned_at": "2026-09-30T14:58:25"
+          }
+        ]
+      },
+      "{\"config\": {\"activation\": \"swiglu\", \"activation_clamp\": null, \"apply_topk_in_fc1\": false, \"enable_in_kernel_fc2_reduce\": false, \"gate_up_clamp\": null, \"intermediate_size\": 2048, \"kernel_name\": \"sm100_bf16_nvfp4_bf16_cutedsl\", \"situ_beta\": null, \"situ_linear_beta\": null, \"swiglu_alpha\": null, \"swiglu_beta\": null, \"top_k\": 8}, \"hidden\": 6144, \"mega_use_ncu\": \"0\", \"num_experts\": 256, \"torch\": \"2.13.0+cu130\", \"world_size\": 4}:8": {
+        "version": 1,
+        "entries": [
+          {
+            "device": "NVIDIA B300 SXM6 AC",
+            "dtype": "bf16_nvfp4",
+            "world_size": 4,
+            "hidden": 6144,
+            "intermediate": 2048,
+            "num_experts": 256,
+            "topk": 8,
+            "combine_dtype": "bf16",
+            "max_tokens": 8,
+            "apply_topk_in_fc1": false,
+            "knobs": {
+              "cluster_shape_mnk": [
+                2,
+                1,
+                1
+              ],
+              "group_hint": 1024,
+              "epi_flag_batch": [
+                2,
+                4
+              ],
+              "load_balance_mode": "atomic_counter",
+              "mma_tiler_mnk": [
+                256,
+                128,
+                256
+              ],
+              "use_2cta_instrs": true,
+              "flag_batch": 4,
+              "token_back_mode": "epi_warps",
+              "in_kernel_fc2_reduce": false,
+              "num_sched_stages": 2
+            },
+            "p50_us": 62.88000196218491,
+            "source": "autotune_graph_events",
+            "tuned_at": "2026-09-30T14:59:12"
+          }
+        ]
+      },
+      "{\"config\": {\"activation\": \"swiglu\", \"activation_clamp\": null, \"apply_topk_in_fc1\": false, \"enable_in_kernel_fc2_reduce\": false, \"gate_up_clamp\": null, \"intermediate_size\": 2048, \"kernel_name\": \"sm100_bf16_nvfp4_bf16_cutedsl\", \"situ_beta\": null, \"situ_linear_beta\": null, \"swiglu_alpha\": null, \"swiglu_beta\": null, \"top_k\": 8}, \"hidden\": 6144, \"mega_use_ncu\": \"0\", \"num_experts\": 256, \"torch\": \"2.13.0+cu130\", \"world_size\": 4}:16": {
+        "version": 1,
+        "entries": [
+          {
+            "device": "NVIDIA B300 SXM6 AC",
+            "dtype": "bf16_nvfp4",
+            "world_size": 4,
+            "hidden": 6144,
+            "intermediate": 2048,
+            "num_experts": 256,
+            "topk": 8,
+            "combine_dtype": "bf16",
+            "max_tokens": 16,
+            "apply_topk_in_fc1": false,
+            "knobs": {
+              "cluster_shape_mnk": [
+                2,
+                1,
+                1
+              ],
+              "group_hint": 1024,
+              "epi_flag_batch": [
+                2,
+                4
+              ],
+              "load_balance_mode": "atomic_counter",
+              "mma_tiler_mnk": [
+                256,
+                64,
+                256
+              ],
+              "use_2cta_instrs": true,
+              "flag_batch": 4,
+              "token_back_mode": "epi_warps",
+              "in_kernel_fc2_reduce": false,
+              "num_sched_stages": 2
+            },
+            "p50_us": 65.84000214934348,
+            "source": "autotune_graph_events",
+            "tuned_at": "2026-09-30T15:00:05"
+          }
+        ]
+      },
+      "{\"config\": {\"activation\": \"swiglu\", \"activation_clamp\": null, \"apply_topk_in_fc1\": false, \"enable_in_kernel_fc2_reduce\": false, \"gate_up_clamp\": null, \"intermediate_size\": 2048, \"kernel_name\": \"sm100_bf16_nvfp4_bf16_cutedsl\", \"situ_beta\": null, \"situ_linear_beta\": null, \"swiglu_alpha\": null, \"swiglu_beta\": null, \"top_k\": 8}, \"hidden\": 6144, \"mega_use_ncu\": \"0\", \"num_experts\": 256, \"torch\": \"2.13.0+cu130\", \"world_size\": 4}:32": {
+        "version": 1,
+        "entries": [
+          {
+            "device": "NVIDIA B300 SXM6 AC",
+            "dtype": "bf16_nvfp4",
+            "world_size": 4,
+            "hidden": 6144,
+            "intermediate": 2048,
+            "num_experts": 256,
+            "topk": 8,
+            "combine_dtype": "bf16",
+            "max_tokens": 32,
+            "apply_topk_in_fc1": false,
+            "knobs": {
+              "cluster_shape_mnk": [
+                2,
+                1,
+                1
+              ],
+              "group_hint": 1024,
+              "epi_flag_batch": [
+                2,
+                4
+              ],
+              "load_balance_mode": "atomic_counter",
+              "mma_tiler_mnk": [
+                256,
+                128,
+                256
+              ],
+              "use_2cta_instrs": true,
+              "flag_batch": 4,
+              "token_back_mode": "epi_warps",
+              "in_kernel_fc2_reduce": false,
+              "num_sched_stages": 2
+            },
+            "p50_us": 79.19999957084656,
+            "source": "autotune_graph_events",
+            "tuned_at": "2026-09-30T15:00:52"
+          }
+        ]
+      },
+      "{\"config\": {\"activation\": \"swiglu\", \"activation_clamp\": null, \"apply_topk_in_fc1\": false, \"enable_in_kernel_fc2_reduce\": false, \"gate_up_clamp\": null, \"intermediate_size\": 2048, \"kernel_name\": \"sm100_bf16_nvfp4_bf16_cutedsl\", \"situ_beta\": null, \"situ_linear_beta\": null, \"swiglu_alpha\": null, \"swiglu_beta\": null, \"top_k\": 8}, \"hidden\": 6144, \"mega_use_ncu\": \"0\", \"num_experts\": 256, \"torch\": \"2.13.0+cu130\", \"world_size\": 4}:8192": {
+        "version": 1,
+        "entries": [
+          {
+            "device": "NVIDIA B300 SXM6 AC",
+            "dtype": "bf16_nvfp4",
+            "world_size": 4,
+            "hidden": 6144,
+            "intermediate": 2048,
+            "num_experts": 256,
+            "topk": 8,
+            "combine_dtype": "bf16",
+            "max_tokens": 8192,
+            "apply_topk_in_fc1": false,
+            "knobs": {
+              "cluster_shape_mnk": [
+                2,
+                1,
+                1
+              ],
+              "group_hint": 512,
+              "epi_flag_batch": [
+                2,
+                4
+              ],
+              "load_balance_mode": "atomic_counter",
+              "mma_tiler_mnk": [
+                256,
+                128,
+                256
+              ],
+              "use_2cta_instrs": true,
+              "flag_batch": 4,
+              "token_back_mode": "reuse_dispatch_warps",
+              "in_kernel_fc2_reduce": false,
+              "num_sched_stages": 2
+            },
+            "p50_us": 5697.952032089233,
+            "source": "autotune_graph_events",
+            "tuned_at": "2026-09-30T15:01:46"
+          }
+        ]
+      }
+    }
+  },
+  "('flashinfer::trtllm_bf16_moe', 'MoERunner', ((1, 6144), (1, 256), (1,), (1,), (1, 6144), (0,), (0,), (0,)), ('Module', 8, 64, 256, 0, 1052672, 1052672, 0, 6144, 6144, 2048, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      6
+    ]
+  ],
+  "('flashinfer::trtllm_bf16_moe', 'MoERunner', ((128, 6144), (128, 256), (128,), (128,), (128, 6144), (0,), (0,), (0,)), ('Module', 8, 64, 256, 0, 1052672, 1052672, 0, 6144, 6144, 2048, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      32,
+      51
+    ]
+  ],
+  "('flashinfer::trtllm_bf16_moe', 'MoERunner', ((16, 6144), (16, 256), (16,), (16,), (16, 6144), (0,), (0,), (0,)), ('Module', 8, 64, 256, 0, 1052672, 1052672, 0, 6144, 6144, 2048, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      43
+    ]
+  ],
+  "('flashinfer::trtllm_bf16_moe', 'MoERunner', ((2, 6144), (2, 256), (2,), (2,), (2, 6144), (0,), (0,), (0,)), ('Module', 8, 64, 256, 0, 1052672, 1052672, 0, 6144, 6144, 2048, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      16,
+      0
+    ]
+  ],
+  "('flashinfer::trtllm_bf16_moe', 'MoERunner', ((32, 6144), (32, 256), (32,), (32,), (32, 6144), (0,), (0,), (0,)), ('Module', 8, 64, 256, 0, 1052672, 1052672, 0, 6144, 6144, 2048, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      43
+    ]
+  ],
+  "('flashinfer::trtllm_bf16_moe', 'MoERunner', ((4, 6144), (4, 256), (4,), (4,), (4, 6144), (0,), (0,), (0,)), ('Module', 8, 64, 256, 0, 1052672, 1052672, 0, 6144, 6144, 2048, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      77
+    ]
+  ],
+  "('flashinfer::trtllm_bf16_moe', 'MoERunner', ((64, 6144), (64, 256), (64,), (64,), (64, 6144), (0,), (0,), (0,)), ('Module', 8, 64, 256, 0, 1052672, 1052672, 0, 6144, 6144, 2048, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      32,
+      51
+    ]
+  ],
+  "('flashinfer::trtllm_bf16_moe', 'MoERunner', ((8, 6144), (8, 256), (8,), (8,), (8, 6144), (0,), (0,), (0,)), ('Module', 8, 64, 256, 0, 1052672, 1052672, 0, 6144, 6144, 2048, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      33
+    ]
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1, 1, 64, 576), (1, 1, 2048), (1,), (1, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1, 1, 64, 576), (1, 1, 2048), (1,), (1, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1024, 1, 64, 576), (1024, 1, 2048), (1024,), (1024, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1024, 1, 64, 576), (1024, 1, 2048), (1024,), (1024, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((128, 1, 64, 576), (128, 1, 2048), (128,), (128, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((128, 1, 64, 576), (128, 1, 2048), (128,), (128, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1280, 1, 64, 576), (1280, 1, 2048), (1280,), (1280, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1280, 1, 64, 576), (1280, 1, 2048), (1280,), (1280, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1536, 1, 64, 576), (1536, 1, 2048), (1536,), (1536, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1536, 1, 64, 576), (1536, 1, 2048), (1536,), (1536, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((16, 1, 64, 576), (16, 1, 2048), (16,), (16, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((16, 1, 64, 576), (16, 1, 2048), (16,), (16, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1792, 1, 64, 576), (1792, 1, 2048), (1792,), (1792, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((1792, 1, 64, 576), (1792, 1, 2048), (1792,), (1792, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2, 1, 64, 576), (2, 1, 2048), (2,), (2, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2, 1, 64, 576), (2, 1, 2048), (2,), (2, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2048, 1, 64, 576), (2048, 1, 2048), (2048,), (2048, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2048, 1, 64, 576), (2048, 1, 2048), (2048,), (2048, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((256, 1, 64, 576), (256, 1, 2048), (256,), (256, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((256, 1, 64, 576), (256, 1, 2048), (256,), (256, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2560, 1, 64, 576), (2560, 1, 2048), (2560,), (2560, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((2560, 1, 64, 576), (2560, 1, 2048), (2560,), (2560, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((3072, 1, 64, 576), (3072, 1, 2048), (3072,), (3072, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((3072, 1, 64, 576), (3072, 1, 2048), (3072,), (3072, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((32, 1, 64, 576), (32, 1, 2048), (32,), (32, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((32, 1, 64, 576), (32, 1, 2048), (32,), (32, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((3584, 1, 64, 576), (3584, 1, 2048), (3584,), (3584, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((3584, 1, 64, 576), (3584, 1, 2048), (3584,), (3584, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((4, 1, 64, 576), (4, 1, 2048), (4,), (4, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((4, 1, 64, 576), (4, 1, 2048), (4,), (4, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((4096, 1, 64, 576), (4096, 1, 2048), (4096,), (4096, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((4096, 1, 64, 576), (4096, 1, 2048), (4096,), (4096, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((512, 1, 64, 576), (512, 1, 2048), (512,), (512, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((512, 1, 64, 576), (512, 1, 2048), (512,), (512, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((64, 1, 64, 576), (64, 1, 2048), (64,), (64, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((64, 1, 64, 576), (64, 1, 2048), (64,), (64, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((768, 1, 64, 576), (768, 1, 2048), (768,), (768, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((768, 1, 64, 576), (768, 1, 2048), (768,), (768, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((8, 1, 64, 576), (8, 1, 2048), (8,), (8, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((8, 1, 64, 576), (8, 1, 2048), (8,), (8, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((8192, 1, 64, 576), (8192, 1, 2048), (8192,), (8192, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 2097152, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "('trtllm_batch_decode_mla', 'TrtllmGenMlaDecodeRunner', ((8192, 1, 64, 576), (8192, 1, 2048), (8192,), (8192, 1, 64, 512)), (torch.float8_e4m3fn, torch.float8_e4m3fn, torch.bfloat16, 192, 512, 64, 64, 8, 2048, True, True, True, 'bmm1_float', 'bmm2_float', None, None, False, False))": [
+    "TrtllmGenMlaDecodeRunner",
+    -1
+  ],
+  "_generation": "6b56e7b7dd5292451349bb53c0fbe46ea3f2c0d6daea45c672f0b2d995f04f07"
+}

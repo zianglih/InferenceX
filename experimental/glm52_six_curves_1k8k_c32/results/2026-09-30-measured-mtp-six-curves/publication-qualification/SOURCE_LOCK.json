@@ -1,0 +1,41 @@
+{
+  "files": {
+    "benchmarks/benchmark_lib.sh": {
+      "bytes": 131962,
+      "sha256": "7bf1607b8c21225b3cb78e4c4ad51f21034c53654e5b2aee83b6925e6db900f4"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh": {
+      "bytes": 1417,
+      "sha256": "7a8100c113b4bac935de335f19411458474e6a2e59d0367168181acc859260ca"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/results.py": {
+      "bytes": 30652,
+      "sha256": "a0aa786b58fcbbd0ec9d9d68084b7fa687124c56c4f3cc49c83983433fec673d"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/run.py": {
+      "bytes": 51855,
+      "sha256": "1600496c98feb905656a2ef0e7db9de7f0c455b9e390ac2426ee0708521aa386"
+    },
+    "infx/__init__.py": {
+      "bytes": 46,
+      "sha256": "7ed00e8af70ac2b66813e9f4025347ec756f707c5f5f4c58a95a30264114b1c1"
+    },
+    "infx/bench_serving/__init__.py": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "infx/bench_serving/backend_request_func.py": {
+      "bytes": 23548,
+      "sha256": "cc8888c9f1c220323c56537a36dfabc29c592290f528b48d7a1343fb933413c4"
+    },
+    "infx/bench_serving/benchmark_serving.py": {
+      "bytes": 51763,
+      "sha256": "af8dafec8bbb4861b1e482d8491d3a5923880bd880e935ce2593f5fc1d21745b"
+    },
+    "infx/bench_serving/speculative_metrics.py": {
+      "bytes": 3683,
+      "sha256": "93bff5f22899e6973fc7a9d523d165ef4349359431f2a15e15e178e48013fe58"
+    }
+  },
+  "recipe_commit": "0ca49e90a7cbdfb52c7efb87cd47220006d3b1db"
+}

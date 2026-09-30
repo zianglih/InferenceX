@@ -1,0 +1,112 @@
+{
+  "at": "2026-09-30T13:42:31Z",
+  "errors": [],
+  "owners": [
+    {
+      "pgid": 38301,
+      "pid": 38301,
+      "ppid": 6716,
+      "sid": 38301,
+      "starttime": "341168292",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38498,
+      "ppid": 38301,
+      "sid": 38301,
+      "starttime": "341172123",
+      "state": "S"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38499,
+      "ppid": 38301,
+      "sid": 38301,
+      "starttime": "341172123",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38500,
+      "ppid": 38301,
+      "sid": 38301,
+      "starttime": "341172123",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38829,
+      "ppid": 38499,
+      "sid": 38301,
+      "starttime": "341175048",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38831,
+      "ppid": 38499,
+      "sid": 38301,
+      "starttime": "341175084",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38927,
+      "ppid": 38499,
+      "sid": 38301,
+      "starttime": "341175161",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38992,
+      "ppid": 38499,
+      "sid": 38301,
+      "starttime": "341175198",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38879,
+      "ppid": 38499,
+      "sid": 38301,
+      "starttime": "341175121",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 38999,
+      "ppid": 38499,
+      "sid": 38301,
+      "starttime": "341175236",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 39128,
+      "ppid": 38499,
+      "sid": 38301,
+      "starttime": "341175272",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 39194,
+      "ppid": 38499,
+      "sid": 38301,
+      "starttime": "341175311",
+      "state": "R"
+    },
+    {
+      "pgid": 38301,
+      "pid": 42127,
+      "ppid": 38992,
+      "sid": 38301,
+      "starttime": "341191560",
+      "state": "R"
+    }
+  ],
+  "remaining": [],
+  "waited_returncode": -9
+}

@@ -1,0 +1,143 @@
+{
+  "at": "2026-09-30T11:24:01Z",
+  "compile_payloads_hashed": false,
+  "files": {
+    "compile": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413630807502
+    },
+    "compile/cuda": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413626162674
+    },
+    "compile/cute-aot": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413629660450
+    },
+    "compile/cute-dsl": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413625571492
+    },
+    "compile/deep-gemm": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413629230179
+    },
+    "compile/flashinfer": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767432918229276
+    },
+    "compile/flashinfer/.cache": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767432919396122
+    },
+    "compile/flashinfer/.cache/flashinfer": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767432920465081
+    },
+    "compile/flashinfer/.cache/flashinfer/0.7.0+ga03f2205263d": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767432921651519
+    },
+    "compile/flashinfer/.cache/flashinfer/0.7.0+ga03f2205263d/103a": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767432923088347
+    },
+    "compile/flashinfer/.cache/flashinfer/0.7.0+ga03f2205263d/103a/flashinfer_jit.log": {
+      "bytes": 0,
+      "kind": "file",
+      "mtime_ns": 1790767432917088347
+    },
+    "compile/sglang-jit": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413629968046
+    },
+    "compile/tilelang": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413628631568
+    },
+    "compile/torch-extensions": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413626838201
+    },
+    "compile/torchinductor": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413627510796
+    },
+    "compile/triton": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413627933927
+    },
+    "compile/xdg": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413630335535
+    },
+    "tactics": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413648320116
+    },
+    "tactics/megamoe-w4a16": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413643085529
+    },
+    "tactics/megamoe-w4a16/tp4": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413637085529
+    },
+    "tactics/megamoe-w4a16/tp8": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413639782751
+    },
+    "tactics/megamoe-w4a4": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413638514200
+    },
+    "tactics/megamoe-w4a4/tp4": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413622983494
+    },
+    "tactics/megamoe-w4a4/tp8": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413632514200
+    },
+    "tactics/trtllm-w4a4": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413649307311
+    },
+    "tactics/trtllm-w4a4/tp4": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413643307311
+    },
+    "tactics/trtllm-w4a4/tp8": {
+      "bytes": 0,
+      "kind": "directory",
+      "mtime_ns": 1790767413646152214
+    }
+  },
+  "root": "/data/home/ziangli/inferencex-glm52-measured-mtp-20260930/glm52-six-curves-measured-mtp-20260930-all36/caches",
+  "tactic_payloads_hashed": true
+}
