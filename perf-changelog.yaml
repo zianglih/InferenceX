@@ -8405,3 +8405,30 @@
     - "Enable required telemetry on seven GB200 aggregate recipes, preserve failed-job artifacts, and reserve CUDA Graph memory in the five TP8/PP2 recipes."
     - "为七个 GB200 Kimi-K3 聚合配方启用必需实测功耗并保留失败产物；五个 TP8/PP2 配方为 CUDA Graph 预留显存。"
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/3045
+
+- config-keys:
+    - experimental/kimi_k3_routed_nvfp4_ep8
+  scenario-type:
+    - fixed-seq-len
+  description:
+    - "Add the separate experimental Kimi K3 routed-only NVFP4 EP8/DP8 three-arm recipe on 8 B300 GPUs: MegaMoE W4A4/W4A16 and TRTLLM W4A4, C4/8/16/32, no MTP, 1k/8k nominal lengths, 2C warmup/10C measured. Scripts only; no serving result or official matrix enrollment is implied."
+    - "添加独立 Kimi K3 routed-only NVFP4 EP8/DP8 三分支实验配方：8 张 B300，MegaMoE W4A4/W4A16 与 TRTLLM W4A4，C4/8/16/32，不使用 MTP，名义 1k/8k长度，2C 预热/10C 测量。仅发布脚本，不代表已获得服务结果或纳入官方 matrix。"
+  pr-link: XXX
+
+- config-keys:
+    - experimental/kimi_k3_routed_nvfp4_ep8
+  scenario-type:
+    - fixed-seq-len
+  description:
+    - "Align the manual Kimi K3 routed-NVFP4 recipe scripts with R4: TP8/EP8/DP1, attention TP8, server capacity C and decode graph maximum max(C,8); retain real converted weights, no MTP, all three backend defaults and the exact client. Require the separately reviewed unpublished SG integration by exact descriptors; no SG patch/source or measured results included."
+    - "将手动 Kimi K3 routed-NVFP4 脚本对齐 R4：TP8/EP8/DP1、attention TP8、server 容量 C、decode graph 最大值 max(C,8)；保留真实转换权重、无 MTP、三分支后端默认值和原客户端。通过精确描述符要求单独审查但尚未公开的 SG 集成；不包含 SG 补丁、源码或实测结果。"
+  pr-link: XXX
+
+- config-keys:
+    - experimental/kimi_k3_routed_nvfp4_ep8
+  scenario-type:
+    - fixed-seq-len
+  description:
+    - "Add the R5 eleven-case continuation contract to the manual Kimi K3 recipe: inherit one independently accepted C32 point, require verified quiescent cache restoration, retry only bounded plain-bind EADDRINUSE, and validate the twelve-point composite separately from the eleven-case terminal. Keep TP8/EP8/DP1, real weights, no MTP, backend defaults and client unchanged. No SG patch/source or measured results included."
+    - "为手动 Kimi K3 配方增加 R5 十一点继续执行合同：继承一个独立验收的 C32 点，要求经过验证的静止缓存恢复，仅对普通绑定 EADDRINUSE 有界重试，并将十二点 composite 与十一点 terminal 分开验收。保留 TP8/EP8/DP1、真实权重、无 MTP、后端默认值和客户端；不包含 SG 补丁、源码或实测结果。"
+  pr-link: XXX

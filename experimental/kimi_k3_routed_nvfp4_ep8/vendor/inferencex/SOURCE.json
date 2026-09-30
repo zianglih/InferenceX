@@ -1,0 +1,39 @@
+{
+  "repo": "https://github.com/zianglih/InferenceX",
+  "commit": "652ac186d88ebcd6ff995afbe7c3094751f0f4a2",
+  "scope": "Unchanged complete infx.bench_serving Python package and package initializer from current GLM campaign. No client semantics edits.",
+  "files": {
+    "infx/bench_serving/__init__.py": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "infx/bench_serving/encoding_dsv4.py": {
+      "bytes": 29046,
+      "sha256": "a9c6fa4796cf6db67737b4872c0d9e6dd1a4a254e5612d4327a60f15f53aab6d"
+    },
+    "infx/bench_serving/backend_request_func.py": {
+      "bytes": 22243,
+      "sha256": "1012c55b19de33140b3b916b231773f1a422b835ab46a870bbf9c299d3049b43"
+    },
+    "infx/bench_serving/benchmark_outcome.py": {
+      "bytes": 1026,
+      "sha256": "2d5052eebce4eeffdb85f8ef5cb6c59e6124c834115f6fbe49be55d583de3e71"
+    },
+    "infx/bench_serving/server_watch.py": {
+      "bytes": 5314,
+      "sha256": "53ca14dd32b6754cd5aeb6dcae04101408180009df272598df1c95214743899b"
+    },
+    "infx/bench_serving/benchmark_utils.py": {
+      "bytes": 1092,
+      "sha256": "74d521852a946828b4805ad0939d28f10d9ce35ae2e081032d080114123e881d"
+    },
+    "infx/bench_serving/benchmark_serving.py": {
+      "bytes": 50158,
+      "sha256": "aece4e0fbe94e10714d9dc79bb7a2ddd015702a044b937b3ae88c36e0f21c0b8"
+    },
+    "infx/__init__.py": {
+      "bytes": 46,
+      "sha256": "7ed00e8af70ac2b66813e9f4025347ec756f707c5f5f4c58a95a30264114b1c1"
+    }
+  }
+}
