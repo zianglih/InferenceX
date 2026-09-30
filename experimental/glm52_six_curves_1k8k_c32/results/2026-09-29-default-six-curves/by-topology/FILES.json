@@ -1,29 +1,37 @@
 {
-  "file_count": 12,
+  "file_count": 18,
   "files": {
     "INPUTS.json": {
-      "bytes": 847,
-      "sha256": "1dc58308f6255fa11d7e8f343497b7ad94d99f3ed896be50065af3eb90be63cf"
+      "bytes": 14038,
+      "sha256": "5f39b2e77e32eb2ad9e76797b9e6d62584fae2c6196fe3d0abbb48e8055cd81d"
     },
     "README.md": {
-      "bytes": 3623,
-      "sha256": "0f8036152dda8a155d4b9e2b4c68304027c0b3577e828427a6cffbae166c8937"
+      "bytes": 5439,
+      "sha256": "b4f35a74133dbb292428b2c76e8a02a2c6ac74a6175c5af7b98434dea2a56687"
+    },
+    "README_zh.md": {
+      "bytes": 5048,
+      "sha256": "50197828a1419753d1e3a1711b7a78715e2ff3422d018860cf83ccd9d190ee8e"
     },
     "figures/PROVENANCE.json": {
-      "bytes": 925,
-      "sha256": "06149ffa0ff67377dcbabb8a9f16ffe2cd13a8cd9941aa67b00403fdf33b41ad"
+      "bytes": 1292,
+      "sha256": "7aa8df49cced8ba78679ffc605401df7776fdb1906cb8f069c816b9ff2c083aa"
+    },
+    "figures/acceptance-length.json": {
+      "bytes": 26301,
+      "sha256": "d9ecb634e7a1698134456217a0d42f52514b4811f9dcc3cda3a0bbeeffc28f23"
     },
     "figures/ep4/frontiers.json": {
       "bytes": 756,
       "sha256": "db78e755f65473883c044c3065d23c36a1ddbea77acbe80a8e96e1912230fdde"
     },
     "figures/ep4/pareto.png": {
-      "bytes": 296303,
-      "sha256": "0572dd1e07350d8e7978f7d9150915ce7313b2fb0dea4c5f44b61f8b5601858f"
+      "bytes": 343111,
+      "sha256": "3bb00538e96df580f263e08d0955bc710604addd9eb26ff19f300e0dc6159840"
     },
     "figures/ep4/pareto.svg": {
-      "bytes": 28597,
-      "sha256": "a3077f42b43a1fb64687a914af0fffcc42c28e70e5d4e5bc5acb14af8aab8921"
+      "bytes": 29749,
+      "sha256": "8fcf44562d0c79ad2ea4a93858371076d61f5c3d1eb710aab973031c526b8b98"
     },
     "figures/ep4/plot-points.json": {
       "bytes": 2441,
@@ -34,22 +42,38 @@
       "sha256": "59a9b9178ff58056ae7542be8740d2e361c211856573b858e1d627cb8b737d8d"
     },
     "figures/ep8/pareto.png": {
-      "bytes": 304631,
-      "sha256": "320a74f3ff4b2916d1267648d20e05df9b5248d6c11ce66a94105e5b7a9025fd"
+      "bytes": 348924,
+      "sha256": "3d1f9df59b1d0b56a40856a3fe5a4f95445165b421977e221645f2c44bebcd02"
     },
     "figures/ep8/pareto.svg": {
-      "bytes": 28596,
-      "sha256": "fe2c8b81a986314e05f3bdae1edc33b45cd181b46abc4df9919d064795f38036"
+      "bytes": 29760,
+      "sha256": "6dfd95235b10997d8eae7a9b0f1d2b9992af19fdfdf06f8434cb0ea3364bee5c"
     },
     "figures/ep8/plot-points.json": {
       "bytes": 2437,
       "sha256": "dad9eb441f99b95775ff68cbf0ef1b86d3cdae38671afda535c75ace2b97649d"
     },
+    "figures/six-curves/frontiers.json": {
+      "bytes": 1509,
+      "sha256": "cefc26db5fd952acd0e0cc56ab9eda9731913db9a818fc667b0732d5523e75f1"
+    },
+    "figures/six-curves/pareto.png": {
+      "bytes": 444053,
+      "sha256": "3d8c342de17eaf45ac5613f200054afb60596df9dedb4702ca9683e409faf5e6"
+    },
+    "figures/six-curves/pareto.svg": {
+      "bytes": 44120,
+      "sha256": "0c218ed2aad18253f3c9467ed1b6df9d8e0ec82581f22642513ed068fc13fb31"
+    },
+    "figures/six-curves/plot-points.json": {
+      "bytes": 4875,
+      "sha256": "4ea8b7da88822ae747cef1967b6d8cb10bd9aae2d0f148792e1284ccd362cdd4"
+    },
     "render.py": {
-      "bytes": 5826,
-      "sha256": "f849112d733aeb8e9b8bd948bf600c51861edb2694b4860d35871aa569bde57b"
+      "bytes": 12299,
+      "sha256": "8ffbea1cab78c5488e99b9d6fcdd149ffa6b6614495d775b27dc6a5b2c785e6d"
     }
   },
   "schema_version": 1,
-  "scope": "Additive by-topology views only; original release FILES unchanged"
+  "scope": "Measured-only AL availability labels for by-topology and combined views; original release FILES unchanged"
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render additive three-backend EP4/EP8 views from the published, accepted campaign."""
+"""Render three accepted GLM views with saved MTP acceptance-length annotations."""
 
 import argparse
 import hashlib
@@ -34,6 +34,126 @@ def verify_bundle(root: Path) -> dict:
     return manifest
 
 
+def acceptance_lengths(root: Path, rows: list[dict]) -> dict:
+    """Report the missing evidence for exact measured-only MTP acceptance length."""
+    values = []
+    for row in rows:
+        sources = []
+        for name in (
+            "result.json",
+            "server_info.before.json",
+            "server_info.after.json",
+        ):
+            relative = f"raw/cases/{row['case_id']}/{name}"
+            sources.append({"relative_path": relative, **descriptor(root / relative)})
+        values.append(
+            {
+                "case_id": row["case_id"],
+                "arm_id": row["arm_id"],
+                "tp": row["tp"],
+                "ep": row["ep"],
+                "dp": row["dp"],
+                "concurrency": row["concurrency"],
+                "measured_acceptance_length": None,
+                "status": "unavailable",
+                "display": "AL=N/A",
+                "reason": "Native per-request spec_verify_ct values and measurement-boundary counter deltas were not saved",
+                "sources": sources,
+            }
+        )
+    return {
+        "metric": "Measured-only MTP acceptance length (AL)",
+        "desired_formula": "sum(completion_tokens) / sum(spec_verify_ct) for measured requests only",
+        "bonus_token_convention": "The native accepted/completion-token count includes the bonus token",
+        "status": "unavailable",
+        "scope": "Measured requests only; warmup requests excluded",
+        "reason": "Retained results and server snapshots do not provide the native per-request verification counts or boundary counter deltas needed for this exact aggregate",
+        "estimate_used": False,
+        "new_benchmark_runs": 0,
+        "values": values,
+    }
+
+
+def annotate_acceptance(fig, ax, points: list[dict], metrics: dict[str, dict]) -> None:
+    """Place two-line labels with deterministic offsets and readable leader lines."""
+    from matplotlib.text import Annotation
+    from matplotlib.transforms import Bbox
+
+    old = [text for text in ax.texts if isinstance(text, Annotation)]
+    for text in old:
+        text.remove()
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    marker_boxes = []
+    for point in points:
+        x, y = ax.transData.transform((point["x"], point["y"]))
+        marker_boxes.append(Bbox.from_bounds(x - 7, y - 7, 14, 14))
+    boxes = []
+    offsets = [
+        (12, 14),
+        (-12, 14),
+        (12, -30),
+        (-12, -30),
+        (12, 36),
+        (-12, 36),
+        (12, -52),
+        (-12, -52),
+        (48, 8),
+        (-48, 8),
+        (48, -26),
+        (-48, -26),
+        (12, 58),
+        (-12, 58),
+        (12, -74),
+        (-12, -74),
+    ]
+    # Nearby high-throughput points are placed first; subsequent labels avoid them.
+    for point in sorted(
+        points, key=lambda item: (-item["y"], item["x"], item["case_id"])
+    ):
+        color = {
+            "megamoe-w4a4": "#009E73",
+            "megamoe-w4a16": "#E69F00",
+            "trtllm-w4a4": "#0072B2",
+        }[point["arm_id"]]
+        text = f"C{point['concurrency']}\n{metrics[point['case_id']]['display']}"
+        annotation = ax.annotate(
+            text,
+            (point["x"], point["y"]),
+            xytext=offsets[0],
+            textcoords="offset points",
+            color=color,
+            fontsize=10,
+            linespacing=1.25,
+            va="bottom",
+            bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.94, "pad": 1.2},
+            arrowprops={"arrowstyle": "-", "color": color, "lw": 0.65},
+            zorder=5,
+        )
+        chosen = None
+        for dx, dy in offsets:
+            annotation.set_position((dx, dy))
+            annotation.set_ha("left" if dx > 0 else "right")
+            annotation.update_positions(renderer)
+            annotation.update_bbox_position_size(renderer)
+            box = (
+                annotation.get_bbox_patch()
+                .get_window_extent(renderer)
+                .expanded(1.10, 1.12)
+            )
+            inside = ax.bbox.contains(box.x0, box.y0) and ax.bbox.contains(
+                box.x1, box.y1
+            )
+            if inside and not any(
+                box.overlaps(other) for other in boxes + marker_boxes
+            ):
+                chosen = box
+                break
+        if chosen is None:
+            raise ValueError(f"No readable label placement: {point['case_id']}")
+        boxes.append(chosen)
+
+
 def render(root: Path, output: Path) -> None:
     manifest = verify_bundle(root)
     if output.exists():
@@ -49,20 +169,21 @@ def render(root: Path, output: Path) -> None:
         raise ValueError("Verified raw rows differ from the published table")
     accepted_points = reader.read(root / "results/plot-points.json")
     accepted_frontiers = reader.read(root / "results/frontiers.json")
+    acceptance = acceptance_lengths(root, rows)
+    metrics = {item["case_id"]: item for item in acceptance["values"]}
     output.mkdir(parents=True, exist_ok=False)
+    write_json(output / "acceptance-length.json", acceptance)
     summary = []
-    for topology in (4, 8):
-        selected = [row for row in rows if row["tp"] == topology]
+    for topology in (4, 8, None):
+        selected = [row for row in rows if topology is None or row["tp"] == topology]
         fig, points = reader.figure(selected)
         ax = fig.axes[0]
-        # The inherited renderer creates empty artists for the other topology.
         for line in list(ax.lines):
             if len(line.get_xdata()) == 0:
                 line.remove()
         for collection in list(ax.collections):
             if len(collection.get_offsets()) == 0:
                 collection.remove()
-        # A single-topology view uses the same solid/circle style as EP4.
         if topology == 8:
             from matplotlib.markers import MarkerStyle
 
@@ -73,24 +194,75 @@ def render(root: Path, output: Path) -> None:
                 line.set_marker("o")
             for collection in ax.collections:
                 collection.set_paths([circle_path])
-        ax.legend(loc="best", fontsize=10, framealpha=0.96)
+        combined = topology is None
+        fig.set_size_inches(20 if combined else 17, 12)
+        fig.subplots_adjust(left=0.11, right=0.97, bottom=0.27, top=0.86)
+        ax.legend(
+            loc="upper center",
+            bbox_to_anchor=(0.5, -0.13),
+            ncol=3,
+            fontsize=10,
+            frameon=False,
+        )
         fig._suptitle.set_text(
-            f"GLM-5.2 | TP=EP=DP={topology} | Three backends | B300 | Concurrency 4-32"
+            "GLM-5.2 | Six backend/topology curves | B300 | Concurrency 4-32"
+            if combined
+            else f"GLM-5.2 | TP=EP=DP={topology} | Three backends | B300 | Concurrency 4-32"
         )
+        measured = sum(row["completed"] for row in selected)
         fig.texts[1].set_text(
-            "Nominal 1,024 input / 8,192 output | ratio 0.8 | 12 accepted points | 1,800 measured requests"
+            f"Nominal 1,024 input / 8,192 output | ratio 0.8 | {len(selected)} accepted points | {measured:,} measured requests"
         )
-        fig.texts[2].set_text(
-            "Three independent backend frontiers; all 12 points shown. This topology view selects half of the accepted 24-point campaign."
-        )
-        frontiers = [
-            item for item in reader.frontiers(selected) if item["tp"] == topology
+        for text in list(fig.texts[2:]):
+            text.remove()
+        footnotes = [
+            (
+                0.12,
+                "MTP acceptance length (AL): measured-only value unavailable; native verification counts or boundary deltas were not saved.",
+                11,
+            ),
+            (
+                0.09,
+                "Measured-only AL is not estimated. Independent frontiers per backend/topology. EAGLE: steps 3 / top-k 1 / draft tokens 4.",
+                10,
+            ),
+            (
+                0.065,
+                "Draft MoE: BF16 TRTLLM / none | Backend quantization/fast-math defaults | Saved ITL is chunk spacing at stream interval 30.",
+                10,
+            ),
+            (
+                0.04,
+                f"SG {rows[0]['sglang_commit'][:12]} | FI {rows[0]['flashinfer_commit'][:12]} | shared compiled caches; six isolated tactic namespaces",
+                10,
+            ),
+            (
+                0.015,
+                "Whole measured interval; not timed decode. Single sequential run; no causal or numerical-equivalence claim.",
+                9,
+            ),
         ]
-        if points != [point for point in accepted_points if point["tp"] == topology]:
+        for y, text, size in footnotes:
+            fig.text(0.5, y, text, ha="center", fontsize=size, color="#444444")
+        annotate_acceptance(fig, ax, points, metrics)
+        frontiers = [
+            item
+            for item in reader.frontiers(selected)
+            if topology is None or item["tp"] == topology
+        ]
+        if points != [
+            point
+            for point in accepted_points
+            if topology is None or point["tp"] == topology
+        ]:
             raise ValueError("Additive point coordinates differ from published points")
-        if frontiers != [item for item in accepted_frontiers if item["tp"] == topology]:
+        if frontiers != [
+            item
+            for item in accepted_frontiers
+            if topology is None or item["tp"] == topology
+        ]:
             raise ValueError("Additive frontiers differ from published membership")
-        directory = output / f"ep{topology}"
+        directory = output / ("six-curves" if combined else f"ep{topology}")
         directory.mkdir()
         fig.savefig(directory / "pareto.png", dpi=180)
         fig.savefig(directory / "pareto.svg", metadata={"Date": None})
@@ -101,12 +273,11 @@ def render(root: Path, output: Path) -> None:
         write_json(directory / "frontiers.json", frontiers)
         summary.append(
             {
-                "tp": topology,
-                "ep": topology,
-                "dp": topology,
+                "view": directory.name,
+                "topology": topology,
                 "points": len(selected),
                 "frontiers": len(frontiers),
-                "measured_requests": sum(row["completed"] for row in selected),
+                "measured_requests": measured,
                 "warmup_requests": sum(2 * row["concurrency"] for row in selected),
             }
         )
@@ -114,7 +285,7 @@ def render(root: Path, output: Path) -> None:
     write_json(
         output / "PROVENANCE.json",
         {
-            "source": "Existing accepted measurements; no new benchmark runs",
+            "source": "Existing accepted measurements and saved server metadata; no new benchmark runs",
             "manifest": {
                 "relative_path": "FILES.json",
                 **descriptor(root / "FILES.json"),
@@ -122,6 +293,10 @@ def render(root: Path, output: Path) -> None:
             "reader": {"relative_path": READER, **descriptor(root / READER)},
             "published_payloads_rehashed_before_and_after": manifest["file_count"],
             "views": summary,
+            "acceptance_length": {
+                "relative_path": "acceptance-length.json",
+                **descriptor(output / "acceptance-length.json"),
+            },
             "campaign": {
                 "points": 24,
                 "measured_requests": 3600,

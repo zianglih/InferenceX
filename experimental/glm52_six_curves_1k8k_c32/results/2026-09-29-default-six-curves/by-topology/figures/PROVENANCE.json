@@ -1,5 +1,5 @@
 {
-  "source": "Existing accepted measurements; no new benchmark runs",
+  "source": "Existing accepted measurements and saved server metadata; no new benchmark runs",
   "manifest": {
     "relative_path": "FILES.json",
     "bytes": 671328,
@@ -13,24 +13,35 @@
   "published_payloads_rehashed_before_and_after": 2520,
   "views": [
     {
-      "tp": 4,
-      "ep": 4,
-      "dp": 4,
+      "view": "ep4",
+      "topology": 4,
       "points": 12,
       "frontiers": 3,
       "measured_requests": 1800,
       "warmup_requests": 360
     },
     {
-      "tp": 8,
-      "ep": 8,
-      "dp": 8,
+      "view": "ep8",
+      "topology": 8,
       "points": 12,
       "frontiers": 3,
       "measured_requests": 1800,
       "warmup_requests": 360
+    },
+    {
+      "view": "six-curves",
+      "topology": null,
+      "points": 24,
+      "frontiers": 6,
+      "measured_requests": 3600,
+      "warmup_requests": 720
     }
   ],
+  "acceptance_length": {
+    "relative_path": "acceptance-length.json",
+    "bytes": 26301,
+    "sha256": "d9ecb634e7a1698134456217a0d42f52514b4811f9dcc3cda3a0bbeeffc28f23"
+  },
   "campaign": {
     "points": 24,
     "measured_requests": 3600,
