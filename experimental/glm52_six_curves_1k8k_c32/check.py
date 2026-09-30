@@ -15,8 +15,31 @@ from unittest.mock import patch
 import run
 
 
+def speculative(lengths):
+    from infx.bench_serving.speculative_metrics import summarize_speculative_metrics
+
+    return summarize_speculative_metrics(
+        [
+            {
+                "request_index": i,
+                "success": True,
+                "completion_tokens": length,
+                "spec_tokens_details": {
+                    "spec_verify_ct": 2,
+                    "spec_num_correct_drafts": 4,
+                    "spec_num_proposed_drafts": 6,
+                    "spec_accept_length": length / 2,
+                    "spec_accept_rate": 4 / 6,
+                },
+            }
+            for i, length in enumerate(lengths)
+        ]
+    )
+
+
 def config() -> dict:
     return {
+        "campaign_contract": "glm52-six-curves-measured-mtp-v1",
         "run_id": "trial",
         "run_root": "/tmp/trial",
         "tmp_root": "/tmp/infx-local-check",
@@ -44,13 +67,13 @@ def config() -> dict:
 class Checks(unittest.TestCase):
     def test_matrix_requests_and_order(self):
         rows = run.matrix()
-        self.assertEqual(len({r["case_id"] for r in rows}), 24)
-        self.assertEqual(sum(r["measured_requests"] for r in rows), 3600)
-        self.assertEqual(sum(r["warmup_requests"] for r in rows), 720)
+        self.assertEqual(len({r["case_id"] for r in rows}), 36)
+        self.assertEqual(sum(r["measured_requests"] for r in rows), 3780)
+        self.assertEqual(sum(r["warmup_requests"] for r in rows), 756)
         for arm_id in ("megamoe-w4a4", "megamoe-w4a16", "trtllm-w4a4"):
             for tp in (4, 8):
                 arm = [r for r in rows if r["arm_id"] == arm_id and r["tp"] == tp]
-                self.assertEqual([r["concurrency"] for r in arm], [32, 4, 8, 16])
+                self.assertEqual([r["concurrency"] for r in arm], [32, 1, 2, 4, 8, 16])
                 self.assertTrue(all(r["tp"] == r["dp"] == r["ep"] for r in arm))
 
     def test_tactics_separate_compile_shared(self):
@@ -59,7 +82,7 @@ class Checks(unittest.TestCase):
         self.assertEqual(len({e["FLASHINFER_WORKSPACE_BASE"] for e in envs}), 1)
         self.assertEqual(len({e["CUTE_DSL_CACHE_DIR"] for e in envs}), 1)
         self.assertNotIn("SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16", envs[0])
-        self.assertEqual(envs[8]["SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16"], "1")
+        self.assertEqual(envs[12]["SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16"], "1")
         self.assertNotIn("SGLANG_FLASHINFER_CUTEDSL_NVFP4_W4A16", envs[-1])
         for row, env in zip(run.matrix(), envs):
             self.assertNotIn("SGLANG_FLASHINFER_NVFP4_PER_TOKEN_ACTIVATION", env)
@@ -94,6 +117,43 @@ class Checks(unittest.TestCase):
             argv[argv.index("--speculative-moe-runner-backend") + 1],
             "flashinfer_trtllm",
         )
+
+    def test_measured_mtp_coverage_replay_and_order(self):
+        raw = {"output_lens": [8, 9], "speculative_metrics": speculative([8, 9])}
+        checked = run.validate_speculative_metrics(raw, 2)
+        self.assertEqual(checked["acceptance_length"], 4.25)
+        self.assertEqual(checked["spec_verify_ct"], 4)
+        for mutate in (
+            lambda d: d.pop("speculative_metrics"),
+            lambda d: d["speculative_metrics"].update(acceptance_length=4.0),
+            lambda d: d["speculative_metrics"].update(
+                requests=d["speculative_metrics"]["requests"][:1]
+            ),
+            lambda d: d.update(output_lens=[9, 8]),
+            lambda d: d["speculative_metrics"]["requests"][0][
+                "spec_tokens_details"
+            ].pop("spec_verify_ct"),
+        ):
+            bad = copy.deepcopy(raw)
+            mutate(bad)
+            with self.assertRaises(ValueError):
+                run.validate_speculative_metrics(bad, 2)
+
+    def test_low_concurrency_keeps_client_count_and_server_floor(self):
+        for tp in (4, 8):
+            for c in (1, 2):
+                case = next(
+                    x for x in run.matrix() if x["tp"] == tp and x["concurrency"] == c
+                )
+                argv = run.server_command(config(), case)
+                self.assertEqual(case["measured_requests"], 10 * c)
+                self.assertEqual(case["warmup_requests"], 2 * c)
+                self.assertEqual(
+                    argv[argv.index("--max-running-requests") + 1], str(tp)
+                )
+                self.assertEqual(
+                    argv[argv.index("--cuda-graph-max-bs-decode") + 1], str(c)
+                )
 
     def test_config_rejects_inherited_behavior(self):
         with tempfile.TemporaryDirectory() as d:
@@ -149,6 +209,7 @@ class Checks(unittest.TestCase):
             "duration": 2.0,
             "output_throughput": 8.5,
         }
+        result["speculative_metrics"] = speculative(result["output_lens"])
         self.assertEqual(run.validate_result(result, case)["output_lens"], [8, 9])
         for key, value in (
             ("completed", 1),
@@ -305,7 +366,7 @@ class Checks(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             proc = run.OwnedProcess.__new__(run.OwnedProcess)
             proc.role, proc.directory, proc.known = "server", Path(d), {}
-            proc.process = SimpleNamespace(pid=10, poll=lambda: None)
+            proc.process = SimpleNamespace(pid=10, poll=lambda: None, returncode=None)
             birth = {10: "100", 11: "101"}
 
             def proc_text(path, *args, **kwargs):
@@ -351,6 +412,61 @@ class Checks(unittest.TestCase):
             )
             self.assertEqual(proc.known[11]["starttime"], "202")
 
+    def test_late_same_session_descendant_is_cleaned_after_leader_exit(self):
+        with tempfile.TemporaryDirectory() as temp:
+            child = run.OwnedProcess.__new__(run.OwnedProcess)
+            child.directory, child.role = Path(temp), "child"
+            leader = {
+                "pid": 10,
+                "starttime": "100",
+                "state": "Z",
+                "ppid": 1,
+                "sid": 10,
+                "pgid": 10,
+            }
+            late = {
+                "pid": 11,
+                "starttime": "101",
+                "state": "S",
+                "ppid": 1,
+                "sid": 10,
+                "pgid": 10,
+            }
+            rows = {10: leader, 11: late}
+            child.known = {10: leader.copy()}
+            child.log = (Path(temp) / "child.log").open("w")
+
+            def reap():
+                rows.pop(10, None)
+                child.process.returncode = 0
+                return 0
+
+            child.process = SimpleNamespace(
+                pid=10, returncode=None, poll=reap, wait=lambda **_: 0
+            )
+            signaled = []
+
+            def kill(pid, sig):
+                signaled.append(pid)
+                rows[pid] = dict(rows[pid], state="Z")
+
+            with (
+                patch.object(
+                    Path,
+                    "iterdir",
+                    side_effect=lambda: [Path(f"/proc/{pid}") for pid in rows],
+                ),
+                patch.object(run, "process_row", side_effect=lambda pid: rows.get(pid)),
+                patch.object(run.os, "kill", side_effect=kill),
+            ):
+                self.assertFalse(child.running())
+                self.assertIn(11, child.known)
+                receipt = child.cleanup(1, 1)
+            self.assertEqual(signaled, [11])
+            self.assertEqual(receipt["waited_returncode"], 0)
+            self.assertEqual(receipt["remaining"], [])
+            self.assertEqual(receipt["errors"], [])
+
     def test_failed_or_partial_spawn_skips_after_cache_scan(self):
         for partial_spawn in (False, True):
             with (
@@ -365,6 +481,7 @@ class Checks(unittest.TestCase):
                     role="server",
                     process=SimpleNamespace(poll=lambda: 1, returncode=1),
                     discover=lambda: None,
+                    running=lambda: False,
                     cleanup=lambda *_: {"remaining": [123], "errors": []},
                 )
                 with (
@@ -575,6 +692,46 @@ class Checks(unittest.TestCase):
             with self.assertRaises(ValueError):
                 run.validate_compile_seed(cfg)
 
+    def test_shared_bridge_capture_is_explicit_optin(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            stub = root / "python3"
+            stub.write_text(
+                f"#!{sys.executable}\nimport json,sys\nprint(json.dumps(sys.argv[1:]))\n"
+            )
+            stub.chmod(0o755)
+            env = dict(
+                os.environ,
+                PATH=str(root) + os.pathsep + os.environ["PATH"],
+                EVAL_ONLY="false",
+                PROFILE="0",
+                PORT="30000",
+                PYTHONPYCACHEPREFIX=str(root / "pycache"),
+            )
+            env.pop("INFERENCEX_SERVER_STATE", None)
+            script = 'source "$1"; shift; run_benchmark_serving --model glm --port 30000 --backend vllm --input-len 1024 --output-len 8192 --random-range-ratio 0.8 --num-prompts 10 --max-concurrency 1 --result-filename result --result-dir "$1" --bench-serving-dir "$1" "${@:2}"'
+            for flags in ([], ["--capture-speculative-metrics"]):
+                result = subprocess.run(
+                    [
+                        "bash",
+                        "-c",
+                        script,
+                        "test",
+                        str(run.REPO / "benchmarks/benchmark_lib.sh"),
+                        str(root),
+                        *flags,
+                    ],
+                    env=env,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
+                argv = json.loads(result.stdout.strip().splitlines()[-1])
+                self.assertEqual(
+                    argv.count("--capture-speculative-metrics"), len(flags)
+                )
+                self.assertEqual(argv[argv.index("--num-warmups") + 1], "2")
+
     def test_actual_bash_bridge_arguments_and_failure(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d)
@@ -633,6 +790,7 @@ else: sys.exit(int(os.environ['STUB_EXIT']))
             self.assertEqual(cmd[cmd.index("--num-warmups") + 1], "8")
             self.assertEqual(cmd[cmd.index("--random-output-len") + 1], "8192")
             self.assertEqual(cmd[cmd.index("--random-range-ratio") + 1], "0.8")
+            self.assertIn("--capture-speculative-metrics", cmd)
             self.assertIn("--use-chat-template", cmd)
             self.assertIn("--ignore-eos", cmd)
             self.assertTrue((p / "server_watch.json").is_file())

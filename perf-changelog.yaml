@@ -8429,3 +8429,13 @@
     - "This result publication does not change serving settings or claim scheduled-matrix, sweep/eval, numerical-equivalence, full-archive or node-cleanup acceptance. The experimental key remains unregistered and its matrix validation failure is disclosed."
     - "发布手动 GLM-5.2 1k/8k B300 六曲线实测：24 点、3,600 个测量请求全部成功、720 个预热；保留所选原始证据、全部已保存 scalar、36 组共1,008项匹配对比，以及可复现的英文 Pareto 图。保留默认后端、dense selector、chunk ITL 和串行实验限制；不改服务配置，不声明 scheduled matrix、sweep/eval、数值等价、完整归档或节点清理通过。"
   pr-link: https://github.com/zianglih/InferenceX/pull/3
+
+- config-keys:
+    - experimental/glm52_six_curves_1k8k_c32
+  description:
+    - "Prepare a new manual GLM-5.2 six-curve rerun at concurrency 32/1/2/4/8/16: 36 points, 3,780 measured requests and 756 warmups, with unchanged SG/FI pins and backend defaults. Use a separately prepared timestamped CUDA 13 image; no new measured result is claimed."
+    - "Opt in to native per-request speculative counters and require complete measured-only coverage. Replay acceptance length as sum(completion_tokens)/sum(spec_verify_ct), including bonus tokens; preserve ordered raw counters and reject unavailable metrics. Keep the old 24-point result bundle and its frozen reader unchanged."
+    - "新增 GLM-5.2 六曲线手动重跑：并发 32/1/2/4/8/16，共36点、3,780条测量请求和756条预热；保持 SG/FI pin 与后端默认值，使用单独准备的 timestamped CUDA 13 镜像，不声明新实测结果。"
+    - "显式采集每条请求的原生推测计数，要求测量阶段完整覆盖；以 sum(completion_tokens)/sum(spec_verify_ct) 计算包含 bonus token 的 AL，保留有序原始记录，拒绝不可用指标。历史24点数据与冻结 reader 不变。该 experimental key 仍未注册到 scheduled matrix，验证限制继续披露。"
+    - "Discover owned same-session descendants before polling/reaping a leader, with a focused late-child cleanup check; no arbitrary detached-descendant guarantee. 在回收 leader 前发现已拥有 session 的后代，增加晚到子进程清理检查；不保证任意 detached 后代不存在。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/3

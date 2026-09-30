@@ -53,6 +53,7 @@ def campaign(root, cases, producer=None):
                 "benchmarks/benchmark_lib.sh",
                 "infx/bench_serving/benchmark_serving.py",
                 "infx/bench_serving/backend_request_func.py",
+                "infx/bench_serving/speculative_metrics.py",
             )
         },
     )
@@ -137,7 +138,7 @@ def campaign(root, cases, producer=None):
             "disable_flashinfer_autotune": False,
             "cuda_graph_backend_prefill": "disabled",
             "chunked_prefill_size": 8192 if tp == 4 else 4096,
-            "max_running_requests": 8 if tp == 8 and c == 4 else c,
+            "max_running_requests": max(c, tp),
             "model_path": cfg["model_path"],
         }
         for when in ("before", "after"):
@@ -163,6 +164,7 @@ def campaign(root, cases, producer=None):
             "mean_tpot_ms": 6.0,
             "timestamp": "SYNTHETIC-NOT-MEASURED",
         }
+        raw["speculative_metrics"] = check.speculative(raw["output_lens"])
         save(directory / "result.json", raw)
         save(
             directory / "requested-lengths.json",
@@ -209,7 +211,7 @@ class ReaderChecks(unittest.TestCase):
             self.assertNotEqual(producer, run.REPO)
             campaign(root, run.matrix(), producer=producer)
             rows = results.load(root, False)
-            self.assertEqual((len(rows), sum(r["completed"] for r in rows)), (24, 3600))
+            self.assertEqual((len(rows), sum(r["completed"] for r in rows)), (36, 3780))
 
     def test_producer_paths_launches_and_source_bindings_reject_mismatches(self):
         mutations = (
@@ -288,15 +290,16 @@ class ReaderChecks(unittest.TestCase):
             root = Path(temp) / "trial"
             campaign(root, run.matrix())
             rows = results.load(root, False)
-            self.assertEqual((len(rows), sum(r["completed"] for r in rows)), (24, 3600))
+            self.assertEqual((len(rows), sum(r["completed"] for r in rows)), (36, 3780))
             r = next(r for r in rows if r["case_id"] == "trtllm-w4a4-tp8-ep8-dp8-c4")
             self.assertEqual(
                 (r["output_tok_s_gpu"], r["interactivity_tok_s_user"]), (4096, 200)
             )
             saved, paired = results.saved_and_paired(rows, root)
-            self.assertEqual(len(saved), 24)
+            self.assertEqual(rows[0]["measured_acceptance_length"], 4096.0)
+            self.assertEqual(len(saved), 36)
             self.assertEqual(saved[0]["timestamp"], "SYNTHETIC-NOT-MEASURED")
-            self.assertEqual(len({r["pair_id"] for r in paired}), 36)
+            self.assertEqual(len({r["pair_id"] for r in paired}), 54)
             per_gpu = next(
                 r
                 for r in paired
@@ -311,6 +314,20 @@ class ReaderChecks(unittest.TestCase):
                     for g in groups
                 )
             )
+
+    def test_missing_or_changed_measured_mtp_rejects_even_after_reseal(self):
+        for edit in (
+            lambda d: d.pop("speculative_metrics"),
+            lambda d: d["speculative_metrics"].update(acceptance_length=123.0),
+            lambda d: d["speculative_metrics"]["requests"][0].update(success=False),
+        ):
+            with tempfile.TemporaryDirectory() as temp:
+                root = Path(temp) / "trial"
+                campaign(root, run.matrix()[1:2])
+                case = next((root / "cases").iterdir())
+                change(case, "result.json", edit)
+                with self.assertRaisesRegex(ValueError, "speculative"):
+                    results.load(root, True)
 
     def test_partial_never_passes_as_complete_and_startup_failure_rejects(self):
         with tempfile.TemporaryDirectory() as temp:

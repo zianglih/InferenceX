@@ -14,6 +14,8 @@ def fixture():
     for index, arm in enumerate(("megamoe-w4a4", "megamoe-w4a16", "trtllm-w4a4")):
         for tp in (4, 8):
             for c, x, y in (
+                (1, 250, 25),
+                (2, 225, 50),
                 (4, 200, 100),
                 (8, 175, 180),
                 (16, 150, 330),
@@ -27,6 +29,8 @@ def fixture():
                         "ep": tp,
                         "dp": tp,
                         "concurrency": c,
+                        "measured_acceptance_length": 2.5,
+                        "measured_acceptance_rate": 0.5,
                         "interactivity_tok_s_user": x
                         + (25 if tp == 8 else 0)
                         - 4 * index,
@@ -49,9 +53,17 @@ def main():
     fig, points = results.figure(rows)
     ax = fig.axes[0]
     assert len(ax.lines) == 6
-    assert len(points) == 24
-    assert [list(line.get_xdata()) for line in ax.lines[:1]] == [[125, 150, 175, 200]]
-    assert list(ax.lines[0].get_ydata()) == [570, 330, 180, 100]
+    assert len(points) == 36
+    assert all(
+        point["measured_acceptance_length"] == 2.5
+        and point["measured_acceptance_rate"] == 0.5
+        and point["acceptance_scope"] == "measured_requests_only"
+        for point in points
+    )
+    assert [list(line.get_xdata()) for line in ax.lines[:1]] == [
+        [125, 150, 175, 200, 225, 250]
+    ]
+    assert list(ax.lines[0].get_ydata()) == [570, 330, 180, 100, 50, 25]
     assert [line.get_color() for line in ax.lines] == [
         "#009E73",
         "#009E73",
@@ -71,8 +83,23 @@ def main():
     ]
     assert len(ax.get_legend().get_lines()) == 6
     labels = [t.get_text() for t in ax.texts]
-    assert sorted(labels) == sorted(["C4", "C8", "C16", "C32"] * 6)
-    assert all(len(group["case_ids"]) == 4 for group in results.frontiers(rows))
+    assert sorted(labels) == sorted(
+        [f"C{c}\nAL=2.50" for c in (1, 2, 4, 8, 16, 32)] * 6
+    )
+    assert all(len(group["case_ids"]) == 6 for group in results.frontiers(rows))
+    for tp in (4, 8):
+        standalone, standalone_points = results.figure(rows, tp)
+        standalone_ax = standalone.axes[0]
+        assert len(standalone_points) == 18
+        assert len(standalone_ax.lines) == 3
+        assert all(
+            line.get_marker() == "o" and line.get_linestyle() == "-"
+            for line in standalone_ax.lines
+        )
+        assert all(point["tp"] == tp for point in standalone_points)
+        import matplotlib.pyplot as plt
+
+        plt.close(standalone)
     fig.suptitle(
         "SYNTHETIC LAYOUT CHECK — no benchmark measurements",
         y=0.965,
@@ -81,7 +108,7 @@ def main():
     )
     # Replace the measured-results subtitle before any image is saved.
     fig.texts[1].set_text(
-        "Hand-constructed geometry fixture | six frontiers / 24 labelled points | not campaign results"
+        "Hand-constructed geometry fixture | six frontiers / 36 labelled points | not campaign results"
     )
     fig.text(
         0.5,

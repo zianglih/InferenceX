@@ -111,6 +111,7 @@ def verify_environment(directory, config, case, env, source):
         "benchmarks/benchmark_lib.sh",
         "infx/bench_serving/benchmark_serving.py",
         "infx/bench_serving/backend_request_func.py",
+        "infx/bench_serving/speculative_metrics.py",
     )
     digests = {
         name: {
@@ -246,6 +247,7 @@ def verify_case(directory):
         or result["benchmark_outcome"].get("failed") != 0
     ):
         raise ValueError("Client outcome is not passed")
+    mtp = recipe.validate_speculative_metrics(result, 10 * c)
     lengths = {}
     for field, total in (
         ("input_lens", "total_input_tokens"),
@@ -301,6 +303,10 @@ def verify_case(directory):
         "dp": tp,
         "concurrency": c,
         "completed": result["completed"],
+        "measured_acceptance_length": mtp["acceptance_length"],
+        "measured_acceptance_rate": mtp["acceptance_rate"],
+        "measured_spec_verify_ct": mtp["spec_verify_ct"],
+        "measured_spec_covered": mtp["covered"],
         "duration_s": result["duration"],
         "input_tokens": result["total_input_tokens"],
         "output_tokens": result["total_output_tokens"],
@@ -353,10 +359,10 @@ def load(root, partial):
             or terminal["status"] != "completed"
             or terminal.get("error")
         ):
-            raise ValueError("Full 24-point campaign incomplete")
+            raise ValueError("Full 36-point campaign incomplete")
         if terminal["completed"] != [x["case_id"] for x in recipe.matrix()]:
             raise ValueError("Worker completed IDs differ")
-        if sum(x["completed"] for x in rows) != 3600:
+        if sum(x["completed"] for x in rows) != 3780:
             raise ValueError("Full measured count differs")
     return rows
 
@@ -406,7 +412,7 @@ def frontiers(rows):
     ]
 
 
-def figure(rows):
+def figure(rows, topology=None):
     import matplotlib
 
     matplotlib.use("Agg")
@@ -420,14 +426,20 @@ def figure(rows):
             "svg.hashsalt": "glm52-six-curves-c32",
         }
     )
-    fig, ax = plt.subplots(figsize=(16, 10))
-    fig.subplots_adjust(left=0.09, right=0.97, bottom=0.20, top=0.86)
+    if topology not in (None, 4, 8):
+        raise ValueError("Expected combined, EP4 or EP8 view")
+    if topology is not None:
+        rows = [row for row in rows if row["tp"] == topology]
+    fig, ax = plt.subplots(figsize=(18, 12))
+    fig.subplots_adjust(left=0.11, right=0.97, bottom=0.20, top=0.86)
     points = []
     for arm, (label, color) in ARM_STYLE.items():
-        for tp in (4, 8):
+        for tp in (4, 8) if topology is None else (topology,):
             group = [r for r in rows if (r["arm_id"], r["tp"]) == (arm, tp)]
             selected = frontier(group)
-            marker, line = ("o", "-") if tp == 4 else ("^", "--")
+            marker, line = (
+                ("o", "-") if tp == 4 or topology is not None else ("^", "--")
+            )
             ax.plot(
                 [r["interactivity_tok_s_user"] for r in selected],
                 [r["output_tok_s_gpu"] for r in selected],
@@ -461,7 +473,7 @@ def figure(rows):
                 if arm == "trtllm-w4a4" and tp == 8 and r["concurrency"] == 16:
                     dx, dy = -12, -22
                 ax.annotate(
-                    f"C{r['concurrency']}",
+                    f"C{r['concurrency']}\nAL={r['measured_acceptance_length']:.2f}",
                     (r["interactivity_tok_s_user"], r["output_tok_s_gpu"]),
                     xytext=(dx, dy),
                     textcoords="offset points",
@@ -484,6 +496,9 @@ def figure(rows):
                         "ep": tp,
                         "dp": tp,
                         "concurrency": r["concurrency"],
+                        "measured_acceptance_length": r["measured_acceptance_length"],
+                        "measured_acceptance_rate": r["measured_acceptance_rate"],
+                        "acceptance_scope": "measured_requests_only",
                         "x": r["interactivity_tok_s_user"],
                         "y": r["output_tok_s_gpu"],
                     }
@@ -497,7 +512,8 @@ def figure(rows):
     ax.spines[["top", "right"]].set_visible(False)
     ax.legend(loc="best", fontsize=10, framealpha=0.96)
     fig.suptitle(
-        "GLM-5.2 | MegaMoE and TRTLLM NVFP4 | B300 | Concurrency 4-32",
+        "GLM-5.2 | MegaMoE and TRTLLM NVFP4 | B300 | Concurrency 1-32"
+        + (f" | EP{topology}" if topology is not None else ""),
         y=0.965,
         fontsize=20,
         weight="bold",
@@ -505,14 +521,14 @@ def figure(rows):
     fig.text(
         0.5,
         0.915,
-        "Nominal 1,024 input / 8,192 output | ratio 0.8 | 24 fresh points | 3,600 measured requests",
+        f"Nominal 1,024 input / 8,192 output | ratio 0.8 | {len(rows)} fresh points | {sum(10 * r['concurrency'] for r in rows):,} measured requests",
         ha="center",
         fontsize=12,
     )
     fig.text(
         0.5,
         0.115,
-        "Six independent frontiers; all 24 points shown. Each line connects nondominated points within one backend/topology group.",
+        f"{6 if topology is None else 3} independent frontiers; all {len(rows)} points shown. Each line connects nondominated points within one backend/topology group.",
         ha="center",
         fontsize=10,
     )
@@ -533,7 +549,7 @@ def figure(rows):
     fig.text(
         0.5,
         0.015,
-        "Whole measured interval; not timed decode. Single sequential run; no causal or numerical-equivalence claim. Draft tensor dtype is not inferred.",
+        "AL: measured MTP sum(completion_tokens)/sum(spec_verify_ct), including bonus tokens; warmups excluded. Whole-interval throughput.",
         ha="center",
         fontsize=9,
         color="#555555",
@@ -541,17 +557,23 @@ def figure(rows):
     return fig, points
 
 
-def plot(rows, out):
+def plot(rows, out, topology=None):
     import matplotlib.pyplot as plt
 
-    fig, points = figure(rows)
+    fig, points = figure(rows, topology)
     fig.savefig(out / "pareto.png", dpi=180)
     fig.savefig(out / "pareto.svg", metadata={"Date": None})
     plt.close(fig)
     (out / "plot-points.json").write_text(
         json.dumps(points, indent=2, allow_nan=False) + "\n"
     )
-    (out / "frontiers.json").write_text(json.dumps(frontiers(rows), indent=2) + "\n")
+    groups = [g for g in frontiers(rows) if topology is None or g["tp"] == topology]
+    (out / "frontiers.json").write_text(json.dumps(groups, indent=2) + "\n")
+    if topology is None:
+        for tp in (4, 8):
+            destination = out / "figures" / f"ep{tp}"
+            destination.mkdir(parents=True, exist_ok=False)
+            plot(rows, destination, tp)
 
 
 def verify_startup(root, config):
@@ -601,12 +623,27 @@ def saved_and_paired(rows, root):
                 if v is None or isinstance(v, (str, bool, int, float))
             }
         )
+        saved.update(
+            {
+                "speculative_metrics." + k: v
+                for k, v in raw["speculative_metrics"].items()
+                if v is None or isinstance(v, (str, bool, int, float))
+            }
+        )
         scalars.append({"case_id": row["case_id"], **saved})
         with localcontext() as ctx:
             ctx.prec = 50
             rate = Decimal(exact["total_output_tokens"]) / exact["duration"]
             values = {
                 "duration_s": exact["duration"],
+                "measured_acceptance_length": Decimal(
+                    exact["speculative_metrics"]["completion_tokens"]
+                )
+                / exact["speculative_metrics"]["spec_verify_ct"],
+                "measured_acceptance_rate": Decimal(
+                    exact["speculative_metrics"]["spec_num_correct_drafts"]
+                )
+                / exact["speculative_metrics"]["spec_num_proposed_drafts"],
                 "output_tok_s": rate,
                 "output_tok_s_gpu": rate / row["tp"],
                 "interactivity_tok_s_user": Decimal(1000) / exact["median_tpot_ms"],
@@ -617,7 +654,7 @@ def saved_and_paired(rows, root):
             metrics[row["case_id"]] = values
     by_key = {(r["arm_id"], r["tp"], r["concurrency"]): r["case_id"] for r in rows}
     pairs = []
-    for c in (4, 8, 16, 32):
+    for c in (1, 2, 4, 8, 16, 32):
         for tp in (4, 8):
             for base, comp in (
                 ("megamoe-w4a4", "megamoe-w4a16"),
@@ -682,21 +719,22 @@ def main():
     lines = [
         "# Fresh six-arm GLM-5.2 1k/8k results",
         "",
-        f"Verified finalized points: {len(rows)}/24.",
+        f"Verified finalized points: {len(rows)}/36.",
         "",
         "Nominal lengths 1,024/8,192 with ratio 0.8 sampling; 2C warmup / 10C measured. "
         "Same-C ordered length arrays match across available arms.",
         "",
         "Throughput covers the complete measured wall interval, not separately timed decode. "
-        "MTP server-state averages include warmup; no global measured acceptance rate is inferred.",
+        "Measured MTP acceptance length is sum(completion_tokens) / sum(spec_verify_ct), including the native bonus token. "
+        "Every measured request must retain valid native counters; warmups are excluded.",
         "",
-        "| Arm | TP=DP=EP | C | Requests | Duration s | Output tok/s | Output tok/s/GPU | 1000/median TPOT |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|",
+        "| Arm | TP=DP=EP | C | Requests | Duration s | Output tok/s | Output tok/s/GPU | 1000/median TPOT | Measured MTP AL |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for r in rows:
         lines.append(
             f"| {r['arm_id']} | {r['tp']} | {r['concurrency']} | {r['completed']} | "
-            f"{r['duration_s']:.6f} | {r['output_tok_s']:.6f} | {r['output_tok_s_gpu']:.6f} | {r['interactivity_tok_s_user']:.6f} |"
+            f"{r['duration_s']:.6f} | {r['output_tok_s']:.6f} | {r['output_tok_s_gpu']:.6f} | {r['interactivity_tok_s_user']:.6f} | {r['measured_acceptance_length']:.6f} |"
         )
     lines += [
         "",

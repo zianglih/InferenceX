@@ -29,6 +29,7 @@ class RequestFuncInput:
     extra_body: dict | None = None
     multi_modal_content: dict | None = None
     ignore_eos: bool = False
+    capture_speculative_metrics: bool = False
 
 
 @dataclass
@@ -42,6 +43,7 @@ class RequestFuncOutput:
     tpot: float = 0.0  # avg next-token latencies
     prompt_len: int = 0
     error: str = ""
+    spec_tokens_details: dict | None = None
 
 
 async def async_request_tgi(
@@ -248,12 +250,16 @@ async def async_request_openai_completions(
             payload["ignore_eos"] = request_func_input.ignore_eos
         if request_func_input.extra_body:
             payload.update(request_func_input.extra_body)
+        if request_func_input.capture_speculative_metrics:
+            payload["return_spec_tokens_details"] = True
         headers = {"Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}"}
 
         output = RequestFuncOutput()
         output.prompt_len = request_func_input.prompt_len
 
         generated_text = ""
+        usage_seen = False
+        saw_done = False
         st = time.perf_counter()
         most_recent_timestamp = st
         try:
@@ -268,6 +274,14 @@ async def async_request_openai_completions(
                         chunk = chunk_bytes.decode("utf-8").removeprefix("data: ")
                         if chunk != "[DONE]":
                             data = json.loads(chunk)
+
+                            # SGLang sends these once in a final, choices-empty stream chunk.
+                            if request_func_input.capture_speculative_metrics:
+                                details = (data.get("sglext") or {}).get("spec_tokens_details")
+                                if details is not None:
+                                    if output.spec_tokens_details is not None:
+                                        raise ValueError("Duplicate final speculative details")
+                                    output.spec_tokens_details = details
 
                             # NOTE: Some completion API might have a last
                             # usage summary response without a token so we
@@ -290,7 +304,14 @@ async def async_request_openai_completions(
                                 most_recent_timestamp = timestamp
                                 generated_text += text or ""
                             elif usage := data.get("usage"):
+                                if request_func_input.capture_speculative_metrics and usage_seen:
+                                    raise ValueError("Duplicate final completion usage")
+                                usage_seen = True
                                 output.output_tokens = usage.get("completion_tokens")
+                        else:
+                            saw_done = True
+                    if request_func_input.capture_speculative_metrics and not saw_done:
+                        raise ValueError("Missing final SSE DONE marker")
                     if first_chunk_received:
                         output.success = True
                     else:

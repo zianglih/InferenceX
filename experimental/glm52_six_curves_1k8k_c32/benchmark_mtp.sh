@@ -21,4 +21,4 @@ run_benchmark_serving \
     --input-len 1024 --output-len 8192 --random-range-ratio 0.8 \
     --num-prompts "$((10 * CONC))" --max-concurrency "$CONC" \
     --result-filename result --result-dir "$CASE_DIR" \
-    --bench-serving-dir "$REPO_ROOT" --use-chat-template
+    --bench-serving-dir "$REPO_ROOT" --use-chat-template --capture-speculative-metrics

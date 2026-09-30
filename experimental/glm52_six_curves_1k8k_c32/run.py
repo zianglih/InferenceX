@@ -23,6 +23,8 @@ from urllib.request import urlopen
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
+# The saved reader is runnable outside its original checkout or an installed package.
+sys.path.insert(0, str(REPO))
 # Arm identity includes the backend: the two W4A4 paths must never share tactics.
 ARMS = (
     ("megamoe-w4a4", "w4a4", "flashinfer_megamoe", "flashinfer_megamoe"),
@@ -30,8 +32,10 @@ ARMS = (
     ("trtllm-w4a4", "w4a4", "flashinfer_trtllm", "none"),
 )
 TOPOLOGIES = (4, 8)
-CONCURRENCIES = (32, 4, 8, 16)
+CONCURRENCIES = (32, 1, 2, 4, 8, 16)
+CAMPAIGN_CONTRACT = "glm52-six-curves-measured-mtp-v1"
 CONFIG_KEYS = {
+    "campaign_contract",
     "run_id",
     "run_root",
     "tmp_root",
@@ -95,6 +99,8 @@ def read_config(path: Path) -> dict:
     cfg = json.loads(path.read_text())
     if set(cfg) != CONFIG_KEYS:
         raise ValueError(f"Config keys differ: {set(cfg) ^ CONFIG_KEYS}")
+    if cfg["campaign_contract"] != CAMPAIGN_CONTRACT:
+        raise ValueError("Expected the 36-point measured-MTP campaign contract")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]+", cfg["run_id"]):
         raise ValueError("Invalid run_id")
     for key in ("sglang_commit", "flashinfer_commit", "model_revision"):
@@ -374,7 +380,7 @@ class OwnedProcess:
             for pid, saved in self.known.items()
             if pid in rows and rows[pid]["starttime"] == saved["starttime"]
         }
-        if self.process.poll() is None and self.process.pid in rows:
+        if self.process.returncode is None and self.process.pid in rows:
             live_known.add(self.process.pid)
         changed = True
         while changed:
@@ -399,6 +405,11 @@ class OwnedProcess:
                 )
             self.known.update(additions)
 
+    def running(self) -> bool:
+        # Observe same-session descendants while an exited leader is still unreaped.
+        self.discover()
+        return self.process.poll() is None
+
     def alive(self) -> list[dict]:
         self.discover()
         return [
@@ -416,6 +427,7 @@ class OwnedProcess:
             (signal.SIGKILL, kill_seconds),
         ):
             try:
+                self.discover()
                 if self.process.poll() is None and self.process.pid not in self.known:
                     # Birth capture can lose a race or fail. The live, un-waited
                     # direct Popen child is still ours; never infer ownership
@@ -561,6 +573,7 @@ def source_snapshot(cfg: dict, env: dict) -> dict:
             REPO / "benchmarks/benchmark_lib.sh",
             REPO / "infx/bench_serving/benchmark_serving.py",
             REPO / "infx/bench_serving/backend_request_func.py",
+            REPO / "infx/bench_serving/speculative_metrics.py",
         )
     }
     return result
@@ -665,7 +678,40 @@ def validate_result(result: dict, case: dict) -> dict:
     throughput = result["total_output_tokens"] / result["duration"]
     if abs(result["output_throughput"] - throughput) > 1e-8 * max(1, throughput):
         raise ValueError("Throughput is not whole-interval output tokens / duration")
+    validate_speculative_metrics(result, count)
     return {k: result[k] for k in ("input_lens", "output_lens")}
+
+
+def validate_speculative_metrics(result: dict, count: int) -> dict:
+    """Require complete measured-request counters; never infer them from server means."""
+    from infx.bench_serving import speculative_metrics as metrics
+
+    if (
+        Path(metrics.__file__).resolve()
+        != REPO / "infx/bench_serving/speculative_metrics.py"
+    ):
+        raise ValueError("Speculative metrics implementation origin differs")
+    saved = result.get("speculative_metrics")
+    if not isinstance(saved, dict) or not isinstance(saved.get("requests"), list):
+        raise ValueError("Missing measured speculative metrics")
+    replay = metrics.summarize_speculative_metrics(saved["requests"])
+    if saved != replay:
+        raise ValueError(
+            "Measured speculative metrics differ from exact counter replay"
+        )
+    if (
+        saved.get("status") != "passed"
+        or saved.get("requested") != count
+        or saved.get("covered") != count
+    ):
+        raise ValueError("Incomplete measured speculative counter coverage")
+    if [row.get("completion_tokens") for row in saved["requests"]] != result[
+        "output_lens"
+    ]:
+        raise ValueError(
+            "Measured speculative completion tokens differ from ordered outputs"
+        )
+    return saved
 
 
 def requested_lengths(model_path: str, count: int, destination: Path) -> None:
@@ -819,7 +865,7 @@ def run_case(cfg: dict, case: dict, references: dict, baseline: dict) -> None:
         deadline = time.monotonic() + cfg["ready_timeout_seconds"]
         while True:
             tick()
-            if server.process.poll() is not None:
+            if not server.running():
                 raise RuntimeError(
                     f"Server exited before health: {server.process.returncode}"
                 )
@@ -855,9 +901,9 @@ def run_case(cfg: dict, case: dict, references: dict, baseline: dict) -> None:
         )
         client = OwnedProcess(client_command, client_env, directory, "benchmark")
         deadline = time.monotonic() + cfg["benchmark_timeout_seconds"]
-        while client.process.poll() is None:
+        while client.running():
             tick()
-            if server.process.poll() is not None:
+            if not server.running():
                 raise RuntimeError("Server died during benchmark")
             if time.monotonic() > deadline:
                 raise TimeoutError("Benchmark deadline exceeded")

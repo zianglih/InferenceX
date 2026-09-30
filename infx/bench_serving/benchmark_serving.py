@@ -67,6 +67,7 @@ except ImportError:
 from .benchmark_outcome import benchmark_outcome
 from .benchmark_utils import convert_to_pytorch_benchmark_format
 from .encoding_dsv4 import encode_messages as dsv4_encode_messages
+from .speculative_metrics import summarize_speculative_metrics
 
 MILLISECONDS_TO_SECONDS_CONVERSION = 1000
 
@@ -557,7 +558,12 @@ async def benchmark(
     goodput_config_dict: dict[str, float],
     max_concurrency: int | None,
     lora_modules: list[str] | None,
+    capture_speculative_metrics: bool = False,
 ) -> dict[str, Any]:
+    if capture_speculative_metrics and (
+        backend not in ("vllm", "openai", "sglang", "lmdeploy", "scalellm") or best_of != 1
+    ):
+        raise ValueError("Speculative capture requires single-completion OpenAI streaming")
     if backend in ASYNC_REQUEST_FUNCS:
         request_func = ASYNC_REQUEST_FUNCS[backend]
     else:
@@ -579,6 +585,7 @@ async def benchmark(
         best_of=best_of,
         multi_modal_content=test_mm_content,
         ignore_eos=ignore_eos,
+        capture_speculative_metrics=capture_speculative_metrics,
     )
 
     if num_warmups > 0:
@@ -672,6 +679,7 @@ async def benchmark(
             best_of=best_of,
             multi_modal_content=mm_content,
             ignore_eos=ignore_eos,
+            capture_speculative_metrics=capture_speculative_metrics,
         )
         tasks.append(
             asyncio.create_task(
@@ -742,6 +750,19 @@ async def benchmark(
         "generated_texts": [output.generated_text for output in outputs],
         "errors": [output.error for output in outputs],
     }
+
+    if capture_speculative_metrics:
+        result["speculative_metrics"] = summarize_speculative_metrics(
+            [
+                {
+                    "request_index": index,
+                    "success": output.success,
+                    "completion_tokens": output.output_tokens,
+                    "spec_tokens_details": output.spec_tokens_details,
+                }
+                for index, output in enumerate(outputs)
+            ]
+        )
 
     def process_one_metric(
         # E.g., "ttft"
@@ -935,6 +956,7 @@ def main(args: argparse.Namespace) -> None:
             goodput_config_dict=goodput_config_dict,
             max_concurrency=args.max_concurrency,
             lora_modules=args.lora_modules,
+            capture_speculative_metrics=getattr(args, "capture_speculative_metrics", False),
         )
     )
 
@@ -1011,6 +1033,12 @@ def main(args: argparse.Namespace) -> None:
             json.dump(result_json, outfile)
         save_to_pytorch_benchmark_format(args, result_json, file_name)
 
+    if getattr(args, "capture_speculative_metrics", False) and (
+        benchmark_result.get("speculative_metrics", {}).get("status") != "passed"
+    ):
+        raise SystemExit(
+            "FAIL: incomplete measured speculative-metric coverage (raw result retained)"
+        )
     if "error" in outcome:
         raise SystemExit(f"FAIL: invalid request counts: {outcome['error']}")
     if outcome["status"] == "failed":
@@ -1150,6 +1178,12 @@ if __name__ == "__main__":
         "--save-result",
         action="store_true",
         help="Specify to save benchmark results to a json file",
+    )
+    parser.add_argument(
+        "--capture-speculative-metrics",
+        action="store_true",
+        help="Require SGLang per-request speculative counters for measured requests only; "
+        "retain raw counters and aggregate by verification count. Missing coverage fails the run.",
     )
     parser.add_argument(
         "--save-detailed",
