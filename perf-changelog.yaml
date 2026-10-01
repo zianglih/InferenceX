@@ -8463,3 +8463,10 @@
     - "Use the pinned V4.1 text-chat encoder without reasoning-effort override; preserve the existing sampler and measured-only ratio-of-sums MTP reducer. Keep the native MXFP4/MXFP8 bundled draft and fixed flashinfer_mxfp4/none backend. No measured performance or scheduled-matrix/eval acceptance is claimed by this recipe addition."
     - "新增独立 DeepSeek-V4.1 DSpark EP8 手动矩阵，三个 target 后端各测 C2/4/8/16/32/64；共3,780条测量、756条计划预热，先以三个 C2 实测点验证。保持原 GLM 结果，采用固定 V4.1 chat encoder、不覆盖 reasoning effort，仅测量阶段计数；内置 draft 保持 MXFP4/MXFP8 与 flashinfer_mxfp4/none。本配方新增不代表实测性能或 scheduled-matrix/eval 验收。"
   pr-link: https://github.com/zianglih/InferenceX/pull/3
+
+- config-keys:
+    - experimental/dsv41_dspark_ep8
+  description:
+    - "Use the same explicit in-memory vision_n_layers=0 override for all three text-only DeepSeek-V4.1 DSpark arms; preserve checkpoint bytes and the failed multimodal startup, with a fresh run/HOME/TMP. Preflight records target and draft text-only configuration. No measured result is claimed."
+    - "三个 DeepSeek-V4.1 DSpark 文本后端统一显式使用内存 vision_n_layers=0 override，保留 checkpoint 原字节和原多模态启动失败证据，使用新的 run/HOME/TMP；预检记录 target/draft 纯文本配置，不声明实测结果。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/3

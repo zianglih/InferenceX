@@ -238,6 +238,8 @@ def server_command(cfg: dict, case: dict) -> list[str]:
         "--port",
         str(cfg["port"]),
         "--trust-remote-code",
+        "--json-model-override-args",
+        '{"vision_n_layers":0}',
         "--dtype",
         "bfloat16",
         "--tensor-parallel-size",
@@ -622,6 +624,7 @@ def validate_server_info(info: dict, cfg: dict, case: dict) -> None:
     expected = {
         "model_path": cfg["model_path"],
         "dtype": "bfloat16",
+        "json_model_override_args": '{"vision_n_layers":0}',
         "tp_size": case["tp"],
         "dp_size": case["dp"],
         "ep_size": case["ep"],

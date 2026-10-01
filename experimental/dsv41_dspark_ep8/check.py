@@ -1,6 +1,7 @@
 """Focused CPU behavior checks; no model, package installation, or serving request."""
 
 import hashlib
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -37,6 +38,12 @@ class Checks(unittest.TestCase):
             self.assertEqual(
                 args[args.index("--speculative-draft-model-path") + 1], "/model"
             )
+            self.assertEqual(
+                json.loads(args[args.index("--json-model-override-args") + 1]),
+                {"vision_n_layers": 0},
+            )
+            self.assertNotIn("--language-only", args)
+            self.assertNotIn("--language-model-only", args)
             self.assertNotIn("--quantization", args)
             self.assertNotIn("--attention-backend", args)
             self.assertEqual(

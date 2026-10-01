@@ -1,6 +1,6 @@
 {
   "base_environment": {
-    "HOME": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/dsv41-dspark-ep8-20261001-all18/home",
+    "HOME": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/dsv41-dspark-ep8-20261001-text-all18/home",
     "LANG": "C.UTF-8",
     "LD_LIBRARY_PATH": "/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
     "PATH": "/root/.cargo/bin:/opt/sglang/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/nvidia/bin",
@@ -29,11 +29,11 @@
   "port": 30000,
   "python": "/opt/sglang/bin/python3",
   "ready_timeout_seconds": 3600,
-  "run_id": "dsv41-dspark-ep8-20261001-all18",
-  "run_root": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/dsv41-dspark-ep8-20261001-all18",
+  "run_id": "dsv41-dspark-ep8-20261001-text-all18",
+  "run_root": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/dsv41-dspark-ep8-20261001-text-all18",
   "served_model": "DeepSeek-V4.1-Flash-NVFP4",
   "sglang_commit": "29c2b32d7f7351082168e622a4747bcff6469271",
   "sglang_root": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/sources/sglang",
   "term_seconds": 30,
-  "tmp_root": "/tmp/infx-dsv41-dspark-1001"
+  "tmp_root": "/tmp/infx-dsv41-text-1001"
 }

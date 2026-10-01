@@ -5,6 +5,8 @@
 本手动配方复用已有 GLM 串行 runner、按进程出生身份清理、证据封存、随机请求生成、
 原生计数归约、离线 reader 与 Pareto 绘图，不安装软件、不下载模型、不提交任务，也不声明 GPU 验证完成。
 
+所有三个后端均显式传入 `--json-model-override-args '{"vision_n_layers":0}'`，仅改变内存中的 V4.1 配置；原始 checkpoint 文件（包括视觉权重）全部保留。未构建视觉塔时，现有 loader 跳过视觉塔、aligner、image 参数和 VL 路由 bias；文本路由保留普通 bias，内置 DSpark stage 本身已禁用视觉。视觉专用的 Engram/image-token 处理也被禁用；不声明多模态或生成 image token 时的等价性。采样器抽取基础词表 ID，image marker 属于 added token，固定 encoder 会拒绝用户文本中的 image placeholder 或媒体。预检记录并要求 target/draft 均为零视觉层且非多模态。该 pin 的 `--language-only` 是 encoder disaggregation，`--language-model-only` 的架构白名单也不支持 V4.1，因此不使用这两个 flag。原多模态启动在 health 和测量前失败，其源码、配置、运行目录及失败回执保持独立；新运行使用示例中的 `dsv41-dspark-ep8-20261001-text-all18` 根目录及新短 TMP。
+
 - **矩阵：** TP=EP=attention DP=8，target 分别使用 MegaMoE W4A4、MegaMoE W4A16 和
   传统 TRTLLM W4A4（`flashinfer_trtllm_routed`/A2A `none`，保留 DeepSeek 原生 routing），C2/4/8/16/32/64。先执行三个后端的 C2 作为正式实测资格验证点，
   再按后端执行 C4–64；共18点、3,780条测量请求和756条计划预热。任一点失败即停止。

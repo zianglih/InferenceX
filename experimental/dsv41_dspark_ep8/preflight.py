@@ -12,6 +12,7 @@ import run as recipe
 def child(config, case):
     import torch
     from sglang.srt.server_args import prepare_server_args
+    from sglang.srt.configs.model_config import ModelConfig
     from sglang.srt.environ import envs
     from infx.bench_serving.encoding_dsv41 import encode_text_chat
 
@@ -19,6 +20,20 @@ def child(config, case):
     args.resolve_once()
     resolved = args.resolved_dict()
     recipe.validate_server_info(resolved, config, case)
+    text_models = {}
+    for role, is_draft in (("target", False), ("draft", True)):
+        model = ModelConfig.from_server_args(
+            args, model_path=config["model_path"], is_draft_model=is_draft
+        )
+        if model.hf_config.vision_n_layers != 0 or model.is_multimodal:
+            raise ValueError(f"{role} must resolve to the text-only V4.1 configuration")
+        text_models[role] = {
+            "vision_n_layers": model.hf_config.vision_n_layers,
+            "is_multimodal": model.is_multimodal,
+            "architectures": model.hf_config.architectures,
+            "model_type": model.hf_config.model_type,
+            "model_override_args": model.model_override_args,
+        }
     if torch.cuda.device_count() != 8:
         raise ValueError("Expected eight visible GPUs")
     properties = [torch.cuda.get_device_properties(i) for i in range(8)]
@@ -49,6 +64,7 @@ def child(config, case):
         "status": "CONFIG_IMPORT_CAPABILITY_ONLY",
         "case": case,
         "resolved": resolved,
+        "text_model_configs": text_models,
         "backend_defaults": defaults,
         "gpu": [
             {"name": p.name, "uuid": str(p.uuid), "major": p.major, "minor": p.minor}

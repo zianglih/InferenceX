@@ -23,6 +23,22 @@ or claim successful GPU qualification.
   The target checkpoint is hybrid (NVFP4 routed experts plus inherited dense
   precision), while the draft remains native MXFP4/MXFP8, using
   `flashinfer_mxfp4` and A2A `none` in every arm. No BF16 draft conversion.
+- **Text-only model:** all three arms explicitly pass
+  `--json-model-override-args '{"vision_n_layers":0}'`. This changes the in-memory
+  V4.1 configuration only; every original checkpoint file, including vision
+  weights, remains intact. The existing loader skips the vision tower, aligner,
+  image parameters and VL routing bias when no vision tower is built. Text
+  routing keeps its normal bias; the bundled DSpark stages already disable vision.
+  Vision-specific Engram/image-token handling is also disabled; this is not a
+  multimodal or generated-image-token equivalence claim. The sampler draws base
+  vocabulary IDs; the image marker is an added token, and the pinned encoder
+  rejects image placeholders/media in user text.
+  Preflight records and checks zero vision layers and non-multimodal target/draft
+  configurations. Neither `--language-only` (encoder disaggregation) nor
+  `--language-model-only` (unsupported architecture allowlist) applies to this pin.
+  The earlier multimodal startup failed before health and measurement; its source,
+  config, run and failure receipts are retained separately. Use the example's fresh
+  `dsv41-dspark-ep8-20261001-text-all18` root and short TMP for the successor.
 - **Routing:** the explicit routed TRT target preserves DeepSeek's materialized
   routing and matches its NVFP4 source default. The shared TRT primitive name
   alone does not identify a logits-versus-routed call; native evidence is required.
@@ -67,7 +83,7 @@ From the InferenceX checkout, review/update the actual paths in a copied config:
 python3 -B experimental/dsv41_dspark_ep8/check.py
 python3 -B experimental/dsv41_dspark_ep8/run.py --config /absolute/campaign.json --plan
 # On the explicitly restored node, with the config's source PYTHONPATH and loader environment:
-python3 -B experimental/dsv41_dspark_ep8/preflight.py --config /absolute/campaign.json --output /absolute/exclusive-preflight --tmp-root /tmp/infx-dsv41-pre-1001
+python3 -B experimental/dsv41_dspark_ep8/preflight.py --config /absolute/campaign.json --output /absolute/preflight-text-v2 --tmp-root /tmp/infx-dsv41-tpre-1001
 # Import-only preflight does not load a model or qualify distributed kernels.
 python3 -B experimental/dsv41_dspark_ep8/run.py --config /absolute/campaign.json --run
 python3 -B experimental/dsv41_dspark_ep8/results.py --run-root /absolute/completed-run --output /absolute/new-review
