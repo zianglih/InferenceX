@@ -488,3 +488,10 @@ python -m pytest utils/matrix_logic/ -v
 检查点将仓库挂载到 `/ix` 并重写 `RESULT_DIR`，使 AgentX 运行目录不落在 `/workspace` 下。MI300X
 launcher 还为该检查点将 Slurm 分配时长从 180 分钟提高到 480 分钟：那里的 HF 缓存为节点本地，
 每个节点上的首次运行需先下载 511 GB。在获得 GPU sweep 与 eval 证据之前，不得将任一配方视为已验证。
+
+## 手动 DeepSeek-V4.1 DSpark 测量
+
+独立的 [DSpark EP8 配方](../experimental/dsv41_dspark_ep8/README_zh.md) 复用随机负载与
+仅测量阶段计数，对比三个 target 后端。显式 `--dsv41` 使用固定 checkpoint encoder 的 chat
+模式，不覆盖 reasoning effort；原 `--dsv4` 与 tokenizer-template 路径保持行为不变。
+该 experimental 配方不是 scheduled matrix key。

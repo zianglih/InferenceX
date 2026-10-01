@@ -547,3 +547,11 @@ runtime directories stay out of `/workspace`. The MI300X launcher also raises it
 allocation from 180 to 480 minutes for this checkpoint: the HF cache there is node-local, so
 the first arm on each node downloads 511 GB before serving. GPU sweep and eval evidence is
 required before calling either arm validated.
+
+## Manual DeepSeek-V4.1 DSpark sweep
+
+The isolated [DSpark EP8 recipe](../experimental/dsv41_dspark_ep8/README.md) reuses
+the random workload and measured-only counters with three target backends. Its
+explicit `--dsv41` client opt-in uses the pinned checkpoint encoder in chat mode
+without a reasoning-effort override; existing `--dsv4` and tokenizer-template
+paths keep their behavior. This experimental recipe is not a scheduled matrix key.

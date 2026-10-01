@@ -8455,3 +8455,11 @@
     - "Reuse the installed September 30 runtime and pinned checkpoint with fresh owned HOME/TMP/compile/tactic paths and no cache seed. Full logs remain local; no new performance or scheduled-matrix/eval acceptance is claimed by this recipe addition."
     - "新增三个独立的 GLM-5.2 EP8 C64 手动测量点，每点128条计划预热和640条测量请求；保留原36点及仅测量阶段的原生MTP统计。复用已安装的9月30日runtime与固定checkpoint，使用新的HOME/TMP/编译和tactic路径，不使用cache seed。完整日志仅本地保留，配方新增不代表实测性能或scheduled matrix/eval验收。"
   pr-link: https://github.com/zianglih/InferenceX/pull/3
+
+- config-keys:
+    - experimental/dsv41_dspark_ep8
+  description:
+    - "Add a separate manual DeepSeek-V4.1 DSpark EP8 sweep: target MegaMoE W4A4/W4A16 and TRTLLM W4A4 at C2/4/8/16/32/64, 3,780 measured requests and 756 scheduled warmups. Qualify each arm with its measured C2 point first; preserve all GLM artifacts."
+    - "Use the pinned V4.1 text-chat encoder without reasoning-effort override; preserve the existing sampler and measured-only ratio-of-sums MTP reducer. Keep the native MXFP4/MXFP8 bundled draft and fixed flashinfer_mxfp4/none backend. No measured performance or scheduled-matrix/eval acceptance is claimed by this recipe addition."
+    - "新增独立 DeepSeek-V4.1 DSpark EP8 手动矩阵，三个 target 后端各测 C2/4/8/16/32/64；共3,780条测量、756条计划预热，先以三个 C2 实测点验证。保持原 GLM 结果，采用固定 V4.1 chat encoder、不覆盖 reasoning effort，仅测量阶段计数；内置 draft 保持 MXFP4/MXFP8 与 flashinfer_mxfp4/none。本配方新增不代表实测性能或 scheduled-matrix/eval 验收。"
+  pr-link: https://github.com/zianglih/InferenceX/pull/3
