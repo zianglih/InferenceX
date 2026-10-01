@@ -1,0 +1,247 @@
+{
+  "status": "PUBLIC_COMPACT_39_POINT_MEASURED_MTP_RESULTS",
+  "scope": "Compact aggregate tables, plots and reproduction source only. Full setup/server/client logs, arrays, native records and ownership evidence retained locally.",
+  "backend_pair_groups": 39,
+  "base_points": 36,
+  "extension_points": 3,
+  "measured_requests": 5700,
+  "metric_rows": 1710,
+  "metrics_per_pair": 30,
+  "points": 39,
+  "scheduled_warmups": 1140,
+  "topology_pair_groups": 18,
+  "total_pair_groups": 57,
+  "unchanged_c2_32_files": 13,
+  "failed_measured_requests": 0,
+  "extension_recipe_commit": "d11577979d1b7658fdaa7f5a2a2f8fdb104378f2",
+  "sglang_commit": "9d38e0530a1e35d1756a7fabf044bc39b77209b8",
+  "flashinfer_commit": "a03f2205263d4e691d68e485bff287e37a19b6c3",
+  "image": "lmsysorg/sglang:nightly-dev-cu13-20260930-cae69be5@sha256:0412c5b792cb35706de0359de4a1af52c160d4bdef6ff7530baf9df4e2a7b0b4",
+  "torch": "2.13.0+cu130",
+  "checkpoint_revision": "53e0691e21895a3863a606dfd12910c69eba94ab",
+  "checkpoint_tensor_scope": "47 files / 464823042096 bytes retained by names and sizes; no tensor SHA claim.",
+  "workload": {
+    "nominal_input": 1024,
+    "nominal_output": 8192,
+    "length_ratio": 0.8,
+    "client_seed": 0,
+    "scheduled_warmups": "2*C",
+    "measured_requests": "10*C",
+    "stream_interval": 30,
+    "speculation": "EAGLE",
+    "steps": 3,
+    "topk": 1,
+    "draft_tokens": 4
+  },
+  "metrics": {
+    "x": "1000 / median_tpot_ms",
+    "y": "output_tokens / whole_measured_interval_seconds / GPU_count",
+    "acceptance_length": "sum(completion_tokens) / sum(spec_verify_ct), native bonus included",
+    "acceptance_rate": "sum(correct_drafts) / sum(proposed_drafts)",
+    "warmup_scope": "Scheduled and awaited, outputs discarded; not individually audited successes."
+  },
+  "topologies": {
+    "EP4": {
+      "tp": 4,
+      "ep": 4,
+      "dp_attention": 4,
+      "concurrencies": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ]
+    },
+    "EP8": {
+      "tp": 8,
+      "ep": 8,
+      "dp_attention": 8,
+      "concurrencies": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ]
+    }
+  },
+  "new_cases": {
+    "megamoe-w4a16-tp8-ep8-dp8-c64": {
+      "result": {
+        "bytes": 270554,
+        "sha256": "87b2c0be9ad77b70868f0d8e4bfd5dde3c37ac14d57f211e26b35307fa5818ff"
+      },
+      "manifest": {
+        "bytes": 16382,
+        "sha256": "98d6d374320173b3df6929b2d3b9b776f98063690ad95ce2d3e4d270599f40ab"
+      },
+      "root_acceptance": {
+        "bytes": 261408,
+        "sha256": "c6c2ce2e0449e095ffb33018da582b16544913efd0a2cb536366517593353259"
+      }
+    },
+    "megamoe-w4a4-tp8-ep8-dp8-c64": {
+      "result": {
+        "bytes": 270619,
+        "sha256": "6e5d7a5d2f2c134333adea8fcb7454e16bc64459dea8b3fcea27f7590f192337"
+      },
+      "manifest": {
+        "bytes": 7936,
+        "sha256": "e2768d28bbebc2e9f6aec853d94637ce8bba688ec180d592cd4a2ad5eef5dd86"
+      },
+      "root_acceptance": {
+        "bytes": 162208,
+        "sha256": "dd1f100a1d30129c5e5d4c05bc0d51ca408b62cb7abf8c63f47386ce8a2d47f3"
+      }
+    },
+    "trtllm-w4a4-tp8-ep8-dp8-c64": {
+      "result": {
+        "bytes": 270531,
+        "sha256": "90d33b5854dea05fbd8e155569b25feea09efb365748c84b22df273dc698ec8b"
+      },
+      "manifest": {
+        "bytes": 24493,
+        "sha256": "db1d46124d22191a055106dd36fbedb23e53d1a98044c6d1919da8fb1dad87f1"
+      },
+      "root_acceptance": {
+        "bytes": 386824,
+        "sha256": "e6e1e86edb16486c38f0808a06acc6e05585ecdbdb38be016bb88e4f4520b10f"
+      }
+    }
+  },
+  "local_release": {
+    "bytes": 3099,
+    "sha256": "8a489e3d8df0e56258ea9e8dd1a9d51d540973d0d026f1d9bed576056577e82f"
+  },
+  "original_exact_terminal_review": {
+    "bytes": 18012,
+    "sha256": "6bc4b7ac6c67120c08a288bbbea0cf95143ccfccd78801e1532c296fd9e0a606"
+  },
+  "base36_public_manifest": {
+    "bytes": 7507,
+    "sha256": "14c635bcdeafa70bb3c94748df33806abbd8bd414f7de7a3ebd3c08df5d4ee8c"
+  },
+  "unchanged_c2_32": {
+    "pareto.svg": {
+      "bytes": 169894,
+      "sha256": "31dcd3245b6ce865d54c39e550be2f2f9bbb26dd8a7ae0960c10612bcfa5a0fa"
+    },
+    "LAYOUT.json": {
+      "bytes": 26535,
+      "sha256": "a1a1be41306d84df9c7e31f722773f3c2b0970c9205f9c503e229498d3c39043"
+    },
+    "frontiers.json": {
+      "bytes": 1731,
+      "sha256": "78c1494c2ff1b559609466ffe08d55f5726c31b5c2135d588189f00ac7e730fd"
+    },
+    "pareto.png": {
+      "bytes": 458872,
+      "sha256": "96248a306b048363021610bc191b9b01f9ff46efcf70c4d515e930d3ae928cff"
+    },
+    "plot-points.json": {
+      "bytes": 10745,
+      "sha256": "a66b2b97855ec3f89f73b4294c9c32b604c5776fbe40b16978b3295cc65f845d"
+    },
+    "figures/ep4/pareto.svg": {
+      "bytes": 136056,
+      "sha256": "33629a4dfc916caadf4e296c77e4ecce4ce94cf0c834bd7fc8510da77d89750a"
+    },
+    "figures/ep4/frontiers.json": {
+      "bytes": 867,
+      "sha256": "57ce1feb68c8addb104a6426e25b216bd6367067bb6d8f72dde1e79bf600dfc9"
+    },
+    "figures/ep4/pareto.png": {
+      "bytes": 347108,
+      "sha256": "192b23a0612700d7c8f79afa5542a9bf526304d6aee6ccd509539c963a5b0b3e"
+    },
+    "figures/ep4/plot-points.json": {
+      "bytes": 5372,
+      "sha256": "3f6b8023a7d4e558a7ca77d70df6c67d10bf23c5d3e201c9ca1a3aa738a948f8"
+    },
+    "figures/ep8/pareto.svg": {
+      "bytes": 136911,
+      "sha256": "123298e3630b1d02f4fad9f0bbfb5d24337533278e67d468b1eb18aeac5b3851"
+    },
+    "figures/ep8/frontiers.json": {
+      "bytes": 867,
+      "sha256": "752821233279894caba1907f1214e4e7e743690c5e4e9329e099c187b407beba"
+    },
+    "figures/ep8/pareto.png": {
+      "bytes": 355042,
+      "sha256": "09cf862c30480ace748541807576e873b78f7bffb703759504faaabdfd01df56"
+    },
+    "figures/ep8/plot-points.json": {
+      "bytes": 5376,
+      "sha256": "455adbb0f2e5e73ae12f3914e0e0980ffe80f2a5e89bebe798040f9acbbdc4c0"
+    }
+  },
+  "source_files": {
+    "source/benchmarks/benchmark_lib.sh": {
+      "bytes": 131962,
+      "sha256": "7bf1607b8c21225b3cb78e4c4ad51f21034c53654e5b2aee83b6925e6db900f4"
+    },
+    "source/experimental/glm52_ep8_c64_measured_mtp/benchmark_mtp.sh": {
+      "bytes": 1417,
+      "sha256": "7a8100c113b4bac935de335f19411458474e6a2e59d0367168181acc859260ca"
+    },
+    "source/experimental/glm52_ep8_c64_measured_mtp/config.example.json": {
+      "bytes": 1725,
+      "sha256": "7d4d24e6922aa45a0db0c81ad79962fa7784b7ba975fb531b0f4ab49656759c7"
+    },
+    "source/experimental/glm52_ep8_c64_measured_mtp/results.py": {
+      "bytes": 30592,
+      "sha256": "ed557bc4ab11635082f43e2f8345212507d0da60bb11906636dedf2830039fe8"
+    },
+    "source/experimental/glm52_ep8_c64_measured_mtp/run.py": {
+      "bytes": 51858,
+      "sha256": "5bef6dadcaaf38c8f048b11df80f7299f4252cdb21810a8b0d1e1368df362760"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh": {
+      "bytes": 1417,
+      "sha256": "7a8100c113b4bac935de335f19411458474e6a2e59d0367168181acc859260ca"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/results.py": {
+      "bytes": 30652,
+      "sha256": "a0aa786b58fcbbd0ec9d9d68084b7fa687124c56c4f3cc49c83983433fec673d"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/run.py": {
+      "bytes": 51855,
+      "sha256": "1600496c98feb905656a2ef0e7db9de7f0c455b9e390ac2426ee0708521aa386"
+    },
+    "source/infx/__init__.py": {
+      "bytes": 46,
+      "sha256": "7ed00e8af70ac2b66813e9f4025347ec756f707c5f5f4c58a95a30264114b1c1"
+    },
+    "source/infx/bench_serving/__init__.py": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source/infx/bench_serving/backend_request_func.py": {
+      "bytes": 23548,
+      "sha256": "cc8888c9f1c220323c56537a36dfabc29c592290f528b48d7a1343fb933413c4"
+    },
+    "source/infx/bench_serving/benchmark_serving.py": {
+      "bytes": 51763,
+      "sha256": "af8dafec8bbb4861b1e482d8491d3a5923880bd880e935ce2593f5fc1d21745b"
+    },
+    "source/infx/bench_serving/speculative_metrics.py": {
+      "bytes": 3683,
+      "sha256": "93bff5f22899e6973fc7a9d523d165ef4349359431f2a15e15e178e48013fe58"
+    }
+  },
+  "reproduction": "render39.py replays 39 aggregate rows. render_concurrency_subset.py uses base36-raw-metrics.json to retain original C2-32. All 13 outputs of each view replay were byte-identical locally; environments can change image bytes. Full evidence replay requires local raw files.",
+  "qualifications": [
+    "New C64 root/HOME/TMP/compile/tactic namespaces with no seed; sequential cache history differs from base36. Shared provider/system-default caches not claimed cold or isolated.",
+    "W4A16 also selects eligible dense NVFP4 linears.",
+    "Default INFO lacks direct native rank/PID/config joins for every kernel.",
+    "TRT CUDA quantizer default is distinct from CuTeDSL-only flags.",
+    "For the three C64 cases, clients waited0 and servers terminated after measurement with -9; recorded-owner terminal review is not continuous/current idle proof.",
+    "14 inherited dependency-conflict/missing-dependency lines and the actual unregistered-key matrix-validation failure remain disclosed.",
+    "Single serial measurements do not establish quality, numerical equivalence, significance or isolated causality.",
+    "Selected preservation and durable retention are separate; no whole-container, installed-RECORD or deletion claim. DFlash user-held; node retained."
+  ]
+}

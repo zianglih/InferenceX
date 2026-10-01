@@ -4,6 +4,8 @@
 
 此手动配方为 MegaMoE W4A4、MegaMoE W4A16 和默认 per-tensor TRTLLM W4A4 增加并发 64 的测量点，均采用 TP=EP=DP-attention=8。每点先执行 128 条计划预热，再执行 640 条测量请求。这三点扩展已单独保留的 [C1–32 实验](../glm52_six_curves_1k8k_c32/)，不会重跑或替换原有 36 点。
 
+[已完成的 39 点报告](results/2026-10-01-measured-mtp-39points/README_zh.md) 合并原 36 点与三个 C64 case：5,700 条成功测量请求、零测量失败、1,140 条计划预热。报告包含合并图、按拓扑拆分的图、精简表格与公开绘图命令；原 C2–32 视图保持不变。
+
 runner 沿用原实验的工作负载和执行逻辑：标称输入 1,024 / 输出 8,192 token、长度比例 0.8、客户端 seed 0、EAGLE 的 3 steps / top-k 1 / 4 draft tokens，以及各后端默认配置。runner 仅修改矩阵与实验标识。W4A16 也会选择符合条件的 dense NVFP4 linear。示例配置保留 SGLang `9d38e0530a1e35d1756a7fabf044bc39b77209b8`、FlashInfer `a03f2205263d4e691d68e485bff287e37a19b6c3`，以及现有 9 月 30 日 CUDA 13 镜像和 checkpoint，不执行安装。
 
 新实验使用独立的 root、HOME、短 TMP、编译缓存和 tactic 命名空间，不使用 cache seed。三个新增点共享编译结果，tactic 按后端分开。其缓存历史与原实验后续点不同；不声明共享 provider 或系统默认缓存完全冷启动或完全隔离。

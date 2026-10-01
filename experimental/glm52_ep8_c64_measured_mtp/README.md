@@ -4,6 +4,8 @@
 
 This manual recipe adds concurrency 64 for MegaMoE W4A4, MegaMoE W4A16 and default per-tensor TRTLLM W4A4, each at TP=EP=DP-attention=8. Each case schedules 128 warmups followed by 640 measured requests. The three points extend the separately preserved [C1–32 campaign](../glm52_six_curves_1k8k_c32/); they do not rerun or replace those 36 points.
 
+The [completed 39-point report](results/2026-10-01-measured-mtp-39points/README.md) combines the original 36 points with all three C64 cases: 5,700 successful measured requests, zero measured failures, and 1,140 scheduled warmups. It includes combined and per-topology plots, compact tables and public plotting commands. The original C2–32 view remains unchanged.
+
 The runner preserves that campaign's workload and execution logic: nominal 1,024 input / 8,192 output tokens, length ratio 0.8, client seed 0, EAGLE with 3 steps / top-k 1 / 4 draft tokens, and backend defaults. The only runner changes are the matrix and campaign identity. W4A16 also selects eligible dense NVFP4 linears. The example config retains SGLang `9d38e0530a1e35d1756a7fabf044bc39b77209b8`, FlashInfer `a03f2205263d4e691d68e485bff287e37a19b6c3`, and the existing September 30 CUDA 13 image and checkpoint; it installs nothing.
 
 Each run owns a new root, HOME, short TMP, compile and tactic namespaces. No cache seed is used; compilation is shared among the three new cases, while tactics are separated by backend. This cache history differs from later points in the completed campaign. Shared provider/system-default caches are not claimed cold or isolated.
