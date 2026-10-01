@@ -34,6 +34,9 @@ ARMS = (
 TOPOLOGIES = (8,)
 CONCURRENCIES = (2, 4, 8, 16, 32, 64)
 CAMPAIGN_CONTRACT = "dsv41-dspark-ep8-measured-v1"
+FLASHINFER_PATCH_SOURCE = "flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py"
+FLASHINFER_WHEEL_BASE = "a03f2205263d4e691d68e485bff287e37a19b6c3"
+FLASHINFER_PATCH_KEYS = {"flashinfer_wheel_commit", "flashinfer_python_patch"}
 CONFIG_KEYS = {
     "campaign_contract",
     "run_id",
@@ -95,17 +98,92 @@ def canonical_path(value: str) -> Path:
     return p
 
 
+def flashinfer_patch_spec(cfg: dict) -> dict | None:
+    """Optional single Python-file correction; installed wheel identity stays separate."""
+    present = FLASHINFER_PATCH_KEYS & cfg.keys()
+    if not present:
+        return None
+    patch = cfg.get("flashinfer_python_patch")
+    if (
+        present != FLASHINFER_PATCH_KEYS
+        or cfg["flashinfer_wheel_commit"] != FLASHINFER_WHEEL_BASE
+        or not isinstance(patch, dict)
+        or set(patch) != {"source_file", "original_sha256", "sha256"}
+        or patch["source_file"] != FLASHINFER_PATCH_SOURCE
+        or any(
+            not isinstance(patch[k], str)
+            or re.fullmatch(r"[0-9a-f]{64}", patch[k]) is None
+            for k in ("original_sha256", "sha256")
+        )
+        or patch["original_sha256"] == patch["sha256"]
+    ):
+        raise ValueError("Invalid reviewed FlashInfer single-file patch contract")
+    return patch
+
+
+def verify_flashinfer_patch(cfg: dict, env: dict) -> dict | None:
+    patch = flashinfer_patch_spec(cfg)
+    if patch is None:
+        return None
+    source = Path(cfg["flashinfer_root"]) / FLASHINFER_PATCH_SOURCE
+    if (
+        source.resolve(strict=True) != source
+        or digest(source)["sha256"] != patch["sha256"]
+    ):
+        raise ValueError("Corrected FlashInfer source file differs")
+    # Read the original tracked blob, never the mutable installed file, as the base proof.
+    original = subprocess.run(
+        [
+            "git",
+            "-C",
+            cfg["flashinfer_root"],
+            "show",
+            FLASHINFER_WHEEL_BASE + ":" + FLASHINFER_PATCH_SOURCE,
+        ],
+        env=env,
+        check=True,
+        capture_output=True,
+        timeout=30,
+    ).stdout
+    if hashlib.sha256(original).hexdigest() != patch["original_sha256"]:
+        raise ValueError("Original FlashInfer base-commit blob differs")
+    corrected = subprocess.run(
+        [
+            "git",
+            "-C",
+            cfg["flashinfer_root"],
+            "show",
+            cfg["flashinfer_commit"] + ":" + FLASHINFER_PATCH_SOURCE,
+        ],
+        env=env,
+        check=True,
+        capture_output=True,
+        timeout=30,
+    ).stdout
+    if hashlib.sha256(corrected).hexdigest() != patch["sha256"]:
+        raise ValueError("Corrected FlashInfer commit blob differs")
+    return {
+        **patch,
+        "source_commit": cfg["flashinfer_commit"],
+        "wheel_commit": cfg["flashinfer_wheel_commit"],
+        "source": str(source),
+        "source_descriptor": digest(source),
+        "original_bytes": len(original),
+    }
+
+
 def read_config(path: Path) -> dict:
     cfg = json.loads(path.read_text())
-    if set(cfg) != CONFIG_KEYS:
+    if set(cfg) not in (CONFIG_KEYS, CONFIG_KEYS | FLASHINFER_PATCH_KEYS):
         raise ValueError(f"Config keys differ: {set(cfg) ^ CONFIG_KEYS}")
     if cfg["campaign_contract"] != CAMPAIGN_CONTRACT:
         raise ValueError("Expected the 18-point DSpark EP8 measured contract")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]+", cfg["run_id"]):
         raise ValueError("Invalid run_id")
     for key in ("sglang_commit", "flashinfer_commit", "model_revision"):
-        if not re.fullmatch(r"[0-9a-f]{40}", cfg[key]):
+        if not isinstance(cfg[key], str) or not re.fullmatch(r"[0-9a-f]{40}", cfg[key]):
             raise ValueError(f"{key} must be the full accepted SHA")
+    flashinfer_patch_spec(cfg)
     for key in ("run_root", "python", "sglang_root", "flashinfer_root", "model_path"):
         canonical_path(cfg[key])
     root = Path(cfg["run_root"])
@@ -562,6 +640,9 @@ def source_snapshot(cfg: dict, env: dict) -> dict:
     if freeze["returncode"]:
         raise RuntimeError("pip freeze failed")
     result["freeze"] = freeze
+    patch = verify_flashinfer_patch(cfg, env)
+    if patch is not None:
+        result["flashinfer_python_patch"] = patch
     result["recipe"] = {
         str(p.relative_to(REPO)): digest(p)
         for p in (
@@ -590,7 +671,8 @@ def http_json(cfg: dict, endpoint: str) -> dict:
 def installed_runtime(cfg: dict, env: dict) -> dict:
     # Full source commits of the installed main/cubin wheels, not their shortened
     # package versions. Do not shadow a built wheel with an unbuilt source tree.
-    script = """import json,pathlib,site,sys
+    patch = verify_flashinfer_patch(cfg, env)
+    script = """import hashlib,importlib.util,json,pathlib,site,sys
 import sglang,flashinfer,flashinfer_cubin
 import flashinfer._build_meta as main,flashinfer_cubin._build_meta as cubin
 from flashinfer.jit import env
@@ -599,8 +681,23 @@ assert flashinfer.__version__ == flashinfer_cubin.__version__
 assert pathlib.Path(sglang.__file__).resolve().is_relative_to(pathlib.Path(sys.argv[2]).resolve())
 assert any(pathlib.Path(flashinfer.__file__).resolve().is_relative_to(pathlib.Path(p).resolve()) for p in site.getsitepackages())
 assert not env.FLASHINFER_AOT_PROVIDERS
+patch=json.loads(sys.argv[3])
+if patch is not None:
+ package=pathlib.Path(flashinfer.__file__).resolve().parent
+ relative=pathlib.PurePosixPath(patch['source_file'])
+ installed=package.joinpath(*relative.parts[1:])
+ assert installed.resolve(strict=True)==installed
+ spec=importlib.util.find_spec('.'.join(relative.with_suffix('').parts))
+ assert spec is not None and pathlib.Path(spec.origin).resolve()==installed
+ raw=installed.read_bytes()
+ assert hashlib.sha256(raw).hexdigest()==patch['sha256']
+ assert len(raw)==patch['source_descriptor']['bytes']
+ patch=dict(patch,installed_file=str(installed),installed_bytes=len(raw),
+            installed_sha256=hashlib.sha256(raw).hexdigest(),
+            wheel_record_exception='reviewed correction relative to restored baseline; original RECORD retained')
 print(json.dumps({'sglang':sglang.__file__,'flashinfer':flashinfer.__file__,'cubin':flashinfer_cubin.__file__,
  'version':flashinfer.__version__,'git_commit':main.__git_commit__,'cubin_git_commit':cubin.__git_version__,
+ 'python_source_commit':sys.argv[4],'python_patch':patch,
  'aot_providers':len(env.FLASHINFER_AOT_PROVIDERS),'python':sys.executable,'prefix':sys.prefix}))
 """
     proof = capture(
@@ -609,8 +706,10 @@ print(json.dumps({'sglang':sglang.__file__,'flashinfer':flashinfer.__file__,'cub
             "-B",
             "-c",
             script,
-            cfg["flashinfer_commit"],
+            cfg.get("flashinfer_wheel_commit", cfg["flashinfer_commit"]),
             cfg["sglang_root"] + "/python",
+            json.dumps(patch, sort_keys=True),
+            cfg["flashinfer_commit"],
         ],
         env,
         120,

@@ -11,12 +11,24 @@ or claim successful GPU qualification.
   TRTLLM W4A4 (`flashinfer_trtllm_routed` / A2A `none`); C2/4/8/16/32/64. The three C2 points execute first as real measured
   qualification points. Then each arm completes C4–64. Total: 18 points, 3,780
   measured requests and 756 scheduled warmups. Any failed case stops the sweep.
-- **Runtime:** `config.example.json` pins SGLang PR head
-  `29c2b32d7f7351082168e622a4747bcff6469271`, FlashInfer
-  `a03f2205263d4e691d68e485bff287e37a19b6c3`, and the previous September 30 CUDA13
-  image digest. Both source trees must be clean at their declared commits.
-  Installed FlashInfer main/cubin build metadata must match; its source tree
-  must not shadow the installed wheels. Environment restoration is a separate step.
+- **Runtime:** SGLang stays at `29c2b32d7f7351082168e622a4747bcff6469271` and
+  the previous September 30 CUDA13 image digest. The corrected FlashInfer Python
+  source is `7a962707af69863d386be2a9bc01ee4607470bcc`, based on
+  `a03f2205263d4e691d68e485bff287e37a19b6c3`; installed main/cubin build metadata
+  and cubin/NCCL wheel payloads remain at that original build. No rebuild or
+  source-tree `PYTHONPATH` shadowing is used. The optional `flashinfer_wheel_commit`
+  and `flashinfer_python_patch` fields permit only the reviewed
+  `flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py` replacement, identically
+  across all three arms. Source snapshots verify original-base and corrected Git
+  blobs; provider proof verifies the installed module's path and corrected bytes.
+  The original file SHA is `a07193ecc61c522a1dc26548662524d1cbf27a0b0257888fbb4ca241bd2c7593`,
+  corrected SHA `a4c20af8ad49c1d050db3dd9b933fa771a4b9d5ca830c5de8a6c66376aa19114`.
+  Installation/payload preservation is separately reviewed. This is one reviewed
+  correction relative to the restored baseline; original RECORD files and build
+  metadata remain unchanged, including previously recorded baseline exceptions.
+  Normal configurations omitting both optional fields still require matching
+  source/main/cubin commits. The new `mxfp8-fix-v3` run/HOME/TMP preserves both
+  earlier failed attempts; source checks are not GPU/kernel or performance acceptance.
 - **Checkpoint:** pinned `nvidia/DeepSeek-V4.1-Flash-NVFP4` revision
   `3431dde3247c13b5957f682b1e3c6fcae2566079`; target, bundled DSpark draft, and
   tokenizer share the exact unchanged checkpoint. Gamma=5 and verification width=6.
@@ -37,8 +49,7 @@ or claim successful GPU qualification.
   configurations. Neither `--language-only` (encoder disaggregation) nor
   `--language-model-only` (unsupported architecture allowlist) applies to this pin.
   The earlier multimodal startup failed before health and measurement; its source,
-  config, run and failure receipts are retained separately. Use the example's fresh
-  `dsv41-dspark-ep8-20261001-text-all18` root and short TMP for the successor.
+  config, run and failure receipts are retained separately. The example now uses a separate `mxfp8-fix-v3` root and short TMP for the successor.
 - **Routing:** the explicit routed TRT target preserves DeepSeek's materialized
   routing and matches its NVFP4 source default. The shared TRT primitive name
   alone does not identify a logits-versus-routed call; native evidence is required.
@@ -83,7 +94,7 @@ From the InferenceX checkout, review/update the actual paths in a copied config:
 python3 -B experimental/dsv41_dspark_ep8/check.py
 python3 -B experimental/dsv41_dspark_ep8/run.py --config /absolute/campaign.json --plan
 # On the explicitly restored node, with the config's source PYTHONPATH and loader environment:
-python3 -B experimental/dsv41_dspark_ep8/preflight.py --config /absolute/campaign.json --output /absolute/preflight-text-v2 --tmp-root /tmp/infx-dsv41-tpre-1001
+python3 -B experimental/dsv41_dspark_ep8/preflight.py --config /absolute/campaign.json --output /absolute/preflight-mxfp8-fix-v3 --tmp-root /tmp/infx-dsv41-fpre-1001
 # Import-only preflight does not load a model or qualify distributed kernels.
 python3 -B experimental/dsv41_dspark_ep8/run.py --config /absolute/campaign.json --run
 python3 -B experimental/dsv41_dspark_ep8/results.py --run-root /absolute/completed-run --output /absolute/new-review
@@ -93,3 +104,50 @@ python3 -B experimental/dsv41_dspark_ep8/render.py --table /absolute/new-review/
 `results.py` requires sealed raw evidence. `render.py` needs only the compact table
 and replays its arithmetic and plot, not the original raw/native acceptance.
 The experimental recipe is not registered in the scheduled matrix or an eval suite.
+
+The included [kernel patch](flashinfer-mxfp8-support.patch) makes the FP8 tactic
+support check conservative: FP8 tactics with a narrow tile N below64 and logical
+N larger than that tile N are not eligible. This is a supported-domain guard, not a claim that every rejected
+shape was reproduced as faulty. FP4 eligibility is unchanged. A fresh source
+checkout can reproduce the corrected bytes without rebuilding/reinstalling any wheel:
+
+```bash
+FI_SRC=/absolute/fresh-flashinfer
+git clone https://github.com/flashinfer-ai/flashinfer.git "$FI_SRC"
+git -C "$FI_SRC" checkout a03f2205263d4e691d68e485bff287e37a19b6c3
+git -C "$FI_SRC" apply --check "$PWD/experimental/dsv41_dspark_ep8/flashinfer-mxfp8-support.patch"
+git -C "$FI_SRC" apply "$PWD/experimental/dsv41_dspark_ep8/flashinfer-mxfp8-support.patch"
+git -C "$FI_SRC" add flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py
+git -C "$FI_SRC" commit -m 'fix: constrain FP8 narrow-N GEMM support'
+# Record this checkout's actual new commit/root in the config; commit metadata may differ.
+# Only on a quiescent restored installation, before PREP or any server:
+/opt/sglang/bin/python3 - "$FI_SRC" <<'PY'
+import hashlib, importlib.util, os, pathlib, site, sys, tempfile
+relative = pathlib.Path("flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py")
+source = pathlib.Path(sys.argv[1]) / relative
+raw = source.read_bytes()
+assert hashlib.sha256(raw).hexdigest() == "a4c20af8ad49c1d050db3dd9b933fa771a4b9d5ca830c5de8a6c66376aa19114"
+spec = importlib.util.find_spec("flashinfer")
+package = pathlib.Path(spec.origin).resolve().parent
+assert any(package.is_relative_to(pathlib.Path(p).resolve()) for p in site.getsitepackages())
+installed = package.joinpath(*relative.parts[1:])
+assert installed.resolve(strict=True) == installed
+assert hashlib.sha256(installed.read_bytes()).hexdigest() == "a07193ecc61c522a1dc26548662524d1cbf27a0b0257888fbb4ca241bd2c7593"
+fd, name = tempfile.mkstemp(prefix=".reviewed-mxfp8-", dir=installed.parent)
+try:
+    with os.fdopen(fd, "wb") as stream:
+        stream.write(raw)
+    os.chmod(name, installed.stat().st_mode & 0o777)
+    os.replace(name, installed)
+finally:
+    pathlib.Path(name).unlink(missing_ok=True)
+assert hashlib.sha256(installed.read_bytes()).hexdigest() == hashlib.sha256(raw).hexdigest()
+print(installed, hashlib.sha256(raw).hexdigest())
+PY
+```
+
+The recipe itself never applies this patch. Keep the original installed file and
+installation proof in the local preservation archive. The example records the
+reviewed source commit; a reproducer must record its own clean commit if it differs.
+The source and installed hashes remain mandatory, and provider metadata retains
+the original wheel identity. Do not run the application step during a campaign.

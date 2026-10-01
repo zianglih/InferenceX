@@ -69,6 +69,21 @@ def validate_table(rows):
         for key in ("sglang_commit", "flashinfer_commit"):
             if not re.fullmatch(r"[0-9a-f]{40}", row[key]):
                 raise ValueError("Missing exact source commit")
+        if (
+            "flashinfer_wheel_commit" in row
+            or row.get("flashinfer_python_patch") is not None
+        ):
+            if not re.fullmatch(
+                r"[0-9a-f]{40}", row.get("flashinfer_wheel_commit", "")
+            ):
+                raise ValueError("Missing exact wheel-provider commit")
+            if row.get("flashinfer_python_patch") is None:
+                if row["flashinfer_wheel_commit"] != row["flashinfer_commit"]:
+                    raise ValueError(
+                        "Different FI commits require the reviewed patch descriptor"
+                    )
+            else:
+                recipe.flashinfer_patch_spec(row)
         if row["prompt_format"] != "DeepSeek-V4.1 chat; reasoning_effort=None":
             raise ValueError("Unexpected prompt format")
     return rows

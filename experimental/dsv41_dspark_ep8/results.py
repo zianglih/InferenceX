@@ -313,6 +313,10 @@ def verify_case(directory):
         "case_manifest_sha256": sha(directory / "manifest.json"),
         "sglang_commit": config["sglang_commit"],
         "flashinfer_commit": config["flashinfer_commit"],
+        "flashinfer_wheel_commit": config.get(
+            "flashinfer_wheel_commit", config["flashinfer_commit"]
+        ),
+        "flashinfer_python_patch": config.get("flashinfer_python_patch"),
         "image": config["image"],
     }
     for key, value in result.items():
@@ -540,7 +544,7 @@ def figure(rows, topology=None):
     fig.text(
         0.5,
         0.05,
-        f"SG {rows[0]['sglang_commit'][:12]} | FI {rows[0]['flashinfer_commit'][:12]} | shared compiled caches; three isolated tactic namespaces",
+        f"SG {rows[0]['sglang_commit'][:12]} | FI Python {rows[0]['flashinfer_commit'][:12]} / wheels {rows[0].get('flashinfer_wheel_commit', rows[0]['flashinfer_commit'])[:12]} | shared compile; isolated tactics",
         ha="center",
         fontsize=10,
     )
@@ -744,6 +748,10 @@ def main():
         "are NVFP4, inherited dense layers retain their own precision, and bundled draft MoE is MXFP4/MXFP8. "
         "This reader checks sealed settings and accounting; "
         "actual native kernel/tactics/calibration, full terminal and preservation acceptance remain separate reviews.",
+        "",
+        "FlashInfer Python-source and installed-wheel commits are reported separately. An optional reviewed "
+        "single-file Python correction does not imply that cubin/NCCL providers were rebuilt; "
+        "the original and corrected file hashes are retained in each compact row when present.",
         "",
         "Saved ITL is stream_interval30 chunk spacing, not per-token TPOT. Sequential backend/topology/cache "
         "history differences do not establish causality or numerical/content equivalence. No unsaved percentiles are reconstructed.",

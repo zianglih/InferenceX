@@ -2,7 +2,10 @@
 
 import hashlib
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -14,6 +17,185 @@ from infx.bench_serving.speculative_metrics import summarize_speculative_metrics
 
 
 class Checks(unittest.TestCase):
+    def test_provider_patch_contract(self):
+        self.assertIsNone(recipe.flashinfer_patch_spec({}))
+        valid = {
+            "flashinfer_wheel_commit": recipe.FLASHINFER_WHEEL_BASE,
+            "flashinfer_python_patch": {
+                "source_file": recipe.FLASHINFER_PATCH_SOURCE,
+                "original_sha256": "a" * 64,
+                "sha256": "b" * 64,
+            },
+        }
+        self.assertEqual(recipe.flashinfer_patch_spec(valid)["sha256"], "b" * 64)
+        for bad in (
+            {"flashinfer_wheel_commit": recipe.FLASHINFER_WHEEL_BASE},
+            dict(valid, flashinfer_wheel_commit="c" * 40),
+            dict(
+                valid,
+                flashinfer_python_patch=dict(
+                    valid["flashinfer_python_patch"], source_file="other.py"
+                ),
+            ),
+            dict(
+                valid,
+                flashinfer_python_patch=dict(
+                    valid["flashinfer_python_patch"], sha256="bad"
+                ),
+            ),
+        ):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                recipe.flashinfer_patch_spec(bad)
+
+    def test_compact_provider_provenance(self):
+        import render
+
+        rows = []
+        for case in recipe.matrix():
+            count = case["measured_requests"]
+            rows.append(
+                dict(
+                    case,
+                    completed=count,
+                    measured_spec_covered=count,
+                    output_tokens=10 * count,
+                    measured_spec_verify_ct=2 * count,
+                    measured_spec_proposed_drafts=10 * count,
+                    measured_spec_correct_drafts=8 * count,
+                    duration_s=count,
+                    median_tpot_ms=10,
+                    output_tok_s=10,
+                    output_tok_s_gpu=1.25,
+                    interactivity_tok_s_user=100,
+                    measured_acceptance_length=5,
+                    measured_acceptance_rate=0.8,
+                    sglang_commit="a" * 40,
+                    flashinfer_commit="b" * 40,
+                    prompt_format="DeepSeek-V4.1 chat; reasoning_effort=None",
+                )
+            )
+        self.assertEqual(len(render.validate_table(rows)), 18)
+        for row in rows:
+            row.update(
+                flashinfer_wheel_commit=recipe.FLASHINFER_WHEEL_BASE,
+                flashinfer_python_patch={
+                    "source_file": recipe.FLASHINFER_PATCH_SOURCE,
+                    "original_sha256": "a" * 64,
+                    "sha256": "b" * 64,
+                },
+            )
+        self.assertEqual(render.validate_table(rows)[0]["output_tok_s_gpu"], 1.25)
+        rows[0]["flashinfer_python_patch"] = None
+        with self.assertRaisesRegex(ValueError, "Different FI commits"):
+            render.validate_table(rows)
+
+    def test_source_and_installed_provider_split(self):
+        # Fake only external providers; execute the real Git/blob checks and the
+        # actual child proof, including its source/module-origin/file-byte checks.
+        with tempfile.TemporaryDirectory(dir=recipe.REPO.parent) as d:
+            root = Path(d).resolve()
+            source = root / "source"
+            source.mkdir()
+            kernel = source / recipe.FLASHINFER_PATCH_SOURCE
+            kernel.parent.mkdir(parents=True)
+            original = b"VALUE = 'original'\n"
+            corrected = b"VALUE = 'corrected'\n"
+
+            def git(*args):
+                return (
+                    subprocess.check_output(
+                        ["git", "-C", str(source), *args], stderr=subprocess.DEVNULL
+                    )
+                    .decode()
+                    .strip()
+                )
+
+            git("init", "-q")
+            git("config", "user.name", "Local fixture")
+            git("config", "user.email", "fixture@example.invalid")
+            kernel.write_bytes(original)
+            git("add", ".")
+            git("commit", "-qm", "Original fixture")
+            base = git("rev-parse", "HEAD")
+            kernel.write_bytes(corrected)
+            git("commit", "-qam", "Corrected fixture")
+            head = git("rev-parse", "HEAD")
+            package_root = root / "site-packages"
+            sg_root = root / "sglang"
+            files = {
+                package_root / "flashinfer/__init__.py": "__version__='fixture'\n",
+                package_root
+                / "flashinfer/_build_meta.py": f"__git_commit__={base!r}\n",
+                package_root
+                / "flashinfer_cubin/__init__.py": "__version__='fixture'\n",
+                package_root
+                / "flashinfer_cubin/_build_meta.py": f"__git_version__={base!r}\n",
+                package_root / "flashinfer/jit/__init__.py": "",
+                package_root / "flashinfer/jit/env.py": "FLASHINFER_AOT_PROVIDERS=[]\n",
+                package_root / "flashinfer/gemm/__init__.py": "",
+                package_root / "flashinfer/gemm/kernels/__init__.py": "",
+                sg_root / "python/sglang/__init__.py": "",
+                root
+                / "sitecustomize.py": f"import site\nsite.getsitepackages=lambda:[{str(package_root)!r}]\n",
+            }
+            for path, body in files.items():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(body)
+            installed = package_root / recipe.FLASHINFER_PATCH_SOURCE
+            installed.write_bytes(corrected)
+            cfg = {
+                "python": sys.executable,
+                "sglang_root": str(sg_root),
+                "flashinfer_root": str(source),
+                "flashinfer_commit": head,
+                "flashinfer_wheel_commit": base,
+                "flashinfer_python_patch": {
+                    "source_file": recipe.FLASHINFER_PATCH_SOURCE,
+                    "original_sha256": hashlib.sha256(original).hexdigest(),
+                    "sha256": hashlib.sha256(corrected).hexdigest(),
+                },
+            }
+            env = dict(
+                os.environ,
+                PYTHONPATH=os.pathsep.join(
+                    map(str, (root, package_root, sg_root / "python"))
+                ),
+            )
+            with patch.object(recipe, "FLASHINFER_WHEEL_BASE", base):
+                proof = json.loads(recipe.installed_runtime(cfg, env)["stdout"])
+                self.assertEqual(proof["git_commit"], base)
+                self.assertEqual(proof["python_source_commit"], head)
+                self.assertEqual(
+                    proof["python_patch"]["installed_file"], str(installed)
+                )
+                self.assertEqual(proof["python_patch"]["installed_bytes"], 20)
+                installed.write_bytes(original)
+                with self.assertRaisesRegex(RuntimeError, "provider proof failed"):
+                    recipe.installed_runtime(cfg, env)
+                installed.write_bytes(corrected)
+                with self.assertRaisesRegex(ValueError, "commit blob differs"):
+                    recipe.verify_flashinfer_patch(
+                        dict(cfg, flashinfer_commit=base), env
+                    )
+                wrong = dict(cfg["flashinfer_python_patch"], original_sha256="0" * 64)
+                with self.assertRaisesRegex(ValueError, "base-commit blob differs"):
+                    recipe.verify_flashinfer_patch(
+                        dict(cfg, flashinfer_python_patch=wrong), env
+                    )
+                kernel.write_bytes(original)
+                with self.assertRaisesRegex(ValueError, "source file differs"):
+                    recipe.verify_flashinfer_patch(cfg, env)
+                kernel.write_bytes(corrected)
+                legacy = {
+                    k: v
+                    for k, v in cfg.items()
+                    if k not in recipe.FLASHINFER_PATCH_KEYS
+                }
+                legacy["flashinfer_commit"] = base
+                proof = json.loads(recipe.installed_runtime(legacy, env)["stdout"])
+                self.assertEqual(proof["git_commit"], base)
+                self.assertIsNone(proof["python_patch"])
+
     def test_matrix_commands_and_isolation(self):
         cases = recipe.matrix()
         self.assertEqual(len(cases), 18)
