@@ -1,0 +1,221 @@
+{
+  "file_count": 54,
+  "files": {
+    "LAYOUT.json": {
+      "bytes": 32964,
+      "sha256": "b6ed6445e751d395477d7fb0041271012c01da10e27632b0a6a41fb4425e6ace"
+    },
+    "PROVENANCE.json": {
+      "bytes": 9396,
+      "sha256": "d4f0424871aae05793e7c19ac648b882e0e40d19dcc608c755757546096677bd"
+    },
+    "README.md": {
+      "bytes": 6572,
+      "sha256": "d5b24e79811411e5456a90c96a6ae8860cb178ce09a9a9aab9671a7983dfd8b2"
+    },
+    "README_zh.md": {
+      "bytes": 6132,
+      "sha256": "9da71355f26d709b8acaf58fcb0277ac0c7db436341cf5e43da062ecf4d3a6a9"
+    },
+    "base36-raw-metrics.json": {
+      "bytes": 74889,
+      "sha256": "76d5bcaaae1d72fd551a83cead9ad92533e6245b0786cb7316798fefe428873d"
+    },
+    "c2-32/LAYOUT.json": {
+      "bytes": 26535,
+      "sha256": "a1a1be41306d84df9c7e31f722773f3c2b0970c9205f9c503e229498d3c39043"
+    },
+    "c2-32/figures/ep4/frontiers.json": {
+      "bytes": 867,
+      "sha256": "57ce1feb68c8addb104a6426e25b216bd6367067bb6d8f72dde1e79bf600dfc9"
+    },
+    "c2-32/figures/ep4/pareto.png": {
+      "bytes": 347108,
+      "sha256": "192b23a0612700d7c8f79afa5542a9bf526304d6aee6ccd509539c963a5b0b3e"
+    },
+    "c2-32/figures/ep4/pareto.svg": {
+      "bytes": 136056,
+      "sha256": "33629a4dfc916caadf4e296c77e4ecce4ce94cf0c834bd7fc8510da77d89750a"
+    },
+    "c2-32/figures/ep4/plot-points.json": {
+      "bytes": 5372,
+      "sha256": "3f6b8023a7d4e558a7ca77d70df6c67d10bf23c5d3e201c9ca1a3aa738a948f8"
+    },
+    "c2-32/figures/ep8/frontiers.json": {
+      "bytes": 867,
+      "sha256": "752821233279894caba1907f1214e4e7e743690c5e4e9329e099c187b407beba"
+    },
+    "c2-32/figures/ep8/pareto.png": {
+      "bytes": 355042,
+      "sha256": "09cf862c30480ace748541807576e873b78f7bffb703759504faaabdfd01df56"
+    },
+    "c2-32/figures/ep8/pareto.svg": {
+      "bytes": 136911,
+      "sha256": "123298e3630b1d02f4fad9f0bbfb5d24337533278e67d468b1eb18aeac5b3851"
+    },
+    "c2-32/figures/ep8/plot-points.json": {
+      "bytes": 5376,
+      "sha256": "455adbb0f2e5e73ae12f3914e0e0980ffe80f2a5e89bebe798040f9acbbdc4c0"
+    },
+    "c2-32/frontiers.json": {
+      "bytes": 1731,
+      "sha256": "78c1494c2ff1b559609466ffe08d55f5726c31b5c2135d588189f00ac7e730fd"
+    },
+    "c2-32/pareto.png": {
+      "bytes": 458872,
+      "sha256": "96248a306b048363021610bc191b9b01f9ff46efcf70c4d515e930d3ae928cff"
+    },
+    "c2-32/pareto.svg": {
+      "bytes": 169894,
+      "sha256": "31dcd3245b6ce865d54c39e550be2f2f9bbb26dd8a7ae0960c10612bcfa5a0fa"
+    },
+    "c2-32/plot-points.json": {
+      "bytes": 10745,
+      "sha256": "a66b2b97855ec3f89f73b4294c9c32b604c5776fbe40b16978b3295cc65f845d"
+    },
+    "figures/ep4/frontiers.json": {
+      "bytes": 978,
+      "sha256": "fb751b858f437ad85d74a5e52b8be13001ba43caa0821de07734797d456c2158"
+    },
+    "figures/ep4/pareto.png": {
+      "bytes": 357557,
+      "sha256": "0a18885a40567f83e85f810c37da2b3d7c85f46110fa5d85c48ecc0f478123eb"
+    },
+    "figures/ep4/pareto.svg": {
+      "bytes": 140937,
+      "sha256": "3bb1253f5c331b922ede612a87701f07af839b418253d5825a2118888a0799bd"
+    },
+    "figures/ep4/plot-points.json": {
+      "bytes": 6445,
+      "sha256": "fcee770717fca1300df33ebbc6ea5f8ed51538bf9a4b8489e5163e3366bf2aa7"
+    },
+    "figures/ep8/frontiers.json": {
+      "bytes": 1092,
+      "sha256": "e09e44dd1a02ce442d6f76d5712a2705115eb6fb830b065b73b60d47775c61a1"
+    },
+    "figures/ep8/pareto.png": {
+      "bytes": 364674,
+      "sha256": "e0c207779d235aa5197c554d7d6a3c9d70a98b394b77315e5d1c3f29e59d6308"
+    },
+    "figures/ep8/pareto.svg": {
+      "bytes": 148827,
+      "sha256": "9b64b6a03c58915820d05a2b4c5c13dd1ac6821328bb25f9bf282d04216f19ea"
+    },
+    "figures/ep8/plot-points.json": {
+      "bytes": 7519,
+      "sha256": "2de900a059a8cf7c1d6113b2cf16344821de6b2d10c628d7ca09c9009ce91693"
+    },
+    "frontiers.json": {
+      "bytes": 2067,
+      "sha256": "44dd5e847d432ce62b756c29a5b6b5ae370bdc18e58fc4c307dbf7b704cef7c6"
+    },
+    "join39.py": {
+      "bytes": 11506,
+      "sha256": "5448dda1b64fd747e5ffc9266cd83ed06176f09470c02f4ac4990d7934ba1b1c"
+    },
+    "layout_original.py": {
+      "bytes": 5676,
+      "sha256": "1fda88d866470102e5c7c622964891536000f64ee545e31556e2e5e7884d9b0a"
+    },
+    "paired-comparisons.csv": {
+      "bytes": 459101,
+      "sha256": "14d22c1e6f65dca105bfe95f01ba42cee32e5a52a7844b50c5539b069d98a9f2"
+    },
+    "paired-comparisons.json": {
+      "bytes": 818090,
+      "sha256": "17687ded95c8dce1925fb49cda3a62469acec82fdd5d4c69bb210d3be1bfb93c"
+    },
+    "pareto.png": {
+      "bytes": 505169,
+      "sha256": "ae4110c97674ab9c6d53784e2937176f4df0d2711f82985f1b9841e845aeea58"
+    },
+    "pareto.svg": {
+      "bytes": 188303,
+      "sha256": "75a5e0330e7db8cebda94da01ee16d11081eb72f5b66dbfec26c597fd2678485"
+    },
+    "plot-points.json": {
+      "bytes": 13961,
+      "sha256": "cfe87f5a2e4ab67ddef077b5bbb9464bc273eef68574350ad4db32f5bab3809d"
+    },
+    "plot-source-manifest.json": {
+      "bytes": 3076,
+      "sha256": "d144c12e8581873b904a516860647501b398ab3a3591f3f254158f7b4a2d1bf7"
+    },
+    "raw-metrics.csv": {
+      "bytes": 39685,
+      "sha256": "50eae3d74b49f48c5caec2e3198d80184a933484121b612b6ef9b313a66f095f"
+    },
+    "raw-metrics.json": {
+      "bytes": 81146,
+      "sha256": "0da5ecaf226d7823b08ede9c14a889dc0ac8942b8d90ee03ece59bfa13727b5e"
+    },
+    "raw-saved-scalars.csv": {
+      "bytes": 35822,
+      "sha256": "dff4cef7b49ef91f1ff609978b934ad5e74b4202572eec229874247721156cf1"
+    },
+    "raw-saved-scalars.json": {
+      "bytes": 101183,
+      "sha256": "8a9a2e00029ee759ca4a762db473121ef6b06ea37f1716ced1e1af7b3a4c9259"
+    },
+    "render39.py": {
+      "bytes": 3812,
+      "sha256": "63c190feb90dff264ada5c630fcdd4819dbaa4ca972e49b388117227c28543d5"
+    },
+    "render_concurrency_subset.py": {
+      "bytes": 6589,
+      "sha256": "7b92ff96c17497b54baa8abe5add5e3139003067985d5c6a497ce64ffe8ff644"
+    },
+    "source/benchmarks/benchmark_lib.sh": {
+      "bytes": 131962,
+      "sha256": "7bf1607b8c21225b3cb78e4c4ad51f21034c53654e5b2aee83b6925e6db900f4"
+    },
+    "source/experimental/glm52_ep8_c64_measured_mtp/benchmark_mtp.sh": {
+      "bytes": 1417,
+      "sha256": "7a8100c113b4bac935de335f19411458474e6a2e59d0367168181acc859260ca"
+    },
+    "source/experimental/glm52_ep8_c64_measured_mtp/config.example.json": {
+      "bytes": 1725,
+      "sha256": "7d4d24e6922aa45a0db0c81ad79962fa7784b7ba975fb531b0f4ab49656759c7"
+    },
+    "source/experimental/glm52_ep8_c64_measured_mtp/results.py": {
+      "bytes": 30592,
+      "sha256": "ed557bc4ab11635082f43e2f8345212507d0da60bb11906636dedf2830039fe8"
+    },
+    "source/experimental/glm52_ep8_c64_measured_mtp/run.py": {
+      "bytes": 51858,
+      "sha256": "5bef6dadcaaf38c8f048b11df80f7299f4252cdb21810a8b0d1e1368df362760"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh": {
+      "bytes": 1417,
+      "sha256": "7a8100c113b4bac935de335f19411458474e6a2e59d0367168181acc859260ca"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/results.py": {
+      "bytes": 30652,
+      "sha256": "a0aa786b58fcbbd0ec9d9d68084b7fa687124c56c4f3cc49c83983433fec673d"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/run.py": {
+      "bytes": 51855,
+      "sha256": "1600496c98feb905656a2ef0e7db9de7f0c455b9e390ac2426ee0708521aa386"
+    },
+    "source/infx/__init__.py": {
+      "bytes": 46,
+      "sha256": "7ed00e8af70ac2b66813e9f4025347ec756f707c5f5f4c58a95a30264114b1c1"
+    },
+    "source/infx/bench_serving/__init__.py": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source/infx/bench_serving/backend_request_func.py": {
+      "bytes": 23548,
+      "sha256": "cc8888c9f1c220323c56537a36dfabc29c592290f528b48d7a1343fb933413c4"
+    },
+    "source/infx/bench_serving/benchmark_serving.py": {
+      "bytes": 51763,
+      "sha256": "af8dafec8bbb4861b1e482d8491d3a5923880bd880e935ce2593f5fc1d21745b"
+    },
+    "source/infx/bench_serving/speculative_metrics.py": {
+      "bytes": 3683,
+      "sha256": "93bff5f22899e6973fc7a9d523d165ef4349359431f2a15e15e178e48013fe58"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "assembled": {
+    "bytes": 551006,
+    "sha256": "9651aeadaebe4c10485fe903b18ed075be76f38e18eb01273cd077bbd0637284"
+  },
+  "measured_requests": 3780,
+  "points": 18,
+  "recipe_commit": "933b8821ecb45935b869fb10a4bfe06fff3ec99c",
+  "scheduled_warmup_requests": 756,
+  "schema": 1,
+  "scope": "Text-chat only; no multimodal or generated image-token equivalence. AL uses measured native counters.",
+  "sources": {
+    "benchmarks/benchmark_lib.sh": {
+      "bytes": 132189,
+      "sha256": "e18102c179f9de3542fa37c7a8cbb3ac6da5cee07c2a51cf8e70b3d69ac9d42e"
+    },
+    "experimental/dsv41_dspark_ep8/benchmark_mtp.sh": {
+      "bytes": 1425,
+      "sha256": "d7224bac61de732e6ea4b64f72313b84774cddcb29e5c8f28707ecb200c613f1"
+    },
+    "experimental/dsv41_dspark_ep8/render.py": {
+      "bytes": 4498,
+      "sha256": "8d3150d881d2132c7539f732d59879ff5dd3100e04c69f35edcad48f93c58842"
+    },
+    "experimental/dsv41_dspark_ep8/results.py": {
+      "bytes": 31102,
+      "sha256": "6b5b0aec0f359c794175fb6c640ad12a90d15b7fe2c04b1d99e4cc58a0bb1220"
+    },
+    "experimental/dsv41_dspark_ep8/run.py": {
+      "bytes": 57454,
+      "sha256": "f488918622b5af6b0a4432ccca5b8e10e2effa135c04f16b4e8d81dd71e89ee8"
+    },
+    "infx/bench_serving/backend_request_func.py": {
+      "bytes": 23548,
+      "sha256": "cc8888c9f1c220323c56537a36dfabc29c592290f528b48d7a1343fb933413c4"
+    },
+    "infx/bench_serving/benchmark_serving.py": {
+      "bytes": 52449,
+      "sha256": "00ef7bbb999da62e44176e782befb9c85030ab7606512fde6511f355a6792210"
+    },
+    "infx/bench_serving/encoding_dsv41.py": {
+      "bytes": 1281,
+      "sha256": "f0810c35294ef1315a148630a122a22403a46b0f224a144ce9411af0eec8c212"
+    },
+    "infx/bench_serving/speculative_metrics.py": {
+      "bytes": 3683,
+      "sha256": "93bff5f22899e6973fc7a9d523d165ef4349359431f2a15e15e178e48013fe58"
+    }
+  },
+  "text_model_override": {
+    "vision_n_layers": 0
+  }
+}

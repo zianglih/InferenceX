@@ -1,0 +1,45 @@
+{
+  "base_environment": {
+    "HOME": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/dsv41-dspark-ep8-20261001-mxfp8-fix-v3-all18/home",
+    "LANG": "C.UTF-8",
+    "LD_LIBRARY_PATH": "/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+    "PATH": "/root/.cargo/bin:/opt/sglang/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/nvidia/bin",
+    "SGLANG_RUST_BUILD_MODE": "never"
+  },
+  "benchmark_timeout_seconds": 14400,
+  "campaign_contract": "dsv41-dspark-ep8-measured-v1",
+  "compile_cache_seed": null,
+  "flashinfer_commit": "7a962707af69863d386be2a9bc01ee4607470bcc",
+  "flashinfer_python_patch": {
+    "original_sha256": "a07193ecc61c522a1dc26548662524d1cbf27a0b0257888fbb4ca241bd2c7593",
+    "sha256": "a4c20af8ad49c1d050db3dd9b933fa771a4b9d5ca830c5de8a6c66376aa19114",
+    "source_file": "flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py"
+  },
+  "flashinfer_root": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/sources/flashinfer-mxfp8-fix-v3",
+  "flashinfer_wheel_commit": "a03f2205263d4e691d68e485bff287e37a19b6c3",
+  "gpu_ids": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "image": "lmsysorg/sglang:nightly-dev-cu13-20260930-cae69be5@sha256:0412c5b792cb35706de0359de4a1af52c160d4bdef6ff7530baf9df4e2a7b0b4",
+  "kill_seconds": 15,
+  "model_path": "/data/home/ziangli/dsv41-dspark-checkpoint-3431dde3247c/models/target",
+  "model_revision": "3431dde3247c13b5957f682b1e3c6fcae2566079",
+  "monitor_interval_seconds": 5,
+  "port": 30000,
+  "python": "/opt/sglang/bin/python3",
+  "ready_timeout_seconds": 3600,
+  "run_id": "dsv41-dspark-ep8-20261001-mxfp8-fix-v3-all18",
+  "run_root": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/dsv41-dspark-ep8-20261001-mxfp8-fix-v3-all18",
+  "served_model": "DeepSeek-V4.1-Flash-NVFP4",
+  "sglang_commit": "29c2b32d7f7351082168e622a4747bcff6469271",
+  "sglang_root": "/data/home/ziangli/inferencex-dsv41-dspark-ep8-20261001/sources/sglang",
+  "term_seconds": 30,
+  "tmp_root": "/tmp/infx-dsv41-fix3-1001"
+}

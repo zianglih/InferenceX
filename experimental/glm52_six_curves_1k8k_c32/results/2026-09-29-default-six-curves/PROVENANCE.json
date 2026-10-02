@@ -1,0 +1,51 @@
+{
+  "status": "PUBLIC_COMPACT_SUMMARY_AND_PLOTS",
+  "scope": "Saved aggregate tables, plots, compact settings and plotting/reducer sources. Full raw logs, per-request traces and runtime evidence are retained locally, not included in this current public bundle.",
+  "points": 24,
+  "measured_requests": 3600,
+  "warmup_requests_scheduled": 720,
+  "full_evidence_replay_requires_local_bundle": true,
+  "public_reproduction": "Render from results/raw-metrics.json; this does not revalidate raw request/native/runtime evidence.",
+  "previous_full_bundle_manifest": {
+    "bytes": 671328,
+    "sha256": "0158a59b724969ec8bde4edb3a073abf79fbc7d4ede64cdbedc2200e017856a8"
+  },
+  "source_files": {
+    "benchmarks/benchmark_lib.sh": {
+      "bytes": 131664,
+      "sha256": "305a5cc1f29e17b18e43cbdbb21761bd72497e08720159397b7daafddbf0cea4"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh": {
+      "bytes": 1387,
+      "sha256": "9960f8b35c693dbf5617faf36187a73babd454c90ba106cdd3380fcc30908d21"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/results.py": {
+      "bytes": 28428,
+      "sha256": "c5baf679db7aa3faeb66380d1cd4ebeafe4c358748a60ae852748e214e8dab79"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/run.py": {
+      "bytes": 49943,
+      "sha256": "241b37101e8ad1fbbe8f92ceb0355113fcabf7c46dcf9cee25f60c7096653ce0"
+    },
+    "infx/bench_serving/backend_request_func.py": {
+      "bytes": 22243,
+      "sha256": "1012c55b19de33140b3b916b231773f1a422b835ab46a870bbf9c299d3049b43"
+    },
+    "infx/bench_serving/benchmark_serving.py": {
+      "bytes": 50158,
+      "sha256": "aece4e0fbe94e10714d9dc79bb7a2ddd015702a044b937b3ae88c36e0f21c0b8"
+    }
+  },
+  "metric_scope": "Measured-only MTP acceptance length unavailable; no approximation.",
+  "settings_summary": {
+    "bytes": 15762,
+    "sha256": "f9fb6b3f3f20f2f957e5fc62806d5273191ee836fac54b188775269e1cac995c"
+  },
+  "preserved_outputs": "All original PNG/SVG, numeric JSON/CSV and source/ bytes are unchanged.",
+  "qualifications": [
+    "The newer September 30 image/Torch 2.13 runtime differs from the September 29 baseline.",
+    "TRT quantization uses the selected CUDA-default path; CuTeDSL-only math flags do not establish its low-level math.",
+    "Warmup counts are scheduled/awaited, not individually audited success counts.",
+    "Sequential history, retained latency summaries and plot replay do not establish causality, numerical equivalence, or runtime/preservation acceptance."
+  ]
+}

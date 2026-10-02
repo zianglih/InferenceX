@@ -1,0 +1,78 @@
+{
+  "status": "PUBLIC_COMPACT_SUMMARY_AND_PLOTS",
+  "scope": "Saved aggregate tables, plots, compact settings and plotting/reducer sources. Full raw logs, per-request traces and runtime evidence are retained locally, not included in this current public bundle.",
+  "points": 36,
+  "measured_requests": 3780,
+  "warmup_requests_scheduled": 756,
+  "full_evidence_replay_requires_local_bundle": true,
+  "public_reproduction": "Render from results/raw-metrics.json; this does not revalidate raw request/native/runtime evidence.",
+  "previous_full_bundle_manifest": {
+    "bytes": 1020508,
+    "sha256": "31ded0f14488d216cf4172aebb6a6cb3ba0b84b7d51f294c558f2c1a34b8b78a"
+  },
+  "source_files": {
+    "benchmarks/benchmark_lib.sh": {
+      "bytes": 131962,
+      "sha256": "7bf1607b8c21225b3cb78e4c4ad51f21034c53654e5b2aee83b6925e6db900f4"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh": {
+      "bytes": 1417,
+      "sha256": "7a8100c113b4bac935de335f19411458474e6a2e59d0367168181acc859260ca"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/results.py": {
+      "bytes": 30652,
+      "sha256": "a0aa786b58fcbbd0ec9d9d68084b7fa687124c56c4f3cc49c83983433fec673d"
+    },
+    "experimental/glm52_six_curves_1k8k_c32/run.py": {
+      "bytes": 51855,
+      "sha256": "1600496c98feb905656a2ef0e7db9de7f0c455b9e390ac2426ee0708521aa386"
+    },
+    "infx/__init__.py": {
+      "bytes": 46,
+      "sha256": "7ed00e8af70ac2b66813e9f4025347ec756f707c5f5f4c58a95a30264114b1c1"
+    },
+    "infx/bench_serving/__init__.py": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "infx/bench_serving/backend_request_func.py": {
+      "bytes": 23548,
+      "sha256": "cc8888c9f1c220323c56537a36dfabc29c592290f528b48d7a1343fb933413c4"
+    },
+    "infx/bench_serving/benchmark_serving.py": {
+      "bytes": 51763,
+      "sha256": "af8dafec8bbb4861b1e482d8491d3a5923880bd880e935ce2593f5fc1d21745b"
+    },
+    "infx/bench_serving/speculative_metrics.py": {
+      "bytes": 3683,
+      "sha256": "93bff5f22899e6973fc7a9d523d165ef4349359431f2a15e15e178e48013fe58"
+    }
+  },
+  "metric_scope": "Measured-only ratio of sums, warmups excluded; native bonus convention.",
+  "settings_summary": {
+    "bytes": 23242,
+    "sha256": "d0de8eee62bd23cb40ea8122a905aa320ba31cd35cfc057bcc7c1fbc0349bb71"
+  },
+  "preserved_outputs": "All original PNG/SVG, numeric JSON/CSV and source/ bytes are unchanged.",
+  "qualifications": [
+    "The newer September 30 image/Torch 2.13 runtime differs from the September 29 baseline.",
+    "TRT quantization uses the selected CUDA-default path; CuTeDSL-only math flags do not establish its low-level math.",
+    "Warmup counts are scheduled/awaited, not individually audited success counts.",
+    "Sequential history, retained latency summaries and plot replay do not establish causality, numerical equivalence, or runtime/preservation acceptance."
+  ],
+  "backend_pairs": 36,
+  "topology_pairs": 18,
+  "pair_metric_rows": 1620,
+  "additional_concurrency_views": {
+    "included": [
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "points": 30,
+    "measured_requests": 3720,
+    "new_measurements": false
+  }
+}

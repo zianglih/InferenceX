@@ -1,0 +1,20 @@
+diff --git a/flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py b/flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py
+index 7ca8a4969e2021632697cb3447bbc05f639316bf..9ff1b67cec6772fcc4cfbe8098a653dcd08cecc8 100644
+--- a/flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py
++++ b/flashinfer/gemm/kernels/dense_blockscaled_gemm_sm100.py
+@@ -1937,6 +1937,13 @@ class Sm100BlockScaledPersistentDenseGemmKernel(_Sm100BlockScaledGemmCommon):
+         ):
+             can_implement = False
+ 
+-        if mma_tiler_mn[1] < 64 and cluster_shape_mn[1] > 1:
+-            can_implement = False
++        if mma_tiler_mn[1] < 64:
++            # FP8 still requires a single covering narrow-N tile. Filter its
++            # unsupported sub-tile tactics before autotuning launches them,
++            # while keeping the non-covering FP4 tiles available.
++            if cluster_shape_mn[1] > 1 or (
++                ab_dtype in {cutlass.Float8E4M3FN, cutlass.Float8E5M2}
++                and n > mma_tiler_mn[1]
++            ):
++                can_implement = False
+         return can_implement

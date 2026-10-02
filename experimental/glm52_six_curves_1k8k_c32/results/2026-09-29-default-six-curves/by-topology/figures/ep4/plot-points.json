@@ -1,0 +1,122 @@
+[
+  {
+    "case_id": "megamoe-w4a4-tp4-ep4-dp4-c16",
+    "arm_id": "megamoe-w4a4",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 16,
+    "x": 122.87139756807973,
+    "y": 461.9560765440248
+  },
+  {
+    "case_id": "megamoe-w4a4-tp4-ep4-dp4-c32",
+    "arm_id": "megamoe-w4a4",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 32,
+    "x": 106.43816658310597,
+    "y": 792.0963631870649
+  },
+  {
+    "case_id": "megamoe-w4a4-tp4-ep4-dp4-c4",
+    "arm_id": "megamoe-w4a4",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 4,
+    "x": 173.16837197694863,
+    "y": 167.6158404986911
+  },
+  {
+    "case_id": "megamoe-w4a4-tp4-ep4-dp4-c8",
+    "arm_id": "megamoe-w4a4",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 8,
+    "x": 143.21310938533497,
+    "y": 272.30207336762857
+  },
+  {
+    "case_id": "megamoe-w4a16-tp4-ep4-dp4-c16",
+    "arm_id": "megamoe-w4a16",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 16,
+    "x": 121.57450993787192,
+    "y": 457.3751960026108
+  },
+  {
+    "case_id": "megamoe-w4a16-tp4-ep4-dp4-c32",
+    "arm_id": "megamoe-w4a16",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 32,
+    "x": 100.71586698491991,
+    "y": 756.4279676596832
+  },
+  {
+    "case_id": "megamoe-w4a16-tp4-ep4-dp4-c4",
+    "arm_id": "megamoe-w4a16",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 4,
+    "x": 178.90365044440298,
+    "y": 168.16855068439443
+  },
+  {
+    "case_id": "megamoe-w4a16-tp4-ep4-dp4-c8",
+    "arm_id": "megamoe-w4a16",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 8,
+    "x": 146.37907201607126,
+    "y": 268.236355754947
+  },
+  {
+    "case_id": "trtllm-w4a4-tp4-ep4-dp4-c16",
+    "arm_id": "trtllm-w4a4",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 16,
+    "x": 125.57449388468757,
+    "y": 471.6914759471077
+  },
+  {
+    "case_id": "trtllm-w4a4-tp4-ep4-dp4-c32",
+    "arm_id": "trtllm-w4a4",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 32,
+    "x": 105.54958129655417,
+    "y": 793.250365987165
+  },
+  {
+    "case_id": "trtllm-w4a4-tp4-ep4-dp4-c4",
+    "arm_id": "trtllm-w4a4",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 4,
+    "x": 180.71622407312145,
+    "y": 171.10864066296716
+  },
+  {
+    "case_id": "trtllm-w4a4-tp4-ep4-dp4-c8",
+    "arm_id": "trtllm-w4a4",
+    "tp": 4,
+    "ep": 4,
+    "dp": 4,
+    "concurrency": 8,
+    "x": 151.00756611559717,
+    "y": 282.70104625442866
+  }
+]

@@ -67,6 +67,8 @@ except ImportError:
 from .benchmark_outcome import benchmark_outcome
 from .benchmark_utils import convert_to_pytorch_benchmark_format
 from .encoding_dsv4 import encode_messages as dsv4_encode_messages
+from .encoding_dsv41 import encode_text_chat as dsv41_encode_text_chat
+from .speculative_metrics import summarize_speculative_metrics
 
 MILLISECONDS_TO_SECONDS_CONVERSION = 1000
 
@@ -166,14 +168,19 @@ def _init_tokenizer_worker(tokenizer_id: str, tokenizer_mode: str, trust_remote_
     )
 
 
-def _apply_chat_template(prompt: str, tokenizer: PreTrainedTokenizerBase, dsv4: bool) -> str:
+def _apply_chat_template(
+    prompt: str, tokenizer: PreTrainedTokenizerBase, dsv4: bool, dsv41: bool = False
+) -> str:
     """Render a single user message into the appropriate chat-template prompt.
 
     When `dsv4` is True we use the self-contained DeepSeek-V4 encoder
     (encoding_dsv4.encode_messages) which emits the
-    <bos><User>...<Assistant><think> framing the model expects. Otherwise we
-    fall back to the tokenizer's built-in jinja chat template.
+    <bos><User>...<Assistant><think> framing the model expects. The separate
+    `dsv41` opt-in uses the pinned checkpoint encoder in explicit chat mode.
+    Otherwise we fall back to the tokenizer's built-in jinja chat template.
     """
+    if dsv41:
+        return dsv41_encode_text_chat(tokenizer.name_or_path, prompt)
     if dsv4:
         return dsv4_encode_messages(
             [{"role": "user", "content": prompt}],
@@ -198,6 +205,7 @@ def _process_prompt_chunk(chunk_args: tuple) -> list[tuple[str, int, int, None, 
         vocab_size,
         use_chat_template,
         dsv4,
+        dsv41,
         seed,
     ) = chunk_args
 
@@ -225,7 +233,7 @@ def _process_prompt_chunk(chunk_args: tuple) -> list[tuple[str, int, int, None, 
             prompt = tokenizer.decode(prompt_token_ids)
 
         if use_chat_template:
-            prompt = _apply_chat_template(prompt, tokenizer, dsv4)
+            prompt = _apply_chat_template(prompt, tokenizer, dsv4, dsv41)
 
         prompt_len = len(tokenizer.encode(prompt, add_special_tokens=False))
         mismatch = prompt_len - tgt_prompt_len
@@ -247,15 +255,18 @@ def sample_random_requests(
     tokenizer_mode: str = "auto",
     trust_remote_code: bool = False,
     num_workers: int = 0,
+    dsv41: bool = False,
 ) -> list[tuple[str, int, int]]:
     vocab_size = tokenizer.vocab_size
     prefix_token_ids = np.random.randint(0, vocab_size, size=prefix_len).tolist()  # noqa: NPY002
 
-    if dsv4 and not use_chat_template:
-        raise ValueError("--dsv4 requires --use-chat-template to be set.")
+    if dsv4 and dsv41:
+        raise ValueError("Select one DeepSeek prompt format")
+    if (dsv4 or dsv41) and not use_chat_template:
+        raise ValueError("DeepSeek encoding requires --use-chat-template")
 
     if use_chat_template:
-        chat_template_dummy = _apply_chat_template("a", tokenizer, dsv4)
+        chat_template_dummy = _apply_chat_template("a", tokenizer, dsv4, dsv41)
         tokenized_chat_template_dummy = tokenizer.encode(
             chat_template_dummy, add_special_tokens=False
         )
@@ -306,6 +317,7 @@ def sample_random_requests(
                     vocab_size,
                     use_chat_template,
                     dsv4,
+                    dsv41,
                     int(local_rng.randint(0, 2**31)),
                 )
             )
@@ -357,7 +369,7 @@ def sample_random_requests(
                 prompt = tokenizer.decode(prompt_token_ids)
 
             if use_chat_template:
-                prompt = _apply_chat_template(prompt, tokenizer, dsv4)
+                prompt = _apply_chat_template(prompt, tokenizer, dsv4, dsv41)
 
             prompt_len = len(tokenizer.encode(prompt, add_special_tokens=False))
             mismatches.append(prompt_len - tgt_prompt_len)
@@ -557,7 +569,12 @@ async def benchmark(
     goodput_config_dict: dict[str, float],
     max_concurrency: int | None,
     lora_modules: list[str] | None,
+    capture_speculative_metrics: bool = False,
 ) -> dict[str, Any]:
+    if capture_speculative_metrics and (
+        backend not in ("vllm", "openai", "sglang", "lmdeploy", "scalellm") or best_of != 1
+    ):
+        raise ValueError("Speculative capture requires single-completion OpenAI streaming")
     if backend in ASYNC_REQUEST_FUNCS:
         request_func = ASYNC_REQUEST_FUNCS[backend]
     else:
@@ -579,6 +596,7 @@ async def benchmark(
         best_of=best_of,
         multi_modal_content=test_mm_content,
         ignore_eos=ignore_eos,
+        capture_speculative_metrics=capture_speculative_metrics,
     )
 
     if num_warmups > 0:
@@ -672,6 +690,7 @@ async def benchmark(
             best_of=best_of,
             multi_modal_content=mm_content,
             ignore_eos=ignore_eos,
+            capture_speculative_metrics=capture_speculative_metrics,
         )
         tasks.append(
             asyncio.create_task(
@@ -742,6 +761,19 @@ async def benchmark(
         "generated_texts": [output.generated_text for output in outputs],
         "errors": [output.error for output in outputs],
     }
+
+    if capture_speculative_metrics:
+        result["speculative_metrics"] = summarize_speculative_metrics(
+            [
+                {
+                    "request_index": index,
+                    "success": output.success,
+                    "completion_tokens": output.output_tokens,
+                    "spec_tokens_details": output.spec_tokens_details,
+                }
+                for index, output in enumerate(outputs)
+            ]
+        )
 
     def process_one_metric(
         # E.g., "ttft"
@@ -898,6 +930,7 @@ def main(args: argparse.Namespace) -> None:
             tokenizer=tokenizer,
             use_chat_template=args.use_chat_template,
             dsv4=args.dsv4,
+            dsv41=getattr(args, "dsv41", False),
             tokenizer_id=tokenizer_id,
             tokenizer_mode=tokenizer_mode,
             trust_remote_code=args.trust_remote_code,
@@ -935,6 +968,7 @@ def main(args: argparse.Namespace) -> None:
             goodput_config_dict=goodput_config_dict,
             max_concurrency=args.max_concurrency,
             lora_modules=args.lora_modules,
+            capture_speculative_metrics=getattr(args, "capture_speculative_metrics", False),
         )
     )
 
@@ -1011,6 +1045,12 @@ def main(args: argparse.Namespace) -> None:
             json.dump(result_json, outfile)
         save_to_pytorch_benchmark_format(args, result_json, file_name)
 
+    if getattr(args, "capture_speculative_metrics", False) and (
+        benchmark_result.get("speculative_metrics", {}).get("status") != "passed"
+    ):
+        raise SystemExit(
+            "FAIL: incomplete measured speculative-metric coverage (raw result retained)"
+        )
     if "error" in outcome:
         raise SystemExit(f"FAIL: invalid request counts: {outcome['error']}")
     if outcome["status"] == "failed":
@@ -1150,6 +1190,12 @@ if __name__ == "__main__":
         "--save-result",
         action="store_true",
         help="Specify to save benchmark results to a json file",
+    )
+    parser.add_argument(
+        "--capture-speculative-metrics",
+        action="store_true",
+        help="Require SGLang per-request speculative counters for measured requests only; "
+        "retain raw counters and aggregate by verification count. Missing coverage fails the run.",
     )
     parser.add_argument(
         "--save-detailed",
@@ -1340,6 +1386,12 @@ if __name__ == "__main__":
         help="A subset of LoRA module names passed in when "
         "launching the server. For each request, the "
         "script chooses a LoRA module at random.",
+    )
+
+    dsv4_group.add_argument(
+        "--dsv41",
+        action="store_true",
+        help="Use the pinned checkpoint V4.1 encoder: chat mode, no reasoning effort override.",
     )
 
     parser.add_argument("--num-warmups", type=int, default=0)

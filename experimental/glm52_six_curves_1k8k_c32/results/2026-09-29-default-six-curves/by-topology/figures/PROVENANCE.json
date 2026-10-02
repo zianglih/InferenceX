@@ -1,0 +1,51 @@
+{
+  "source": "Existing accepted measurements and saved server metadata; no new benchmark runs",
+  "manifest": {
+    "relative_path": "FILES.json",
+    "bytes": 671328,
+    "sha256": "0158a59b724969ec8bde4edb3a073abf79fbc7d4ede64cdbedc2200e017856a8"
+  },
+  "reader": {
+    "relative_path": "source/experimental/glm52_six_curves_1k8k_c32/results.py",
+    "bytes": 28428,
+    "sha256": "c5baf679db7aa3faeb66380d1cd4ebeafe4c358748a60ae852748e214e8dab79"
+  },
+  "published_payloads_rehashed_before_and_after": 2520,
+  "views": [
+    {
+      "view": "ep4",
+      "topology": 4,
+      "points": 12,
+      "frontiers": 3,
+      "measured_requests": 1800,
+      "warmup_requests": 360
+    },
+    {
+      "view": "ep8",
+      "topology": 8,
+      "points": 12,
+      "frontiers": 3,
+      "measured_requests": 1800,
+      "warmup_requests": 360
+    },
+    {
+      "view": "six-curves",
+      "topology": null,
+      "points": 24,
+      "frontiers": 6,
+      "measured_requests": 3600,
+      "warmup_requests": 720
+    }
+  ],
+  "acceptance_length": {
+    "relative_path": "acceptance-length.json",
+    "bytes": 26301,
+    "sha256": "d9ecb634e7a1698134456217a0d42f52514b4811f9dcc3cda3a0bbeeffc28f23"
+  },
+  "campaign": {
+    "points": 24,
+    "measured_requests": 3600,
+    "warmup_requests": 720
+  },
+  "public_availability": "Raw source descriptors below refer to the immutable locally retained full bundle; current public replay uses summary tables only."
+}

@@ -810,7 +810,9 @@ run_benchmark_serving() {
     local result_dir=""
     local workspace_dir=""
     local use_chat_template=false
+    local capture_speculative_metrics=false
     local dsv4=false
+    local dsv41=false
     local trust_remote_code=false
     local server_pid=""
     local tokenizer=""
@@ -866,12 +868,21 @@ run_benchmark_serving() {
                 workspace_dir="$2"
                 shift 2
                 ;;
+            --capture-speculative-metrics)
+                capture_speculative_metrics=true
+                shift
+                ;;
             --use-chat-template)
                 use_chat_template=true
                 shift
                 ;;
             --dsv4)
                 dsv4=true
+                use_chat_template=true
+                shift
+                ;;
+            --dsv41)
+                dsv41=true
                 use_chat_template=true
                 shift
                 ;;
@@ -980,12 +991,20 @@ run_benchmark_serving() {
         benchmark_cmd+=(--endpoint "$endpoint")
     fi
     
+    if [[ "$capture_speculative_metrics" == true ]]; then
+        benchmark_cmd+=(--capture-speculative-metrics)
+    fi
+
     if [[ "$use_chat_template" == true ]]; then
         benchmark_cmd+=(--use-chat-template)
     fi
 
     if [[ "$dsv4" == true ]]; then
         benchmark_cmd+=(--dsv4)
+    fi
+
+    if [[ "$dsv41" == true ]]; then
+        benchmark_cmd+=(--dsv41)
     fi
 
     if [[ "$trust_remote_code" == true ]]; then

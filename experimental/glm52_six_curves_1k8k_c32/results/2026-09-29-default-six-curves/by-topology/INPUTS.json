@@ -1,0 +1,29 @@
+{
+  "scope": "Compact public plotting only; complete raw evidence remains local.",
+  "inputs": {
+    "results/raw-metrics.json": {
+      "bytes": 45708,
+      "sha256": "0acd06ac53492698897b6a51aca4a290cc27061eef8140c8bf27412d7ee5a74d"
+    },
+    "results/plot-points.json": {
+      "bytes": 4875,
+      "sha256": "4ea8b7da88822ae747cef1967b6d8cb10bd9aae2d0f148792e1284ccd362cdd4"
+    },
+    "results/frontiers.json": {
+      "bytes": 1509,
+      "sha256": "cefc26db5fd952acd0e0cc56ab9eda9731913db9a818fc667b0732d5523e75f1"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/results.py": {
+      "bytes": 28428,
+      "sha256": "c5baf679db7aa3faeb66380d1cd4ebeafe4c358748a60ae852748e214e8dab79"
+    },
+    "by-topology/figures/acceptance-length.json": {
+      "bytes": 26301,
+      "sha256": "d9ecb634e7a1698134456217a0d42f52514b4811f9dcc3cda3a0bbeeffc28f23"
+    }
+  },
+  "historical_full_manifest": {
+    "bytes": 671328,
+    "sha256": "0158a59b724969ec8bde4edb3a073abf79fbc7d4ede64cdbedc2200e017856a8"
+  }
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "arm_id": "megamoe-w4a4",
+    "tp": 8,
+    "ep": 8,
+    "dp": 8,
+    "case_ids": [
+      "megamoe-w4a4-tp8-ep8-dp8-c32",
+      "megamoe-w4a4-tp8-ep8-dp8-c16",
+      "megamoe-w4a4-tp8-ep8-dp8-c8",
+      "megamoe-w4a4-tp8-ep8-dp8-c4",
+      "megamoe-w4a4-tp8-ep8-dp8-c2"
+    ]
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "tp": 8,
+    "ep": 8,
+    "dp": 8,
+    "case_ids": [
+      "megamoe-w4a16-tp8-ep8-dp8-c32",
+      "megamoe-w4a16-tp8-ep8-dp8-c16",
+      "megamoe-w4a16-tp8-ep8-dp8-c8",
+      "megamoe-w4a16-tp8-ep8-dp8-c4",
+      "megamoe-w4a16-tp8-ep8-dp8-c2"
+    ]
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "tp": 8,
+    "ep": 8,
+    "dp": 8,
+    "case_ids": [
+      "trtllm-w4a4-tp8-ep8-dp8-c32",
+      "trtllm-w4a4-tp8-ep8-dp8-c16",
+      "trtllm-w4a4-tp8-ep8-dp8-c8",
+      "trtllm-w4a4-tp8-ep8-dp8-c4",
+      "trtllm-w4a4-tp8-ep8-dp8-c2"
+    ]
+  }
+]

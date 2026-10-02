@@ -1,0 +1,167 @@
+{
+  "file_count": 40,
+  "files": {
+    "PROVENANCE.json": {
+      "bytes": 2485,
+      "sha256": "93b931c11110794bc24fec6011e07c8394b96488709d770ed9681231ad106a5c"
+    },
+    "REPRODUCE.md": {
+      "bytes": 3080,
+      "sha256": "76b6278db840c4fd9e5d31537490e2e0baaa0df5bad91bbb63b3068c079a5e98"
+    },
+    "SETTINGS_SUMMARY.json": {
+      "bytes": 15762,
+      "sha256": "f9fb6b3f3f20f2f957e5fc62806d5273191ee836fac54b188775269e1cac995c"
+    },
+    "by-topology/FILES.json": {
+      "bytes": 2839,
+      "sha256": "8162b830f563c1125461dc9f53d29399e696207e437104b518738177dff306c7"
+    },
+    "by-topology/INPUTS.json": {
+      "bytes": 1017,
+      "sha256": "9d39a39c7d17386808d9c592f0414f79dfade87a8122638dbebfe195812238e2"
+    },
+    "by-topology/README.md": {
+      "bytes": 809,
+      "sha256": "3d01fd15b5eb183f678fce8cf02c3cb8e985b20a756fa8f8c2ee004861b7c8fb"
+    },
+    "by-topology/README_zh.md": {
+      "bytes": 692,
+      "sha256": "a36d729e4710eb3a728dada40da41451ef6c92367efd3632aec26ccde13ad026"
+    },
+    "by-topology/figures/PROVENANCE.json": {
+      "bytes": 1450,
+      "sha256": "ff7ff70e21ea3f25fda9aad2c966ed9e31ea1fdfd77a7e3fd6bce6c52bc0ab7c"
+    },
+    "by-topology/figures/acceptance-length.json": {
+      "bytes": 26301,
+      "sha256": "d9ecb634e7a1698134456217a0d42f52514b4811f9dcc3cda3a0bbeeffc28f23"
+    },
+    "by-topology/figures/ep4/frontiers.json": {
+      "bytes": 756,
+      "sha256": "db78e755f65473883c044c3065d23c36a1ddbea77acbe80a8e96e1912230fdde"
+    },
+    "by-topology/figures/ep4/pareto.png": {
+      "bytes": 343111,
+      "sha256": "3bb00538e96df580f263e08d0955bc710604addd9eb26ff19f300e0dc6159840"
+    },
+    "by-topology/figures/ep4/pareto.svg": {
+      "bytes": 29749,
+      "sha256": "8fcf44562d0c79ad2ea4a93858371076d61f5c3d1eb710aab973031c526b8b98"
+    },
+    "by-topology/figures/ep4/plot-points.json": {
+      "bytes": 2441,
+      "sha256": "500016e0dc71436a3050e029e8f07c88fcef618eb65438204e86fac8d4544236"
+    },
+    "by-topology/figures/ep8/frontiers.json": {
+      "bytes": 756,
+      "sha256": "59a9b9178ff58056ae7542be8740d2e361c211856573b858e1d627cb8b737d8d"
+    },
+    "by-topology/figures/ep8/pareto.png": {
+      "bytes": 348924,
+      "sha256": "3d1f9df59b1d0b56a40856a3fe5a4f95445165b421977e221645f2c44bebcd02"
+    },
+    "by-topology/figures/ep8/pareto.svg": {
+      "bytes": 29760,
+      "sha256": "6dfd95235b10997d8eae7a9b0f1d2b9992af19fdfdf06f8434cb0ea3364bee5c"
+    },
+    "by-topology/figures/ep8/plot-points.json": {
+      "bytes": 2437,
+      "sha256": "dad9eb441f99b95775ff68cbf0ef1b86d3cdae38671afda535c75ace2b97649d"
+    },
+    "by-topology/figures/six-curves/frontiers.json": {
+      "bytes": 1509,
+      "sha256": "cefc26db5fd952acd0e0cc56ab9eda9731913db9a818fc667b0732d5523e75f1"
+    },
+    "by-topology/figures/six-curves/pareto.png": {
+      "bytes": 444053,
+      "sha256": "3d8c342de17eaf45ac5613f200054afb60596df9dedb4702ca9683e409faf5e6"
+    },
+    "by-topology/figures/six-curves/pareto.svg": {
+      "bytes": 44120,
+      "sha256": "0c218ed2aad18253f3c9467ed1b6df9d8e0ec82581f22642513ed068fc13fb31"
+    },
+    "by-topology/figures/six-curves/plot-points.json": {
+      "bytes": 4875,
+      "sha256": "4ea8b7da88822ae747cef1967b6d8cb10bd9aae2d0f148792e1284ccd362cdd4"
+    },
+    "by-topology/render.py": {
+      "bytes": 12299,
+      "sha256": "8ffbea1cab78c5488e99b9d6fcdd149ffa6b6614495d775b27dc6a5b2c785e6d"
+    },
+    "by-topology/render_compact.py": {
+      "bytes": 11203,
+      "sha256": "ed41400a5c57627d2e33cc16d6de7c04fa658a4bf7075d450fce22dc4c912436"
+    },
+    "results/RESULTS.md": {
+      "bytes": 3989,
+      "sha256": "853dc2bc975f1c185c7cf3dd7c37edb61970b32d55cebd37bea29fd423c47f28"
+    },
+    "results/frontiers.json": {
+      "bytes": 1509,
+      "sha256": "cefc26db5fd952acd0e0cc56ab9eda9731913db9a818fc667b0732d5523e75f1"
+    },
+    "results/paired-comparisons.csv": {
+      "bytes": 264171,
+      "sha256": "ecf3602a6e64916b6dd6f9241a9ece0175193c34451960780de7ad2996244ae7"
+    },
+    "results/paired-comparisons.json": {
+      "bytes": 475740,
+      "sha256": "4d7ddd0103c57f6e05d1a41ae1fdcde9c8da96d62ca8ac7734e00c23cffe36c7"
+    },
+    "results/pareto.png": {
+      "bytes": 361063,
+      "sha256": "85a47858dc261aababab4a0ebe51dd186423e68ec6febcd213bbc920067976c3"
+    },
+    "results/pareto.svg": {
+      "bytes": 41841,
+      "sha256": "b40b425ad17a7635c1df983b1ec18e11d9bd5479afa5e8d2cc4eec07bfb05df1"
+    },
+    "results/plot-points.json": {
+      "bytes": 4875,
+      "sha256": "4ea8b7da88822ae747cef1967b6d8cb10bd9aae2d0f148792e1284ccd362cdd4"
+    },
+    "results/raw-metrics.csv": {
+      "bytes": 23469,
+      "sha256": "bc4be4843296ec186bc12201cea56b8d72559795ae64fc6c6a2933f9fb3c607b"
+    },
+    "results/raw-metrics.json": {
+      "bytes": 45708,
+      "sha256": "0acd06ac53492698897b6a51aca4a290cc27061eef8140c8bf27412d7ee5a74d"
+    },
+    "results/raw-saved-scalars.csv": {
+      "bytes": 18445,
+      "sha256": "2575705e3aa9aaf05849e354560b488b64ee80b4733ab25c30f0ade7731f1723"
+    },
+    "results/raw-saved-scalars.json": {
+      "bytes": 45360,
+      "sha256": "dc616c1053e9d1576a1d1e2ad3554a282e4e181d324e96d3af14bf37273245c8"
+    },
+    "source/benchmarks/benchmark_lib.sh": {
+      "bytes": 131664,
+      "sha256": "305a5cc1f29e17b18e43cbdbb21761bd72497e08720159397b7daafddbf0cea4"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/benchmark_mtp.sh": {
+      "bytes": 1387,
+      "sha256": "9960f8b35c693dbf5617faf36187a73babd454c90ba106cdd3380fcc30908d21"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/results.py": {
+      "bytes": 28428,
+      "sha256": "c5baf679db7aa3faeb66380d1cd4ebeafe4c358748a60ae852748e214e8dab79"
+    },
+    "source/experimental/glm52_six_curves_1k8k_c32/run.py": {
+      "bytes": 49943,
+      "sha256": "241b37101e8ad1fbbe8f92ceb0355113fcabf7c46dcf9cee25f60c7096653ce0"
+    },
+    "source/infx/bench_serving/backend_request_func.py": {
+      "bytes": 22243,
+      "sha256": "1012c55b19de33140b3b916b231773f1a422b835ab46a870bbf9c299d3049b43"
+    },
+    "source/infx/bench_serving/benchmark_serving.py": {
+      "bytes": 50158,
+      "sha256": "aece4e0fbe94e10714d9dc79bb7a2ddd015702a044b937b3ae88c36e0f21c0b8"
+    }
+  },
+  "self_excluded": "FILES.json",
+  "total_bytes": 2900421
+}
