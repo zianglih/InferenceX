@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "scope": "Presentation labels and tokenizer metadata only; no new measurement acceptance",
+  "original_FILES": {
+    "bytes": 2592,
+    "sha256": "b2237e5d8a38dcf9819fe3e3202d0c56bf026e6fda028746afd48615e9da32c7"
+  },
+  "original_recipe_commit": "933b8821ecb45935b869fb10a4bfe06fff3ec99c",
+  "provenance_interpretation": "Unmodified PROVENANCE.json describes original measurement/reader inputs; this projection and FILES.json bind the copied presentation-patched results.py",
+  "source_replacements": {
+    "AL: measured MTP sum(completion_tokens)/sum(spec_verify_ct)": "AL: measured DSpark sum(completion_tokens)/sum(spec_verify_ct)",
+    "Measured MTP acceptance length": "Measured DSpark acceptance length",
+    "Measured MTP AL": "Measured DSpark AL"
+  },
+  "patched_results": {
+    "bytes": 31554,
+    "sha256": "615a2afc4dea0db8fda47017904c1f40add5ef80437356de0aeece7cdae5d872"
+  },
+  "annotation_projection": "Explicit display-point label offsets by target and concurrency; leader lines terminate at unchanged measured coordinates. Numeric tables, plotted coordinates and frontier membership are unchanged.",
+  "metadata_projection": {
+    "files": [
+      "raw-saved-scalars.json",
+      "raw-saved-scalars.csv"
+    ],
+    "field": "tokenizer_id",
+    "replacement": "nvidia/DeepSeek-V4.1-Flash-NVFP4@3431dde3247c13b5957f682b1e3c6fcae2566079",
+    "original": "Local checkpoint path retained in the private export"
+  },
+  "measurement_rows": 18,
+  "measured_requests": 3780,
+  "numeric_and_frontier_data": "Metric/paired/point/frontier files byte-identical; all other saved scalar values unchanged"
+}

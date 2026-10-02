@@ -1,0 +1,82 @@
+{
+  "PROVENANCE.json": {
+    "bytes": 1919,
+    "sha256": "f2f6778ca9a2219717f51816dfda0584186298312f9159eceeae2552efb7201c"
+  },
+  "PUBLICATION_PROJECTION.json": {
+    "bytes": 1628,
+    "sha256": "ea7448e51cf4cf1744b96017837a1452401dd74d807c2d4de48deae31e19a92a"
+  },
+  "RESULTS.md": {
+    "bytes": 3736,
+    "sha256": "6f9fa7023c0158ffaadde4a7f4b07fbce767d6ec5712f2e7f8b5ce229b34f252"
+  },
+  "figures/ep8/frontiers.json": {
+    "bytes": 981,
+    "sha256": "8a2113ba2e6793b38e1427377f31d23f3d8f6ee5563ed5072355fc07b500ef62"
+  },
+  "figures/ep8/pareto.png": {
+    "bytes": 387771,
+    "sha256": "9ea2716b778f7e9c6db0a716d36ed5516db8718cc0ff9b47f4f85f0f3dd3221c"
+  },
+  "figures/ep8/pareto.svg": {
+    "bytes": 37320,
+    "sha256": "2e40fc20b010c29812077f859541023f12a95fc7f39bed5495874c9e5b9c06bb"
+  },
+  "figures/ep8/plot-points.json": {
+    "bytes": 6447,
+    "sha256": "aeab4619316dde82a8d2a63cb356873f92e38786de97557dbe5d0703b359387a"
+  },
+  "frontiers.json": {
+    "bytes": 981,
+    "sha256": "8a2113ba2e6793b38e1427377f31d23f3d8f6ee5563ed5072355fc07b500ef62"
+  },
+  "paired-comparisons.csv": {
+    "bytes": 145335,
+    "sha256": "3633b1a017f9005d2515904e184abf82fb59af5ea73d304cdc1ac6f80ef06b36"
+  },
+  "paired-comparisons.json": {
+    "bytes": 258624,
+    "sha256": "d7569d4e3abd7aab20d0559cda3ec5d7581197ec0dc568fb8f52c96098efa6ab"
+  },
+  "pareto.png": {
+    "bytes": 372855,
+    "sha256": "ce44a7ecc6c72de1b55eda2249ed4c421b54636245e3f7e3d78d4188f33af191"
+  },
+  "pareto.svg": {
+    "bytes": 35760,
+    "sha256": "cba9adf5df76ec6534c09f428375be0afb1ca01f4a4a0d923e9a91083eb7178b"
+  },
+  "plot-points.json": {
+    "bytes": 6447,
+    "sha256": "aeab4619316dde82a8d2a63cb356873f92e38786de97557dbe5d0703b359387a"
+  },
+  "raw-metrics.csv": {
+    "bytes": 25003,
+    "sha256": "db49fc2f85bca2fecc33b6d0cf3afff18f886c863cecffcfe293650095debac0"
+  },
+  "raw-metrics.json": {
+    "bytes": 47029,
+    "sha256": "588e3591308ffc542c6cfe60470e5d6734ca1ba37c06410afded6ccaeb1b36c0"
+  },
+  "raw-saved-scalars.csv": {
+    "bytes": 17569,
+    "sha256": "61f6ff18235f454c06fdb1e4672d1bdc49c9b41876a0a2c256307f7176b4dedb"
+  },
+  "raw-saved-scalars.json": {
+    "bytes": 47104,
+    "sha256": "1af5e1ea6082ed86e6675c0637342a119ffdbf06ade1e51a9abd07901d57781e"
+  },
+  "source/experimental/dsv41_dspark_ep8/render.py": {
+    "bytes": 4498,
+    "sha256": "8d3150d881d2132c7539f732d59879ff5dd3100e04c69f35edcad48f93c58842"
+  },
+  "source/experimental/dsv41_dspark_ep8/results.py": {
+    "bytes": 31554,
+    "sha256": "615a2afc4dea0db8fda47017904c1f40add5ef80437356de0aeece7cdae5d872"
+  },
+  "source/experimental/dsv41_dspark_ep8/run.py": {
+    "bytes": 57454,
+    "sha256": "f488918622b5af6b0a4432ccca5b8e10e2effa135c04f16b4e8d81dd71e89ee8"
+  }
+}

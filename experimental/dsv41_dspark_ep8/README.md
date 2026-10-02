@@ -4,8 +4,11 @@
 
 This manual recipe reuses the GLM campaign's serial runner, owned-process cleanup,
 case sealing, random-request client, native counter reducer, saved-data reader,
-and Pareto plotting. It does not install packages, download models, submit jobs,
-or claim successful GPU qualification.
+and Pareto plotting. The recipe does not install packages, download models or submit jobs.
+
+The completed [18-point DSpark report](REPORT.md) includes all 3,780 successful
+measured requests, acceptance length, separate Pareto plots and compact replay data.
+The [original GLM-5.2 results](../glm52_ep8_c64_measured_mtp/results/2026-10-01-measured-mtp-39points/README.md) remain separate.
 
 - **Grid:** TP=EP=attention DP=8; target MegaMoE W4A4, MegaMoE W4A16, and traditional
   TRTLLM W4A4 (`flashinfer_trtllm_routed` / A2A `none`); C2/4/8/16/32/64. The three C2 points execute first as real measured
