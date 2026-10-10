@@ -19,6 +19,8 @@ import sys
 import time
 import zipfile
 
+from flashinfer_orphans import quarantine_orphaned_flashinfer
+
 FI_SHA = "866c80d0c70a90624b4c2056d12d1543d709609e"
 SG_INTEGRATION_BASE = "38114937747fff49d749c3ee6a7e2f240e34530a"
 FI_FILES = [
@@ -299,6 +301,10 @@ print(json.dumps(p))"""
                 "remove-image-flashinfer",
                 [sys.executable, "-m", "pip", "uninstall", "-y", *existing],
             )
+        # pip leaves generated files behind; namespace remnants are still
+        # discoverable as packages and can shadow the new source installation.
+        quarantined = quarantine_orphaned_flashinfer(output / "orphaned-flashinfer")
+        write(output / "orphaned-flashinfer.json", quarantined)
         # artifacts.py binds this path on import, before the cubin backend's
         # internal temporary environment assignment. Set it before startup.
         build_cubins = fi / "flashinfer-cubin/flashinfer_cubin/cubins"

@@ -26,7 +26,7 @@ contexts across draft construction, graph capture, and execution. It preserves
 the integration's attention-DP and static ragged-verification machinery.
 
 Build the FlashInfer Python and cubin packages from the pinned checkout. Do not
-install released FlashInfer wheels or a released JIT-cache provider. SGLang is
+install released FlashInfer wheels or a released JIT-cache provider. The installer quarantines orphaned FlashInfer module directories left by the image's package uninstall before building the cubin package. SGLang is
 also installed from a local source wheel, including its Rust extensions. The
 runner imports installed packages and checks the small installed-source manifest
 before running; it does not shadow those packages with source-tree imports.
