@@ -15,6 +15,7 @@ are not inputs to the plots.
 | SGLang integration base | `38114937747fff49d749c3ee6a7e2f240e34530a` from [#39210](https://github.com/sgl-project/sglang/pull/39210) |
 | SGLang with DSpark compatibility | `22250e374abcff99e78e862da647a83b1c2ebe27` from [child draft #7](https://github.com/zianglih/sglang/pull/7) |
 | FlashInfer source | `866c80d0c70a90624b4c2056d12d1543d709609e` from [#6277](https://github.com/flashinfer-ai/flashinfer/pull/6277) |
+| DeepGEMM dependency | `sgl-deep-gemm==0.2.2`, required by the pinned SGLang source |
 | V4.1 checkpoint | `nvidia/DeepSeek-V4.1-Flash-NVFP4@3431dde3247c13b5957f682b1e3c6fcae2566079` |
 | GLM-5.2 checkpoint | NVFP4 revision `53e0691e21895a3863a606dfd12910c69eba94ab` |
 
@@ -34,10 +35,16 @@ before running; it does not shadow those packages with source-tree imports.
 The installation scripts expect clean, pinned clones at `ROOT/sources/flashinfer`
 and `ROOT/sources/sglang`, the development image's existing CUDA/PyTorch stack,
 and build dependencies `setuptools-rust==1.13.0` and `setuptools-scm==10.3.4`.
+The image includes `sgl-deep-gemm==0.2.1.post1`; upgrade only that runtime
+dependency to SGLang's required `0.2.2` with `--no-deps`. Its existing dependency
+`apache-tvm-ffi==0.1.11` must remain installed. Preserve the image's PyTorch and
+the source-built FlashInfer packages; do not resolve SGLang's full dependency
+list, which pins released FlashInfer wheels.
 The verified image environment uses `/opt/sglang/bin/python3`. On an idle allocated node:
 
 ```bash
 /opt/sglang/bin/python3 -m pip install --no-cache-dir setuptools-rust==1.13.0 setuptools-scm==10.3.4
+/opt/sglang/bin/python3 -m pip install --no-deps --no-cache-dir sgl-deep-gemm==0.2.2
 /opt/sglang/bin/python3 experimental/w4a16_blog_ep8/install_sources.py \
   --root /data/home/ziangli/inferencex-w4a16-blog-rerun-20261009 \
   --cuda-version 13.0 --sg-sha 22250e374abcff99e78e862da647a83b1c2ebe27
