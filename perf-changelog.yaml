@@ -8413,4 +8413,4 @@
   description:
     - "Add a standalone manual EP8 benchmark for DeepSeek-V4.1 Flash DSpark and GLM-5.2 EAGLE/MTP, each comparing MegaMoE W4A4, MegaMoE W4A16 and TRTLLM NVFP4 W4A4 at C1/2/4/8/16/32/64 with source-built FlashInfer PR6277 and the SGLang PR39210 child fix."
     - "Preserve shared prompt plans, measured-only native acceptance counters and compact per-model Pareto/acceptance plots. Full logs and build caches remain on cluster persistent storage. This experimental key is not registered in the CI matrix and does not alter existing AgentX recipes."
-  pr-link: XXX
+  pr-link: https://github.com/zianglih/InferenceX/pull/5
