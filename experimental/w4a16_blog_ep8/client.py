@@ -246,9 +246,11 @@ async def execute(plan, url, served_model, timeout):
     return outputs, duration, len(warmups)
 
 
-def summarize(plan, outputs, duration, warmups):
+def summarize(plan, outputs, duration, warmups, gpu_count=8):
     import numpy as np
 
+    if type(gpu_count) is not int or gpu_count not in (4, 8):
+        raise ValueError("Expected four or eight GPUs")
     count = len(plan["requests"])
     if len(outputs) != count or count != 10 * plan["concurrency"]:
         raise ValueError("Incomplete measured request set")
@@ -268,9 +270,9 @@ def summarize(plan, outputs, duration, warmups):
     row = {
         "model_id": plan["model_id"],
         "concurrency": plan["concurrency"],
-        "tp": 8,
-        "ep": 8,
-        "dp": 8,
+        "tp": gpu_count,
+        "ep": gpu_count,
+        "dp": gpu_count,
         "requested": count,
         "completed": count,
         "failed": 0,
@@ -320,7 +322,7 @@ def summarize(plan, outputs, duration, warmups):
         )
     row.update(
         output_tok_s=totals["completion_tokens"] / duration,
-        output_tok_s_gpu=totals["completion_tokens"] / duration / 8,
+        output_tok_s_gpu=totals["completion_tokens"] / duration / gpu_count,
         interactivity_tok_s_user=1000 / row["median_tpot_ms"],
     )
     return row
@@ -342,6 +344,7 @@ def main():
     run.add_argument("--served-model", required=True)
     run.add_argument("--output", type=Path, required=True)
     run.add_argument("--timeout", type=int, required=True)
+    run.add_argument("--gpu-count", type=int, choices=(4, 8), default=8)
     args = parser.parse_args()
     if args.command == "prepare":
         plan = prepare_plan(args.model_id, args.checkpoint, args.concurrency)
@@ -354,7 +357,9 @@ def main():
         outputs, duration, warmups = asyncio.run(
             execute(plan, args.url, args.served_model, args.timeout)
         )
-        write_json(args.output, summarize(plan, outputs, duration, warmups))
+        write_json(
+            args.output, summarize(plan, outputs, duration, warmups, args.gpu_count)
+        )
         # Small native counters and latency scalars remain on cluster storage.
         # Do not save generated texts or token-level timing arrays.
         records = [{k: v for k, v in row.items() if k != "itl_s"} for row in outputs]

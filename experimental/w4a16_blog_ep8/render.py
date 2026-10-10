@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render one fresh EP8 model from its compact, validated metrics table."""
+"""Render one fresh EP4/EP8 model from its compact, validated metrics table."""
 
 import argparse
 import json
@@ -132,6 +132,7 @@ def configure_plotting():
 
 def figure(table: dict):
     rows = results.validate_table(table)
+    gpus = results.gpu_count(table["campaign"]["matrix"])
     plt = configure_plotting()
     fig, ax = plt.subplots(figsize=(14, 10))
     fig.subplots_adjust(left=0.10, right=0.97, bottom=0.22, top=0.85)
@@ -144,7 +145,7 @@ def figure(table: dict):
             [row["output_tok_s_gpu"] for row in selected],
             color=color,
             linewidth=1.8,
-            linestyle="--",
+            linestyle="--" if gpus == 8 else "-",
             label=label,
             zorder=2,
         )
@@ -152,7 +153,7 @@ def figure(table: dict):
             [row["interactivity_tok_s_user"] for row in group],
             [row["output_tok_s_gpu"] for row in group],
             color=color,
-            marker="^",
+            marker="^" if gpus == 8 else "o",
             s=70,
             edgecolor="white",
             linewidth=0.7,
@@ -199,7 +200,7 @@ def figure(table: dict):
     model, algorithm, proposals = results.MODELS[table["model_id"]]
     campaign = table["campaign"]
     fig.suptitle(
-        f"{model} | {algorithm} | B300 EP8 | Concurrency 1-64",
+        f"{model} | {algorithm} | B300 EP{gpus} | Concurrency 1-64",
         y=0.975,
         fontsize=17,
         weight="bold",
@@ -207,7 +208,7 @@ def figure(table: dict):
     fig.text(
         0.5,
         0.925,
-        "TP = EP = attention DP = 8 | Nominal 1,024 input / 8,192 output | ratio 0.8\n"
+        f"TP = EP = attention DP = {gpus} | Nominal 1,024 input / 8,192 output | ratio 0.8\n"
         f"{len(rows)} fresh points | {sum(row['completed'] for row in rows):,} measured requests",
         ha="center",
         va="top",
@@ -244,6 +245,7 @@ def figure(table: dict):
 
 def acceptance_figure(table: dict):
     rows = results.validate_table(table)
+    gpus = results.gpu_count(table["campaign"]["matrix"])
     plt = configure_plotting()
     fig, ax = plt.subplots(figsize=(10, 6))
     fig.subplots_adjust(left=0.10, right=0.97, top=0.86, bottom=0.23)
@@ -253,7 +255,7 @@ def acceptance_figure(table: dict):
             [row["concurrency"] for row in group],
             [row["acceptance_length"] for row in group],
             color=color,
-            marker="^",
+            marker="^" if gpus == 8 else "o",
             linewidth=1.8,
             label=label,
         )
@@ -274,7 +276,7 @@ def acceptance_figure(table: dict):
     )
     model, algorithm, _ = results.MODELS[table["model_id"]]
     fig.suptitle(
-        f"{model} | {algorithm} | B300 EP8", fontsize=16, weight="bold", y=0.96
+        f"{model} | {algorithm} | B300 EP{gpus}", fontsize=16, weight="bold", y=0.96
     )
     fig.text(
         0.5,

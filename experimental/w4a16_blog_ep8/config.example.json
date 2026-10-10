@@ -2,6 +2,8 @@
   "run_id": "w4a16-blog-ep8-20261010",
   "run_root": "/data/home/ziangli/inferencex-w4a16-blog-rerun-20261009/runs/ep8-c1-c64",
   "tmp_root": "/tmp/infx-blog-1010",
+  "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+  "model_ids": ["dsv41", "glm52"],
   "python": "/opt/sglang/bin/python3",
   "sglang_root": "/data/home/ziangli/inferencex-w4a16-blog-rerun-20261009/sources/sglang",
   "flashinfer_root": "/data/home/ziangli/inferencex-w4a16-blog-rerun-20261009/sources/flashinfer",

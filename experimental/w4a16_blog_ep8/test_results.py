@@ -11,7 +11,7 @@ import render
 import results
 
 
-def fixture(model_id="dsv41"):
+def fixture(model_id="dsv41", gpu_count=8):
     campaign = {
         "schema_version": 1,
         "run_id": "synthetic-fixture-only",
@@ -27,9 +27,9 @@ def fixture(model_id="dsv41"):
             }
         },
         "matrix": {
-            "tp": 8,
-            "ep": 8,
-            "dp": 8,
+            "tp": gpu_count,
+            "ep": gpu_count,
+            "dp": gpu_count,
             "concurrencies": [1, 2, 4, 8, 16, 32, 64],
             "arms": ["megamoe-w4a4", "megamoe-w4a16", "trtllm-w4a4"],
         },
@@ -50,9 +50,9 @@ def fixture(model_id="dsv41"):
                 "model_id": model_id,
                 "arm_id": arm,
                 "concurrency": c,
-                "tp": 8,
-                "ep": 8,
-                "dp": 8,
+                "tp": gpu_count,
+                "ep": gpu_count,
+                "dp": gpu_count,
                 "requested": 10 * c,
                 "completed": 10 * c,
                 "failed": 0,
@@ -89,12 +89,39 @@ def fixture(model_id="dsv41"):
 
 class ResultsTest(unittest.TestCase):
     def test_derived_metrics_use_whole_interval_and_native_totals(self):
-        row = results.validate_case(fixture()["rows"][0], "dsv41")
-        self.assertEqual(row["output_tok_s"], 400.0)
-        self.assertEqual(row["output_tok_s_gpu"], 50.0)
-        self.assertEqual(row["interactivity_tok_s_user"], 500.0)
-        self.assertEqual(row["acceptance_length"], 4.0)
-        self.assertEqual(row["acceptance_rate"], 0.6)
+        for gpus, expected_per_gpu in ((4, 100.0), (8, 50.0)):
+            with self.subTest(gpus=gpus):
+                row = results.validate_case(fixture(gpu_count=gpus)["rows"][0], "dsv41")
+                self.assertEqual(row["output_tok_s"], 400.0)
+                self.assertEqual(row["output_tok_s_gpu"], expected_per_gpu)
+                self.assertEqual(row["interactivity_tok_s_user"], 500.0)
+                self.assertEqual(row["acceptance_length"], 4.0)
+                self.assertEqual(row["acceptance_rate"], 0.6)
+
+    def test_rejects_invalid_or_mismatched_topology(self):
+        for changes in (
+            {"tp": 4},
+            {"dp": True},
+            {"tp": 4.0, "ep": 4, "dp": 4},
+            {"tp": 2, "ep": 2, "dp": 2},
+        ):
+            with self.subTest(changes=changes):
+                table = fixture()
+                table["campaign"]["matrix"].update(changes)
+                with self.assertRaisesRegex(ValueError, "TP=EP=attention DP"):
+                    results.validate_table(table)
+                row = fixture()["rows"][0]
+                row.update(changes)
+                with self.assertRaisesRegex(ValueError, "TP=EP=attention DP"):
+                    results.validate_case(row, "dsv41")
+        table = fixture()
+        table["rows"][0].update(tp=4, ep=4, dp=4)
+        with self.assertRaisesRegex(ValueError, "topology differs from campaign"):
+            results.validate_table(table)
+        table = fixture(gpu_count=4)
+        table["rows"][0]["output_tok_s_gpu"] = 50.0
+        with self.assertRaisesRegex(ValueError, "Derived metric disagrees"):
+            results.validate_table(table)
 
     def test_rejects_misleading_or_incomplete_measurements(self):
         corruptions = {
@@ -175,7 +202,7 @@ class ResultsTest(unittest.TestCase):
         self.assertEqual(comparison["acceptance_length_change_pct"], -25.0)
 
     def test_collect_exports_exact_case_data_and_hashes(self):
-        table = fixture()
+        table = fixture(gpu_count=4)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             results.write_json(root / "campaign.json", table["campaign"])
@@ -189,32 +216,50 @@ class ResultsTest(unittest.TestCase):
                 case.parent.mkdir(parents=True)
                 results.write_json(case, row)
             collected = results.collect(root, "dsv41")
-            self.assertEqual(collected["rows"][0]["output_tok_s_gpu"], 50.0)
+            self.assertEqual(collected["rows"][0]["output_tok_s_gpu"], 100.0)
             self.assertEqual(len(collected["rows"][0]["case_sha256"]), 64)
             results.export(collected, root / "compact")
             reloaded = json.loads((root / "compact" / "metrics.json").read_text())
             self.assertEqual(reloaded["rows"][0]["spec_verify_ct"], 10000)
+            self.assertEqual(reloaded["campaign"]["matrix"]["tp"], 4)
+            self.assertEqual(reloaded["rows"][0]["output_tok_s_gpu"], 100.0)
+            self.assertTrue(
+                (root / "compact" / "RESULTS.md")
+                .read_text()
+                .startswith("# DeepSeek-V4.1 Flash: DSpark, EP4,")
+            )
             with (root / "compact" / "comparisons.csv").open() as stream:
                 comparisons = list(csv.DictReader(stream))
             self.assertEqual(len(comparisons), 21)
             self.assertEqual(comparisons[0]["throughput_change_pct"], "0.0")
 
     def test_render_preserves_all_points_and_avoids_label_overlap(self):
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory) / "fixture-only"
-            report = render.render(fixture(), output)
-            points = json.loads((output / "points.json").read_text())
-            self.assertEqual(len(points), 21)
-            self.assertEqual(points[0]["x"], 500.0)
-            self.assertEqual(points[0]["y"], 50.0)
-            self.assertEqual(points[0]["acceptance_length"], 4.0)
-            self.assertEqual(report["text_overlap_count"], 0)
-            self.assertEqual(len(report["labels"]), 21)
-            self.assertTrue((output / "pareto.png").read_bytes().startswith(b"\x89PNG"))
-            self.assertTrue((output / "pareto.svg").read_text().startswith("<?xml"))
-            self.assertTrue(
-                (output / "acceptance-length.png").read_bytes().startswith(b"\x89PNG")
-            )
+        for gpus, expected_per_gpu in ((4, 100.0), (8, 50.0)):
+            with self.subTest(gpus=gpus), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "fixture-only"
+                report = render.render(fixture(gpu_count=gpus), output)
+                points = json.loads((output / "points.json").read_text())
+                self.assertEqual(len(points), 21)
+                self.assertEqual(points[0]["x"], 500.0)
+                self.assertEqual(points[0]["y"], expected_per_gpu)
+                self.assertEqual(points[0]["acceptance_length"], 4.0)
+                self.assertEqual(report["text_overlap_count"], 0)
+                self.assertEqual(len(report["labels"]), 21)
+                self.assertTrue(
+                    (output / "pareto.png").read_bytes().startswith(b"\x89PNG")
+                )
+                svg = (output / "pareto.svg").read_text()
+                self.assertTrue(svg.startswith("<?xml"))
+                self.assertIn(f"B300 EP{gpus} | Concurrency 1-64", svg)
+                self.assertIn(f"TP = EP = attention DP = {gpus}", svg)
+                self.assertIn(
+                    f"B300 EP{gpus}", (output / "acceptance-length.svg").read_text()
+                )
+                self.assertTrue(
+                    (output / "acceptance-length.png")
+                    .read_bytes()
+                    .startswith(b"\x89PNG")
+                )
 
 
 if __name__ == "__main__":

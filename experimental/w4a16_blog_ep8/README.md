@@ -1,17 +1,18 @@
-# W4A16 blog: fresh EP8 serving comparison
+# W4A16 blog: fresh EP4/EP8 serving comparison
 
-This recipe measures three target MoE paths on eight B300 GPUs: MegaMoE W4A4,
-MegaMoE W4A16, and TRTLLM NVFP4 W4A4. It runs DeepSeek-V4.1 Flash with DSpark
+This recipe measures three target MoE paths on four or eight B300 GPUs: MegaMoE W4A4,
+MegaMoE W4A16, and TRTLLM NVFP4 W4A4. The default eight-GPU sweep runs DeepSeek-V4.1 Flash with DSpark
 first, followed by GLM-5.2 with EAGLE/MTP. Each model has 21 points at concurrency
 1, 2, 4, 8, 16, 32, and 64. These are fresh measurements; older InferenceX results
 are not inputs to the plots.
 
-[Fresh measured results and plots](results/20261010/README.md) are complete for
+[Fresh EP8 results and plots](results/20261010/README.md) are complete for
 both models: all 42 points, 7,620 measured requests, and 1,524 excluded warmups
 succeeded with zero request failures and complete native-counter coverage.
 The [combined report](results/20261010/REPORT.md) contains both models' plots and
 exact counters. The measured recipe commit is `9d9e053d072568ecba7ad2543f3ded240d3d76f4`;
-later publication commits do not change that measured recipe.
+later publication commits do not change that measured recipe. The four-GPU V4.1
+extension uses a separate run/config and retains these EP8 results unchanged.
 
 ## Source and environment pins
 
@@ -61,15 +62,15 @@ The verified image environment uses `/opt/sglang/bin/python3`. On an idle alloca
 
 | Setting | Both models |
 | --- | --- |
-| Topology | TP8, EP8, attention-DP8; one model replica |
+| Topology | TP=EP=attention-DP=N, where N is 4 or 8 selected GPUs; one replica |
 | Input/output lengths | Nominal 1,024 / 8,192, uniformly sampled at ratio 0.8 |
 | Random seed | 0 |
 | Warmup/measured requests | 2C / 10C; all must succeed |
 | Sampling | Temperature 0, `ignore_eos=true`, unlimited offered request rate |
 | Stream interval | 30 |
 | Memory fraction | 0.80 |
-| Prefill limits | Global chunk 32,768; resolved per-attention-rank chunk 4,096; max prefill tokens 32,768 |
-| Running-request capacity | `max(C, 8)` global, including C1/C2/C4 |
+| Prefill limits | Global chunk/max prefill 32,768; per-attention-rank chunk 8,192 at DP4 or 4,096 at DP8 |
+| Running-request capacity | `max(C, N)` global |
 | Graphs | Decode graph max batch C; prefill graphs disabled |
 | Radix cache | Disabled |
 | Weight loading | Multithreaded |
@@ -114,7 +115,8 @@ to the three arms and are outside the model/config comparison; direct difference
 against older campaign numbers should not be attributed solely to kernel changes.
 
 - **Throughput per GPU:** all measured completion tokens divided by the entire
-  measured interval, including scheduling and drain, divided by eight GPUs.
+  measured interval, including scheduling and drain, divided by the selected GPU
+  count (four or eight), recorded in each case and campaign.
 - **Interactivity:** `1000 / median TPOT (ms)`, where each request's TPOT is the
   first-to-last completion-chunk span divided by its completion count minus one.
 - **Acceptance length:** sum of measured completion tokens / sum of native
@@ -132,6 +134,28 @@ The client validates native ratios and request output lengths, and the exporter
 requires complete counter coverage, zero warmup/measured failures, and identical
 ordered prompt/length digests across arms at each concurrency. Acceptance length
 is a diagnostic of speculative execution, not an independent quality evaluation.
+
+## Four-GPU V4.1 extension
+
+To run only V4.1 on four GPUs, set the following fields in a fresh campaign config:
+
+```json
+{
+  "gpu_ids": [0, 1, 2, 3],
+  "model_ids": ["dsv41"]
+}
+```
+
+Use a new `run_id`, `run_root`, `tmp_root`, and the committed extension recipe
+head. The selected GPU count drives server TP/EP/attention-DP, client throughput
+normalization, runtime validation, and plot labels. Global prefill limits remain
+32,768, so the per-rank chunk is 8,192 at DP4. The three arms, concurrency values,
+request counts, DSpark settings, prompt generation, and model/source pins are
+unchanged. This adds 21 points, 3,810 measured requests, and 762 excluded warmups.
+Full-node idle checks still isolate the measurement; only the selected four GPUs
+are visible to the server and client. Preserve the eight-GPU output directory and
+render the EP4 table separately as the third model/topology plot set. Omitting
+both selection fields retains the original eight-GPU, two-model behavior.
 
 ## Run and render
 

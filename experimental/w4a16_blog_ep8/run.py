@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Serial EP8 benchmark runner. Installation and cluster allocation are external."""
+"""Serial EP4/EP8 benchmark runner. Installation and allocation are external."""
 
 import argparse
 from datetime import datetime, timezone
@@ -26,6 +26,10 @@ MODELS = ("dsv41", "glm52")
 
 def now():
     return datetime.now(timezone.utc).isoformat()
+
+
+def selected_gpus(cfg):
+    return cfg.get("gpu_ids", list(range(8)))
 
 
 def matrix(models=MODELS):
@@ -55,6 +59,7 @@ def target_backends(model_id, arm):
 
 def server_command(cfg, case):
     model, arm, c = case["model_id"], case["arm_id"], case["concurrency"]
+    size = len(selected_gpus(cfg))
     checkpoint = cfg["models"][model]
     runner, a2a = target_backends(model, arm)
     args = [
@@ -73,11 +78,11 @@ def server_command(cfg, case):
         "--dtype",
         "bfloat16",
         "--tensor-parallel-size",
-        "8",
+        str(size),
         "--expert-parallel-size",
-        "8",
+        str(size),
         "--attn-dp-size",
-        "8",
+        str(size),
         "--moe-runner-backend",
         runner,
         "--moe-a2a-backend",
@@ -91,7 +96,7 @@ def server_command(cfg, case):
         "--max-prefill-tokens",
         "32768",
         "--max-running-requests",
-        str(max(c, 8)),
+        str(max(c, size)),
         "--cuda-graph-max-bs-decode",
         str(c),
         "--cuda-graph-backend-prefill",
@@ -164,7 +169,7 @@ def environment(cfg, case):
         PYTHONUNBUFFERED="1",
         PYTHONDONTWRITEBYTECODE="1",
         PYTHONPATH=str(REPO),
-        CUDA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7",
+        CUDA_VISIBLE_DEVICES=",".join(map(str, selected_gpus(cfg))),
         TMPDIR=cfg["tmp_root"],
         HF_HUB_OFFLINE="1",
         TRANSFORMERS_OFFLINE="1",
@@ -196,17 +201,18 @@ def environment(cfg, case):
 
 def validate_server_info(info, cfg, case):
     model, arm, c = case["model_id"], case["arm_id"], case["concurrency"]
+    size = len(selected_gpus(cfg))
     runner, a2a = target_backends(model, arm)
     expected = {
         "model_path": cfg["models"][model]["checkpoint_path"],
-        "tp_size": 8,
-        "ep_size": 8,
-        "attn_dp_size": 8,
+        "tp_size": size,
+        "ep_size": size,
+        "attn_dp_size": size,
         "dp_size": 1,
         "dtype": "bfloat16",
         "mem_fraction_static": 0.8,
-        "max_running_requests": max(c, 8),
-        "chunked_prefill_size": 4096,
+        "max_running_requests": max(c, size),
+        "chunked_prefill_size": 32768 // size,
         "max_prefill_tokens": 32768,
         "disable_radix_cache": True,
         "stream_interval": 30,
@@ -332,20 +338,25 @@ class OwnedProcess:
         }
 
 
-def gpu_state():
+def gpu_state(cfg):
     def query(args):
         return subprocess.check_output(
             ["nvidia-smi", *args], text=True, timeout=20
         ).strip()
 
+    inventory = query(
+        [
+            "--query-gpu=index,uuid,name,driver_version,memory.total",
+            "--format=csv,noheader,nounits",
+        ]
+    )
+    devices = {int(line.split(",", 1)[0]): line for line in inventory.splitlines()}
+    if any(index not in devices for index in selected_gpus(cfg)):
+        raise RuntimeError("Selected GPU index is unavailable: " + repr(devices))
     return {
         "at": now(),
-        "gpus": query(
-            [
-                "--query-gpu=index,uuid,name,driver_version,memory.total",
-                "--format=csv,noheader,nounits",
-            ]
-        ),
+        "gpus": "\n".join(devices[index] for index in selected_gpus(cfg)),
+        # Keep the whole-node idle guard, including GPUs outside the selected set.
         "applications": query(
             [
                 "--query-compute-apps=pid,gpu_uuid,used_memory",
@@ -355,11 +366,14 @@ def gpu_state():
     }
 
 
-def require_idle():
-    state = gpu_state()
-    if len(state["gpus"].splitlines()) != 8 or state["applications"]:
+def require_idle(cfg):
+    state = gpu_state(cfg)
+    if (
+        len(state["gpus"].splitlines()) != len(selected_gpus(cfg))
+        or state["applications"]
+    ):
         raise RuntimeError(
-            "Expected eight GPUs with no running GPU applications: " + repr(state)
+            "Expected selected GPUs with no running GPU applications: " + repr(state)
         )
     return state
 
@@ -395,7 +409,7 @@ def run_case(cfg, case, plan):
             "at": now(),
             "command": command,
             "environment": env,
-            "gpu_before": require_idle(),
+            "gpu_before": require_idle(cfg),
         },
     )
     server = client = None
@@ -437,11 +451,15 @@ def run_case(cfg, case, plan):
             str(directory / "measurement.json"),
             "--timeout",
             str(cfg["benchmark_timeout_seconds"]),
+            "--gpu-count",
+            str(len(selected_gpus(cfg))),
         ]
         client = OwnedProcess(args, env, directory / "client.log")
         if client.wait(cfg["benchmark_timeout_seconds"], peer=server) != 0:
             raise RuntimeError("Benchmark client failed")
         row = json.loads((directory / "measurement.json").read_text())
+        if any(row[key] != len(selected_gpus(cfg)) for key in ("tp", "ep", "dp")):
+            raise ValueError("Measured topology differs from selected GPUs")
         row = validate_case({**row, **case}, case["model_id"])
         status["status"] = "passed"
     except BaseException as exc:
@@ -465,7 +483,7 @@ def run_case(cfg, case, plan):
         if cleanup_errors:
             raise RuntimeError("; ".join(cleanup_errors))
     # Publish a case only after the measured client succeeded and server cleanup completed.
-    write_json(directory / "gpu_after.json", require_idle())
+    write_json(directory / "gpu_after.json", require_idle(cfg))
     write_json(directory / "case.json", row)
     print(
         json.dumps(
@@ -482,6 +500,24 @@ def run_case(cfg, case, plan):
 
 def read_config(path):
     cfg = json.loads(path.read_text())
+    cfg.setdefault("gpu_ids", list(range(8)))
+    cfg.setdefault("model_ids", list(MODELS))
+    ids = cfg["gpu_ids"]
+    if (
+        not isinstance(ids, list)
+        or len(ids) not in (4, 8)
+        or any(type(index) is not int or not 0 <= index < 8 for index in ids)
+        or len(set(ids)) != len(ids)
+    ):
+        raise ValueError("Select four or eight distinct GPU indices from 0 through 7")
+    models = cfg["model_ids"]
+    if (
+        not isinstance(models, list)
+        or not models
+        or any(model not in MODELS for model in models)
+        or len(set(models)) != len(models)
+    ):
+        raise ValueError("Select a nonempty list of distinct supported model IDs")
     for field in ("sglang_commit", "flashinfer_commit", "benchmark_commit"):
         if not re.fullmatch(r"[0-9a-f]{40}", cfg[field]):
             raise ValueError("Missing exact source pin: " + field)
@@ -509,7 +545,7 @@ def read_config(path):
     for key in ("ready_timeout_seconds", "benchmark_timeout_seconds"):
         if type(cfg[key]) is not int or cfg[key] <= 0:
             raise ValueError("Expected a positive timeout: " + key)
-    for model in MODELS:
+    for model in models:
         checkpoint = cfg["models"][model]
         if not Path(checkpoint["checkpoint_path"]).is_absolute() or not re.fullmatch(
             r"[0-9a-f]{40}", checkpoint["checkpoint_revision"]
@@ -539,7 +575,7 @@ def verify_installation(cfg):
         subprocess.check_output(
             [cfg["python"], "-B", "-c", code],
             cwd=REPO,
-            env=environment(cfg, matrix()[0]),
+            env=environment(cfg, matrix(cfg.get("model_ids", MODELS))[0]),
             text=True,
             timeout=30,
         )
@@ -604,7 +640,7 @@ def main():
     cfg = read_config(args.config)
     if args.plan == args.run:
         parser.error("Select exactly one of --plan or --run")
-    cases = matrix()
+    cases = matrix(cfg["model_ids"])
     if args.plan:
         print(
             json.dumps(
@@ -627,9 +663,9 @@ def main():
         "installation": installed,
         "order": cases,
         "matrix": {
-            "tp": 8,
-            "ep": 8,
-            "dp": 8,
+            "tp": len(selected_gpus(cfg)),
+            "ep": len(selected_gpus(cfg)),
+            "dp": len(selected_gpus(cfg)),
             "concurrencies": list(CONCURRENCIES),
             "arms": list(ARMS),
         },
@@ -642,7 +678,7 @@ def main():
             "measured_multiplier": 10,
             "stream_interval": 30,
         },
-        "gpu_before": require_idle(),
+        "gpu_before": require_idle(cfg),
     }
     write_json(root / "campaign.json", manifest)
     try:
@@ -676,7 +712,7 @@ def main():
                 "at": now(),
                 "points": len(cases),
                 "status": "passed",
-                "gpu_after": require_idle(),
+                "gpu_after": require_idle(cfg),
             },
         )
     except BaseException as exc:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate and export compact measured results for the two EP8 blog sweeps."""
+"""Validate and export compact measured results for the EP4/EP8 blog sweeps."""
 
 import argparse
 import csv
@@ -63,6 +63,20 @@ def write_json(path: Path, value) -> None:
     path.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
 
 
+def gpu_count(topology: dict) -> int:
+    count = topology["tp"]
+    require(
+        type(count) is int
+        and count in (4, 8)
+        and all(
+            type(topology[key]) is int and topology[key] == count
+            for key in ("ep", "dp")
+        ),
+        "Expected TP=EP=attention DP of 4 or 8",
+    )
+    return count
+
+
 def validate_campaign(campaign: dict, model_id: str) -> None:
     require(campaign["schema_version"] == 1, "Unsupported campaign schema")
     for key in ("sglang_commit", "flashinfer_commit", "benchmark_commit"):
@@ -78,9 +92,7 @@ def validate_campaign(campaign: dict, model_id: str) -> None:
     require(bool(checkpoint["checkpoint_revision"]), "Missing checkpoint revision")
     require(bool(checkpoint["prompt_format"]), "Missing prompt-format identity")
     matrix = campaign["matrix"]
-    require(
-        all(matrix[key] == 8 for key in ("tp", "ep", "dp")), "Expected EP8 topology"
-    )
+    gpu_count(matrix)
     require(
         tuple(matrix["concurrencies"]) == CONCURRENCIES, "Unexpected concurrency matrix"
     )
@@ -109,10 +121,7 @@ def validate_case(row: dict, model_id: str) -> dict:
     require(row["arm_id"] in ARMS, "Unexpected backend")
     c = row["concurrency"]
     require(type(c) is int and c in CONCURRENCIES, "Unexpected concurrency")
-    require(
-        all(type(row[key]) is int and row[key] == 8 for key in ("tp", "ep", "dp")),
-        "Expected TP=EP=attention DP 8",
-    )
+    gpus = gpu_count(row)
     for key in COUNTERS:
         require(
             type(row[key]) is int and row[key] >= 0, f"Invalid integer counter: {key}"
@@ -165,7 +174,7 @@ def validate_case(row: dict, model_id: str) -> dict:
     )
     derived = {
         "output_tok_s": row["output_tokens"] / duration,
-        "output_tok_s_gpu": row["output_tokens"] / duration / 8,
+        "output_tok_s_gpu": row["output_tokens"] / duration / gpus,
         "interactivity_tok_s_user": 1000 / row["median_tpot_ms"],
         "acceptance_length": row["spec_completion_tokens"] / row["spec_verify_ct"],
         "acceptance_rate": row["spec_correct_drafts"] / row["spec_proposed_drafts"],
@@ -195,6 +204,10 @@ def validate_table(table: dict) -> list[dict]:
         "Expected all 21 distinct model/backend/concurrency points",
     )
     for row in rows:
+        require(
+            row["tp"] == campaign["matrix"]["tp"],
+            "Case topology differs from campaign",
+        )
         require(
             row["prompt_format"] == campaign["models"][model_id]["prompt_format"],
             "Prompt format differs from campaign",
@@ -307,8 +320,9 @@ def export(table: dict, output: Path) -> None:
     write_csv(output / "metrics.csv", rows)
     write_csv(output / "comparisons.csv", comparisons(rows))
     model, algorithm, _ = MODELS[table["model_id"]]
+    gpus = gpu_count(table["campaign"]["matrix"])
     note = [
-        f"# {model}: {algorithm}, EP8, concurrency 1-64",
+        f"# {model}: {algorithm}, EP{gpus}, concurrency 1-64",
         "",
         (
             f"{len(rows)} measured points; {sum(r['completed'] for r in rows):,} successful measured "

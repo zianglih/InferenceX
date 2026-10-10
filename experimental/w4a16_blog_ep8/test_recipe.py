@@ -2,8 +2,11 @@
 
 import asyncio
 import copy
+import io
 import json
 import os
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest import IsolatedAsyncioTestCase, TestCase, mock
 
 import client
@@ -12,13 +15,27 @@ import run
 
 def fixture_config():
     return {
+        "run_id": "fixture",
         "python": "/opt/venv/bin/python",
         "run_root": "/data/test-run",
         "tmp_root": "/tmp/infx-blog",
         "sglang_root": "/data/sources/sglang",
+        "flashinfer_root": "/data/sources/flashinfer",
+        "installation_manifest": "/data/install/verified.json",
+        "sglang_commit": "a" * 40,
+        "flashinfer_commit": "b" * 40,
+        "benchmark_commit": "c" * 40,
+        "image": "fixture:dev@sha256:" + "d" * 64,
         "port": 30000,
+        "ready_timeout_seconds": 60,
+        "benchmark_timeout_seconds": 60,
         "models": {
-            model: {"checkpoint_path": "/data/models/" + model, "served_model": model}
+            model: {
+                "checkpoint_path": "/data/models/" + model,
+                "checkpoint_revision": "e" * 40,
+                "served_model": model,
+                "prompt_format": client.PROMPT_FORMATS[model],
+            }
             for model in run.MODELS
         },
     }
@@ -175,6 +192,13 @@ class AccountingTests(TestCase):
         self.assertEqual(row["output_tok_s_gpu"], 0.75)
         self.assertEqual(row["spec_covered"], 10)
         self.assertNotEqual(row["acceptance_length"], (2.5 + 1.75) / 2)
+        four = client.summarize(plan, rows, 10, 2, gpu_count=4)
+        self.assertEqual((four["tp"], four["ep"], four["dp"]), (4, 4, 4))
+        self.assertEqual(four["output_tok_s_gpu"], 1.5)
+        self.assertEqual(four["request_plan_sha256"], row["request_plan_sha256"])
+        self.assertEqual(four["acceptance_length"], 2)
+        with self.assertRaisesRegex(ValueError, "four or eight"):
+            client.summarize(plan, rows, 10, 2, gpu_count=0)
 
 
 class RunnerTests(TestCase):
@@ -186,22 +210,146 @@ class RunnerTests(TestCase):
             [(arm, 1) for arm in run.ARMS],
         )
         self.assertEqual({c["model_id"] for c in cases[:21]}, {"dsv41"})
-        for model, expected in (
-            ("dsv41", "flashinfer_mxfp4"),
-            ("glm52", "flashinfer_trtllm"),
-        ):
-            args = run.server_command(
-                cfg, {"model_id": model, "arm_id": "megamoe-w4a16", "concurrency": 1}
-            )
-            self.assertEqual(args[args.index("--max-running-requests") + 1], "8")
-            self.assertEqual(args[args.index("--attn-dp-size") + 1], "8")
+        for selected, size in ((None, "8"), ([1, 3, 5, 7], "4")):
+            if selected is not None:
+                cfg["gpu_ids"] = selected
+            for model, expected in (
+                ("dsv41", "flashinfer_mxfp4"),
+                ("glm52", "flashinfer_trtllm"),
+            ):
+                for c, capacity in ((1, size), (64, "64")):
+                    args = run.server_command(
+                        cfg,
+                        {
+                            "model_id": model,
+                            "arm_id": "megamoe-w4a16",
+                            "concurrency": c,
+                        },
+                    )
+                    self.assertEqual(
+                        args[args.index("--max-running-requests") + 1], capacity
+                    )
+                    for flag in (
+                        "--attn-dp-size",
+                        "--tensor-parallel-size",
+                        "--expert-parallel-size",
+                    ):
+                        self.assertEqual(args[args.index(flag) + 1], size)
+                    self.assertEqual(
+                        args[args.index("--chunked-prefill-size") + 1], "32768"
+                    )
+                    self.assertEqual(
+                        args[args.index("--speculative-moe-runner-backend") + 1],
+                        expected,
+                    )
+                    self.assertEqual("--enable-dp-lm-head" in args, model == "dsv41")
+
+    def test_model_selection_and_invalid_topology(self):
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "config.json"
+            cfg = fixture_config()
+            path.write_text(json.dumps(cfg))
+            legacy = run.read_config(path)
+            self.assertEqual(legacy["gpu_ids"], [0, 1, 2, 3, 4, 5, 6, 7])
+            self.assertEqual(legacy["model_ids"], ["dsv41", "glm52"])
+            cfg.update(gpu_ids=[0, 1, 2, 3], model_ids=["dsv41"])
+            del cfg["models"]["glm52"]
+            path.write_text(json.dumps(cfg))
+            output = io.StringIO()
+            with (
+                mock.patch("sys.argv", ["run.py", "--config", str(path), "--plan"]),
+                mock.patch("sys.stdout", output),
+                mock.patch.object(run.signal, "signal"),
+            ):
+                run.main()
+            cases = json.loads(output.getvalue())
+            self.assertEqual(len(cases), 21)
+            self.assertEqual({case["model_id"] for case in cases}, {"dsv41"})
+            self.assertEqual([case["concurrency"] for case in cases[:3]], [1, 1, 1])
             self.assertEqual(
-                args[args.index("--speculative-moe-runner-backend") + 1], expected
+                [case["concurrency"] for case in cases[3:9]], [2, 4, 8, 16, 32, 64]
             )
-            self.assertEqual("--enable-dp-lm-head" in args, model == "dsv41")
+            for bad in (
+                {"gpu_ids": [0, 1, 2, 2]},
+                {"gpu_ids": [0, 1, 2]},
+                {"gpu_ids": [0, 1, 2, 8]},
+                {"gpu_ids": [False, 1, 2, 3]},
+                {"model_ids": []},
+                {"model_ids": ["dsv41", "dsv41"]},
+                {"model_ids": ["unknown"]},
+            ):
+                with self.subTest(bad=bad), self.assertRaises(ValueError):
+                    path.write_text(json.dumps({**cfg, **bad}))
+                    run.read_config(path)
+
+    def test_four_gpu_effective_server_settings(self):
+        cfg = fixture_config()
+        cfg["gpu_ids"] = [0, 1, 2, 3]
+        case = {"model_id": "dsv41", "arm_id": "megamoe-w4a4", "concurrency": 1}
+        info = {
+            "model_path": "/data/models/dsv41",
+            "tp_size": 4,
+            "ep_size": 4,
+            "attn_dp_size": 4,
+            "dp_size": 1,
+            "dtype": "bfloat16",
+            "mem_fraction_static": 0.8,
+            "max_running_requests": 4,
+            "chunked_prefill_size": 8192,
+            "max_prefill_tokens": 32768,
+            "disable_radix_cache": True,
+            "stream_interval": 30,
+            "moe_runner_backend": "flashinfer_megamoe",
+            "moe_a2a_backend": "flashinfer_megamoe",
+            "speculative_moe_a2a_backend": "none",
+            "speculative_num_draft_tokens": 6,
+            "speculative_algorithm": "DSPARK",
+            "speculative_moe_runner_backend": "flashinfer_mxfp4",
+            "enable_dp_lm_head": True,
+            "speculative_dspark_block_size": 5,
+            "json_model_override_args": '{"vision_n_layers":0}',
+            "cuda_graph_config": {"prefill": {"backend": "disabled"}},
+        }
+        checked = run.validate_server_info(info, cfg, case)
+        self.assertEqual(checked["attn_dp_size"], 4)
+        self.assertEqual(checked["chunked_prefill_size"], 8192)
+        with self.assertRaisesRegex(ValueError, "chunked_prefill_size"):
+            run.validate_server_info({**info, "chunked_prefill_size": 4096}, cfg, case)
+
+    def test_selected_gpu_inventory_and_whole_node_idle_guard(self):
+        cfg = fixture_config()
+        cfg["gpu_ids"] = [1, 3, 5, 7]
+        inventory = "\n".join(f"{i}, GPU-{i}, B300, driver, 275040" for i in range(8))
+        with mock.patch.object(
+            run.subprocess, "check_output", side_effect=[inventory, ""]
+        ):
+            state = run.require_idle(cfg)
+        self.assertEqual(
+            [line.split(",")[0] for line in state["gpus"].splitlines()],
+            ["1", "3", "5", "7"],
+        )
+        with (
+            mock.patch.object(
+                run.subprocess,
+                "check_output",
+                side_effect=[inventory, "123, GPU-0, 10"],
+            ),
+            self.assertRaisesRegex(RuntimeError, "running GPU applications"),
+        ):
+            run.require_idle(cfg)
+        with (
+            mock.patch.object(
+                run.subprocess,
+                "check_output",
+                return_value="0, GPU-0, B300, driver, 275040",
+            ),
+            self.assertRaisesRegex(RuntimeError, "unavailable"),
+        ):
+            run.require_idle(cfg)
 
     def test_environment_excludes_inherited_tuning_and_source_shadowing(self):
         cfg = fixture_config()
+        cfg["gpu_ids"] = [1, 3, 5, 7]
         with mock.patch.dict(
             os.environ,
             {
@@ -219,6 +367,7 @@ class RunnerTests(TestCase):
                 self.assertNotIn("FLASHINFER_CUBIN_DIR", env)
                 self.assertNotIn(cfg["sglang_root"], env["PYTHONPATH"])
                 self.assertEqual(env["SGLANG_RAGGED_VERIFY_MODE"], "static")
+                self.assertEqual(env["CUDA_VISIBLE_DEVICES"], "1,3,5,7")
 
 
 if __name__ == "__main__":
