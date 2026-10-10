@@ -6,9 +6,12 @@ first, followed by GLM-5.2 with EAGLE/MTP. Each model has 21 points at concurren
 1, 2, 4, 8, 16, 32, and 64. These are fresh measurements; older InferenceX results
 are not inputs to the plots.
 
-[Fresh measured results and plots](results/20261010/README.md): V4.1 is complete;
-GLM-5.2 is running. The measured recipe commit is `9d9e053d072568ecba7ad2543f3ded240d3d76f4`;
-later result-only commits do not change the running recipe.
+[Fresh measured results and plots](results/20261010/README.md) are complete for
+both models: all 42 points, 7,620 measured requests, and 1,524 excluded warmups
+succeeded with zero request failures and complete native-counter coverage.
+The [combined report](results/20261010/REPORT.md) contains both models' plots and
+exact counters. The measured recipe commit is `9d9e053d072568ecba7ad2543f3ded240d3d76f4`;
+later publication commits do not change that measured recipe.
 
 ## Source and environment pins
 
@@ -173,8 +176,9 @@ ruff check experimental/w4a16_blog_ep8
 
 CPU checks exercise final-stream accounting, warmup exclusion and bounded
 concurrency, ratio aggregation, command/environment isolation, result validation,
-and Pareto rendering. GPU runtime validation and the actual complete 42-point
-campaign are separate acceptance steps; generated fixture plots are not results.
+and Pareto rendering. The completed 42-point GPU campaign is documented separately
+in the [combined report](results/20261010/REPORT.md); generated fixture plots are
+not measured results.
 
 This standalone manual recipe is recorded under changelog key
 `experimental-w4a16-blog-b300-sglang-ep8`. It is deliberately not registered in the
