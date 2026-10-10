@@ -1,0 +1,170 @@
+[
+  {
+    "arm_id": "megamoe-w4a4",
+    "concurrency": 1,
+    "x": 582.8982988228112,
+    "y": 66.35972107177551,
+    "acceptance_length": 5.200619238617972,
+    "acceptance_rate": 0.8404475406375344
+  },
+  {
+    "arm_id": "megamoe-w4a4",
+    "concurrency": 2,
+    "x": 551.439940391153,
+    "y": 117.16803359002682,
+    "acceptance_length": 4.585771694085143,
+    "acceptance_rate": 0.7173615471555946
+  },
+  {
+    "arm_id": "megamoe-w4a4",
+    "concurrency": 4,
+    "x": 516.8982359932778,
+    "y": 220.2540694411868,
+    "acceptance_length": 4.801196654656044,
+    "acceptance_rate": 0.7604145317510165
+  },
+  {
+    "arm_id": "megamoe-w4a4",
+    "concurrency": 8,
+    "x": 485.71926377107394,
+    "y": 387.14302010907744,
+    "acceptance_length": 4.849723174268389,
+    "acceptance_rate": 0.7701176509359347
+  },
+  {
+    "arm_id": "megamoe-w4a4",
+    "concurrency": 16,
+    "x": 419.22459459591585,
+    "y": 644.0167703637783,
+    "acceptance_length": 4.714691568171466,
+    "acceptance_rate": 0.743081361431437
+  },
+  {
+    "arm_id": "megamoe-w4a4",
+    "concurrency": 32,
+    "x": 335.11632898798024,
+    "y": 990.0246576324384,
+    "acceptance_length": 4.51786390655305,
+    "acceptance_rate": 0.7037334241866503
+  },
+  {
+    "arm_id": "megamoe-w4a4",
+    "concurrency": 64,
+    "x": 263.92125180861376,
+    "y": 1560.6525497745845,
+    "acceptance_length": 4.524615648221801,
+    "acceptance_rate": 0.7050923679094384
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "concurrency": 1,
+    "x": 571.3843647840285,
+    "y": 61.61733252762633,
+    "acceptance_length": 4.6784832563144905,
+    "acceptance_rate": 0.7358865607393809
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "concurrency": 2,
+    "x": 544.7125483003196,
+    "y": 118.54996138887664,
+    "acceptance_length": 4.700888259526262,
+    "acceptance_rate": 0.7403063851699279
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "concurrency": 4,
+    "x": 476.4927628416425,
+    "y": 211.21123342346124,
+    "acceptance_length": 4.4259202827888835,
+    "acceptance_rate": 0.6853303266699171
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "concurrency": 8,
+    "x": 460.7966641574014,
+    "y": 415.0953350952995,
+    "acceptance_length": 5.0351133807214286,
+    "acceptance_rate": 0.8072142814373818
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "concurrency": 16,
+    "x": 387.9953886859506,
+    "y": 590.2815303766778,
+    "acceptance_length": 4.686527386106367,
+    "acceptance_rate": 0.737466735512571
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "concurrency": 32,
+    "x": 310.4602418574396,
+    "y": 1041.8084837426456,
+    "acceptance_length": 4.699478305631725,
+    "acceptance_rate": 0.740079788550442
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "concurrency": 64,
+    "x": 249.88375278747816,
+    "y": 1528.9663075945423,
+    "acceptance_length": 4.656981166279798,
+    "acceptance_rate": 0.7315552499142847
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "concurrency": 1,
+    "x": 464.53296424639194,
+    "y": 51.98512186460548,
+    "acceptance_length": 4.6362210651778435,
+    "acceptance_rate": 0.7273822219434164
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "concurrency": 2,
+    "x": 479.39667810357145,
+    "y": 98.36948080066684,
+    "acceptance_length": 4.580307306365632,
+    "acceptance_rate": 0.7162119786767012
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "concurrency": 4,
+    "x": 455.7977463769363,
+    "y": 196.6212050007222,
+    "acceptance_length": 4.580940215420037,
+    "acceptance_rate": 0.7163615145637192
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "concurrency": 8,
+    "x": 427.68064436012884,
+    "y": 346.4648773315649,
+    "acceptance_length": 4.578361981799798,
+    "acceptance_rate": 0.7158388426538073
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "concurrency": 16,
+    "x": 376.52035374216166,
+    "y": 617.3335474971375,
+    "acceptance_length": 4.709253457324739,
+    "acceptance_rate": 0.7420366785735667
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "concurrency": 32,
+    "x": 303.22074424659604,
+    "y": 975.8183206590434,
+    "acceptance_length": 4.642037020739828,
+    "acceptance_rate": 0.7285552524274693
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "concurrency": 64,
+    "x": 216.7155536789711,
+    "y": 1326.5165552763706,
+    "acceptance_length": 4.591906521646208,
+    "acceptance_rate": 0.7185264413642493
+  }
+]

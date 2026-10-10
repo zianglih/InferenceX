@@ -6,6 +6,10 @@ first, followed by GLM-5.2 with EAGLE/MTP. Each model has 21 points at concurren
 1, 2, 4, 8, 16, 32, and 64. These are fresh measurements; older InferenceX results
 are not inputs to the plots.
 
+[Fresh measured results and plots](results/20261010/README.md): V4.1 is complete;
+GLM-5.2 is running. The measured recipe commit is `9d9e053d072568ecba7ad2543f3ded240d3d76f4`;
+later result-only commits do not change the running recipe.
+
 ## Source and environment pins
 
 | Component | Pin |
