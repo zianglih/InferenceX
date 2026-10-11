@@ -1,4 +1,4 @@
-# October 10 EP8 benchmark: complete results
+# October 10 benchmark: complete EP8 results and V4.1 EP4 extension
 
 Both models completed all 42 points on eight NVIDIA B300 GPUs: MegaMoE W4A4,
 MegaMoE W4A16, and TRTLLM NVFP4 W4A4 at concurrency 1, 2, 4, 8, 16, 32, and 64,
@@ -16,7 +16,27 @@ commands to run and render the study.
 | DeepSeek-V4.1 Flash | DSpark, five proposed draft tokens per verification | 21 | 3,810 / 762 |
 | GLM-5.2 | EAGLE / MTP, three proposed draft tokens per verification | 21 | 3,810 / 762 |
 
-## DeepSeek-V4.1 Flash
+The separate [V4.1 DSpark EP4 report](dsv41-ep4/REPORT.md) adds 21 fresh points on
+four B300 GPUs at the same seven concurrencies. All 3,810 measured requests and
+762 warmups passed, with zero failures and full native-counter coverage. The
+original two EP8 datasets and combined report remain unchanged.
+
+## DeepSeek-V4.1 Flash — EP4 extension
+
+[Pareto PNG](dsv41-ep4/figures/pareto.png) · [Pareto SVG](dsv41-ep4/figures/pareto.svg) ·
+[Acceptance-length PNG](dsv41-ep4/figures/acceptance-length.png) · [Acceptance-length SVG](dsv41-ep4/figures/acceptance-length.svg)
+
+[Metrics JSON](dsv41-ep4/metrics.json) · [Metrics CSV](dsv41-ep4/metrics.csv) ·
+[Signed backend comparisons](dsv41-ep4/comparisons.csv) · [Matched-C EP4/EP8 comparison](dsv41-ep4/ep4-vs-ep8.csv)
+
+TP=EP=attention-DP4; throughput is divided by four GPUs. The measured extension
+recipe is `6b4c2af72f87a9a6d65a841bea8f9cb3107d954f`; software, checkpoint and
+workload pins match EP8. The report includes both per-GPU and whole-server
+throughput comparisons, different-node and per-rank prefill-budget caveats, and
+the excluded earlier GPU0–3 attempt. All final EP4 points come from the complete
+fresh GPU4–7 sweep; its full logs remain in cluster persistent storage.
+
+## DeepSeek-V4.1 Flash — EP8
 
 [Pareto PNG](dsv41/figures/pareto.png) · [Pareto SVG](dsv41/figures/pareto.svg) ·
 [Acceptance-length PNG](dsv41/figures/acceptance-length.png) · [Acceptance-length SVG](dsv41/figures/acceptance-length.svg)
@@ -24,7 +44,7 @@ commands to run and render the study.
 [Metrics JSON](dsv41/metrics.json) · [Metrics CSV](dsv41/metrics.csv) ·
 [All signed backend comparisons](dsv41/comparisons.csv) · [Results summary](dsv41/RESULTS.md)
 
-## GLM-5.2
+## GLM-5.2 — EP8
 
 [Pareto PNG](glm52/figures/pareto.png) · [Pareto SVG](glm52/figures/pareto.svg) ·
 [Acceptance-length PNG](glm52/figures/acceptance-length.png) · [Acceptance-length SVG](glm52/figures/acceptance-length.svg)

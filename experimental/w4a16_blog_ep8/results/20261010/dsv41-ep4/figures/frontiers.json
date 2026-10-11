@@ -1,0 +1,38 @@
+[
+  {
+    "arm_id": "megamoe-w4a4",
+    "concurrencies": [
+      64,
+      32,
+      16,
+      8,
+      4,
+      2,
+      1
+    ]
+  },
+  {
+    "arm_id": "megamoe-w4a16",
+    "concurrencies": [
+      64,
+      32,
+      16,
+      8,
+      4,
+      2,
+      1
+    ]
+  },
+  {
+    "arm_id": "trtllm-w4a4",
+    "concurrencies": [
+      64,
+      32,
+      16,
+      8,
+      4,
+      2,
+      1
+    ]
+  }
+]
