@@ -8405,3 +8405,21 @@
     - "Enable required telemetry on seven GB200 aggregate recipes, preserve failed-job artifacts, and reserve CUDA Graph memory in the five TP8/PP2 recipes."
     - "为七个 GB200 Kimi-K3 聚合配方启用必需实测功耗并保留失败产物；五个 TP8/PP2 配方为 CUDA Graph 预留显存。"
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/3045
+
+- config-keys:
+    - experimental-w4a16-blog-b300-sglang-ep8
+  scenario-type:
+    - fixed-seq-len
+  description:
+    - "Add a standalone manual EP8 benchmark for DeepSeek-V4.1 Flash DSpark and GLM-5.2 EAGLE/MTP, each comparing MegaMoE W4A4, MegaMoE W4A16 and TRTLLM NVFP4 W4A4 at C1/2/4/8/16/32/64 with source-built FlashInfer PR6277 and the SGLang PR39210 child fix."
+    - "Preserve shared prompt plans, measured-only native acceptance counters and compact per-model Pareto/acceptance plots. Full logs and build caches remain on cluster persistent storage. This experimental key is not registered in the CI matrix and does not alter existing AgentX recipes."
+  pr-link: https://github.com/zianglih/InferenceX/pull/5
+
+- config-keys:
+    - experimental-w4a16-blog-b300-sglang-ep4
+  scenario-type:
+    - fixed-seq-len
+  description:
+    - "Extend the standalone W4A16 blog recipe with a V4.1 DSpark TP4/EP4/attention-DP4 sweep at C1/2/4/8/16/32/64 across MegaMoE W4A4, MegaMoE W4A16 and TRTLLM NVFP4 W4A4."
+    - "Use explicit GPU/model selection, four-GPU throughput normalization and separate EP4 plots while preserving the completed EP8 measurements. Reuse the same pinned source-built FlashInfer/SGLang environment. This manual experimental key remains outside the shared CI matrix."
+  pr-link: https://github.com/zianglih/InferenceX/pull/5

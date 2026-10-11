@@ -1,0 +1,32 @@
+{
+  "run_id": "w4a16-blog-ep8-20261010",
+  "run_root": "/data/home/ziangli/inferencex-w4a16-blog-rerun-20261009/runs/ep8-c1-c64",
+  "tmp_root": "/tmp/infx-blog-1010",
+  "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+  "model_ids": ["dsv41", "glm52"],
+  "python": "/opt/sglang/bin/python3",
+  "sglang_root": "/data/home/ziangli/inferencex-w4a16-blog-rerun-20261009/sources/sglang",
+  "flashinfer_root": "/data/home/ziangli/inferencex-w4a16-blog-rerun-20261009/sources/flashinfer",
+  "installation_manifest": "/data/home/ziangli/inferencex-w4a16-blog-rerun-20261009/source-install/VERIFIED.json",
+  "sglang_commit": "22250e374abcff99e78e862da647a83b1c2ebe27",
+  "flashinfer_commit": "866c80d0c70a90624b4c2056d12d1543d709609e",
+  "benchmark_commit": "REPLACE_WITH_COMMITTED_INFERENCEX_HEAD",
+  "image": "lmsysorg/sglang:nightly-dev-cu13-20261010-961bcf48@sha256:53efab7e8255a47b19edc81a0f1ad37cd6c8341bfe8f448d268700b182b2f03d",
+  "port": 30000,
+  "ready_timeout_seconds": 5400,
+  "benchmark_timeout_seconds": 14400,
+  "models": {
+    "dsv41": {
+      "checkpoint_path": "/data/home/ziangli/dsv41-dspark-checkpoint-3431dde3247c/models/target",
+      "checkpoint_revision": "3431dde3247c13b5957f682b1e3c6fcae2566079",
+      "prompt_format": "DeepSeek-V4.1 chat; reasoning_effort=None",
+      "served_model": "deepseek-v41-flash-nvfp4"
+    },
+    "glm52": {
+      "checkpoint_path": "/data/home/ziangli/inferencex-glm52-b300/checkpoints/GLM-5.2-NVFP4",
+      "checkpoint_revision": "53e0691e21895a3863a606dfd12910c69eba94ab",
+      "prompt_format": "tokenizer chat template; add_generation_prompt=True",
+      "served_model": "glm52-nvfp4"
+    }
+  }
+}
